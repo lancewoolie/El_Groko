@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Past Live Events - Lance Woolie</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <img src="img/logo.png" alt="Lance Woolie"> Lance Woolie
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+     <ul class="navbar-nav ms-auto">
+  <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+  <li class="nav-item"><a class="nav-link" href="music.html">Music</a></li>
+  <li class="nav-item"><a class="nav-link" href="events.html">Events</a></li>
+  <li class="nav-item"><a class="nav-link" href="origins.html">Origins</a></li>
+  <li class="nav-item"><a class="nav-link" href="merch.html">Merch</a></li>
+  <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+</ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container py-5" style="margin-top: 80px;">
+    <h1 class="text-center mb-5">Past Live Events</h1>
+    <p class="lead text-center">Relive Lance's electrifying performances—from intimate gigs to high-energy shows. All events archived from 2024-2025. (No upcoming events at this time; check back soon!)</p>
+
+    <!-- Event Table with Image Column -->
+    <div class="table-responsive">
+      <table class="table table-striped event-table">
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Date</th>
+            <th>Event</th>
+            <th>Venue</th>
+            <th>City</th>
+            <th>Time</th>
+            <th>Tickets</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-center image-col"><div class="border rounded p-2" style="width: 80px; height: 60px; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center; font-size: 0.8em; color: #6c757d;">Add Image</div></td>
+            <td>09/13/2025</td>
+            <td>Court To Table Baton Rouge Presents Lance Woolie w/ Shane Reid</td>
+            <td>7477 Burbank Dr</td>
+            <td>Baton Rouge, LA 70820, USA</td>
+            <td>11:00 PM</td>
+            <td>TBD</td>
+          </tr>
+          <tr>
+            <td class="text-center image-col"><div class="border rounded p-2" style="width: 80px; height: 60px; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center; font-size: 0.8em; color: #6c757d;">Add Image</div></td>
+            <td>09/05/2025</td>
+            <td>Court To Table Baton Rouge Presents Lance Woolie w/ Earl Wheeler III</td>
+            <td>7477 Burbank Dr</td>
+            <td>Baton Rouge, LA 70820, USA</td>
+            <td>11:00 PM</td>
+            <td>TBD</td>
+          </tr>
+          <tr>
+            <td class="text-center image-col"><div class="border rounded p-2" style="width: 80px; height: 60px; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center; font-size: 0.8em; color: #6c757d;">Add Image</div></td>
+            <td>06/21/2025</td>
+            <td>Art Night HOEDOWN</td>
+            <td>456 N Donmoor Ave</td>
+            <td>Baton Rouge, LA 70806, USA</td>
+            <td>11:00 PM</td>
+            <td>TBD</td>
+          </tr>
+          <tr>
+            <td class="text-center image-col"><div class="border rounded p-2" style="width: 80px; height: 60px; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center; font-size: 0.8em; color: #6c757d;">Add Image</div></td>
+            <td>06/15/2025</td>
+            <td>Jim's Bar in Ventress, LA</td>
+            <td>7913 Park St</td>
+            <td>Ventress, LA 70783, USA</td>
+            <td>08:00 PM</td>
+            <td>TBD</td>
+          </tr>
+          <tr>
+            <td class="text-center image-col"><div class="border rounded p-2" style="width: 80px; height: 60px; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center; font-size: 0.8em; color: #6c757d;">Add Image</div></td>
+            <td>05/31/2025</td>
+            <td>Lance Woolie w/ Shane Reid @ The Smiling Dog</td>
+            <td>4215 S Sherwood Forest Blvd</td>
+            <td>Baton Rouge, LA 70816, USA</td>
+            <td>02:00 AM</td>
+            <td>TBD</td>
+          </tr>
+          <tr>
+            <td class="text-center image-col"><div class="border rounded p-2" style="width: 80px; height: 60px; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center; font-size: 0.8em; color: #6c757d;">Add Image</div></td>
+            <td>03/28/2025</td>
+            <td>Private Event - Woodforest (Houston)</td>
+            <td>251 Central Pine St</td>
+            <td>Montgomery, TX 77316, USA</td>
+            <td>11:00 PM</td>
+            <td>TBD</td>
+          </tr>
+          <tr>
+            <td class="text-center image-col"><div class="border rounded p-2" style="width: 80px; height: 60px; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center; font-size: 0.8em; color: #6c757d;">Add Image</div></td>
+            <td>03/16/2025</td>
+            <td>Lance Woolie Live at The Smiling Dog 2nd Floor Stage(solo)</td>
+            <td>4215 S Sherwood Forest Blvd</td>
+            <td>Baton Rouge, LA 70816, USA</td>
+            <td>01:50 AM</td>
+            <td>TBD</td>
+          </tr>
+          <tr>
+            <td class="text-center image-col"><div class="border rounded p-2" style="width: 80px; height: 60px; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center; font-size: 0.8em; color: #6c757d;">Add Image</div></td>
+            <td>02/22/2025</td>
+            <td>The Smiling Dog Presents Lance Woolie</td>
+            <td>4215 S Sherwood Forest Blvd</td>
+            <td>Baton Rouge, LA 70816, USA</td>
+            <td>03:00 AM</td>
+            <td>100 sold</td>
+          </tr>
+          <tr>
+            <td class="text-center image-col"><div class="border rounded p-2" style="width: 80px; height: 60px; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center; font-size: 0.8em; color: #6c757d;">Add Image</div></td>
+            <td>02/09/2025</td>
+            <td>Lance Woolie (Full Band) @ Papi's In Watson</td>
+            <td>35055 LA-16</td>
+            <td>Denham Springs, LA 70706, USA</td>
+            <td>12:00 AM</td>
+            <td>TBD</td>
+          </tr>
+          <tr>
+            <td class="text-center image-col"><div class="border rounded p-2" style="width: 80px; height: 60px; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center; font-size: 0.8em; color: #6c757d;">Add Image</div></td>
+            <td>02/02/2025</td>
+            <td>Lance Woolie @ Ed's Place</td>
+            <td>111 Duson Ave</td>
+            <td>Iota, LA 70543, USA</td>
+            <td>02:00 AM</td>
+            <td>TBD</td>
+          </tr>
+          <tr>
+            <td class="text-center image-col"><div class="border rounded p-2" style="width: 80px; height: 60px; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center; font-size: 0.8em; color: #6c757d;">Add Image</div></td>
+            <td>01/25/2025</td>
+            <td>The Smiling Dog Presents Lance Woolie</td>
+            <td>4215 S Sherwood Forest Blvd</td>
+            <td>Baton Rouge, LA 70816, USA</td>
+            <td>02:00 AM</td>
+            <td>2 sold</td>
+          </tr>
+          <tr>
+            <td class="text-center image-col"><div class="border rounded p-2" style="width: 80px; height: 60px; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center; font-size: 0.8em; color: #6c757d;">Add Image</div></td>
+            <td>01/13/2025</td>
+            <td>Uber World Premiere</td>
+            <td></td>
+            <td></td>
+            <td>11:00 PM</td>
+            <td>TBD</td>
+          </tr>
+          <tr>
+            <td class="text-center image-col"><div class="border rounded p-2" style="width: 80px; height: 60px; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center; font-size: 0.8em; color: #6c757d;">Add Image</div></td>
+            <td>01/11/2025</td>
+            <td>Spankys Dutchtown Presents Lance Woolie</td>
+            <td>36520 Oak Plaza Ave suite a</td>
+            <td>Prairieville, LA 70769, USA</td>
+            <td>02:00 AM</td>
+            <td>TBD</td>
+          </tr>
+          <tr>
+            <td class="text-center image-col"><div class="border rounded p-2" style="width: 80px; height: 60px; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center; font-size: 0.8em; color: #6c757d;">Add Image</div></td>
+            <td>12/11/2024</td>
+            <td>Windy City Presents Lance Woolie w/ Washboard Guidry</td>
+            <td>505 S Main St</td>
+            <td>Breckenridge, CO 80424, USA</td>
+            <td>11:00 PM</td>
+            <td>TBD</td>
+          </tr>
+          <tr>
+            <td class="text-center image-col"><div class="border rounded p-2" style="width: 80px; height: 60px; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center; font-size: 0.8em; color: #6c757d;">Add Image</div></td>
+            <td>11/11/2024</td>
+            <td>TCMA award ceremony</td>
+            <td>2520 Rodeo Plaza</td>
+            <td>Fort Worth, TX 76164, USA</td>
+            <td>12:00 AM</td>
+            <td>TBD</td>
+          </tr>
+          <tr>
+            <td class="text-center image-col"><div class="border rounded p-2" style="width: 80px; height: 60px; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center; font-size: 0.8em; color: #6c757d;">Add Image</div></td>
+            <td>11/09/2024</td>
+            <td>Wimberley Valley Winery presents Lance Woolie</td>
+            <td>2825 Lone Man Mountain Rd</td>
+            <td>Driftwood, TX 78619, USA</td>
+            <td>08:00 PM</td>
+            <td>TBD</td>
+          </tr>
+          <tr>
+            <td class="text-center image-col"><div class="border rounded p-2" style="width: 80px; height: 60px; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center; font-size: 0.8em; color: #6c757d;">Add Image</div></td>
+            <td>10/19/2024</td>
+            <td>10/18 Rene's Bar Presents Lance Woolie & Washboard Guidry</td>
+            <td>204 St Philip St</td>
+            <td>Thibodaux, LA 70301, USA</td>
+            <td>12:00 AM</td>
+            <td>TBD</td>
+          </tr>
+          <tr>
+            <td class="text-center image-col"><div class="border rounded p-2" style="width: 80px; height: 60px; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center; font-size: 0.8em; color: #6c757d;">Add Image</div></td>
+            <td>10/12/2024</td>
+            <td>Lance Filming in Fort Worth, Texas</td>
+            <td>Fort Worth</td>
+            <td>TX, USA</td>
+            <td>12:00 AM</td>
+            <td>TBD</td>
+          </tr>
+          <tr>
+            <td class="text-center image-col"><div class="border rounded p-2" style="width: 80px; height: 60px; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center; font-size: 0.8em; color: #6c757d;">Add Image</div></td>
+            <td>10/10/2024</td>
+            <td>99.1 The Buck w/ Lance</td>
+            <td>2125 Sidney Baker St</td>
+            <td>Kerrville, TX 78028, USA</td>
+            <td>09:00 PM</td>
+            <td>TBD</td>
+          </tr>
+          <tr>
+            <td class="text-center image-col"><div class="border rounded p-2" style="width: 80px; height: 60px; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center; font-size: 0.8em; color: #6c757d;">Add Image</div></td>
+            <td>10/09/2024</td>
+            <td>102.1 KEOK w/ Lance</td>
+            <td>5686 S Muskogee Ave</td>
+            <td>Tahlequah, OK 74464, USA</td>
+            <td>02:00 PM</td>
+            <td>TBD</td>
+          </tr>
+          <tr>
+            <td class="text-center image-col"><div class="border rounded p-2" style="width: 80px; height: 60px; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center; font-size: 0.8em; color: #6c757d;">Add Image</div></td>
+            <td>10/04/2024</td>
+            <td>T'quilas Bar & Grill Presents Lance Woolie w/ Special guest Corban Barnes</td>
+            <td>5647 Main St suite f</td>
+            <td>Zachary, LA 70791, USA</td>
+            <td>11:00 PM</td>
+            <td>TBD</td>
+          </tr>
+          <tr>
+            <td class="text-center image-col"><div class="border rounded p-2" style="width: 80px; height: 60px; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center; font-size: 0.8em; color: #6c757d;">Add Image</div></td>
+            <td>09/21/2024</td>
+            <td>9/21 Wimberley Valley Winery presents Lance Woolie</td>
+            <td>2825 Lone Man Mountain Rd</td>
+            <td>Driftwood, TX 78619, USA</td>
+            <td>09:00 PM</td>
+            <td>TBD</td>
+          </tr>
+          <tr>
+            <td class="text-center image-col"><div class="border rounded p-2" style="width: 80px; height: 60px; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center; font-size: 0.8em; color: #6c757d;">Add Image</div></td>
+            <td>08/04/2024</td>
+            <td>Jim's Bar Presents Lance Woolie</td>
+            <td>7913 Park St</td>
+            <td>Ventress, LA 70783, USA</td>
+            <td>08:00 PM</td>
+            <td>4 sold</td>
+          </tr>
+          <tr>
+            <td class="text-center image-col"><div class="border rounded p-2" style="width: 80px; height: 60px; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center; font-size: 0.8em; color: #6c757d;">Add Image</div></td>
+            <td>07/13/2024</td>
+            <td>Casting Call (Music Video) July13th</td>
+            <td>108 Main St</td>
+            <td>New Roads, LA 70760, USA</td>
+            <td>01:00 PM</td>
+            <td>TBD</td>
+          </tr>
+          <tr>
+            <td class="text-center image-col"><div class="border rounded p-2" style="width: 80px; height: 60px; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center; font-size: 0.8em; color: #6c757d;">Add Image</div></td>
+            <td>07/07/2024</td>
+            <td>Jim's Bar Presents Lance Woolie</td>
+            <td>7913 Park St</td>
+            <td>Ventress, LA 70783, USA</td>
+            <td>08:00 PM</td>
+            <td>1 sold</td>
+          </tr>
+          <tr>
+            <td class="text-center image-col"><div class="border rounded p-2" style="width: 80px; height: 60px; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center; font-size: 0.8em; color: #6c757d;">Add Image</div></td>
+            <td>07/04/2024</td>
+            <td>Too Drunk release</td>
+            <td></td>
+            <td></td>
+            <td>12:00 AM</td>
+            <td>TBD</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="text-center mt-4">
+      <p>Want to book Lance for your next event? <a href="contact.html">Get in touch</a> today!</p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Lance Woolie. All rights reserved. | <a href="contact.html" class="text-white">Contact</a></p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
