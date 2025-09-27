@@ -72,22 +72,27 @@ body {
   color: #fff;
 }
 
-/* Merch Full-Screen Iframe (Percentage-Based) */
+/* Merch Full-Screen Iframe (Pure Percentage + Viewport) */
 .merch-body {
   margin: 0;
   padding: 0;
-  height: 100vh;
-  overflow: hidden;
+  height: 100vh; /* Full viewport height */
+  overflow: hidden; /* No scrollbars */
 }
 .merch-wrapper {
   position: relative;
-  width: 100%;
-  height: 100vh;
-  margin-top: 0; /* Full bleed */
+  width: 100%; /* 100% width */
+  height: calc(100vh - 120px); /* 100% height minus navbar (80px) + footer (40px) */
+  margin-top: 80px; /* Offset for fixed navbar */
 }
 .merch-iframe {
-  width: 100%;
-  height: 100%; /* Full percentage height */
+  width: 100%; /* Full width */
+  height: 100%; /* Full height percentage */
   border: none;
   display: block;
+}
+@media (max-width: 768px) {
+  .merch-wrapper {
+    height: calc(100vh - 100px); /* Adjust for mobile navbar/footer */
+  }
 }
