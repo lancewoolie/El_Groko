@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Live Events - Lance Woolie</title>
+  <title>Contact - Lance Woolie</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark-blue fixed-top">
     <div class="container">
       <a class="navbar-brand" href="index.html">
         <img src="img/logo.png" alt="Lance Woolie"> Lance Woolie
@@ -17,76 +17,101 @@
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <ul class="navbar-nav ms-auto">
-  <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-  <li class="nav-item"><a class="nav-link" href="music.html">Music</a></li>
-  <li class="nav-item"><a class="nav-link" href="events.html">Events</a></li>
-  <li class="nav-item"><a class="nav-link" href="origins.html">Origins</a></li>
-  <li class="nav-item"><a class="nav-link" href="merch.html">Merch</a></li>
-  <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-</ul>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="music.html">Music</a></li>
+          <li class="nav-item"><a class="nav-link" href="events.html">Events</a></li>
+          <li class="nav-item"><a class="nav-link" href="origins.html">Origins</a></li>
+          <li class="nav-item"><a class="nav-link" href="merch.html">Merch</a></li>
+          <li class="nav-item"><a class="nav-link active" href="contact.html">Contact</a></li>
+        </ul>
       </div>
     </div>
   </nav>
 
-  <div class="container py-5" style="margin-top: 80px;">
-    <h1 class="text-center mb-5">Live Events</h1>
-    <p class="lead text-center">Catch Lance live—raw energy, storytelling, and that Louisiana grit. (Data from your CSV; update table with full import.)</p>
+  <div class="container py-5" style="margin-top: 80px; padding-bottom: 100px;"> <!-- Padding for footer -->
+    <h1 class="text-center mb-5 text-dark-blue">Get In Touch</h1>
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <p class="lead text-center mb-5">Reach out for bookings, press, or just to say hey. Lance and the team are here to connect.</p>
 
-    <!-- Sample Table from CSV (assume columns: Date, Event, Venue, City, Time, Tickets) -->
-    <div class="table-responsive">
-      <table class="table table-striped event-table">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Event</th>
-            <th>Venue</th>
-            <th>City</th>
-            <th>Time</th>
-            <th>Tickets</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Sep 5, 2025</td>
-            <td>Lance Woolie w/ Earl Wheeler III</td>
-            <td>Court To Table</td>
-            <td>Baton Rouge, LA</td>
-            <td>6:00 PM</td>
-            <td><a href="#" class="btn btn-sm btn-primary">RSVP</a></td>
-          </tr>
-          <tr>
-            <td>May 30, 2026</td>
-            <td>Lance Woolie w/ Shane Reid</td>
-            <td>The Smiling Dog</td>
-            <td>Baton Rouge, LA</td>
-            <td>9:00 PM</td>
-            <td><a href="#" class="btn btn-sm btn-primary">Tickets</a></td>
-          </tr>
-          <tr>
-            <td>TBD 2026</td>
-            <td>Texas Club Show</td>
-            <td>The Texas Club</td>
-            <td>Baton Rouge, LA</td>
-            <td>Evening</td>
-            <td><a href="contact.html" class="btn btn-sm btn-primary">Inquire</a></td>
-          </tr>
-          <!-- Add more rows from your CSV here -->
-        </tbody>
-      </table>
-    </div>
-    <div class="text-center mt-4">
-      <p>No events listed? <a href="contact.html">Book Lance</a> for your venue!</p>
+        <!-- General Contact Form -->
+        <div class="card mb-5">
+          <div class="card-body">
+            <h3 class="card-title text-center mb-4">General Inquiries</h3>
+            <form id="contact-form">
+              <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" class="form-control" id="name" required>
+              </div>
+              <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" required>
+              </div>
+              <div class="mb-3">
+                <label for="message" class="form-label">Message</label>
+                <textarea class="form-control" id="message" rows="5" required></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary w-100">Send Message</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Team Contacts -->
+        <div class="row">
+          <!-- Artist Management -->
+          <div class="col-md-4 mb-4">
+            <div class="card h-100">
+              <div class="card-body text-center">
+                <h5 class="card-title accent-blue">Artist Management</h5>
+                <p class="card-text">Marathon Music Group</p>
+                <a href="https://marathonmusicgroup.com/" class="btn btn-outline-primary" target="_blank">Visit Site</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Public Affairs -->
+          <div class="col-md-4 mb-4">
+            <div class="card h-100">
+              <div class="card-body text-center">
+                <h5 class="card-title accent-blue">Public Affairs</h5>
+                <p class="card-text">Doug Deutsch</p>
+                <a href="mailto:dougdeutschpr1956@gmail.com" class="btn btn-outline-primary">Email Doug</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Radio Promo -->
+          <div class="col-md-4 mb-4">
+            <div class="card h-100">
+              <div class="card-body text-center">
+                <h5 class="card-title accent-blue">Radio Promotion</h5>
+                <p class="card-text">David Gilligan</p>
+                <a href="mailto:david@gilliganpromotions.com" class="btn btn-outline-primary">Email David</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Social Links -->
+        <div class="row justify-content-center mt-4">
+          <div class="col-md-6 text-center">
+            <h5>Follow & Connect</h5>
+            <p>YouTube: <a href="https://www.youtube.com/channel/UC9NUm7_BejCwctJ9u6dps7g" target="_blank">Lance Woolie</a><br>
+            Facebook: <a href="https://www.facebook.com/lancewooliemusic/" target="_blank">@lancewooliemusic</a></p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- Footer -->
-<!-- Fixed Footer Bar -->
-<footer class="footer-bar">
-  <div class="container text-center">
-    <p class="mb-0">&copy; 2025 Lance Woolie. All rights reserved. | <a href="contact.html" class="text-light">Contact</a></p>
-  </div>
-</footer>
+  <!-- Fixed Footer Bar -->
+  <footer class="footer-bar">
+    <div class="container text-center">
+      <p class="mb-0">&copy; 2025 Lance Woolie. All rights reserved. | <a href="contact.html" class="text-light">Contact</a></p>
+    </div>
+  </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
