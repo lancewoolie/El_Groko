@@ -3,18 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lance Woolie - Unhinged Country Soul</title>
-  <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+  <title>Lance Woolie - Country Music Artist</title>
+  <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Georgia&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/parallax@1.1.0/parallax.min.js"></script>
 </head>
-<body class="unhinged-body">
-  <!-- Marquee Lyrics Ticker -->
-  <marquee class="lyrics-marquee" behavior="scroll" direction="left">I would give anything to see you walk through that door... Too Drunk to Drive Home... Worst Enemy in the Mirror... Country Paradise Awaits...</marquee>
-
+<body>
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark-blue fixed-top">
     <div class="container">
@@ -37,14 +31,77 @@
     </div>
   </nav>
 
- <!-- Section 1: Home Hero (Parallax Swamp) -->
-<section id="home" class="section parallax-hero" data-parallax="scroll" data-image-src="img/ai-bayou-swamp.jpg">
-  <div class="hero-overlay">
-    <div class="hero-content">
-      <h1 class="display-1 glitch-text">LANCE WOOLIE</h1>
-      <p class="lead">Authentic Country from the Heart of Louisiana – Lost Love, Redemption, and Swamp Fever</p>
-      <a href="#music" class="btn btn-gold btn-lg glitch-btn">Dive Into the Chaos</a>
+  <!-- Hero Section (Parallax Bayou) -->
+  <section id="home" class="hero-section">
+    <div class="hero-overlay">
+      <div class="container text-center">
+        <h1 class="display-3 mb-3">Lance Woolie</h1>
+        <p class="lead mb-4">Authentic Country from the Heart of Louisiana</p>
+        <img src="img/headshot.jpg" alt="Lance Woolie" class="rounded-circle mb-3 hero-img">
+        <p>From Baton Rouge roots to global stages, Lance's raw vocals and storytelling capture lost love, redemption, and Southern soul.</p>
+        <a href="#music" class="btn btn-gold btn-lg mt-3">Listen Now</a>
+      </div>
     </div>
-    <div id="particles-js" class="particles-container"></div>
-  </div>
-</section>
+  </section>
+
+  <!-- Latest Release Section -->
+  <section id="music" class="py-5 bg-light">
+    <div class="container">
+      <h2 class="text-center mb-4 text-dark-blue">Latest Release: Uber (2025)</h2>
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="card">
+            <div class="card-body text-center">
+              <p>A danceable neotraditional tune, evoking lost love with "I would give anything to see you walk through that door." Lance's striking, one-of-a-kind vocal uses no auto-tune. Uber features Brent Mason (14-time ACM Guitarist, Grammy winner, recently working with Zack Top & Post Malone), Scotty Sanders (I Never Lie- Zach Top & steel guitar for Gene Watson, Dolly Parton), and Brian Brignac (drummer for Eric Clapton, Wayne Toups). Perfect for modern "Country Gold" & '90s playlists.</p>
+              <iframe width="100%" height="315" src="https://www.youtube.com/embed/0nTop80SCvs" title="Uber Official Video" frameborder="0" allowfullscreen class="mb-3"></iframe>
+              <a href="https://orcd.co/a4glqme" class="btn btn-success" target="_blank">Stream on Spotify/Apple</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recent Events Teaser -->
+  <section id="events" class="py-5">
+    <div class="container">
+      <h2 class="text-center mb-4 text-dark-blue">Recent Events</h2>
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">Court To Table - Baton Rouge w/ Shane Reid</h5>
+              <p class="card-text">Sep 13, 2025 | 11:00 PM<br>Baton Rouge, LA</p>
+              <a href="#events" class="btn btn-primary">Details</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-3">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">Court To Table - Baton Rouge w/ Earl Wheeler III</h5>
+              <p class="card-text">Sep 5, 2025 | 11:00 PM<br>Baton Rouge, LA</p>
+              <a href="#events" class="btn btn-primary">Details</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-3">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">Art Night HOEDOWN</h5>
+              <p class="card-text">Jun 21, 2025 | 11:00 PM<br>Baton Rouge, LA</p>
+              <a href="#events" class="btn btn-primary">Details</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-center mt-3">
+        <a href="#events" class="btn btn-outline-primary">View All Events</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Origins Section -->
+  <section id="origins" class="py-5 bg-light">
+    <div class="container">
+      <h2 class="text-center mb-
