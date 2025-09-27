@@ -58,3 +58,21 @@ document.getElementById('contact-form').addEventListener('submit', (e) => {
 document.querySelectorAll('.glitch-card, .glitch-btn').forEach(el => {
   el.addEventListener('mouseenter', () => gsap.to(el, {duration: 0.1, x: 2, y: 2, repeat: 5, yoyo: true}));
 });
+const trail = [];
+document.addEventListener('mousemove', (e) => {
+  trail.push({x: e.clientX, y: e.clientY});
+  if (trail.length > 10) trail.shift();
+  trail.forEach((pos, i) => {
+    const hat = document.createElement('div');
+    hat.style.position = 'fixed';
+    hat.style.left = pos.x + 'px';
+    hat.style.top = pos.y + 'px';
+    hat.style.width = '20px';
+    hat.style.height = '20px';
+    hat.style.background = 'url(img/cowboy-hat.svg)';
+    hat.style.zIndex = 999;
+    hat.style.opacity = (10 - i) / 10;
+    document.body.appendChild(hat);
+    setTimeout(() => hat.remove(), 500);
+  });
+});
