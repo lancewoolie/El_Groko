@@ -65,3 +65,25 @@ document.querySelectorAll('.event-btn').forEach(btn => {
       const audio = new Audio(audioPath);
       audio.volume = 0.3;
       audio.play().catch(e => console.log('Audio play failed:', e)); // Handle autoplay block
+      // Cowboy Hat Random Surprises (Bottom-Left Footer)
+const cowboyHat = document.getElementById('cowboy-hat');
+const surprises = [
+  () => { cowboyHat.textContent = '🪕'; setTimeout(() => cowboyHat.textContent = '🤠', 1000); }, // Banjo flash
+  () => { cowboyHat.style.color = '#FFD700'; setTimeout(() => cowboyHat.style.color = 'white', 1000); }, // Gold glow
+  () => { alert('Twang! Lost love fortune: "The swamp whispers your name."'); }, // Random message
+  () => { cowboyHat.style.transform = 'rotate(360deg)'; setTimeout(() => cowboyHat.style.transform = 'rotate(0deg)', 500); }, // Spin
+  () => { cowboyHat.textContent = '🌵'; setTimeout(() => cowboyHat.textContent = '🤠', 1000); } // Cactus surprise
+];
+cowboyHat.addEventListener('click', () => {
+  const randomSurprise = surprises[Math.floor(Math.random() * surprises.length)];
+  randomSurprise();
+});
+
+// Form Alert (If on Contact)
+const form = document.getElementById('contact-form');
+if (form) {
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    alert('Message sent—expect a reply from the bayou.');
+  });
+}
