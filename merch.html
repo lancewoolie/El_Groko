@@ -9,7 +9,7 @@
 </head>
 <body class="merch-body">
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark-blue fixed-top">
     <div class="container">
       <a class="navbar-brand" href="index.html">
         <img src="img/logo.png" alt="Lance Woolie"> Lance Woolie
@@ -18,27 +18,27 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
-  <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-  <li class="nav-item"><a class="nav-link" href="music.html">Music</a></li>
-  <li class="nav-item"><a class="nav-link" href="events.html">Events</a></li>
-  <li class="nav-item"><a class="nav-link" href="origins.html">Origins</a></li>
-  <li class="nav-item"><a class="nav-link" href="merch.html">Merch</a></li>
-  <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-</ul>
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="music.html">Music</a></li>
+          <li class="nav-item"><a class="nav-link" href="events.html">Events</a></li>
+          <li class="nav-item"><a class="nav-link" href="origins.html">Origins</a></li>
+          <li class="nav-item"><a class="nav-link active" href="merch.html">Merch</a></li>
+          <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+        </ul>
       </div>
     </div>
   </nav>
 
-  <!-- Merch Embed Section -->
-  <div class="container-fluid p-0" style="margin-top: 80px; height: calc(100vh - 80px);">
-    <iframe src="https://lancewoolie.bandcamp.com/" class="merch-container" allowfullscreen></iframe>
+  <!-- Full-Screen Merch Embed -->
+  <div class="merch-wrapper">
+    <iframe src="https://lancewoolie.bandcamp.com/" class="merch-iframe" allowfullscreen></iframe>
   </div>
 
-  <!-- Footer (Slimmed for full embed) -->
-  <footer class="position-fixed bottom-0 w-100" style="z-index: 10;">
-    <div class="container">
-      <p class="mb-0 text-center">&copy; 2025 Lance Woolie. All rights reserved. | Merch powered by <a href="https://bandcamp.com" target="_blank" class="text-white">Bandcamp</a> | <a href="contact.html" class="text-white">Contact</a></p>
+  <!-- Fixed Footer Bar -->
+  <footer class="footer-bar">
+    <div class="container text-center">
+      <p class="mb-0">&copy; 2025 Lance Woolie. All rights reserved. | Merch powered by <a href="https://bandcamp.com" target="_blank" class="text-light">Bandcamp</a> | <a href="contact.html" class="text-light">Contact</a></p>
     </div>
   </footer>
 
