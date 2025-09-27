@@ -87,3 +87,25 @@ if (form) {
     alert('Message sent—expect a reply from the bayou.');
   });
 }
+
+      // Cowboy Hat Random Surprises (Bottom-Left Footer)
+const cowboyHat = document.getElementById('cowboy-hat');
+if (cowboyHat) {
+  const surprises = [
+    () => { cowboyHat.textContent = '🪕'; setTimeout(() => cowboyHat.textContent = '🤠', 1000); },
+    () => { cowboyHat.style.color = '#FFD700'; setTimeout(() => cowboyHat.style.color = 'white', 1000); },
+    () => { alert('Twang! "Do it." – Lance'); },
+    () => { cowboyHat.style.transform = 'rotate(360deg)'; setTimeout(() => cowboyHat.style.transform = 'rotate(0deg)', 500); },
+    () => { cowboyHat.textContent = '🌵'; setTimeout(() => cowboyHat.textContent = '🤠', 1000); }
+  ];
+  cowboyHat.addEventListener('click', () => surprises[Math.floor(Math.random() * surprises.length)]());
+}
+
+// Form Alert (If on Contact)
+const form = document.getElementById('contact-form');
+if (form) {
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    alert('Message sent—bayou reply incoming.');
+  });
+}
