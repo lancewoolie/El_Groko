@@ -1,4 +1,4 @@
-/* Dark Tesla Theme */
+/* Lean Dark Tesla Theme */
 body {
   font-family: 'Georgia', serif;
   line-height: 1.6;
@@ -9,19 +9,24 @@ body {
 .bg-dark-blue {
   background-color: #001f3f !important;
 }
+
 .text-dark-blue {
   color: #001f3f !important;
 }
+
 .accent-blue {
   color: #0074D9 !important;
 }
+
 .btn-gold {
   background-color: #FFD700;
   border-color: #FFD700;
   color: #001f3f;
 }
+
 .btn-gold:hover {
   background-color: #e6c200;
+  border-color: #e6c200;
 }
 
 /* Tight Header/Navbar (Tesla-Style) */
@@ -34,6 +39,7 @@ body {
   z-index: 1000;
   border-bottom: 1px solid #0074D9;
 }
+
 .nav-list {
   list-style: none;
   display: flex;
@@ -41,6 +47,7 @@ body {
   padding: 0;
   gap: 20px;
 }
+
 .nav-link {
   color: white;
   text-decoration: none;
@@ -49,11 +56,13 @@ body {
   transition: color 0.3s;
   font-weight: bold;
 }
+
 .nav-link:hover {
   color: #FFD700;
 }
+
 .nav-link::after {
-  content: attr(data-icon); /* Icon from data-icon */
+  content: attr(data-icon);
   position: absolute;
   bottom: -20px;
   left: 50%;
@@ -62,9 +71,11 @@ body {
   opacity: 0;
   transition: opacity 0.3s;
 }
+
 .nav-link:hover::after {
   opacity: 1;
 }
+
 @media (max-width: 768px) {
   .nav-list {
     flex-direction: column;
@@ -74,6 +85,7 @@ body {
     width: 100%;
     background: #001f3f;
   }
+
   .nav-link::after {
     bottom: 5px;
     left: 10px;
@@ -89,6 +101,7 @@ body {
   background-attachment: fixed;
   margin-top: 60px;
 }
+
 .hero-overlay {
   position: absolute;
   top: 0;
@@ -108,6 +121,7 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s;
 }
+
 .card:hover {
   transform: translateY(-5px);
 }
@@ -123,11 +137,13 @@ body {
   border-top: 1px solid #0074D9;
   font-size: 0.9rem;
 }
+
 .cowboy-hat-icon {
   font-size: 1.5rem;
   cursor: pointer;
   transition: transform 0.3s;
 }
+
 .cowboy-hat-icon:hover {
   transform: rotate(15deg);
 }
@@ -137,4 +153,12 @@ body {
   .hero {
     background-attachment: scroll;
   }
+}
+
+.hero-headshot {
+  width: 30%;
+  max-width: 250px;
+  height: auto;
+  object-fit: cover;
+  border-radius: 50%;
 }
