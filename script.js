@@ -76,3 +76,13 @@ document.addEventListener('mousemove', (e) => {
     setTimeout(() => hat.remove(), 500);
   });
 });
+document.getElementById('oracle-btn').addEventListener('click', async () => {
+  const prompt = document.getElementById('oracle-input').value;
+  const response = await fetch('https://api.x.ai/v1/chat/completions', {
+    method: 'POST',
+    headers: { 'Authorization': 'Bearer YOUR_API_KEY', 'Content-Type': 'application/json' },
+    body: JSON.stringify({ model: 'grok-beta', messages: [{ role: 'user', content: `Unhinged country advice on: ${prompt}` }] })
+  });
+  const data = await response.json();
+  document.getElementById('oracle-response').innerText = data.choices[0].message.content;
+});
