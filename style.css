@@ -29,7 +29,7 @@ body {
   color: #FFD700 !important; /* Gold for active */
 }
 
-/* Hero (Keep original, but blue tint if needed) */
+/* Hero */
 .hero {
   background: linear-gradient(rgba(0, 31, 63, 0.7), rgba(0, 31, 63, 0.7)), url('img/hero-bg.jpg');
   background-size: cover;
