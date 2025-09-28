@@ -9,35 +9,57 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" type="image/png" href="img/LanceWoolieHeadonly.png">
   <meta name="description" content="Contact Lance Woolie - Do it. Bookings, press, and bayou vibes.">
+  <style>
+    body {
+      background-color: #1e3a8a; /* Dark royal blue */
+      color: #E0E0E0; /* Light grey text */
+    }
+    .card {
+      background-color: #1e3a8a;
+      color: #E0E0E0;
+      border: 1px solid #0074D9;
+    }
+    .form-control {
+      background-color: #2c3e50;
+      border: 1px solid #0074D9;
+      color: #E0E0E0;
+    }
+    .form-control:focus {
+      background-color: #2c3e50;
+      border-color: #FFD700;
+      color: #E0E0E0;
+    }
+    .btn-primary {
+      background-color: #FFD700;
+      border-color: #FFD700;
+      color: #001f3f;
+    }
+    .btn-primary:hover {
+      background-color: #e6c200;
+      border-color: #e6c200;
+    }
+    .btn-outline-primary {
+      border-color: #FFD700;
+      color: #FFD700;
+    }
+    .btn-outline-primary:hover {
+      background-color: #FFD700;
+      color: #001f3f;
+    }
+    .text-muted {
+      color: #A0A0A0 !important; /* Lighter muted for dark theme */
+    }
+  </style>
 </head>
 <body>
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <div class="container">
-      <a class="navbar-brand" href="index.html">
-        <img src="img/BEARDsmall.png" alt="Lance Woolie" style="height: 20px;"> Lance Woolie
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-       <ul class="navbar-nav ms-auto">
-  <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-  <li class="nav-item"><a class="nav-link" href="music.html">Music</a></li>
-  <li class="nav-item"><a class="nav-link" href="events.html">Events</a></li>
-  <li class="nav-item"><a class="nav-link" href="origins.html">Origins</a></li>
-  <li class="nav-item"><a class="nav-link" href="merch.html">Merch</a></li>
-  <li class="nav-item"><a class="nav-link active" href="contact.html">Contact</a></li>
-</ul>
-      </div>
-    </div>
-  </nav>
+  <div id="nav-placeholder"></div> <!-- Dynamic Nav Insert Here -->
 
   <div class="container py-5" style="margin-top: 80px; padding-bottom: 100px;">
     <h1 class="text-center mb-5 text-dark-blue">Get In Touch</h1>
     <div class="row justify-content-center">
       <div class="col-lg-8">
         <p class="lead text-center mb-5">Reach out for bookings, press, or just to say hey. Lance and the team are here to connect.</p>
+
 
         <!-- Business Contacts (Moved Up) -->
         <div class="row mb-5">
