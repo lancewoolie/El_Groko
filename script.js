@@ -16,19 +16,19 @@ function generateNav() {
               <a class="nav-link dropdown-toggle" href="music.html" role="button" data-bs-toggle="dropdown" aria-expanded="false">Music</a>
               <ul class="dropdown-menu horizontal-dropdown">
                 <li><a class="dropdown-item d-flex align-items-center" href="https://orcd.co/a4glqme" target="_blank">
-                  <img src="img/Ubermenu.jpg" alt="Uber" class="dropdown-img me-2" style="width: 200px; height: 200px; object-fit: cover;">
+                  <img src="img/Ubermenu.jpg" alt="Uber" class="dropdown-img me-2" style="width: 150px; height: 150px; object-fit: cover;">
                   Uber
                 </a></li>
                 <li><a class="dropdown-item d-flex align-items-center" href="https://orcd.co/lancewoolietoodrunk" target="_blank">
-                  <img src="img/TooDrunkmenu.jpg" alt="Too Drunk" class="dropdown-img me-2" style="width: 200px; height: 200px; object-fit: cover;">
+                  <img src="img/TooDrunkmenu.jpg" alt="Too Drunk" class="dropdown-img me-2" style="width: 150px; height: 150px; object-fit: cover;">
                   Too Drunk
                 </a></li>
                 <li><a class="dropdown-item d-flex align-items-center" href="https://orcd.co/lancewoolieworstenemy" target="_blank">
-                  <img src="img/WorstEnemymenu.jpg" alt="Worst Enemy" class="dropdown-img me-2" style="width: 200px; height: 200px; object-fit: cover;">
+                  <img src="img/WorstEnemymenu.jpg" alt="Worst Enemy" class="dropdown-img me-2" style="width: 150px; height: 150px; object-fit: cover;">
                   Worst Enemy
                 </a></li>
                 <li><a class="dropdown-item d-flex align-items-center" href="music.html">
-                  <img src="img/Fullcatalogmenu.jpg" alt="Full Catalog" class="dropdown-img me-2" style="width: 200px; height: 200px; object-fit: cover;">
+                  <img src="img/Fullcatalogmenu.jpg" alt="Full Catalog" class="dropdown-img me-2" style="width: 150px; height: 150px; object-fit: cover;">
                   Full Catalog
                 </a></li>
               </ul>
