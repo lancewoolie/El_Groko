@@ -12,7 +12,15 @@ function generateNav() {
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-            <li class="nav-item"><a class="nav-link" href="music.html">Music</a></li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="music.html" role="button" data-bs-toggle="dropdown" aria-expanded="false">Music</a>
+              <ul class="dropdown-menu horizontal-dropdown">
+                <li><a class="dropdown-item" href="https://orcd.co/a4glqme" target="_blank">Uber</a></li>
+                <li><a class="dropdown-item" href="https://orcd.co/lancewoolietoodrunk" target="_blank">Too Drunk</a></li>
+                <li><a class="dropdown-item" href="https://orcd.co/lancewoolieworstenemy" target="_blank">Worst Enemy</a></li>
+                <li><a class="dropdown-item" href="music.html">Full Catalog</a></li>
+              </ul>
+            </li>
             <li class="nav-item"><a class="nav-link" href="events.html">Events</a></li>
             <li class="nav-item"><a class="nav-link" href="origins.html">Origins</a></li>
             <li class="nav-item"><a class="nav-link" href="https://lancewoolie.bandcamp.com/" target="_blank">Merch</a></li>
@@ -48,7 +56,7 @@ function generateNav() {
 // Load Nav on DOM Ready
 document.addEventListener('DOMContentLoaded', generateNav);
 
-// Existing Cowboy Hat & Form Code (Cleaned - No Duplicates)
+// Existing Cowboy Hat & Form Code (Keep Below)
 const cowboyHat = document.getElementById('cowboy-hat');
 if (cowboyHat) {
   const surprises = [
