@@ -1,9 +1,9 @@
-/* Lean Dark Tesla Theme */
+/* Lean Dark Tesla Theme - Updated to Dark Royal Blue Body */
 body {
   font-family: 'Georgia', serif;
   line-height: 1.6;
-  color: #333;
-  background-color: #f8f9fa;
+  color: #E0E0E0; /* Light grey text */
+  background-color: #1e3a8a; /* Dark royal blue background */
 }
 
 .bg-dark-blue {
@@ -76,22 +76,6 @@ body {
   opacity: 1;
 }
 
-@media (max-width: 768px) {
-  .nav-list {
-    flex-direction: column;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    background: #001f3f;
-  }
-
-  .nav-link::after {
-    bottom: 5px;
-    left: 10px;
-  }
-}
-
 /* Bayou Hero */
 .hero {
   height: 100vh;
@@ -120,6 +104,12 @@ body {
   border: none;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s;
+  background-color: #1e3a8a; /* Match body bg */
+  color: #E0E0E0; /* Light grey text */
+}
+
+.card-body {
+  color: #E0E0E0;
 }
 
 .card:hover {
@@ -148,13 +138,7 @@ body {
   transform: rotate(15deg);
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .hero {
-    background-attachment: scroll;
-  }
-}
-
+/* Hero Headshot */
 .hero-headshot {
   width: 30%;
   max-width: 250px;
@@ -162,13 +146,15 @@ body {
   object-fit: cover;
   border-radius: 50%;
 }
+
+/* Horizontal Dropdown */
 .horizontal-dropdown {
   position: absolute;
   top: 100%;
   left: auto;
   right: 0;
   min-width: 200px;
-  background: #001f3f;
+  background: #1e3a8a; /* Match body bg */
   border: 1px solid #0074D9;
   z-index: 1001;
   flex-direction: row;
@@ -176,16 +162,44 @@ body {
 }
 
 .horizontal-dropdown .dropdown-item {
-  color: white;
+  color: #E0E0E0; /* Light grey text */
   padding: 10px 20px;
   border-bottom: none;
+  display: flex;
+  align-items: center;
 }
 
 .horizontal-dropdown .dropdown-item:hover {
   background: #0074D9;
 }
 
+.horizontal-dropdown .dropdown-img {
+  width: 200px;
+  height: 200px;
+  margin-right: 10px;
+  object-fit: cover;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
+  .hero {
+    background-attachment: scroll;
+  }
+
+  .nav-list {
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: #1e3a8a; /* Match body bg */
+  }
+
+  .nav-link::after {
+    bottom: 5px;
+    left: 10px;
+  }
+
   .horizontal-dropdown {
     position: static;
     right: auto;
