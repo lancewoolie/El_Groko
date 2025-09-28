@@ -162,3 +162,33 @@ body {
   object-fit: cover;
   border-radius: 50%;
 }
+.horizontal-dropdown {
+  position: absolute;
+  top: 100%;
+  left: auto;
+  right: 0;
+  min-width: 200px;
+  background: #001f3f;
+  border: 1px solid #0074D9;
+  z-index: 1001;
+  flex-direction: row;
+  display: flex;
+}
+
+.horizontal-dropdown .dropdown-item {
+  color: white;
+  padding: 10px 20px;
+  border-bottom: none;
+}
+
+.horizontal-dropdown .dropdown-item:hover {
+  background: #0074D9;
+}
+
+@media (max-width: 768px) {
+  .horizontal-dropdown {
+    position: static;
+    right: auto;
+    flex-direction: column;
+  }
+}
