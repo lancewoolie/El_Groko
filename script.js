@@ -15,22 +15,10 @@ function generateNav() {
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="music.html" role="button" data-bs-toggle="dropdown" aria-expanded="false">Music</a>
               <ul class="dropdown-menu horizontal-dropdown">
-                <li><a class="dropdown-item d-flex align-items-center" href="https://orcd.co/a4glqme" target="_blank">
-                  <img src="img/Ubermenu.jpg" alt="Uber" class="dropdown-img me-2">
-                  Uber
-                </a></li>
-                <li><a class="dropdown-item d-flex align-items-center" href="https://orcd.co/lancewoolietoodrunk" target="_blank">
-                  <img src="img/TooDrunkmenu.jpg" alt="Too Drunk" class="dropdown-img me-2">
-                  Too Drunk
-                </a></li>
-                <li><a class="dropdown-item d-flex align-items-center" href="https://orcd.co/lancewoolieworstenemy" target="_blank">
-                  <img src="img/WorstEnemymenu.jpg" alt="Worst Enemy" class="dropdown-img me-2">
-                  Worst Enemy
-                </a></li>
-                <li><a class="dropdown-item d-flex align-items-center" href="music.html">
-                  <img src="img/Fullcatalogmenu.jpg" alt="Full Catalog" class="dropdown-img me-2">
-                  Full Catalog
-                </a></li>
+                <li><a class="dropdown-item" href="https://orcd.co/a4glqme" target="_blank">Uber</a></li>
+                <li><a class="dropdown-item" href="https://orcd.co/lancewoolietoodrunk" target="_blank">Too Drunk</a></li>
+                <li><a class="dropdown-item" href="https://orcd.co/lancewoolieworstenemy" target="_blank">Worst Enemy</a></li>
+                <li><a class="dropdown-item" href="music.html">Full Catalog</a></li>
               </ul>
             </li>
             <li class="nav-item"><a class="nav-link" href="events.html">Events</a></li>
@@ -66,4 +54,25 @@ function generateNav() {
 }
 
 // Load Nav on DOM Ready
-document.addEventListener('DOMContentLoaded',
+document.addEventListener('DOMContentLoaded', generateNav);
+
+// Existing Cowboy Hat & Form Code (Keep Below)
+const cowboyHat = document.getElementById('cowboy-hat');
+if (cowboyHat) {
+  const surprises = [
+    () => { cowboyHat.textContent = '🪕'; setTimeout(() => cowboyHat.textContent = '🤠', 1000); },
+    () => { cowboyHat.style.color = '#FFD700'; setTimeout(() => cowboyHat.style.color = 'white', 1000); },
+    () => { alert('Twang! "Do it." – Lance'); },
+    () => { cowboyHat.style.transform = 'rotate(360deg)'; setTimeout(() => cowboyHat.style.transform = 'rotate(0deg)', 500); },
+    () => { cowboyHat.textContent = '🌵'; setTimeout(() => cowboyHat.textContent = '🤠', 1000); }
+  ];
+  cowboyHat.addEventListener('click', () => surprises[Math.floor(Math.random() * surprises.length)]());
+}
+
+const form = document.getElementById('contact-form');
+if (form) {
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    alert('Message sent—bayou reply incoming.');
+  });
+}
