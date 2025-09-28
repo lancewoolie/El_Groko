@@ -1,3 +1,59 @@
+// Reusable Nav Generator (Edit Here for All Pages)
+function generateNav() {
+  const navHTML = `
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">
+          <img src="img/BEARDsmall.png" alt="Lance Woolie" style="height: 20px;"> Lance Woolie
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="music.html">Music</a></li>
+            <li class="nav-item"><a class="nav-link" href="events.html">Events</a></li>
+            <li class="nav-item"><a class="nav-link" href="origins.html">Origins</a></li>
+            <li class="nav-item"><a class="nav-link" href="merch.html" target="_blank">Merch</a></li> <!-- External Bandcamp -->
+            <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  `;
+  const placeholder = document.getElementById('nav-placeholder');
+  if (placeholder) {
+    placeholder.innerHTML = navHTML;
+    // Re-init Bootstrap toggler for dynamic insert
+    var myCollapse = document.getElementById('navbarNav');
+    var bsCollapse = new bootstrap.Collapse(myCollapse, {toggle: false});
+  }
+}
+
+// Load Nav on DOM Ready
+document.addEventListener('DOMContentLoaded', generateNav);
+
+// Existing Cowboy Hat & Form Code (Keep Below)
+const cowboyHat = document.getElementById('cowboy-hat');
+if (cowboyHat) {
+  const surprises = [
+    () => { cowboyHat.textContent = '🪕'; setTimeout(() => cowboyHat.textContent = '🤠', 1000); },
+    () => { cowboyHat.style.color = '#FFD700'; setTimeout(() => cowboyHat.style.color = 'white', 1000); },
+    () => { alert('Twang! "Do it." – Lance'); },
+    () => { cowboyHat.style.transform = 'rotate(360deg)'; setTimeout(() => cowboyHat.style.transform = 'rotate(0deg)', 500); },
+    () => { cowboyHat.textContent = '🌵'; setTimeout(() => cowboyHat.textContent = '🤠', 1000); }
+  ];
+  cowboyHat.addEventListener('click', () => surprises[Math.floor(Math.random() * surprises.length)]());
+}
+
+const form = document.getElementById('contact-form');
+if (form) {
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    alert('Message sent—bayou reply incoming.');
+  });
+}
 // Smooth Scrolling for Nav Anchors (Fixes Navigation)
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', function (e) {
