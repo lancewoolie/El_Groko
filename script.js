@@ -65,51 +65,75 @@ function generateNav() {
   }
 }
 
-// Load Nav on DOM Ready
-document.addEventListener('DOMContentLoaded', generateNav);
-
-// Existing Cowboy Hat & Form Code (Keep Below)
-const cowboyHat = document.getElementById('cowboy-hat');
-if (cowboyHat) {
-  const surprises = [
-    () => { cowboyHat.textContent = '🪕'; setTimeout(() => cowboyHat.textContent = '🤠', 1000); },
-    () => { cowboyHat.style.color = '#FFD700'; setTimeout(() => cowboyHat.style.color = 'white', 1000); },
-    () => { alert('Twang! "Do it." – Lance'); },
-    () => { cowboyHat.style.transform = 'rotate(360deg)'; setTimeout(() => cowboyHat.style.transform = 'rotate(0deg)', 500); },
-    () => { cowboyHat.textContent = '🌵'; setTimeout(() => cowboyHat.textContent = '🤠', 1000); }
-  ];
-  cowboyHat.addEventListener('click', () => surprises[Math.floor(Math.random() * surprises.length)]());
-}
-
-const form = document.getElementById('contact-form');
-if (form) {
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    alert('Message sent—bayou reply incoming.');
-  });
-}
-
-  // Dynamic Footer Insertion
-  document.addEventListener('DOMContentLoaded', function() {
-    const footerPlaceholder = document.getElementById('footer-placeholder');
-    if (footerPlaceholder) {
-      footerPlaceholder.innerHTML = `
-        <footer class="footer-bar" style="background-color: #191970; color: white; padding: 20px 0; margin-top: auto;">
-          <div class="container d-flex justify-content-between align-items-center">
-            <div class="social-icons me-auto">
-              <a href="https://www.youtube.com/@LanceWoolie" target="_blank" rel="noopener noreferrer" class="me-3" style="color: white; font-size: 1.5em;"><i class="fab fa-youtube"></i></a>
-              <a href="https://www.tiktok.com/@lancewoolie" target="_blank" rel="noopener noreferrer" class="me-3" style="color: white; font-size: 1.5em;"><i class="fab fa-tiktok"></i></a>
-              <a href="https://x.com/LanceWoolie" target="_blank" rel="noopener noreferrer" style="color: white; font-size: 1.5em;"><i class="fab fa-x-twitter"></i></a>
-            </div>
-            <div class="copyright ms-auto text-end">
-              <p class="mb-0">&copy; 2025 Lance Woolie. All rights reserved. | <a href="contact.html" style="color: #FFD700;">Contact</a></p>
-            </div>
-            <div class="cowboy-hat ms-3">
-              <i class="fas fa-hat-cowboy-side" id="cowboy-hat" style="font-size: 2em; color: #FFD700; cursor: pointer;"></i>
-              <div id="random-action" style="position: absolute; bottom: 100%; right: 0; background: #191970; color: white; padding: 10px; border-radius: 5px; display: none; z-index: 1000; white-space: nowrap;"></div>
-            </div>
+// Dynamic Navigation and Footer Insertion
+document.addEventListener('DOMContentLoaded', function() {
+  // Insert Navigation
+  const navPlaceholder = document.getElementById('nav-placeholder');
+  if (navPlaceholder) {
+    navPlaceholder.innerHTML = `
+      <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #1e3a8a;">
+        <div class="container">
+          <a class="navbar-brand" href="index.html">Lance Woolie</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+              <li class="nav-item"><a class="nav-link" href="music.html">Music</a></li>
+              <li class="nav-item"><a class="nav-link" href="events.html">Events</a></li>
+              <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+              <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+            </ul>
           </div>
-        </footer>
+        </div>
+      </nav>
+    `;
+  }
+
+  // Insert Footer
+  const footerPlaceholder = document.getElementById('footer-placeholder');
+  if (footerPlaceholder) {
+    footerPlaceholder.innerHTML = `
+      <footer class="footer-bar" style="background-color: #191970; color: white; padding: 20px 0; margin-top: auto;">
+        <div class="container d-flex justify-content-between align-items-center">
+          <div class="social-icons me-auto">
+            <a href="https://www.youtube.com/@LanceWoolie" target="_blank" rel="noopener noreferrer" class="me-3" style="color: white; font-size: 1.5em;"><i class="fab fa-youtube"></i></a>
+            <a href="https://www.tiktok.com/@lancewoolie" target="_blank" rel="noopener noreferrer" class="me-3" style="color: white; font-size: 1.5em;"><i class="fab fa-tiktok"></i></a>
+            <a href="https://x.com/LanceWoolie" target="_blank" rel="noopener noreferrer" style="color: white; font-size: 1.5em;"><i class="fab fa-x-twitter"></i></a>
+          </div>
+          <div class="copyright ms-auto text-end">
+            <p class="mb-0">&copy; 2025 Lance Woolie. All rights reserved. | <a href="contact.html" style="color: #FFD700;">Contact</a></p>
+          </div>
+          <div class="cowboy-hat ms-3">
+            <i class="fas fa-hat-cowboy-side" id="cowboy-hat" style="font-size: 2em; color: #FFD700; cursor: pointer;"></i>
+            <div id="random-action" style="position: absolute; bottom: 100%; right: 0; background: #191970; color: white; padding: 10px; border-radius: 5px; display: none; z-index: 1000; white-space: nowrap;"></div>
+          </div>
+        </div>
+      </footer>
+    `;
+
+    // Random Actions for Cowboy Hat
+    const actions = [
+      "Houston, we are ready for Lunch",
+      "Buy Tesla stock before you buy food",
+      "Don't California My Texas!",
+      "You need Jesus!"
+    ];
+
+    const cowboyHat = document.getElementById('cowboy-hat');
+    const randomAction = document.getElementById('random-action');
+
+    if (cowboyHat && randomAction) {
+      cowboyHat.addEventListener('click', function() {
+        const randomPhrase = actions[Math.floor(Math.random() * actions.length)];
+        randomAction.textContent = randomPhrase;
+        randomAction.style.display = randomAction.style.display === 'none' ? 'block' : 'none';
+        setTimeout(() => { randomAction.style.display = 'none'; }, 3000);
+      });
+    }
+  }
+});
       `;
 
       // Random Actions for Cowboy Hat
