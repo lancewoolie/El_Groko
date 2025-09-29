@@ -88,3 +88,50 @@ if (form) {
     alert('Message sent—bayou reply incoming.');
   });
 }
+
+  // Dynamic Footer Insertion
+  document.addEventListener('DOMContentLoaded', function() {
+    const footerPlaceholder = document.getElementById('footer-placeholder');
+    if (footerPlaceholder) {
+      footerPlaceholder.innerHTML = `
+        <footer class="footer-bar" style="background-color: #191970; color: white; padding: 20px 0; margin-top: auto;">
+          <div class="container d-flex justify-content-between align-items-center">
+            <div class="social-icons me-auto">
+              <a href="https://www.youtube.com/@LanceWoolie" target="_blank" rel="noopener noreferrer" class="me-3" style="color: white; font-size: 1.5em;"><i class="fab fa-youtube"></i></a>
+              <a href="https://www.tiktok.com/@lancewoolie" target="_blank" rel="noopener noreferrer" class="me-3" style="color: white; font-size: 1.5em;"><i class="fab fa-tiktok"></i></a>
+              <a href="https://x.com/LanceWoolie" target="_blank" rel="noopener noreferrer" style="color: white; font-size: 1.5em;"><i class="fab fa-x-twitter"></i></a>
+            </div>
+            <div class="copyright ms-auto text-end">
+              <p class="mb-0">&copy; 2025 Lance Woolie. All rights reserved. | <a href="contact.html" style="color: #FFD700;">Contact</a></p>
+            </div>
+            <div class="cowboy-hat ms-3">
+              <i class="fas fa-hat-cowboy-side" id="cowboy-hat" style="font-size: 2em; color: #FFD700; cursor: pointer;"></i>
+              <div id="random-action" style="position: absolute; bottom: 100%; right: 0; background: #191970; color: white; padding: 10px; border-radius: 5px; display: none; z-index: 1000; white-space: nowrap;"></div>
+            </div>
+          </div>
+        </footer>
+      `;
+
+      // Random Actions for Cowboy Hat
+      const actions = [
+        "Houston, we are ready for Lunch",
+        "Buy Tesla stock before you buy food",
+        "Don't California My Texas!",
+        "You need Jesus!",
+        // Add previous random actions here if you have them, e.g.:
+        // "Yeehaw!",
+        // "Ride 'em cowboy!"
+      ];
+
+      const cowboyHat = document.getElementById('cowboy-hat');
+      const randomAction = document.getElementById('random-action');
+
+      cowboyHat.addEventListener('click', function() {
+        const randomPhrase = actions[Math.floor(Math.random() * actions.length)];
+        randomAction.textContent = randomPhrase;
+        randomAction.style.display = randomAction.style.display === 'none' ? 'block' : 'none';
+        setTimeout(() => { randomAction.style.display = 'none'; }, 3000);
+      });
+    }
+  });
+
