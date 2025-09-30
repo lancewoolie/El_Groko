@@ -124,18 +124,28 @@ body {
 }
 
 .tight-footer {
-  background: #001f3f !important; /* Solid navy lock-in /
-  backdrop-filter: none !important; / No blur/translucency /
-  opacity: 1 !important; / Full visibility force /
+  background-color: #001f3f !important;
+  background: #001f3f !important; /* Double-lock for coverage /
+  opacity: 1 !important;
+  isolation: isolate; / Block transparency leaks from video/body */
+  backdrop-filter: none !important;
   padding: 10px 0;
   position: fixed;
   bottom: 0;
+  left: 0;
+  right: 0;
   width: 100%;
-  z-index: 1001; / Above all else /
+  z-index: 1001 !important;
   border-top: 1px solid #0074D9;
   font-size: 0.9rem;
-  color: white; / Text lock if leaked */
+  color: white !important;
+}/* Video Isolation Tweak (If Bleed Persists) /
+#bg-video {
+  mix-blend-mode: normal !important; / Prevent overlay modes */
+  z-index: -1 !important;
 }
+
+
 
 
 .cowboy-hat-icon {
