@@ -21,8 +21,10 @@
     body {
       position: relative;
       z-index: 1;
+      background-color: #1e3a8a; /* Dark royal blue base - no white bleed */
+      color: #E0E0E0; /* Light grey text */
     }
-    .hero, .py-5, .bg-light {
+    .hero, .py-5 {
       position: relative;
       z-index: 2;
     }
@@ -40,6 +42,91 @@
       width: 100% !important;
       z-index: 1001 !important;
       border-top: 1px solid #0074D9;
+    }
+    /* Dark Card Theme for Release */
+    .card {
+      background-color: #1e3a8a;
+      color: #E0E0E0;
+      border: 1px solid #0074D9;
+    }
+    .card-body {
+      color: #E0E0E0;
+    }
+    .btn-success {
+      background-color: #FFD700;
+      border-color: #FFD700;
+      color: #001f3f;
+    }
+    .btn-success:hover {
+      background-color: #e6c200;
+      border-color: #e6c200;
+    }
+    /* Merch Carousel Styles (Sexy Hover Effects - Matches Merch Page) */
+    .carousel-item .merch-card {
+      background-color: #1e3a8a;
+      border: 2px solid #0074D9;
+      border-radius: 15px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      height: 100%;
+      cursor: pointer;
+    }
+    .carousel-item .merch-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 25px rgba(0, 116, 217, 0.3);
+      border-color: #FFD700;
+    }
+    .carousel-item .merch-card img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+    }
+    .carousel-item .merch-card .card-body {
+      padding: 1.5rem;
+      text-align: center;
+    }
+    .carousel-item .merch-card h3 {
+      color: #FFD700; /* Gold titles */
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+    .carousel-item .merch-card p {
+      color: #E0E0E0;
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+    }
+    .carousel-item .btn-buy {
+      background-color: #FFD700;
+      border-color: #FFD700;
+      color: #001f3f;
+      font-weight: bold;
+      padding: 0.75rem 2rem;
+      border-radius: 25px;
+      transition: all 0.3s ease;
+    }
+    .carousel-item .btn-buy:hover {
+      background-color: #e6c200;
+      border-color: #e6c200;
+      transform: scale(1.05);
+      color: #001f3f;
+    }
+    .price-tag {
+      background: #001f3f;
+      color: #FFD700;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-weight: bold;
+      display: inline-block;
+      margin-top: 0.5rem;
+    }
+    .carousel-control-prev, .carousel-control-next {
+      filter: invert(1); /* White arrows on dark */
+    }
+    .carousel-indicators [data-bs-target] {
+      background-color: #FFD700;
+    }
+    .carousel-inner {
+      background-color: #1e3a8a; /* Dark bg for carousel */
     }
   </style>
   <!-- Firebase SDK v12.2.1 CDN -->
