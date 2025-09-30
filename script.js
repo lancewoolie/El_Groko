@@ -1,4 +1,4 @@
-// Reusable Nav Generator (Unchanged)
+// Updated Nav Generator (Merch Link Now to Internal Merch Page)
 function generateNav() {
   let navHTML = `
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
@@ -35,12 +35,41 @@ function generateNav() {
             </li>
             <li class="nav-item"><a class="nav-link" href="events.html">Events</a></li>
             <li class="nav-item"><a class="nav-link" href="origins.html">Origins</a></li>
-            <li class="nav-item"><a class="nav-link" href="https://lancewoolie.bandcamp.com/" target="_blank">Merch</a></li>
+            <li class="nav-item"><a class="nav-link" href="merch.html">Merch</a></li>
             <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
           </ul>
         </div>
       </div>
     </nav>
+  `;
+
+  // Rest of generateNav unchanged (active highlighting, etc.)
+  const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = navHTML;
+  const navItems = tempDiv.querySelectorAll('.nav-item a[href]');
+  navItems.forEach(link => {
+    const href = link.getAttribute('href');
+    const isActive = (currentPage === 'index' && href === 'index.html') || href.includes(currentPage);
+    if (isActive) {
+      link.closest('.nav-item').classList.add('active');
+    }
+  });
+  navHTML = tempDiv.innerHTML;
+
+  const placeholder = document.getElementById('nav-placeholder');
+  if (placeholder) {
+    placeholder.innerHTML = navHTML;
+    const myCollapse = document.getElementById('navbarNav');
+    if (myCollapse) {
+      const existingCollapse = bootstrap.Collapse.getInstance(myCollapse);
+      if (existingCollapse) existingCollapse.dispose();
+      new bootstrap.Collapse(myCollapse, { toggle: false });
+    }
+  } else {
+    console.warn('Nav placeholder not found');
+  }
+}
   `;
 
   // Auto-Highlight Active Page (Enhanced for Dropdowns)
