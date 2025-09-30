@@ -1,4 +1,3 @@
-// Updated Nav Generator (Merch Link Now to Internal Merch Page)
 function generateNav() {
   let navHTML = `
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
