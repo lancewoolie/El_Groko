@@ -123,17 +123,20 @@ body {
   transform: translateY(-5px);
 }
 
-/* Tight Footer */
 .tight-footer {
-  background: #001f3f;
+  background: #001f3f !important; /* Solid navy lock-in /
+  backdrop-filter: none !important; / No blur/translucency /
+  opacity: 1 !important; / Full visibility force /
   padding: 10px 0;
   position: fixed;
   bottom: 0;
   width: 100%;
-  z-index: 1000;
+  z-index: 1001; / Above all else /
   border-top: 1px solid #0074D9;
   font-size: 0.9rem;
+  color: white; / Text lock if leaked */
 }
+
 
 .cowboy-hat-icon {
   font-size: 1.5rem;
@@ -241,11 +244,4 @@ body {
   position: relative;
   z-index: 2;
 }
-/* Fixed Footer Anti-Overlap (Bootstrap-Friendly) */
-body {
-  padding-bottom: 60px; /* Matches header offset; tweak to 70px if icon pushes taller */
-}
 
-.tight-footer {
-  z-index: 1001; /* Tiny bump over header for edge cases */
-}
