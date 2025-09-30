@@ -43,40 +43,63 @@ function generateNav() {
     </nav>
   `;
 
-  // Auto-Highlight Active Page (No Edits Needed)
+  // Auto-Highlight Active Page (Enhanced for Dropdowns)
   const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
-  const links = navHTML.match(/<a class="nav-link" href="[^"]*">([^<]*)<\/a>/g) || [];
-  const activeLink = links.find(link => {
-    const href = link.match(/href="([^"]*)"/)[1];
-    return href.includes(currentPage) || (currentPage === 'index' && href === 'index.html');
+  // Find matching li and add 'active' class to it (works for simple and dropdown items)
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = navHTML;
+  const navItems = tempDiv.querySelectorAll('.nav-item a[href]');
+  navItems.forEach(link => {
+    const href = link.getAttribute('href');
+    const isActive = (currentPage === 'index' && href === 'index.html') || href.includes(currentPage);
+    if (isActive) {
+      link.closest('.nav-item').classList.add('active');
+    }
   });
-  if (activeLink) {
-    navHTML = navHTML.replace(activeLink, activeLink.replace('nav-link', 'nav-link active'));
-  }
+  navHTML = tempDiv.innerHTML;
 
   const placeholder = document.getElementById('nav-placeholder');
   if (placeholder) {
     placeholder.innerHTML = navHTML;
-    // Re-init Bootstrap toggler for dynamic insert
+    // Re-init Bootstrap toggler for dynamic insert (dispose any existing to avoid conflicts)
     const myCollapse = document.getElementById('navbarNav');
     if (myCollapse) {
-      const bsCollapse = new bootstrap.Collapse(myCollapse, {toggle: false});
+      const existingCollapse = bootstrap.Collapse.getInstance(myCollapse);
+      if (existingCollapse) existingCollapse.dispose();
+      new bootstrap.Collapse(myCollapse, { toggle: false });
     }
+  } else {
+    console.warn('Nav placeholder not found—check HTML for <div id="nav-placeholder"></div>');
   }
 }
 
 // Load Nav on DOM Ready
 document.addEventListener('DOMContentLoaded', generateNav);
 
-// Existing Cowboy Hat & Form Code (Keep Below)
+// Smooth Scroll for Internal Links
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+});
+
+// Existing Cowboy Hat & Form Code (Enhanced with One More Surprise)
 const cowboyHat = document.getElementById('cowboy-hat');
 if (cowboyHat) {
+  cowboyHat.textContent = '🤠'; // Fix initial icon
   const surprises = [
     () => { cowboyHat.textContent = '🪕'; setTimeout(() => cowboyHat.textContent = '🤠', 1000); },
     () => { cowboyHat.style.color = '#FFD700'; setTimeout(() => cowboyHat.style.color = 'white', 1000); },
     () => { alert('Twang! "Do it." – Lance'); },
     () => { cowboyHat.style.transform = 'rotate(360deg)'; setTimeout(() => cowboyHat.style.transform = 'rotate(0deg)', 500); },
-    () => { cowboyHat.textContent = '🌵'; setTimeout(() => cowboyHat.textContent = '🤠', 1000); }
+    () => { cowboyHat.textContent = '🌵'; setTimeout(() => cowboyHat.textContent = '🤠', 1000); },
+    () => { window.scrollTo({ top: 0, behavior: 'smooth' }); cowboyHat.textContent = '⬆️'; setTimeout(() => cowboyHat.textContent = '🤠', 1000); } // New: Scroll to top
   ];
   cowboyHat.addEventListener('click', () => surprises[Math.floor(Math.random() * surprises.length)]());
 }
@@ -86,5 +109,6 @@ if (form) {
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     alert('Message sent—bayou reply incoming.');
+    // Future: Add real submission logic here (e.g., EmailJS or Formspree)
   });
 }
