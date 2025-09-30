@@ -4,59 +4,78 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Past Live Events - Lance Woolie</title>
+  <link href="https://fonts.googleapis.com/css2?family=Georgia&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-  <style>
-    body {
-      background-color: #0f1419;
-      color: white; /* All text white */
-    }
-    .table {
-      color: white; /* Table text white */
-    }
-    .table thead th {
-      color: white;
-      background-color: #1e3a8a;
-    }
-    .table tbody td {
-      color: white;
-      background-color: #1f2937;
-    }
-    .table-striped tbody tr:nth-of-type(odd) td {
-      background-color: #374151;
-    }
-    .lead {
-      color: white;
-    }
-    h1 {
-      color: white;
-    }
-    a {
-      color: #FFD700; /* Gold links for contrast */
-    }
-    a:hover {
-      color: #fff;
-    }
-    .image-col small {
-      color: #bdc3c7; /* Lighter gray for captions to contrast with white table text */
-      font-size: 0.75em;
-    }
-    .image-col img:hover {
-      transform: scale(1.05); /* Subtle zoom on hover for better UX */
-      transition: transform 0.2s ease;
-    }
-  </style>
+  <link rel="icon" type="image/png" href="img/LanceWoolieHeadonly.png">
+  <meta name="description" content="Past Live Events - Lance Woolie. Relive the bayou twang from 2024-2025 gigs.">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://cdn.jsdelivr.net https://www.youtube.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https: blob:; frame-src 'self' https://www.youtube.com; font-src 'self' https://fonts.gstatic.com; object-src 'none'">
   <meta http-equiv="X-Frame-Options" content="DENY">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
   <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
+  <style>
+    body {
+      background-color: #1e3a8a; /* Dark royal blue - site theme */
+      color: #E0E0E0; /* Light grey text */
+      padding-bottom: 60px; /* Space for fixed footer */
+    }
+    .table {
+      color: #E0E0E0; /* Light text */
+      background-color: #1e3a8a; /* Match body bg */
+      border-color: #0074D9; /* Blue accents */
+    }
+    .table thead th {
+      color: #E0E0E0;
+      background-color: #001f3f; /* Navy header */
+      border-color: #0074D9;
+    }
+    .table tbody td {
+      color: #E0E0E0;
+      background-color: #1e3a8a; /* Royal blue rows */
+      border-color: #0074D9;
+    }
+    .table-striped tbody tr:nth-of-type(odd) td {
+      background-color: #2a4a9a; /* Slightly lighter blue for stripes */
+    }
+    .lead {
+      color: #E0E0E0;
+    }
+    h1 {
+      color: #001f3f !important; /* Navy header */
+    }
+    a {
+      color: #FFD700; /* Gold links */
+    }
+    a:hover {
+      color: #e6c200; /* Gold hover */
+    }
+    .image-col small {
+      color: #A0A0A0; /* Muted grey captions */
+      font-size: 0.75em;
+    }
+    .image-col img:hover {
+      transform: scale(1.05); /* Subtle zoom */
+      transition: transform 0.2s ease;
+    }
+    .tight-footer {
+      background: #001f3f !important;
+      opacity: 1 !important;
+      position: fixed !important;
+      bottom: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      width: 100% !important;
+      z-index: 1001 !important;
+      border-top: 1px solid #0074D9;
+    }
+  </style>
 </head>
 <body>
   <div id="nav-placeholder"></div> <!-- Dynamic Nav Insert Here -->
 
   <div class="container py-5" style="margin-top: 80px;">
-    <h1 class="text-center mb-5">Past Live Events</h1>
+    <h1 class="text-center mb-5 text-dark-blue">Past Live Events</h1>
     <p class="lead text-center">Relive Lance's electrifying performances—from intimate gigs to high-energy shows. All events archived from 2024-2025. (No upcoming events at this time; check back soon!)</p>
 
     <!-- Event Table with Image Column -->
@@ -445,12 +464,8 @@
       <p>Want to book Lance for your next event? <a href="contact.html">Get in touch</a> today!</p>
     </div>
   </div>
-  <!-- Fixed Footer Bar -->
-  <footer class="footer-bar">
-    <div class="container text-center">
-      <p class="mb-0">&copy; 2025 Lance Woolie. All rights reserved. | <a href="contact.html" class="text-light">Contact</a></p>
-    </div>
-  </footer>
+
+  <div id="footer-placeholder"></div> <!-- Dynamic Footer Insert Here - Floating Fixed -->
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
