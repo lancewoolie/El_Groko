@@ -20,25 +20,78 @@
       color: #E0E0E0; /* Light grey text */
       padding-bottom: 60px; /* Space for fixed footer */
     }
-    .card {
-      background-color: #1e3a8a; /* Dark bg like events cards */
+    .hero-merch {
+      background: linear-gradient(rgba(0, 31, 63, 0.8), rgba(30, 58, 138, 0.8)), url('img/ai-bayou-swamp.jpg') center/cover;
+      color: white;
+      padding: 80px 0;
+      text-align: center;
+      margin-top: 80px;
+    }
+    .hero-merch h1 {
+      font-size: 3rem;
+      font-weight: bold;
+      color: #FFD700; /* Gold hero title */
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+    .hero-merch .lead {
+      font-size: 1.25rem;
       color: #E0E0E0;
-      border: 1px solid #0074D9; /* Blue border accent */
     }
-    h1, h2 {
-      color: #001f3f !important; /* text-dark-blue for headers */
+    .merch-card {
+      background-color: #1e3a8a;
+      border: 2px solid #0074D9;
+      border-radius: 15px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      height: 100%;
     }
-    p {
-      color: #E0E0E0; /* Ensure light text on dark bg */
+    .merch-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 25px rgba(0, 116, 217, 0.3);
+      border-color: #FFD700;
     }
-    .text-dark-blue {
-      color: #001f3f !important; /* Consistent accent */
-    }
-    .bandcamp-embed {
+    .merch-card img {
       width: 100%;
-      height: 120px;
-      border: none;
-      border-radius: 8px;
+      height: 250px;
+      object-fit: cover;
+    }
+    .merch-card .card-body {
+      padding: 1.5rem;
+      text-align: center;
+    }
+    .merch-card h3 {
+      color: #FFD700; /* Gold titles */
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+    .merch-card p {
+      color: #E0E0E0;
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+    }
+    .btn-buy {
+      background-color: #FFD700;
+      border-color: #FFD700;
+      color: #001f3f;
+      font-weight: bold;
+      padding: 0.75rem 2rem;
+      border-radius: 25px;
+      transition: all 0.3s ease;
+    }
+    .btn-buy:hover {
+      background-color: #e6c200;
+      border-color: #e6c200;
+      transform: scale(1.05);
+      color: #001f3f;
+    }
+    .price-tag {
+      background: #001f3f;
+      color: #FFD700;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-weight: bold;
+      display: inline-block;
+      margin-top: 0.5rem;
     }
     .tight-footer {
       background: #001f3f !important;
@@ -56,51 +109,72 @@
 <body>
   <div id="nav-placeholder"></div> <!-- Dynamic Nav Insert Here -->
 
-  <div class="container py-5" style="margin-top: 80px;">
-    <h1 class="text-center mb-5 text-dark-blue">Merch</h1>
-    <div class="row justify-content-center mb-5">
-      <div class="col-lg-8">
-        <p class="lead text-center">Gear up with exclusive Lance Woolie merch—bayou-inspired threads, albums, and fan favorites that carry the swamp's soul. From stage-ready socks to full catalogs, snag yours and join the twang.</p>
+  <!-- Hero Section -->
+  <section class="hero-merch">
+    <div class="container">
+      <h1 class="mb-4">Shop the Swamp Soul</h1>
+      <p class="lead">Exclusive gear and tunes straight from the bayou—wear the twang, stream the grit. Limited drops for true fans. Do it.</p>
+      <a href="#merch-grid" class="btn btn-gold btn-lg mt-3">Browse Collection</a>
+    </div>
+  </section>
+
+  <!-- Merch Grid -->
+  <div class="container py-5" id="merch-grid">
+    <div class="row g-4">
+      <!-- Chicken Socks -->
+      <div class="col-md-6 col-lg-4">
+        <div class="merch-card">
+          <img src="https://f4.bcbits.com/img/0041177986_10.jpg" alt="Cluck Yeah Chicken Socks" class="card-img-top">
+          <div class="card-body">
+            <h3>Cluck Yeah Chicken Socks</h3>
+            <p>Strut your stuff with our exclusive Chicken Socks – the ultimate feather in your foot fashion! These sleek, jet-black socks are crafted from premium Chinese cotton, a buttery-soft blend that's as cozy as a hen house hug and tough enough to handle your wildest stage dives. One size fits all, worn by Lance on stage for unbeatable grip and vibes. Limited stock—ships within 5 days.</p>
+            <span class="price-tag">$15</span>
+            <a href="https://lancewoolie.bandcamp.com/merch/chicken-socks-cluck-yeah-step-into-the-flock" class="btn btn-buy mt-3" target="_blank">Buy Now</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Uber Single -->
+      <div class="col-md-6 col-lg-4">
+        <div class="merch-card">
+          <img src="https://f4.bcbits.com/img/a2855470268_10.jpg" alt="Uber Single Cover" class="card-img-top">
+          <div class="card-body">
+            <h3>Uber (Single)</h3>
+            <p>A danceable neotraditional tune evoking lost love, featuring Brent Mason on electric guitar and Scotty Sanders on slide. Lance's raw vocals shine—no auto-tune, pure bayou heart. Unlimited streaming or high-quality download in MP3, FLAC (24-bit/88.2kHz available).</p>
+            <span class="price-tag">$1.29</span>
+            <a href="https://lancewoolie.bandcamp.com/track/uber" class="btn btn-buy mt-3" target="_blank">Buy Now</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Too Drunk Single -->
+      <div class="col-md-6 col-lg-4">
+        <div class="merch-card">
+          <img src="https://lancewoolie.bandcamp.com/img/0041177986_10.jpg" alt="Too Drunk Single Cover" class="card-img-top">
+          <div class="card-body">
+            <h3>Too Drunk (Single)</h3>
+            <p>Lance's debut release co-created with Legendary Guitarist Brent Mason. A remarkable piece of music that captures talent and creativity, perfect for fans of raw country grit. Unlimited streaming or download in MP3, FLAC, and more.</p>
+            <span class="price-tag">$1.29</span>
+            <a href="https://lancewoolie.bandcamp.com/track/too-drunk-ft-brent-mason" class="btn btn-buy mt-3" target="_blank">Buy Now</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Country Paradise Album -->
+      <div class="col-md-6 col-lg-4">
+        <div class="merch-card">
+          <img src="img/COUNTRY-PARADISE-scaled.jpg" alt="Country Paradise Album Cover" class="card-img-top">
+          <div class="card-body">
+            <h3>Country Paradise Album (2021)</h3>
+            <p>The debut album by Hogleg band with frontman Lance Woolie—a labor of love weaving life's scars and triumphs into raw, reflective country anthems. Full tracklist available; CD or digital download with high-quality audio.</p>
+            <span class="price-tag">$10</span>
+            <a href="https://lancewoolie.bandcamp.com/album/country-paradise" class="btn btn-buy mt-3" target="_blank">Buy Now</a>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="row justify-content-center">
-      <div class="col-lg-8">
-        <!-- Uber Track Embed -->
-        <div class="card mb-4">
-          <div class="card-body text-center">
-            <h2 class="mb-3">Uber (Single)</h2>
-            <p class="mb-4">Grab the danceable neotraditional hit featuring Brent Mason—lost love with a bayou twist.</p>
-            <iframe class="bandcamp-embed" scrolling="no" frameborder="no" allowtransparency="true" src="https://bandcamp.com/EmbeddedPlayer/track=2835278805/size=large/bgcol=ffffff/linkcol=333333/tracklist=false/artwork=small/transparent=true/"></iframe>
-          </div>
-        </div>
-
-        <!-- Too Drunk Track Embed -->
-        <div class="card mb-4">
-          <div class="card-body text-center">
-            <h2 class="mb-3">Too Drunk (Single)</h2>
-            <p class="mb-4">The debut release co-created with Legendary Guitarist Brent Mason—raw, captivating country grit.</p>
-            <iframe class="bandcamp-embed" scrolling="no" frameborder="no" allowtransparency="true" src="https://bandcamp.com/EmbeddedPlayer/track=4002473990/size=large/bgcol=ffffff/linkcol=333333/tracklist=false/artwork=small/transparent=true/"></iframe>
-          </div>
-        </div>
-
-        <!-- Country Paradise Album Embed (Updated) -->
-        <div class="card mb-4">
-          <div class="card-body text-center">
-            <h2 class="mb-3">Country Paradise Album (2021)</h2>
-            <p class="mb-4">The debut album by Hogleg band with frontman Lance Woolie—a labor of love weaving life's scars into midnight confessions. Grab the CD or digital download to own the raw twang.</p>
-            <iframe class="bandcamp-embed" scrolling="no" frameborder="no" allowtransparency="true" src="https://bandcamp.com/EmbeddedPlayer/album=794133480/size=large/bgcol=ffffff/linkcol=333333/tracklist=false/artwork=small/transparent=true/"></iframe>
-          </div>
-        </div>
-
-        <!-- Chicken Socks Merch Embed -->
-        <div class="card">
-          <div class="card-body text-center">
-            <h2 class="mb-3">Cluck Yeah Chicken Socks</h2>
-            <p class="mb-4">Step into the flock with these limited-edition socks—perfect for bayou stomps, stage struts, or everyday grit. Cluck yeah, they're fan-favorite fun with a Southern twist.</p>
-            <iframe class="bandcamp-embed" scrolling="no" frameborder="no" allowtransparency="true" src="https://bandcamp.com/EmbeddedPlayer/merch=1523437558&size=large&bgcol=ffffff&linkcol=0687f5&transparent=true&seamless=true"></iframe>
-          </div>
-        </div>
-      </div>
+    <div class="text-center mt-5">
+      <p class="lead">Can't find what you're looking for? <a href="contact.html" class="text-gold">Hit us up</a> for custom requests—bayou style.</p>
     </div>
   </div>
 
