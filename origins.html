@@ -18,7 +18,6 @@
     body {
       background-color: #1e3a8a; /* Dark royal blue - matches events */
       color: #E0E0E0; /* Light grey text */
-      padding-bottom: 60px; /* Space for fixed footer */
     }
     .card {
       background-color: #1e3a8a; /* Dark bg like events cards */
@@ -33,9 +32,6 @@
     }
     .text-dark-blue {
       color: #001f3f !important; /* Consistent accent */
-    }
-    .tight-footer {
-      z-index: 1001; /* Lock above content */
     }
   </style>
 </head>
@@ -95,13 +91,7 @@
     </div>
   </div>
 
-  <!-- Tight Footer -->
-  <footer class="tight-footer">
-    <div class="container d-flex justify-content-between align-items-center">
-      <a href="contact.html" class="text-light">Contact</a>
-      <div class="cowboy-hat-icon" id="cowboy-hat">🤠</div>
-    </div>
-  </footer>
+  <div id="footer-placeholder"></div> <!-- Dynamic Footer Insert Here - Fixed Floating -->
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
