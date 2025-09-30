@@ -53,18 +53,27 @@
 <!-- Firebase SDK -->
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-  import { getFirestore, collection, addDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+  import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
-  // Your config from Step 2
+  // Your config
   const firebaseConfig = {
-    apiKey: "AIza...", // Paste your full config here
-    authDomain: "...",
-    projectId: "lance-wool...",
-    // ... rest
+    apiKey: "AIzaSyAJQMdogiDwB0oLf2I_Jp-6NSLTDcXvVcQ",
+    authDomain: "lance-woolie-webfarm.firebaseapp.com",
+    projectId: "lance-woolie-webfarm",
+    storageBucket: "lance-woolie-webfarm.firebasestorage.app",
+    messagingSenderId: "278461194969",
+    appId: "1:278461194969:web:a2a03c9d27ccbb670814c8",
+    measurementId: "G-D734JL7BFR"
   };
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
+
+  // Expose to global scope for inline scripts
+  window.db = db;
+  window.addDoc = addDoc;
+  window.collection = collection;
+  window.serverTimestamp = serverTimestamp;
 </script>
 </head>
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://cdn.jsdelivr.net https://www.youtube.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https: blob:; frame-src 'self' https://www.youtube.com; font-src 'self' https://fonts.gstatic.com; object-src 'none'">
@@ -139,7 +148,7 @@
           <div class="card-body">
             <h3 class="card-title text-center mb-4">Sign Up for Exclusive Events & Pre-Releases</h3>
             <p class="text-center mb-3">Get first dibs on swamp-side shows, early track drops, and bayou insider vibes. Your info stays locked in the vault—privacy first.</p>
-            <form action="https://formspree.io/f/xldpjrkq" method="POST" class="row g-3 justify-content-center">
+            <form id="newsletter-form" class="row g-3 justify-content-center">
               <div class="col-md-6">
                 <label for="signup-email" class="form-label">Email</label>
                 <input type="email" class="form-control" id="signup-email" name="email" placeholder="your@bayou.com" required>
@@ -148,7 +157,7 @@
                 <button type="submit" class="btn btn-gold w-100">Do it. Sign Up</button>
               </div>
             </form>
-            <p class="text-center small mt-2 text-muted">Powered by Formspree—secure, GDPR-compliant. No spam, just twang.</p>
+            <p class="text-center small mt-2 text-muted">Powered by Firebase—secure, GDPR-compliant. No spam, just twang.</p>
           </div>
         </div>
 
@@ -174,23 +183,61 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
-  <script type="module">
-  // Submit Form to Firestore
-  const form = document.getElementById('contact-form');
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const message = document.getElementById('message').value;
-    try {
-      await addDoc(collection(db, 'contacts'), {
-        name, email, message, timestamp: new Date()
+  <script>
+  // Submit Forms to Firestore (General & Newsletter)
+  document.addEventListener('DOMContentLoaded', () => {
+    // General Inquiries
+    const contactForm = document.getElementById('contact-form');
+    if (contactForm && window.db) {
+      contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const message = document.getElementById('message').value.trim();
+        if (!name || !email || !message || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          alert('Whoa, partner—fill it right (name, valid email, message).');
+          return;
+        }
+        try {
+          await window.addDoc(window.collection(window.db, 'contacts'), {
+            name,
+            email,
+            message,
+            type: 'general',
+            timestamp: window.serverTimestamp()
+          });
+          alert('Message sent—bayou reply incoming.');
+          contactForm.reset();
+        } catch (error) {
+          alert('Send failed—try again or email directly.');
+          console.error(error);
+        }
       });
-      alert('Message sent—bayou reply incoming.');
-      form.reset();
-    } catch (error) {
-      alert('Send failed—try again or email directly.');
-      console.error(error);
+    }
+
+    // Newsletter Signup
+    const newsletterForm = document.getElementById('newsletter-form');
+    if (newsletterForm && window.db) {
+      newsletterForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('signup-email').value.trim();
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          alert('Valid email required for signup.');
+          return;
+        }
+        try {
+          await window.addDoc(window.collection(window.db, 'contacts'), {
+            email,
+            type: 'newsletter',
+            timestamp: window.serverTimestamp()
+          });
+          alert('Signed up—exclusive twang incoming!');
+          newsletterForm.reset();
+        } catch (error) {
+          alert('Signup snag—try again.');
+          console.error(error);
+        }
+      });
     }
   });
 </script>
