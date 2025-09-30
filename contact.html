@@ -13,6 +13,7 @@
     body {
       background-color: #1e3a8a; /* Dark royal blue */
       color: #E0E0E0; /* Light grey text */
+      padding-bottom: 60px; /* Space for fixed footer - match header height */
     }
     .card {
       background-color: #1e3a8a;
@@ -48,6 +49,10 @@
     }
     .text-muted {
       color: #A0A0A0 !important; /* Lighter muted for dark theme */
+    }
+    /* Footer Lock-In Tweak */
+    .tight-footer {
+      z-index: 1001 !important; /* Above nav if needed */
     }
   </style>
 <!-- Firebase SDK -->
