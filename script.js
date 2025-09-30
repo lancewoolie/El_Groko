@@ -71,7 +71,7 @@ function generateNav() {
   }
 }
 
-// New: Reusable Footer Generator (Dynamic Insert)
+// Reusable Footer Generator (Dynamic Insert - Fixed Floating)
 function generateFooter() {
   const footerHTML = `
     <footer class="tight-footer">
@@ -85,6 +85,20 @@ function generateFooter() {
   const placeholder = document.getElementById('footer-placeholder');
   if (placeholder) {
     placeholder.innerHTML = footerHTML;
+    // Re-init cowboy hat after insert
+    const cowboyHat = document.getElementById('cowboy-hat');
+    if (cowboyHat) {
+      cowboyHat.textContent = '🤠';
+      const surprises = [
+        () => { cowboyHat.textContent = '🪕'; setTimeout(() => cowboyHat.textContent = '🤠', 1000); },
+        () => { cowboyHat.style.color = '#FFD700'; setTimeout(() => cowboyHat.style.color = 'white', 1000); },
+        () => { alert('Twang! "Do it." – Lance'); },
+        () => { cowboyHat.style.transform = 'rotate(360deg)'; setTimeout(() => cowboyHat.style.transform = 'rotate(0deg)', 500); },
+        () => { cowboyHat.textContent = '🌵'; setTimeout(() => cowboyHat.textContent = '🤠', 1000); },
+        () => { window.scrollTo({ top: 0, behavior: 'smooth' }); cowboyHat.textContent = '⬆️'; setTimeout(() => cowboyHat.textContent = '🤠', 1000); }
+      ];
+      cowboyHat.addEventListener('click', () => surprises[Math.floor(Math.random() * surprises.length)]());
+    }
   } else {
     console.warn('Footer placeholder not found—add <div id="footer-placeholder"></div> before </body>');
   }
@@ -105,21 +119,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
-
-  // Cowboy Hat Surprises
-  const cowboyHat = document.getElementById('cowboy-hat');
-  if (cowboyHat) {
-    cowboyHat.textContent = '🤠';
-    const surprises = [
-      () => { cowboyHat.textContent = '🪕'; setTimeout(() => cowboyHat.textContent = '🤠', 1000); },
-      () => { cowboyHat.style.color = '#FFD700'; setTimeout(() => cowboyHat.style.color = 'white', 1000); },
-      () => { alert('Twang! "Do it." – Lance'); },
-      () => { cowboyHat.style.transform = 'rotate(360deg)'; setTimeout(() => cowboyHat.style.transform = 'rotate(0deg)', 500); },
-      () => { cowboyHat.textContent = '🌵'; setTimeout(() => cowboyHat.textContent = '🤠', 1000); },
-      () => { window.scrollTo({ top: 0, behavior: 'smooth' }); cowboyHat.textContent = '⬆️'; setTimeout(() => cowboyHat.textContent = '🤠', 1000); }
-    ];
-    cowboyHat.addEventListener('click', () => surprises[Math.floor(Math.random() * surprises.length)]());
-  }
 
   // Contact Form Handler (Firebase - If on contact page)
   const form = document.getElementById('contact-form');
