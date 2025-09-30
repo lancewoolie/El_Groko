@@ -1,4 +1,4 @@
-// Reusable Nav Generator (Edit Here for All Pages)
+// Reusable Nav Generator (Unchanged)
 function generateNav() {
   let navHTML = `
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
@@ -42,43 +42,9 @@ function generateNav() {
       </div>
     </nav>
   `;
-  // Contact Form to Firestore
-const form = document.getElementById('contact-form');
-if (form && window.db) {
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    // Grab & validate
-    const name = document.getElementById('name').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const message = document.getElementById('message').value.trim();
-    
-    if (!name || !email || !message || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      alert('Whoa, partner—fill it right (name, valid email, message).');
-      return;
-    }
-    
-    try {
-      await addDoc(collection(window.db, 'contacts'), {
-        name: name,
-        email: email,
-        message: message,
-        timestamp: serverTimestamp()
-      });
-      alert('Twang! Message bayou-bound—thanks for the love.');
-      form.reset(); // Clear fields
-    } catch (error) {
-      console.error('Submit snag:', error);
-      alert('Gator got it—try again or holler direct.');
-    }
-  });
-} else {
-  console.warn('Form or DB not ready—check config.');
-}
 
   // Auto-Highlight Active Page (Enhanced for Dropdowns)
   const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
-  // Find matching li and add 'active' class to it (works for simple and dropdown items)
   const tempDiv = document.createElement('div');
   tempDiv.innerHTML = navHTML;
   const navItems = tempDiv.querySelectorAll('.nav-item a[href]');
@@ -94,7 +60,6 @@ if (form && window.db) {
   const placeholder = document.getElementById('nav-placeholder');
   if (placeholder) {
     placeholder.innerHTML = navHTML;
-    // Re-init Bootstrap toggler for dynamic insert (dispose any existing to avoid conflicts)
     const myCollapse = document.getElementById('navbarNav');
     if (myCollapse) {
       const existingCollapse = bootstrap.Collapse.getInstance(myCollapse);
@@ -102,15 +67,35 @@ if (form && window.db) {
       new bootstrap.Collapse(myCollapse, { toggle: false });
     }
   } else {
-    console.warn('Nav placeholder not found—check HTML for <div id="nav-placeholder"></div>');
+    console.warn('Nav placeholder not found');
   }
 }
 
-// Load Nav on DOM Ready
-document.addEventListener('DOMContentLoaded', generateNav);
+// New: Reusable Footer Generator (Dynamic Insert)
+function generateFooter() {
+  const footerHTML = `
+    <footer class="tight-footer">
+      <div class="container d-flex justify-content-between align-items-center">
+        <a href="contact.html" class="text-light">Contact</a>
+        <div class="cowboy-hat-icon" id="cowboy-hat">🤠</div>
+      </div>
+    </footer>
+  `;
 
-// Smooth Scroll for Internal Links
+  const placeholder = document.getElementById('footer-placeholder');
+  if (placeholder) {
+    placeholder.innerHTML = footerHTML;
+  } else {
+    console.warn('Footer placeholder not found—add <div id="footer-placeholder"></div> before </body>');
+  }
+}
+
+// Load Nav & Footer on DOM Ready
 document.addEventListener('DOMContentLoaded', () => {
+  generateNav();
+  generateFooter();
+
+  // Smooth Scroll for Internal Links
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
       e.preventDefault();
@@ -120,28 +105,67 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+
+  // Cowboy Hat Surprises
+  const cowboyHat = document.getElementById('cowboy-hat');
+  if (cowboyHat) {
+    cowboyHat.textContent = '🤠';
+    const surprises = [
+      () => { cowboyHat.textContent = '🪕'; setTimeout(() => cowboyHat.textContent = '🤠', 1000); },
+      () => { cowboyHat.style.color = '#FFD700'; setTimeout(() => cowboyHat.style.color = 'white', 1000); },
+      () => { alert('Twang! "Do it." – Lance'); },
+      () => { cowboyHat.style.transform = 'rotate(360deg)'; setTimeout(() => cowboyHat.style.transform = 'rotate(0deg)', 500); },
+      () => { cowboyHat.textContent = '🌵'; setTimeout(() => cowboyHat.textContent = '🤠', 1000); },
+      () => { window.scrollTo({ top: 0, behavior: 'smooth' }); cowboyHat.textContent = '⬆️'; setTimeout(() => cowboyHat.textContent = '🤠', 1000); }
+    ];
+    cowboyHat.addEventListener('click', () => surprises[Math.floor(Math.random() * surprises.length)]());
+  }
+
+  // Contact Form Handler (Firebase - If on contact page)
+  const form = document.getElementById('contact-form');
+  if (form && window.db) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const message = document.getElementById('message').value.trim();
+      if (!name || !email || !message || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        alert('Whoa, partner—fill it right.');
+        return;
+      }
+      try {
+        await window.addDoc(window.collection(window.db, 'contacts'), {
+          name, email, message, type: 'general', timestamp: window.serverTimestamp()
+        });
+        alert('Message sent—bayou reply incoming.');
+        form.reset();
+      } catch (error) {
+        alert('Send failed—try again.');
+        console.error(error);
+      }
+    });
+  }
+
+  // Newsletter Form (If on contact page)
+  const newsletterForm = document.getElementById('newsletter-form');
+  if (newsletterForm && window.db) {
+    newsletterForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('signup-email').value.trim();
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        alert('Valid email required.');
+        return;
+      }
+      try {
+        await window.addDoc(window.collection(window.db, 'contacts'), {
+          email, type: 'newsletter', timestamp: window.serverTimestamp()
+        });
+        alert('Signed up—exclusive twang incoming!');
+        newsletterForm.reset();
+      } catch (error) {
+        alert('Signup snag—try again.');
+        console.error(error);
+      }
+    });
+  }
 });
-
-// Existing Cowboy Hat & Form Code (Enhanced with One More Surprise)
-const cowboyHat = document.getElementById('cowboy-hat');
-if (cowboyHat) {
-  cowboyHat.textContent = '🤠'; // Fix initial icon
-  const surprises = [
-    () => { cowboyHat.textContent = '🪕'; setTimeout(() => cowboyHat.textContent = '🤠', 1000); },
-    () => { cowboyHat.style.color = '#FFD700'; setTimeout(() => cowboyHat.style.color = 'white', 1000); },
-    () => { alert('Twang! "Do it." – Lance'); },
-    () => { cowboyHat.style.transform = 'rotate(360deg)'; setTimeout(() => cowboyHat.style.transform = 'rotate(0deg)', 500); },
-    () => { cowboyHat.textContent = '🌵'; setTimeout(() => cowboyHat.textContent = '🤠', 1000); },
-    () => { window.scrollTo({ top: 0, behavior: 'smooth' }); cowboyHat.textContent = '⬆️'; setTimeout(() => cowboyHat.textContent = '🤠', 1000); } // New: Scroll to top
-  ];
-  cowboyHat.addEventListener('click', () => surprises[Math.floor(Math.random() * surprises.length)]());
-}
-
-const form = document.getElementById('contact-form');
-if (form) {
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    alert('Message sent—bayou reply incoming.');
-    // Future: Add real submission logic here (e.g., EmailJS or Formspree)
-  });
-}
