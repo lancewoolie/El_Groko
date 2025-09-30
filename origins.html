@@ -9,40 +9,88 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" type="image/png" href="img/LanceWoolieHeadonly.png">
   <meta name="description" content="Origins - Lance Woolie - Do it. From bayou struggles to country gold.">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://cdn.jsdelivr.net https://www.youtube.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https: blob:; frame-src 'self' https://www.youtube.com; font-src 'self' https://fonts.gstatic.com; object-src 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://cdn.jsdelivr.net https://www.youtube.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https: blob:; frame-src 'self' https://www.youtube.com; font-src 'self' https://fonts.gstatic.com; object-src 'none'">
   <meta http-equiv="X-Frame-Options" content="DENY">
-<meta http-equiv="X-Content-Type-Options" content="nosniff">
-<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
-<meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
+  <style>
+    body {
+      background-color: #1e3a8a; /* Dark royal blue - matches events */
+      color: #E0E0E0; /* Light grey text */
+      padding-bottom: 60px; /* Space for fixed footer */
+    }
+    .card {
+      background-color: #1e3a8a; /* Dark bg like events cards */
+      color: #E0E0E0;
+      border: 1px solid #0074D9; /* Blue border accent */
+    }
+    h1, h2 {
+      color: #001f3f !important; /* text-dark-blue for headers */
+    }
+    p {
+      color: #E0E0E0; /* Ensure light text on dark bg */
+    }
+    .text-dark-blue {
+      color: #001f3f !important; /* Consistent accent */
+    }
+    .tight-footer {
+      z-index: 1001; /* Lock above content */
+    }
+  </style>
 </head>
 <body>
   <div id="nav-placeholder"></div> <!-- Dynamic Nav Insert Here -->
 
-  <div class="container py-5" style="margin-top: 80px; padding-bottom: 100px;">
+  <div class="container py-5" style="margin-top: 80px;">
     <h1 class="text-center mb-5 text-dark-blue">Origins</h1>
     <div class="row justify-content-center mb-5">
       <div class="col-lg-8">
-        <img src="img/WHITETRASH3.jpg" alt="Lance Woolie Origins" class="img-fluid rounded mb-4" style="width: 100%; height: auto; max-height: 400px; object-fit: cover;">
+        <img src="img/WHITETRASH3.jpg" alt="Lance Woolie Origins" class="img-fluid rounded mb-4 card" style="width: 100%; height: auto; max-height: 400px; object-fit: cover;">
       </div>
     </div>
     <div class="row justify-content-center">
       <div class="col-lg-8">
-        <p>Born in the humid heart of Baton Rouge, Louisiana, on July 3, 1979, Lance Woolie forged his path through shadows of loss and grit. Familial storms and personal demons defined his early years, but they also lit the fire that drives his raw, soul-stirring country sound—a testament to redemption amid the bayou's unyielding pull.</p>
+        <div class="card mb-4">
+          <div class="card-body">
+            <p>Born in the humid heart of Baton Rouge, Louisiana, on July 3, 1979, Lance Woolie forged his path through shadows of loss and grit. Familial storms and personal demons defined his early years, but they also lit the fire that drives his raw, soul-stirring country sound—a testament to redemption amid the bayou's unyielding pull.</p>
+          </div>
+        </div>
 
-        <h2>Early Life and Struggles</h2>
-        <p>Lance's childhood unraveled amid turmoil, culminating in the tragic loss of his brother, Leigh Michael, in 1995. Addiction and depression followed, casting long shadows over a youth marked by school changes and a pivotal stint in juvenile detention. Yet it was there, in the Angola Travelin’ band, that a chance performance ignited his lifelong passion for music—a spark that cut through the darkness.</p>
+        <div class="card mb-4">
+          <div class="card-body">
+            <h2>Early Life and Struggles</h2>
+            <p>Lance's childhood unraveled amid turmoil, culminating in the tragic loss of his brother, Leigh Michael, in 1995. Addiction and depression followed, casting long shadows over a youth marked by school changes and a pivotal stint in juvenile detention. Yet it was there, in the Angola Travelin’ band, that a chance performance ignited his lifelong passion for music—a spark that cut through the darkness.</p>
+          </div>
+        </div>
 
-        <h2>Musical Beginnings</h2>
-        <p>Behind bars, music became more than escape; it was salvation. Leading worship sessions honed his voice, while work in the canine unit built quiet resolve and spiritual depth. Released, Lance channeled that fire into higher education at Southern University and Louisiana State University, studying Information Systems and Decision Sciences—tools for a world he was reclaiming one note at a time.</p>
+        <div class="card mb-4">
+          <div class="card-body">
+            <h2>Musical Beginnings</h2>
+            <p>Behind bars, music became more than escape; it was salvation. Leading worship sessions honed his voice, while work in the canine unit built quiet resolve and spiritual depth. Released, Lance channeled that fire into higher education at Southern University and Louisiana State University, studying Information Systems and Decision Sciences—tools for a world he was reclaiming one note at a time.</p>
+          </div>
+        </div>
 
-        <h2>Diverse Career</h2>
-        <p>From hospital tech admin to the vibrant chaos of South America, Lance's path twisted through cultures and sounds. Years in Colombia immersed him in local rhythms, yielding his Christian crossover record <em>“Let It Ride.”</em> Collaborations across genres sharpened his craft, blending global beats with Louisiana roots into something uniquely his.</p>
+        <div class="card mb-4">
+          <div class="card-body">
+            <h2>Diverse Career</h2>
+            <p>From hospital tech admin to the vibrant chaos of South America, Lance's path twisted through cultures and sounds. Years in Colombia immersed him in local rhythms, yielding his Christian crossover record <em>“Let It Ride.”</em> Collaborations across genres sharpened his craft, blending global beats with Louisiana roots into something uniquely his.</p>
+          </div>
+        </div>
 
-        <h2>Recent Years and Personal Life</h2>
-        <p>Turning homeward, Lance poured his evolution into country, co-producing the album <em>Country Paradise</em> with local talents. A labor of love, it weaves life's scars and triumphs into songs that resonate like a midnight confession—raw, reflective, and unapologetically real.</p>
+        <div class="card mb-4">
+          <div class="card-body">
+            <h2>Recent Years and Personal Life</h2>
+            <p>Turning homeward, Lance poured his evolution into country, co-producing the album <em>Country Paradise</em> with local talents. A labor of love, it weaves life's scars and triumphs into songs that resonate like a midnight confession—raw, reflective, and unapologetically real.</p>
+          </div>
+        </div>
 
-        <h2>Current Endeavors</h2>
-        <p>Today, Lance Woolie stands as more than a musician; he's a storyteller whose voice echoes resilience. His latest tracks draw deep from those hard-won experiences, fueling an authentic twang that bridges bayou lore with modern heartaches. In every chord, the swamp sings back.</p>
+        <div class="card">
+          <div class="card-body">
+            <h2>Current Endeavors</h2>
+            <p>Today, Lance Woolie stands as more than a musician; he's a storyteller whose voice echoes resilience. His latest tracks draw deep from those hard-won experiences, fueling an authentic twang that bridges bayou lore with modern heartaches. In every chord, the swamp sings back.</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
