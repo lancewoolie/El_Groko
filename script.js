@@ -1,4 +1,5 @@
-// Reusable Nav Generator (Merch Link Now to Internal Merch Page)
+
+// Reusable Nav Generator (Unchanged)
 function generateNav() {
   let navHTML = `
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
@@ -35,7 +36,7 @@ function generateNav() {
             </li>
             <li class="nav-item"><a class="nav-link" href="events.html">Events</a></li>
             <li class="nav-item"><a class="nav-link" href="origins.html">Origins</a></li>
-            <li class="nav-item"><a class="nav-link" href="merch.html">Merch</a></li>
+            <li class="nav-item"><a class="nav-link" href="https://lancewoolie.bandcamp.com/" target="_blank">Merch</a></li>
             <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
           </ul>
         </div>
