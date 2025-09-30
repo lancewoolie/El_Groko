@@ -8,52 +8,85 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" type="image/png" href="img/LanceWoolieHeadonly.png">
-  <meta name="description" content="Lance Woolie Merch - Do it. Tees, posters, vinyl from the bayou.">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://cdn.jsdelivr.net https://www.youtube.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https: blob:; frame-src 'self' https://www.youtube.com; font-src 'self' https://fonts.gstatic.com; object-src 'none'">
+  <meta name="description" content="Merch - Lance Woolie - Do it. Grab exclusive bayou gear, albums, and fan favorites.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://cdn.jsdelivr.net https://www.youtube.com https://bandcamp.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https: blob:; frame-src 'self' https://www.youtube.com https://bandcamp.com; font-src 'self' https://fonts.gstatic.com; object-src 'none'">
   <meta http-equiv="X-Frame-Options" content="DENY">
-<meta http-equiv="X-Content-Type-Options" content="nosniff">
-<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
-<meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
+  <style>
+    body {
+      background-color: #1e3a8a; /* Dark royal blue - matches events */
+      color: #E0E0E0; /* Light grey text */
+      padding-bottom: 60px; /* Space for fixed footer */
+    }
+    .card {
+      background-color: #1e3a8a; /* Dark bg like events cards */
+      color: #E0E0E0;
+      border: 1px solid #0074D9; /* Blue border accent */
+    }
+    h1, h2 {
+      color: #001f3f !important; /* text-dark-blue for headers */
+    }
+    p {
+      color: #E0E0E0; /* Ensure light text on dark bg */
+    }
+    .text-dark-blue {
+      color: #001f3f !important; /* Consistent accent */
+    }
+    .bandcamp-embed {
+      width: 100%;
+      height: 500px;
+      border: none;
+      border-radius: 8px;
+    }
+    .tight-footer {
+      background: #001f3f !important;
+      opacity: 1 !important;
+      position: fixed !important;
+      bottom: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      width: 100% !important;
+      z-index: 1001 !important;
+      border-top: 1px solid #0074D9;
+    }
+  </style>
 </head>
 <body>
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <div class="container">
-      <a class="navbar-brand" href="index.html">
-        <img src="img/BEARDsmall.png" alt="Lance Woolie" style="height: 20px;"> Lance Woolie
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-       <ul class="navbar-nav ms-auto">
-  <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-  <li class="nav-item"><a class="nav-link" href="music.html">Music</a></li>
-  <li class="nav-item"><a class="nav-link" href="events.html">Events</a></li>
-  <li class="nav-item"><a class="nav-link" href="origins.html">Origins</a></li>
-  <li class="nav-item"><a class="nav-link active" href="merch.html">Merch</a></li>
-  <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-</ul>
+  <div id="nav-placeholder"></div> <!-- Dynamic Nav Insert Here -->
+
+  <div class="container py-5" style="margin-top: 80px;">
+    <h1 class="text-center mb-5 text-dark-blue">Merch</h1>
+    <div class="row justify-content-center mb-5">
+      <div class="col-lg-8">
+        <p class="lead text-center">Gear up with exclusive Lance Woolie merch—bayou-inspired threads, albums, and fan favorites that carry the swamp's soul. From stage-ready socks to full catalogs, snag yours and join the twang.</p>
       </div>
     </div>
-  </nav>
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <!-- Country Paradise Album Embed -->
+        <div class="card mb-5">
+          <div class="card-body text-center">
+            <h2 class="mb-3">Country Paradise Album (2021)</h2>
+            <p class="mb-4">The debut album by Hogleg band with frontman Lance Woolie—a labor of love weaving life's scars into midnight confessions. Grab the CD or digital download to own the raw twang.</p>
+            <iframe class="bandcamp-embed" scrolling="no" frameborder="no" allowtransparency="true" src="https://bandcamp.com/EmbeddedPlayer/album=794133480/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/transparent=true/"></iframe>
+          </div>
+        </div>
 
-  <!-- Merch Promo with External Link (No Frames) -->
-  <section class="merch-promo py-5" style="margin-top: 60px;">
-    <div class="container text-center">
-      <h1 class="display-4 mb-4 text-dark-blue">Merch</h1>
-      <p class="lead mb-4">Grab Lance Woolie gear—tees stained with bayou grit, posters of neon gigs, vinyl that whispers lost loves. Do it.</p>
-      <a href="https://lancewoolie.bandcamp.com/" class="btn btn-gold btn-lg" target="_blank" rel="noopener">Shop on Bandcamp (Opens in New Tab)</a>
+        <!-- Chicken Socks Merch Embed -->
+        <div class="card">
+          <div class="card-body text-center">
+            <h2 class="mb-3">Cluck Yeah Chicken Socks</h2>
+            <p class="mb-4">Step into the flock with these limited-edition socks—perfect for bayou stomps, stage struts, or everyday grit. Cluck yeah, they're fan-favorite fun with a Southern twist.</p>
+            <iframe class="bandcamp-embed" scrolling="no" frameborder="no" allowtransparency="true" src="https://bandcamp.com/EmbeddedPlayer/merch=1523437558&size=large&bgcol=ffffff&linkcol=0687f5&transparent=true&seamless=true"></iframe>
+          </div>
+        </div>
+      </div>
     </div>
-  </section>
+  </div>
 
-  <!-- Tight Footer -->
-  <footer class="tight-footer">
-    <div class="container d-flex justify-content-between align-items-center">
-      <a href="contact.html" class="text-light">Contact</a>
-      <div class="cowboy-hat-icon" id="cowboy-hat">🤠</div>
-    </div>
-  </footer>
+  <div id="footer-placeholder"></div> <!-- Dynamic Footer Insert Here - Fixed Floating -->
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
