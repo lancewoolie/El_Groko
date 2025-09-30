@@ -61,6 +61,12 @@ body {
   color: #FFD700;
 }
 
+/* Active Nav Highlight */
+.navbar-nav .nav-item.active .nav-link {
+  color: #FFD700 !important;
+  border-bottom: 2px solid #FFD700;
+}
+
 .nav-link::after {
   content: attr(data-icon);
   position: absolute;
@@ -76,14 +82,15 @@ body {
   opacity: 1;
 }
 
-/* Bayou Hero */
+/* Bayou Hero (Video-Compatible) */
 .hero {
   height: 100vh;
-  background-image: url('img/ai-bayou-swamp.jpg');
-  background-size: cover;
+  /* Removed bg-image to prioritize video */
+  background: none;
   background-position: center;
   background-attachment: fixed;
-  margin-top: 60px;
+  margin-top: 60px; /* Offset for fixed header */
+  position: relative;
 }
 
 .hero-overlay {
@@ -92,7 +99,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 31, 63, 0.6);
+  background: rgba(0, 31, 63, 0.7); /* Darker for video readability */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -184,6 +191,7 @@ body {
 @media (max-width: 768px) {
   .hero {
     background-attachment: scroll;
+    margin-top: 50px; /* Adjust for mobile header */
   }
 
   .nav-list {
@@ -204,5 +212,32 @@ body {
     position: static;
     right: auto;
     flex-direction: column;
+    width: 100%;
   }
+
+  .horizontal-dropdown .dropdown-img {
+    width: 100px;
+    height: 100px; /* Smaller thumbs on mobile */
+  }
+}
+
+/* Video BG Fix (Inline Styles Moved Here) */
+#bg-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: -1;
+}
+
+body {
+  position: relative;
+  z-index: 1;
+}
+
+.hero, .py-5, .bg-light {
+  position: relative;
+  z-index: 2;
 }
