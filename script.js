@@ -42,6 +42,39 @@ function generateNav() {
       </div>
     </nav>
   `;
+  // Contact Form to Firestore
+const form = document.getElementById('contact-form');
+if (form && window.db) {
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    // Grab & validate
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const message = document.getElementById('message').value.trim();
+    
+    if (!name || !email || !message || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      alert('Whoa, partner—fill it right (name, valid email, message).');
+      return;
+    }
+    
+    try {
+      await addDoc(collection(window.db, 'contacts'), {
+        name: name,
+        email: email,
+        message: message,
+        timestamp: serverTimestamp()
+      });
+      alert('Twang! Message bayou-bound—thanks for the love.');
+      form.reset(); // Clear fields
+    } catch (error) {
+      console.error('Submit snag:', error);
+      alert('Gator got it—try again or holler direct.');
+    }
+  });
+} else {
+  console.warn('Form or DB not ready—check config.');
+}
 
   // Auto-Highlight Active Page (Enhanced for Dropdowns)
   const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
