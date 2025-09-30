@@ -241,3 +241,11 @@ body {
   position: relative;
   z-index: 2;
 }
+/* Fixed Footer Anti-Overlap (Bootstrap-Friendly) */
+body {
+  padding-bottom: 60px; /* Matches header offset; tweak to 70px if icon pushes taller */
+}
+
+.tight-footer {
+  z-index: 1001; /* Tiny bump over header for edge cases */
+}
