@@ -293,6 +293,12 @@
     emailjs.init("CHqNrS_37-ZHjibQR"); // Replace with your public key
   })();
 </script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script type="text/javascript">
+  (function() {
+    emailjs.init("CHqNrS_37-ZHjibQR"); // Your public key
+  })();
+</script>
 <script>
   // Submit Message Form to EmailJS
   document.addEventListener('DOMContentLoaded', () => {
@@ -308,7 +314,7 @@
           return;
         }
         try {
-          emailjs.send('service_n08jdhv', 'service_n08jdhv', { // Replace with your IDs
+          emailjs.send('service_n08jdhv', 'template_of9jflr', { // Service ID + Template ID
             from_name: name,
             from_email: email,
             message: message
