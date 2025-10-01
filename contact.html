@@ -299,6 +299,7 @@
     emailjs.init("CHqNrS_37-ZHjibQR"); // Your public key
   })();
 </script>
+
 <script>
   // Submit Message Form to EmailJS
   document.addEventListener('DOMContentLoaded', () => {
@@ -314,7 +315,7 @@
           return;
         }
         try {
-          emailjs.send('service_n08jdhv', 'template_of9jflr', { // Service ID + Template ID
+          await emailjs.send('service_n08jdhv', 'template_of9jflr', { // Service ID + Template ID
             from_name: name,
             from_email: email,
             message: message
