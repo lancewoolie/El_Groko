@@ -20,360 +20,333 @@
       font-family: 'Georgia', serif;
     }
     
-    .hero, .py-5 {
-      position: relative;
-      z-index: 2;
-    }
-    .hero {
-      min-height: 100vh;
-    }
-    .hero-overlay {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-    }
-    
-    /* Floating Subscribe Image */
-    .floating-subscribe {
-      position: fixed;
-      left: 20px;
-      top: 50%;
-      transform: translateY(-50%) translateX(-66.67%);
-      transition: transform 0.3s ease;
-      z-index: 1000;
-      display: block;
-    }
-    .floating-subscribe:hover {
-      transform: translateY(-50%) translateX(0);
-    }
-    .floating-subscribe img {
-      display: block;
-      max-width: none;
-      height: auto;
-    }
-    
-    /* Interactive Dots with Custom Colors - Increased Size - Bullet Hole Image */
-    .interactive-dot {
-      position: absolute;
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background-image: url('img/BULLETHOLE.gif');
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center;
-      opacity: 0.5;
-      transition: opacity 0.3s ease;
-      cursor: pointer;
-      z-index: 3;
-      text-decoration: none;
-    }
-    .interactive-dot:hover {
-      opacity: 1;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    }
-    .interactive-dot::after {
-      content: attr(data-title);
-      position: absolute;
-      bottom: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0, 0, 0, 0.8);
-      color: #E0E0E0;
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 12px;
-      white-space: nowrap;
-      opacity: 0;
-      transition: opacity 0.3s;
-      pointer-events: none;
-      margin-bottom: 5px;
-    }
-    .interactive-dot:hover::after {
-      opacity: 1;
-    }
-    
-    /* Music Dot - Muted Maroon */
-    .music-dot {
-      background-color: transparent;
-    }
-    
-    /* Merch Dot - Muted Seafoam */
-    .merch-dot {
-      background-color: transparent;
-    }
-    
-    /* Contact Dot - Chocolate */
-    .contact-dot {
-      background-color: transparent;
-    }
-    
-    /* Events Dot - Dark Goldenrod */
-    .events-dot {
-      background-color: transparent;
-    }
-    
-    /* Origins Dot - Charcoal */
-    .origins-dot {
-      background-color: transparent;
-    }
-    
-    /* Music Dot Container for Submenu - Expanded Hover Area */
-    .dot-container, .merch-container {
-      position: absolute;
-      width: 400px; /* Larger hover area to encompass sub-dots */
-      height: 400px; /* Larger hover area to encompass sub-dots */
-      z-index: 3;
-    }
-    .music-container {
-      top: 25%;
-      left: 17%; /* Shifted right one space */
-    }
-    .merch-container {
-      top: 50%;
-      left: 50%;
-    }
-    .main-dot {
-      display: block;
-      position: relative;
-      z-index: 4;
-      width: 80px;
-      height: 80px;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      transition: opacity 0.3s ease;
-    }
-    .main-dot.hidden {
-      opacity: 0;
-    }
-    .sub-dots {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      display: none;
-      pointer-events: none;
-    }
-    .sub-dots.active {
-      display: block;
-      pointer-events: all;
-    }
-    .sub-dot {
-      position: absolute;
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      background-size: cover;
-      background-position: center;
-      opacity: 0.7;
-      transition: opacity 0.3s ease, transform 0.3s ease;
-      cursor: pointer;
-      text-decoration: none;
-      box-shadow: 0 0 5px rgba(0,0,0,0.5);
-    }
-    .sub-dot:hover {
-      transform: scale(1.5);
-      opacity: 1;
-      box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-    }
-    .sub-dot::after {
-      content: attr(data-title);
-      position: absolute;
-      bottom: -30px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0, 0, 0, 0.8);
-      color: #E0E0E0;
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 10px;
-      white-space: nowrap;
-      pointer-events: none;
-    }
-    
-    /* X Shape Positions (45° angles, spaced further for visibility) */
-    .sub-dots .sub-dot:nth-child(1) { /* NE 45° */
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) translate(100px, -100px);
-    }
-    .sub-dots .sub-dot:nth-child(2) { /* NW 135° */
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) translate(-100px, -100px);
-    }
-    .sub-dots .sub-dot:nth-child(3) { /* SW 225° */
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) translate(-100px, 100px);
-    }
-    .sub-dots .sub-dot:nth-child(4) { /* SE 315° */
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) translate(100px, 100px);
-    }
-    
-    /* Footer Float Lock */
-    .tight-footer {
-      background: #001f3f !important;
-      opacity: 1 !important;
-      position: fixed !important;
-      bottom: 0 !important;
-      left: 0 !important;
-      right: 0 !important;
-      width: 100% !important;
-      z-index: 1001 !important;
-      border-top: 1px solid #0074D9;
-    }
-    
-    /* Dark Card Theme for Release */
-    .card {
-      background-color: #1e3a8a;
-      color: #E0E0E0;
-      border: 1px solid #0074D9;
-    }
-    .card-body {
-      color: #E0E0E0;
-    }
-    .btn-success {
-      background-color: #FFD700;
-      border-color: #FFD700;
-      color: #001f3f;
-    }
-    .btn-success:hover {
-      background-color: #e6c200;
-      border-color: #e6c200;
-    }
-    
-    /* Combined Latest Release & Merch Styles - Smaller Scale */
-    .combined-section .latest-card {
-      height: 300px;
-      overflow: hidden;
-    }
-    .combined-section iframe {
-      height: 200px !important;
-    }
-    
-    /* Tour Section Styles */
-    .tour-card {
-      background-color: #1e3a8a;
-      border: 1px solid #0074D9;
-      border-radius: 10px;
-      padding: 2rem;
-      margin-bottom: 1rem;
-    }
-    .tour-date {
-      color: #FFD700;
-      font-weight: bold;
-    }
-    .tour-venue {
-      color: #E0E0E0;
-    }
-    .tour-time {
-      color: #E0E0E0;
-      font-size: 1.1rem;
-    }
-    
-    /* Merch Carousel Styles (Sexy Hover Effects - Matches Merch Page) */
-    .carousel-item .merch-card {
-      background-color: #1e3a8a;
-      border: 2px solid #0074D9;
-      border-radius: 15px;
-      overflow: hidden;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      height: 100%;
-      cursor: pointer;
-    }
-    .carousel-item .merch-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 10px 25px rgba(0, 116, 217, 0.3);
-      border-color: #FFD700;
-    }
-    .carousel-item .merch-card img {
-      width: 100%;
-      height: 150px;
-      object-fit: cover;
-    }
-    .carousel-item .merch-card .card-body {
-      padding: 1rem;
-      text-align: center;
-    }
-    .carousel-item .merch-card h3 {
-      color: #FFD700; /* Gold titles */
-      font-weight: bold;
-      margin-bottom: 0.5rem;
-      font-size: 1rem;
-    }
-    .carousel-item .merch-card p {
-      color: #E0E0E0;
-      font-size: 0.85rem;
-      margin-bottom: 0.5rem;
-    }
-    .carousel-item .btn-buy {
-      background-color: #FFD700;
-      border-color: #FFD700;
-      color: #001f3f;
-      font-weight: bold;
-      padding: 0.5rem 1.5rem;
-      border-radius: 25px;
-      transition: all 0.3s ease;
-      font-size: 0.9rem;
-    }
-    .carousel-item .btn-buy:hover {
-      background-color: #e6c200;
-      border-color: #e6c200;
-      transform: scale(1.05);
-      color: #001f3f;
-    }
-    .price-tag {
-      background: #001f3f;
-      color: #FFD700;
-      padding: 0.25rem 0.75rem;
-      border-radius: 20px;
-      font-weight: bold;
-      display: inline-block;
-      margin-top: 0.25rem;
-      font-size: 0.9rem;
-    }
-    .carousel-control-prev, .carousel-control-next {
-      filter: invert(1); /* White arrows on dark */
-    }
-    .carousel-indicators [data-bs-target] {
-      background-color: #FFD700;
-    }
-    .carousel-inner {
-      background-color: #1e3a8a; /* Dark bg for carousel */
-    }
-  </style>
-  <!-- Firebase SDK v12.2.1 CDN -->
-  <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js';
-    import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js';
-    // import { getAnalytics } from 'https://www.gstatic.com/firebasejs/12.2.1/firebase-analytics.js'; // Uncomment if using analytics
-    
-    // Your config
-    const firebaseConfig = {
-      apiKey: "AIzaSyAJQMdogiDwB0oLf2I_Jp-6NSLTDcXvVcQ",
-      authDomain: "lance-woolie-webfarm.firebaseapp.com",
-      projectId: "lance-woolie-webfarm",
-      storageBucket: "lance-woolie-webfarm.firebasestorage.app",
-      messagingSenderId: "278461194969",
-      appId: "1:278461194969:web:a2a03c9d27ccbb670814c8",
-      measurementId: "G-D734JL7BFR"
-    };
-    
-    // Initialize
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    // const analytics = getAnalytics(app); // Uncomment if using
-    
-    // Expose to global for script.js
-    window.db = db;
-  </script>
-</head>
+.hero, .py-5 {
+  position: relative;
+  z-index: 2;
+}
+.hero {
+  min-height: 100vh;
+}
+.hero-overlay {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* Floating Subscribe Image */
+.floating-subscribe {
+  position: fixed;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%) translateX(-66.67%);
+  transition: transform 0.3s ease;
+  z-index: 1000;
+  display: block;
+}
+.floating-subscribe:hover {
+  transform: translateY(-50%) translateX(0);
+}
+.floating-subscribe img {
+  display: block;
+  max-width: none;
+  height: auto;
+}
+
+/* Interactive Dots with Custom Colors - Increased Size - Bullet Hole Image */
+.interactive-dot {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-image: url('img/BULLETHOLE.gif');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+  cursor: pointer;
+  z-index: 3;
+  text-decoration: none;
+}
+.interactive-dot:hover {
+  opacity: 1;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+.interactive-dot::after {
+  content: attr(data-title);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: #E0E0E0;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  margin-bottom: 5px;
+}
+.interactive-dot:hover::after {
+  opacity: 1;
+}
+
+/* Music Dot - Muted Maroon */
+.music-dot {
+  background-color: transparent;
+}
+
+/* Merch Dot - Muted Seafoam */
+.merch-dot {
+  background-color: transparent;
+}
+
+/* Contact Dot - Chocolate */
+.contact-dot {
+  background-color: transparent;
+}
+
+/* Events Dot - Dark Goldenrod */
+.events-dot {
+  background-color: transparent;
+}
+
+/* Origins Dot - Charcoal */
+.origins-dot {
+  background-color: transparent;
+}
+
+/* Music Dot Container for Submenu - Expanded Hover Area */
+.dot-container, .merch-container {
+  position: absolute;
+  width: 400px; /* Larger hover area to encompass sub-dots */
+  height: 400px; /* Larger hover area to encompass sub-dots */
+  z-index: 3;
+}
+.music-container {
+  top: 25%;
+  left: 17%; /* Shifted right one space */
+}
+.merch-container {
+  top: 50%;
+  left: 50%;
+}
+.main-dot {
+  display: block;
+  position: relative;
+  z-index: 4;
+  width: 80px;
+  height: 80px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s ease;
+}
+.main-dot.hidden {
+  opacity: 0;
+}
+.sub-dots {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+  pointer-events: none;
+}
+.sub-dots.active {
+  display: block;
+  pointer-events: all;
+}
+.sub-dot {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.7;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
+.sub-dot:hover {
+  transform: scale(1.5);
+  opacity: 1;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+.sub-dot::after {
+  content: attr(data-title);
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: #E0E0E0;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* X Shape Positions (45° angles, spaced further for visibility) */
+.sub-dots .sub-dot:nth-child(1) { /* NE 45° */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translate(100px, -100px);
+}
+.sub-dots .sub-dot:nth-child(2) { /* NW 135° */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translate(-100px, -100px);
+}
+.sub-dots .sub-dot:nth-child(3) { /* SW 225° */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translate(-100px, 100px);
+}
+.sub-dots .sub-dot:nth-child(4) { /* SE 315° */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translate(100px, 100px);
+}
+
+/* Footer Float Lock */
+.tight-footer {
+  background: #001f3f !important;
+  opacity: 1 !important;
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  z-index: 1001 !important;
+  border-top: 1px solid #0074D9;
+}
+
+/* Dark Card Theme for Release */
+.card {
+  background-color: #1e3a8a;
+  color: #E0E0E0;
+  border: 1px solid #0074D9;
+}
+.card-body {
+  color: #E0E0E0;
+}
+.btn-success {
+  background-color: #FFD700;
+  border-color: #FFD700;
+  color: #001f3f;
+}
+.btn-success:hover {
+  background-color: #e6c200;
+  border-color: #e6c200;
+}
+
+/* Combined Latest Release & Merch Styles - Smaller Scale */
+.combined-section .latest-card {
+  height: 300px;
+  overflow: hidden;
+}
+.combined-section iframe {
+  height: 200px !important;
+}
+
+/* Tour Section Styles */
+.tour-card {
+  background-color: #1e3a8a;
+  border: 1px solid #0074D9;
+  border-radius: 10px;
+  padding: 2rem;
+  margin-bottom: 1rem;
+}
+.tour-date {
+  color: #FFD700;
+  font-weight: bold;
+}
+.tour-venue {
+  color: #E0E0E0;
+}
+.tour-time {
+  color: #E0E0E0;
+  font-size: 1.1rem;
+}
+
+/* Merch Carousel Styles (Sexy Hover Effects - Matches Merch Page) */
+.carousel-item .merch-card {
+  background-color: #1e3a8a;
+  border: 2px solid #0074D9;
+  border-radius: 15px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+  cursor: pointer;
+}
+.carousel-item .merch-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 25px rgba(0, 116, 217, 0.3);
+  border-color: #FFD700;
+}
+.carousel-item .merch-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+.carousel-item .merch-card .card-body {
+  padding: 1rem;
+  text-align: center;
+}
+.carousel-item .merch-card h3 {
+  color: #FFD700; /* Gold titles */
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+.carousel-item .merch-card p {
+  color: #E0E0E0;
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+}
+.carousel-item .btn-buy {
+  background-color: #FFD700;
+  border-color: #FFD700;
+  color: #001f3f;
+  font-weight: bold;
+  padding: 0.5rem 1.5rem;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+.carousel-item .btn-buy:hover {
+  background-color: #e6c200;
+  border-color: #e6c200;
+  transform: scale(1.05);
+  color: #001f3f;
+}
+.price-tag {
+  background: #001f3f;
+  color: #FFD700;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-weight: bold;
+  display: inline-block;
+  margin-top: 0.25rem;
+  font-size: 0.9rem;
+}
+.carousel-control-prev, .carousel-control-next {
+  filter: invert(1); /* White arrows on dark */
+}
+.carousel-indicators [data-bs-target] {
+  background-color: #FFD700;
+}
+.carousel-inner {
+  background-color: #1e3a8a; /* Dark bg for carousel */
+}  </style></head>
 <body>
   <a href="contact.html" class="floating-subscribe">
     <img src="img/subscribe.gif" alt="Subscribe">
@@ -385,42 +358,41 @@
   <section class="hero">
     <div class="hero-overlay">
       
-      <!-- Music Dot Container with Submenu -->
-      <div class="dot-container music-container">
-        <a href="music.html" class="interactive-dot main-dot music-dot" data-title="Music & Videos"></a>
-        <div class="sub-dots">
-          <!-- Uber -->
-          <a href="https://orcd.co/a4glqme" class="sub-dot" style="background-image: url('img/Ubermenu.jpg');" target="_blank" data-title="Uber"></a>
-          <!-- Too Drunk -->
-          <a href="https://orcd.co/lancewoolietoodrunk" class="sub-dot" style="background-image: url('img/TooDrunkmenu.jpg');" target="_blank" data-title="Too Drunk"></a>
-          <!-- Worst Enemy -->
-          <a href="https://orcd.co/lancewoolieworstenemy" class="sub-dot" style="background-image: url('img/WorstEnemymenu.jpg');" target="_blank" data-title="Worst Enemy"></a>
-          <!-- Full Catalog -->
-          <a href="music.html" class="sub-dot" style="background-image: url('img/Fullcatalogmenu.jpg');" data-title="Full Catalog"></a>
-        </div>
-      </div>
-      
-      <!-- Merch Dot Container with Submenu -->
-      <div class="dot-container merch-container">
-        <a href="merch.html" class="interactive-dot main-dot merch-dot" data-title="Merch & More"></a>
-        <div class="sub-dots">
-          <!-- Cluck Yeah Chicken Socks -->
-          <a href="https://lancewoolie.bandcamp.com/merch/chicken-socks-cluck-yeah-step-into-the-flock" class="sub-dot" style="background-image: url('https://f4.bcbits.com/img/0041177986_10.jpg');" target="_blank" data-title="Chicken Socks"></a>
-          <!-- Uber Single -->
-          <a href="https://lancewoolie.bandcamp.com/track/uber" class="sub-dot" style="background-image: url('https://f4.bcbits.com/img/a2855470268_10.jpg');" target="_blank" data-title="Uber"></a>
-          <!-- Too Drunk Single -->
-          <a href="https://lancewoolie.bandcamp.com/track/too-drunk-ft-brent-mason" class="sub-dot" style="background-image: url('https://f4.bcbits.com/img/a1387979790_10.jpg');" target="_blank" data-title="Too Drunk"></a>
-          <!-- Country Paradise Album -->
-          <a href="https://lancewoolie.bandcamp.com/album/country-paradise" class="sub-dot" style="background-image: url('img/COUNTRY-PARADISE-scaled.jpg');" target="_blank" data-title="Country Paradise"></a>
-        </div>
-      </div>
-      
-      <!-- Other Interactive Dots (Swapped Contact and Merch positions, but Merch now has container) -->
-      <a href="origins.html" class="interactive-dot origins-dot" data-title="Origins" style="top: 40%; left: 80%;"></a>
-      <a href="events.html" class="interactive-dot events-dot" data-title="Events" style="top: 60%; left: 30%;"></a>
-      <a href="contact.html" class="interactive-dot contact-dot" data-title="Contact" style="top: 75%; left: 70%;"></a>
+  <!-- Music Dot Container with Submenu -->
+  <div class="dot-container music-container">
+    <a href="music.html" class="interactive-dot main-dot music-dot" data-title="Music & Videos"></a>
+    <div class="sub-dots">
+      <!-- Uber -->
+      <a href="https://orcd.co/a4glqme" class="sub-dot" style="background-image: url('img/Ubermenu.jpg');" target="_blank" data-title="Uber"></a>
+      <!-- Too Drunk -->
+      <a href="https://orcd.co/lancewoolietoodrunk" class="sub-dot" style="background-image: url('img/TooDrunkmenu.jpg');" target="_blank" data-title="Too Drunk"></a>
+      <!-- Worst Enemy -->
+      <a href="https://orcd.co/lancewoolieworstenemy" class="sub-dot" style="background-image: url('img/WorstEnemymenu.jpg');" target="_blank" data-title="Worst Enemy"></a>
+      <!-- Full Catalog -->
+      <a href="music.html" class="sub-dot" style="background-image: url('img/Fullcatalogmenu.jpg');" data-title="Full Catalog"></a>
     </div>
-  </section>
+  </div>
+  
+  <!-- Merch Dot Container with Submenu -->
+  <div class="dot-container merch-container">
+    <a href="merch.html" class="interactive-dot main-dot merch-dot" data-title="Merch & More"></a>
+    <div class="sub-dots">
+      <!-- Cluck Yeah Chicken Socks -->
+      <a href="https://lancewoolie.bandcamp.com/merch/chicken-socks-cluck-yeah-step-into-the-flock" class="sub-dot" style="background-image: url('https://f4.bcbits.com/img/0041177986_10.jpg');" target="_blank" data-title="Chicken Socks"></a>
+      <!-- Uber Single -->
+      <a href="https://lancewoolie.bandcamp.com/track/uber" class="sub-dot" style="background-image: url('https://f4.bcbits.com/img/a2855470268_10.jpg');" target="_blank" data-title="Uber"></a>
+      <!-- Too Drunk Single -->
+      <a href="https://lancewoolie.bandcamp.com/track/too-drunk-ft-brent-mason" class="sub-dot" style="background-image: url('https://f4.bcbits.com/img/a1387979790_10.jpg');" target="_blank" data-title="Too Drunk"></a>
+      <!-- Country Paradise Album -->
+      <a href="https://lancewoolie.bandcamp.com/album/country-paradise" class="sub-dot" style="background-image: url('img/COUNTRY-PARADISE-scaled.jpg');" target="_blank" data-title="Country Paradise"></a>
+    </div>
+  </div>
+  
+  <!-- Other Interactive Dots (Swapped Contact and Merch positions, but Merch now has container) -->
+  <a href="origins.html" class="interactive-dot origins-dot" data-title="Origins" style="top: 40%; left: 80%;"></a>
+  <a href="events.html" class="interactive-dot events-dot" data-title="Events" style="top: 60%; left: 30%;"></a>
+  <a href="contact.html" class="interactive-dot contact-dot" data-title="Contact" style="top: 75%; left: 70%;"></a>
+</div>  </section>
 
   <!-- Combined Latest Release & Featured Merch Section -->
   <section class="py-5 combined-section">
@@ -437,7 +409,8 @@
                     <h3>Cluck Yeah Chicken Socks</h3>
                     <p>Exclusive jet-black socks from premium Chinese cotton, one size fits all.</p>
                     <span class="price-tag">$10</span>
-                    <br>
+                    
+
                     <a href="https://lancewoolie.bandcamp.com/merch/chicken-socks-cluck-yeah-step-into-the-flock" class="btn btn-buy mt-2" target="_blank">Buy Now</a>
                   </div>
                 </div>
@@ -449,7 +422,8 @@
                     <h3>Uber (Single)</h3>
                     <p>Danceable neotraditional tune evoking lost love, featuring Brent Mason.</p>
                     <span class="price-tag">$1.29</span>
-                    <br>
+                    
+
                     <a href="https://lancewoolie.bandcamp.com/track/uber" class="btn btn-buy mt-2" target="_blank">Buy Now</a>
                   </div>
                 </div>
@@ -461,7 +435,8 @@
                     <h3>Too Drunk (Single)</h3>
                     <p>Debut release co-created with Legendary Guitarist Brent Mason—raw country grit.</p>
                     <span class="price-tag">$1.29</span>
-                    <br>
+                    
+
                     <a href="https://lancewoolie.bandcamp.com/track/too-drunk-ft-brent-mason" class="btn btn-buy mt-2" target="_blank">Buy Now</a>
                   </div>
                 </div>
@@ -556,3 +531,4 @@
   </script>
 </body>
 </html>
+
