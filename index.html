@@ -75,6 +75,60 @@
       opacity: 1;
     }
     
+    /* Music Dot Container for Submenu */
+    .dot-container {
+      position: absolute;
+      top: 25%;
+      left: 15%;
+      z-index: 3;
+    }
+    .main-dot {
+      display: block;
+    }
+    .sub-dots {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: none;
+      pointer-events: none;
+    }
+    .dot-container:hover .sub-dots {
+      display: block;
+      pointer-events: all;
+    }
+    .sub-dot {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background-size: cover;
+      background-position: center;
+      opacity: 0.7;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 0 5px rgba(0,0,0,0.5);
+    }
+    .sub-dot:hover {
+      transform: scale(1.5);
+      opacity: 1;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    }
+    /* X Shape Positions (60px radius at 45° angles) */
+    .sub-dot:nth-child(1) { /* NE 45° */
+      transform: translate(-50%, -50%) translate(42px, -42px);
+    }
+    .sub-dot:nth-child(2) { /* NW 135° */
+      transform: translate(-50%, -50%) translate(-42px, -42px);
+    }
+    .sub-dot:nth-child(3) { /* SW 225° */
+      transform: translate(-50%, -50%) translate(-42px, 42px);
+    }
+    .sub-dot:nth-child(4) { /* SE 315° */
+      transform: translate(-50%, -50%) translate(42px, 42px);
+    }
+    
     /* Footer Float Lock */
     .tight-footer {
       background: #001f3f !important;
@@ -270,12 +324,26 @@
   <section class="hero">
     <div class="hero-overlay">
       
-      <!-- Interactive Royal Blue Dots -->
-      <a href="#music" class="interactive-dot" data-title="Music" style="top: 25%; left: 15%;"></a>
-      <a href="#origins" class="interactive-dot" data-title="Origins" style="top: 40%; left: 80%;"></a>
-      <a href="#events" class="interactive-dot" data-title="Events" style="top: 60%; left: 30%;"></a>
-      <a href="#merch" class="interactive-dot" data-title="Merch" style="top: 75%; left: 70%;"></a>
-      <a href="#contact" class="interactive-dot" data-title="Contact" style="top: 50%; left: 50%;"></a>
+      <!-- Music Dot Container with Submenu -->
+      <div class="dot-container">
+        <a href="music.html" class="interactive-dot main-dot" data-title="Music"></a>
+        <div class="sub-dots">
+          <!-- Uber -->
+          <a href="https://orcd.co/a4glqme" class="sub-dot" style="background-image: url('img/Ubersmall.jpg');" target="_blank" title="Uber"></a>
+          <!-- Too Drunk -->
+          <a href="https://orcd.co/lancewoolietoodrunk" class="sub-dot" style="background-image: url('img/TooDrunkSmall.jpg');" target="_blank" title="Too Drunk"></a>
+          <!-- Worst Enemy -->
+          <a href="https://orcd.co/lancewoolieworstenemy" class="sub-dot" style="background-image: url('img/WorstEnemySmall.jpg');" target="_blank" title="Worst Enemy"></a>
+          <!-- Full Catalog (Country Paradise) -->
+          <a href="https://orcd.co/o4qa0ba" class="sub-dot" style="background-image: url('img/CountryParadiseSmall.jpg');" target="_blank" title="Full Catalog"></a>
+        </div>
+      </div>
+      
+      <!-- Other Interactive Dots -->
+      <a href="origins.html" class="interactive-dot" data-title="Origins" style="top: 40%; left: 80%;"></a>
+      <a href="events.html" class="interactive-dot" data-title="Events" style="top: 60%; left: 30%;"></a>
+      <a href="merch.html" class="interactive-dot" data-title="Merch" style="top: 75%; left: 70%;"></a>
+      <a href="contact.html" class="interactive-dot" data-title="Contact" style="top: 50%; left: 50%;"></a>
     </div>
   </section>
 
@@ -391,17 +459,8 @@
       this.reset();
     });
 
-    // Smooth scroll for dots
-    document.querySelectorAll('.interactive-dot').forEach(dot => {
-      dot.addEventListener('click', function(e) {
-        e.preventDefault();
-        const target = this.getAttribute('href');
-        const targetElement = document.querySelector(target);
-        if (targetElement) {
-          targetElement.scrollIntoView({ behavior: 'smooth' });
-        }
-      });
-    });
+    // Smooth scroll for dots - but now external links, so no need for scroll
+    // Removed scroll logic as links go to pages
   </script>
 </body>
 </html>
