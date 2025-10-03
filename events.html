@@ -16,33 +16,16 @@
   <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
   <style>
     body {
-      background-color: #1e3a8a; /* Dark royal blue - site theme */
+      background-color: #2c2c2c; /* Dark grey - non-primary scheme */
       color: #E0E0E0; /* Light grey text */
       padding-bottom: 60px; /* Space for fixed footer */
-    }
-    .table {
-      color: #E0E0E0; /* Light text */
-      background-color: #1e3a8a; /* Match body bg */
-      border-color: #0074D9; /* Blue accents */
-    }
-    .table thead th {
-      color: #E0E0E0;
-      background-color: #001f3f; /* Navy header */
-      border-color: #0074D9;
-    }
-    .table tbody td {
-      color: #E0E0E0;
-      background-color: #1e3a8a; /* Royal blue rows */
-      border-color: #0074D9;
-    }
-    .table-striped tbody tr:nth-of-type(odd) td {
-      background-color: #2a4a9a; /* Slightly lighter blue for stripes */
+      font-family: 'Georgia', serif;
     }
     .lead {
       color: #E0E0E0;
     }
-    h1 {
-      color: #001f3f !important; /* Navy header */
+    h1, h2 {
+      color: #4a4a4a !important; /* Darker grey header */
     }
     a {
       color: #FFD700; /* Gold links */
@@ -50,13 +33,82 @@
     a:hover {
       color: #e6c200; /* Gold hover */
     }
-    .image-col small {
-      color: #A0A0A0; /* Muted grey captions */
-      font-size: 0.75em;
+    /* Upcoming Event Large Card */
+    .upcoming-event {
+      background-color: #3a3a3a;
+      border: 1px solid #555;
+      border-radius: 15px;
+      overflow: hidden;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     }
-    .image-col img:hover {
-      transform: scale(1.05); /* Subtle zoom */
-      transition: transform 0.2s ease;
+    .upcoming-event .event-image {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+    }
+    .upcoming-event .event-details {
+      padding: 2rem;
+    }
+    .event-date {
+      color: #FFD700;
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+    .event-venue {
+      color: #E0E0E0;
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+    .event-city {
+      color: #A0A0A0;
+      margin-bottom: 1rem;
+    }
+    .event-description {
+      color: #E0E0E0;
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+    .event-tickets {
+      background-color: #FFD700;
+      color: #2c2c2c;
+      padding: 0.5rem 1rem;
+      border-radius: 25px;
+      text-decoration: none;
+      font-weight: bold;
+      display: inline-block;
+    }
+    .event-tickets:hover {
+      background-color: #e6c200;
+      color: #2c2c2c;
+    }
+    
+    /* Past Events Small Cards */
+    .past-events .card {
+      background-color: #3a3a3a;
+      border: 1px solid #555;
+      color: #E0E0E0;
+      margin-bottom: 1rem;
+    }
+    .past-events .card-img-top {
+      height: 150px;
+      object-fit: cover;
+    }
+    .past-events .card-body {
+      padding: 1rem;
+    }
+    .past-events .card-title {
+      color: #FFD700;
+      font-size: 1rem;
+    }
+    .past-events .card-text {
+      color: #A0A0A0;
+      font-size: 0.9rem;
+    }
+    .past-events .card-date {
+      color: #FFD700;
+      font-weight: bold;
     }
     .tight-footer {
       background: #001f3f !important;
@@ -75,374 +127,457 @@
   <div id="nav-placeholder"></div> <!-- Dynamic Nav Insert Here -->
 
   <div class="container py-5" style="margin-top: 80px;">
-    <h1 class="text-center mb-5 text-dark-blue">Live Events</h1>
-    <p class="lead text-center">Upcoming and past performances—from intimate gigs to high-energy shows. Check back for updates!</p>
+    <h1 class="text-center mb-5">Live Events</h1>
+    <p class="lead text-center mb-5">Upcoming and past performances—from intimate gigs to high-energy shows. Check back for updates!</p>
 
-    <!-- Event Table with Image Column -->
-    <div class="table-responsive">
-      <table class="table table-striped event-table">
-        <thead>
-          <tr>
-            <th>Image</th>
-            <th>Date</th>
-            <th>Event</th>
-            <th>Venue</th>
-            <th>City</th>
-            <th>Time</th>
-            <th>Tickets</th>
-          </tr>
-        </thead>
-        <tbody id="events-tbody">
-          <!-- Dynamically populated -->
-        </tbody>
-      </table>
-    </div>
-    <div class="text-center mt-4">
+    <!-- Upcoming Events Section -->
+    <section id="upcoming-events">
+      <h2 class="text-center mb-4" style="color: #E0E0E0;">Upcoming Events</h2>
+      <div id="upcoming-list">
+        <!-- Dynamically populated for large display -->
+      </div>
+    </section>
+
+    <!-- Past Events Section -->
+    <section id="past-events" class="past-events">
+      <h2 class="text-center mb-4" style="color: #E0E0E0;">Past Events</h2>
+      <div class="row" id="past-list">
+        <!-- Dynamically populated for small cards -->
+      </div>
+    </section>
+
+    <div class="text-center mt-5">
       <p>Want to book Lance for your next event? <a href="contact.html">Get in touch</a> today!</p>
     </div>
   </div>
 
-  <div id="footer-placeholder"></div> <!-- Dynamic Footer Insert Here - Floating Fixed -->
+  <div id="footer-placeholder" class="tight-footer"></div> <!-- Dynamic Footer Insert Here - Floating Fixed -->
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
   <script>
-    // Event data array (fetched from Facebook in production; static for now)
+    // Event data array (updated first listing with new upcoming event details)
     const eventsData = [
       {
         date: '10/24/2025',
         eventName: 'Lance Woolie Live at the Smiling Dog',
-        venue: '4215 S Sherwood Forest Blvd',
-        city: 'Baton Rouge, LA 70816, USA',
-        time: '9:00 PM',
-        tickets: '<a href="https://www.facebook.com/lancewooliemusic/events" class="btn btn-success" target="_blank">Tickets</a>',
-        imageSrc: 'https://lancewoolie.github.io/El_Groko/img/Jan%2024.jpg', // Placeholder Smiling Dog image
+        venue: 'The Smiling Dog',
+        fullVenue: '4215 S Sherwood Forest Blvd',
+        city: 'Baton Rouge, LA',
+        time: '9:00 PM Central',
+        description: 'Join Lance Woolie for an unforgettable night of bayou twang and country grit at the iconic Smiling Dog. Featuring special guests and high-energy performances. Don\'t miss this intimate gig!',
+        tickets: 'https://www.facebook.com/lancewooliemusic/events',
+        imageSrc: 'https://lancewoolie.github.io/El_Groko/img/Jan%2024.jpg', // Updated image from Facebook event
         imageLink: 'https://www.facebook.com/lancewooliemusic/events',
-        caption: 'Lance Woolie Live at the Smiling Dog - 10/24/2025'
+        isUpcoming: true
       },
       {
         date: '09/13/2025',
         eventName: 'Court To Table Baton Rouge Presents Lance Woolie w/ Shane Reid',
         venue: '7477 Burbank Dr',
-        city: 'Baton Rouge, LA 70820, USA',
+        fullVenue: '7477 Burbank Dr',
+        city: 'Baton Rouge, LA 70820',
         time: '11:00 PM',
+        description: 'A night of music and mingling with special guest Shane Reid.',
         tickets: 'TBD',
         imageSrc: 'https://lancewoolie.github.io/El_Groko/img/Setp13.jpg',
-        imageLink: 'https://lancewoolie.github.io/El_Groko/img/Setp13.jpg',
-        caption: 'Court To Table w/ Shane Reid - 09/13/2025'
+        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
+        isUpcoming: false
       },
       {
         date: '09/05/2025',
         eventName: 'Court To Table Baton Rouge Presents Lance Woolie w/ Earl Wheeler III',
         venue: '7477 Burbank Dr',
-        city: 'Baton Rouge, LA 70820, USA',
+        fullVenue: '7477 Burbank Dr',
+        city: 'Baton Rouge, LA 70820',
         time: '11:00 PM',
+        description: 'Court to Table series featuring Earl Wheeler III.',
         tickets: 'TBD',
         imageSrc: 'https://lancewoolie.github.io/El_Groko/img/Sept5th.jpg',
-        imageLink: 'https://lancewoolie.github.io/El_Groko/img/Sept5th.jpg',
-        caption: 'Court To Table w/ Earl Wheeler III - 09/05/2025'
+        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
+        isUpcoming: false
       },
       {
         date: '06/21/2025',
         eventName: 'Art Night HOEDOWN',
         venue: '456 N Donmoor Ave',
-        city: 'Baton Rouge, LA 70806, USA',
+        fullVenue: '456 N Donmoor Ave',
+        city: 'Baton Rouge, LA 70806',
         time: '11:00 PM',
+        description: 'Hoedown at Art Night with live performances.',
         tickets: 'TBD',
         imageSrc: 'https://lancewoolie.github.io/El_Groko/img/hoe%20down.jpg',
-        imageLink: 'https://lancewoolie.github.io/El_Groko/img/hoe%20down.jpg',
-        caption: 'Art Night HOEDOWN - 06/21/2025'
+        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
+        isUpcoming: false
       },
       {
         date: '06/15/2025',
-        eventName: 'Jim\'s Bar in Ventress, LA',
+        eventName: "Jim's Bar in Ventress, LA",
         venue: '7913 Park St',
-        city: 'Ventress, LA 70783, USA',
+        fullVenue: '7913 Park St',
+        city: 'Ventress, LA 70783',
         time: '08:00 PM',
+        description: 'Solo acoustic set at Jim\'s Bar.',
         tickets: 'TBD',
         imageSrc: 'https://lancewoolie.github.io/El_Groko/img/JUNE%2015th.jpg',
-        imageLink: 'https://lancewoolie.github.io/El_Groko/img/JUNE%2015th.jpg',
-        caption: 'Solo live performance at Jim\'s Bar - 06/15/2025'
+        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
+        isUpcoming: false
       },
       {
         date: '05/31/2025',
         eventName: 'Lance Woolie w/ Shane Reid @ The Smiling Dog',
         venue: '4215 S Sherwood Forest Blvd',
-        city: 'Baton Rouge, LA 70816, USA',
+        fullVenue: '4215 S Sherwood Forest Blvd',
+        city: 'Baton Rouge, LA 70816',
         time: '02:00 AM',
+        description: 'Dynamic duo performance with Shane Reid.',
         tickets: 'TBD',
         imageSrc: 'https://lancewoolie.github.io/El_Groko/img/May%2030.jpg',
-        imageLink: 'https://lancewoolie.github.io/El_Groko/img/May%2030.jpg',
-        caption: 'Smiling Dog w/ Shane Reid - 05/31/2025'
+        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
+        isUpcoming: false
       },
       {
         date: '03/28/2025',
         eventName: 'Private Event - Woodforest (Houston)',
         venue: '251 Central Pine St',
-        city: 'Montgomery, TX 77316, USA',
+        fullVenue: '251 Central Pine St',
+        city: 'Montgomery, TX 77316',
         time: '11:00 PM',
+        description: 'Exclusive private performance in Houston area.',
         tickets: 'TBD',
         imageSrc: 'https://lancewoolie.github.io/El_Groko/img/CROPPED.png',
-        imageLink: 'https://lancewoolie.github.io/El_Groko/img/CROPPED.png',
-        caption: 'Private Event - Woodforest (Houston) - 03/28/2025'
+        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
+        isUpcoming: false
       },
       {
         date: '03/16/2025',
-        eventName: 'Lance Woolie Live at The Smiling Dog 2nd Floor Stage(solo)',
+        eventName: 'Lance Woolie Live at The Smiling Dog 2nd Floor Stage (solo)',
         venue: '4215 S Sherwood Forest Blvd',
-        city: 'Baton Rouge, LA 70816, USA',
+        fullVenue: '4215 S Sherwood Forest Blvd',
+        city: 'Baton Rouge, LA 70816',
         time: '01:50 AM',
+        description: 'Intimate solo set on the 2nd floor stage.',
         tickets: 'TBD',
         imageSrc: 'https://lancewoolie.github.io/El_Groko/img/March%2015th.jpg',
-        imageLink: 'https://lancewoolie.github.io/El_Groko/img/March%2015th.jpg',
-        caption: 'Smiling Dog Solo - 03/16/2025'
+        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
+        isUpcoming: false
       },
       {
         date: '02/22/2025',
         eventName: 'The Smiling Dog Presents Lance Woolie',
         venue: '4215 S Sherwood Forest Blvd',
-        city: 'Baton Rouge, LA 70816, USA',
+        fullVenue: '4215 S Sherwood Forest Blvd',
+        city: 'Baton Rouge, LA 70816',
         time: '03:00 AM',
+        description: 'High-energy show at Smiling Dog.',
         tickets: '100 sold',
         imageSrc: 'https://lancewoolie.github.io/El_Groko/img/feb%2021.jpg',
-        imageLink: 'https://lancewoolie.github.io/El_Groko/img/feb%2021.jpg',
-        caption: 'Smiling Dog - 02/22/2025'
+        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
+        isUpcoming: false
       },
       {
         date: '02/09/2025',
         eventName: 'Lance Woolie (Full Band) @ Papi\'s In Watson',
         venue: '35055 LA-16',
-        city: 'Denham Springs, LA 70706, USA',
+        fullVenue: '35055 LA-16',
+        city: 'Denham Springs, LA 70706',
         time: '12:00 AM',
+        description: 'Full band performance at Papi\'s.',
         tickets: 'TBD',
         imageSrc: 'https://lancewoolie.github.io/El_Groko/img/Feb 8th.jpg',
-        imageLink: 'https://lancewoolie.github.io/El_Groko/img/Feb 8th.jpg',
-        caption: 'Papi\'s Watson Full Band - 02/09/2025'
+        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
+        isUpcoming: false
       },
       {
         date: '02/02/2025',
         eventName: 'Lance Woolie @ Ed\'s Place',
         venue: '111 Duson Ave',
-        city: 'Iota, LA 70543, USA',
+        fullVenue: '111 Duson Ave',
+        city: 'Iota, LA 70543',
         time: '02:00 AM',
+        description: 'Live set at Ed\'s Place in Iota.',
         tickets: 'TBD',
         imageSrc: 'https://lancewoolie.github.io/El_Groko/img/fEB1ST%20eDS.jpg',
-        imageLink: 'https://lancewoolie.github.io/El_Groko/img/fEB1ST%20eDS.jpg',
-        caption: 'Ed\'s Place Iota - 02/02/2025'
+        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
+        isUpcoming: false
       },
       {
         date: '01/25/2025',
         eventName: 'The Smiling Dog Presents Lance Woolie',
         venue: '4215 S Sherwood Forest Blvd',
-        city: 'Baton Rouge, LA 70816, USA',
+        fullVenue: '4215 S Sherwood Forest Blvd',
+        city: 'Baton Rouge, LA 70816',
         time: '02:00 AM',
+        description: 'Another night of twang at Smiling Dog.',
         tickets: '2 sold',
         imageSrc: 'https://lancewoolie.github.io/El_Groko/img/Jan%2024.jpg',
-        imageLink: 'https://lancewoolie.github.io/El_Groko/img/Jan%2024.jpg',
-        caption: 'Smiling Dog - 01/25/2025'
+        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
+        isUpcoming: false
       },
       {
         date: '01/13/2025',
         eventName: 'Uber World Premiere',
         venue: '',
+        fullVenue: '',
         city: '',
         time: '11:00 PM',
+        description: 'World premiere event for Uber single.',
         tickets: 'TBD',
         imageSrc: 'https://lancewoolie.github.io/El_Groko/img/Ubermenu.jpg',
-        imageLink: 'https://lancewoolie.github.io/El_Groko/img/Ubermenu.jpg',
-        caption: 'Uber World Premiere - 01/13/2025'
+        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
+        isUpcoming: false
       },
       {
         date: '01/11/2025',
         eventName: 'Spankys Dutchtown Presents Lance Woolie',
         venue: '36520 Oak Plaza Ave suite a',
-        city: 'Prairieville, LA 70769, USA',
+        fullVenue: '36520 Oak Plaza Ave suite a',
+        city: 'Prairieville, LA 70769',
         time: '02:00 AM',
+        description: 'Celebrating new location with toe-tapping tunes.',
         tickets: 'TBD',
         imageSrc: 'https://lancewoolie.github.io/El_Groko/img/Jan10.jpg',
-        imageLink: 'https://lancewoolie.github.io/El_Groko/img/Jan10.jpg',
-        caption: 'New location celebration with 3 hours of toe-tapping music - 01/11/2025'
+        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
+        isUpcoming: false
       },
       {
         date: '12/11/2024',
         eventName: 'Windy City Presents Lance Woolie w/ Washboard Guidry',
         venue: '505 S Main St',
-        city: 'Breckenridge, CO 80424, USA',
+        fullVenue: '505 S Main St',
+        city: 'Breckenridge, CO 80424',
         time: '11:00 PM',
+        description: 'Featuring Washboard Guidry in Colorado.',
         tickets: 'TBD',
         imageSrc: 'https://lancewoolie.github.io/El_Groko/img/CROPPED.png',
-        imageLink: 'https://lancewoolie.github.io/El_Groko/img/CROPPED.png',
-        caption: 'Windy City w/ Washboard Guidry - 12/11/2024'
+        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
+        isUpcoming: false
       },
       {
         date: '11/11/2024',
         eventName: 'TCMA award ceremony',
         venue: '2520 Rodeo Plaza',
-        city: 'Fort Worth, TX 76164, USA',
+        fullVenue: '2520 Rodeo Plaza',
+        city: 'Fort Worth, TX 76164',
         time: '12:00 AM',
+        description: 'Attending TCMA awards.',
         tickets: 'TBD',
         imageSrc: 'https://lancewoolie.github.io/El_Groko/img/CROPPED.png',
-        imageLink: 'https://lancewoolie.github.io/El_Groko/img/CROPPED.png',
-        caption: 'TCMA Award Ceremony - 11/11/2024'
+        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
+        isUpcoming: false
       },
       {
         date: '11/09/2024',
         eventName: 'Wimberley Valley Winery presents Lance Woolie',
         venue: '2825 Lone Man Mountain Rd',
-        city: 'Driftwood, TX 78619, USA',
+        fullVenue: '2825 Lone Man Mountain Rd',
+        city: 'Driftwood, TX 78619',
         time: '08:00 PM',
+        description: 'Performance at scenic winery.',
         tickets: 'TBD',
         imageSrc: 'https://lancewoolie.github.io/El_Groko/img/Nov%209th.jpg',
-        imageLink: 'https://lancewoolie.github.io/El_Groko/img/Nov%209th.jpg',
-        caption: 'Wimberley Valley Winery - 11/09/2024'
+        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
+        isUpcoming: false
       },
       {
         date: '10/19/2024',
-        eventName: '10/18 Rene\'s Bar Presents Lance Woolie & Washboard Guidry',
+        eventName: "10/18 Rene's Bar Presents Lance Woolie & Washboard Guidry",
         venue: '204 St Philip St',
-        city: 'Thibodaux, LA 70301, USA',
+        fullVenue: '204 St Philip St',
+        city: 'Thibodaux, LA 70301',
         time: '12:00 AM',
+        description: 'With Elliot Guidry at Rene\'s Bar.',
         tickets: 'TBD',
         imageSrc: 'https://lancewoolie.github.io/El_Groko/img/OCt%2018th.jpg',
-        imageLink: 'https://lancewoolie.github.io/El_Groko/img/OCt%2018th.jpg',
-        caption: 'Rene\'s Bar w/ Elliot Guidry - 10/18/2024'
+        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
+        isUpcoming: false
       },
       {
         date: '10/12/2024',
         eventName: 'Lance Filming in Fort Worth, Texas',
         venue: 'Fort Worth',
-        city: 'TX, USA',
+        fullVenue: 'Fort Worth',
+        city: 'TX',
         time: '12:00 AM',
+        description: 'On-location filming in Texas.',
         tickets: 'TBD',
         imageSrc: 'https://lancewoolie.github.io/El_Groko/img/ROAD%20TO%20TEXASweb.jpg',
-        imageLink: 'https://lancewoolie.github.io/El_Groko/img/ROAD%20TO%20TEXASweb.jpg',
-        caption: 'Fort Worth Filming - 10/12/2024'
+        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
+        isUpcoming: false
       },
       {
         date: '10/10/2024',
         eventName: '99.1 The Buck w/ Lance',
         venue: '2125 Sidney Baker St',
-        city: 'Kerrville, TX 78028, USA',
+        fullVenue: '2125 Sidney Baker St',
+        city: 'Kerrville, TX 78028',
         time: '09:00 PM',
+        description: 'Radio appearance and performance.',
         tickets: 'TBD',
         imageSrc: 'https://lancewoolie.github.io/El_Groko/img/CROPPED.png',
-        imageLink: 'https://lancewoolie.github.io/El_Groko/img/CROPPED.png',
-        caption: '99.1 The Buck Kerrville - 10/10/2024'
+        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
+        isUpcoming: false
       },
       {
         date: '10/09/2024',
         eventName: '102.1 KEOK w/ Lance',
         venue: '5686 S Muskogee Ave',
-        city: 'Tahlequah, OK 74464, USA',
+        fullVenue: '5686 S Muskogee Ave',
+        city: 'Tahlequah, OK 74464',
         time: '02:00 PM',
+        description: 'Live on 102.1 KEOK.',
         tickets: 'TBD',
         imageSrc: 'https://lancewoolie.github.io/El_Groko/img/CROPPED.png',
-        imageLink: 'https://lancewoolie.github.io/El_Groko/img/CROPPED.png',
-        caption: '102.1 KEOK Tahlequah - 10/09/2024'
+        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
+        isUpcoming: false
       },
       {
         date: '10/04/2024',
-        eventName: 'T\'quilas Bar & Grill Presents Lance Woolie w/ Special guest Corban Barnes',
+        eventName: "T'quilas Bar & Grill Presents Lance Woolie w/ Special guest Corban Barnes",
         venue: '5647 Main St suite f',
-        city: 'Zachary, LA 70791, USA',
+        fullVenue: '5647 Main St suite f',
+        city: 'Zachary, LA 70791',
         time: '11:00 PM',
+        description: 'With special guest Corban Barnes.',
         tickets: 'TBD',
         imageSrc: 'https://lancewoolie.github.io/El_Groko/img/OCT%204th.jpg',
-        imageLink: 'https://lancewoolie.github.io/El_Groko/img/OCT%204th.jpg',
-        caption: 'T\'quilas Zachary w/ Corban Barnes - 10/04/2024'
+        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
+        isUpcoming: false
       },
       {
         date: '09/21/2024',
         eventName: '9/21 Wimberley Valley Winery presents Lance Woolie',
         venue: '2825 Lone Man Mountain Rd',
-        city: 'Driftwood, TX 78619, USA',
+        fullVenue: '2825 Lone Man Mountain Rd',
+        city: 'Driftwood, TX 78619',
         time: '09:00 PM',
+        description: 'Evening at the winery.',
         tickets: 'TBD',
         imageSrc: 'https://lancewoolie.github.io/El_Groko/img/September%2021.jpg',
-        imageLink: 'https://lancewoolie.github.io/El_Groko/img/September%2021.jpg',
-        caption: 'Wimberley Valley Winery - 09/21/2024'
+        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
+        isUpcoming: false
       },
       {
         date: '08/04/2024',
         eventName: 'Jim\'s Bar Presents Lance Woolie',
         venue: '7913 Park St',
-        city: 'Ventress, LA 70783, USA',
+        fullVenue: '7913 Park St',
+        city: 'Ventress, LA 70783',
         time: '08:00 PM',
+        description: 'Live at Jim\'s Bar.',
         tickets: '4 sold',
         imageSrc: 'https://lancewoolie.github.io/El_Groko/img/JimsBarPresents.jpg',
-        imageLink: 'https://lancewoolie.github.io/El_Groko/img/JimsBarPresents.jpg',
-        caption: 'Jim\'s Bar - 08/04/2024'
+        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
+        isUpcoming: false
       },
       {
         date: '07/13/2024',
         eventName: 'Casting Call (Music Video) July13th',
         venue: '108 Main St',
-        city: 'New Roads, LA 70760, USA',
+        fullVenue: '108 Main St',
+        city: 'New Roads, LA 70760',
         time: '01:00 PM',
+        description: 'Music video shoot casting call.',
         tickets: 'TBD',
         imageSrc: 'https://lancewoolie.github.io/El_Groko/img/casting%20call.jpg',
-        imageLink: 'https://lancewoolie.github.io/El_Groko/img/casting%20call.jpg',
-        caption: 'Casting Call Music Video - 07/13/2024'
+        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
+        isUpcoming: false
       },
       {
         date: '07/07/2024',
         eventName: 'Jim\'s Bar Presents Lance Woolie',
         venue: '7913 Park St',
-        city: 'Ventress, LA 70783, USA',
+        fullVenue: '7913 Park St',
+        city: 'Ventress, LA 70783',
         time: '08:00 PM',
+        description: 'Another night at Jim\'s.',
         tickets: '1 sold',
         imageSrc: 'https://lancewoolie.github.io/El_Groko/img/JimsBarPresents.jpg',
-        imageLink: 'https://lancewoolie.github.io/El_Groko/img/JimsBarPresents.jpg',
-        caption: 'Jim\'s Bar - 07/07/2024'
+        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
+        isUpcoming: false
       },
       {
         date: '07/04/2024',
         eventName: 'Too Drunk release',
         venue: '',
+        fullVenue: '',
         city: '',
         time: '12:00 AM',
+        description: 'Release party for Too Drunk single.',
         tickets: 'TBD',
         imageSrc: 'https://lancewoolie.github.io/El_Groko/img/TooDrunkmenu.jpg',
-        imageLink: 'https://lancewoolie.github.io/El_Groko/img/TooDrunkmenu.jpg',
-        caption: 'Too Drunk Release - 07/04/2024'
+        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
+        isUpcoming: false
       }
     ];
 
-    // Function to generate the events table
-    function generateEventsTable() {
-      // Sort events by date descending (newest first)
-      const sortedEvents = eventsData.sort((a, b) => {
-        const dateA = new Date(a.date);
-        const dateB = new Date(b.date);
-        return dateB - dateA;
-      });
+    // Current date for filtering
+    const currentDate = new Date('2025-10-03');
 
-      const tbody = document.getElementById('events-tbody');
-      tbody.innerHTML = ''; // Clear existing rows
-
-      sortedEvents.forEach(event => {
-        const row = `
-          <tr>
-            <td class="text-center image-col">
-              <a href="${event.imageLink}" target="_blank" rel="noopener noreferrer">
-                <img src="${event.imageSrc}" alt="${event.eventName} Flyer" title="${event.eventName} - ${event.date} at ${event.venue || 'TBD'}, ${event.city || ''} | ${event.time} | ${event.tickets === 'TBD' ? 'TBD' : event.tickets}" style="width: 150px; height: 150px; object-fit: cover; border-radius: 8px; display: block; margin: 0 auto; cursor: pointer;">
-              </a>
-              <small class="d-block mt-1">${event.caption}</small>
-            </td>
-            <td>${event.date}</td>
-            <td>${event.eventName}</td>
-            <td>${event.venue}</td>
-            <td>${event.city}</td>
-            <td>${event.time}</td>
-            <td>${typeof event.tickets === 'string' && event.tickets.includes('<a') ? event.tickets : event.tickets}</td>
-          </tr>
-        `;
-        tbody.innerHTML += row;
-      });
+    // Function to generate upcoming large card
+    function generateUpcomingCard(event) {
+      return `
+        <div class="upcoming-event">
+          <a href="${event.imageLink}" target="_blank" rel="noopener noreferrer">
+            <img src="${event.imageSrc}" alt="${event.eventName} Cover" class="event-image" style="cursor: pointer;">
+          </a>
+          <div class="event-details">
+            <div class="event-date">${event.date} | ${event.time}</div>
+            <div class="event-venue">${event.eventName}</div>
+            <div class="event-venue">${event.venue}</div>
+            <div class="event-city">${event.city}</div>
+            <div class="event-description">${event.description}</div>
+            <a href="${event.tickets}" class="event-tickets" target="_blank">Get Tickets</a>
+          </div>
+        </div>
+      `;
     }
 
-    // Generate table on load
-    document.addEventListener('DOMContentLoaded', generateEventsTable);
+    // Function to generate past small card
+    function generatePastCard(event) {
+      return `
+        <div class="col-md-4">
+          <div class="card">
+            <a href="${event.imageLink}" target="_blank" rel="noopener noreferrer">
+              <img src="${event.imageSrc}" alt="${event.eventName} Cover" class="card-img-top" style="cursor: pointer;">
+            </a>
+            <div class="card-body">
+              <h5 class="card-title">${event.eventName}</h5>
+              <p class="card-date">${event.date}</p>
+              <p class="card-text">${event.venue}, ${event.city}</p>
+              <p class="card-text small">${event.description.substring(0, 100)}...</p>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Generate sections on load
+    document.addEventListener('DOMContentLoaded', () => {
+      // Filter upcoming and past
+      const upcomingEvents = eventsData.filter(event => new Date(event.date) > currentDate && event.isUpcoming);
+      const pastEvents = eventsData.filter(event => new Date(event.date) <= currentDate);
+
+      // Populate upcoming
+      const upcomingContainer = document.getElementById('upcoming-list');
+      upcomingEvents.forEach(event => {
+        upcomingContainer.innerHTML += generateUpcomingCard(event);
+      });
+
+      // Populate past
+      const pastContainer = document.getElementById('past-list');
+      pastEvents.reverse().forEach(event => {  // Reverse to show most recent past first
+        pastContainer.innerHTML += generatePastCard(event);
+      });
+
+      // Hide sections if empty
+      if (upcomingEvents.length === 0) {
+        document.getElementById('upcoming-events').style.display = 'none';
+      }
+      if (pastEvents.length === 0) {
+        document.getElementById('past-events').style.display = 'none';
+      }
+    });
   </script>
 </body>
 </html>
