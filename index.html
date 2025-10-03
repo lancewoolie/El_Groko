@@ -35,14 +35,18 @@
       position: relative;
     }
     
-    /* Interactive Dots with Custom Colors - Increased Size */
+    /* Interactive Dots with Custom Colors - Increased Size - Bullet Hole Image */
     .interactive-dot {
       position: absolute;
       width: 80px;
       height: 80px;
       border-radius: 50%;
+      background-image: url('img/BULLETHOLE.gif');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
       opacity: 0.5;
-      transition: opacity 0.3s ease, background-color 0.3s ease;
+      transition: opacity 0.3s ease;
       cursor: pointer;
       z-index: 3;
       text-decoration: none;
@@ -76,45 +80,25 @@
     .music-dot {
       background-color: #8B0000;
     }
-    .music-dot:hover {
-      background-color: #A52A2A;
-      box-shadow: 0 0 10px rgba(165, 42, 42, 0.5);
-    }
     
     /* Merch Dot - Muted Seafoam */
     .merch-dot {
       background-color: #2E8B57;
-    }
-    .merch-dot:hover {
-      background-color: #3CB371;
-      box-shadow: 0 0 10px rgba(60, 179, 113, 0.5);
     }
     
     /* Contact Dot - Chocolate */
     .contact-dot {
       background-color: #D2691E;
     }
-    .contact-dot:hover {
-      background-color: #DA70D6;
-      box-shadow: 0 0 10px rgba(218, 112, 214, 0.5);
-    }
     
     /* Events Dot - Dark Goldenrod */
     .events-dot {
       background-color: #B8860B;
     }
-    .events-dot:hover {
-      background-color: #DAA520;
-      box-shadow: 0 0 10px rgba(218, 165, 32, 0.5);
-    }
     
     /* Origins Dot - Charcoal */
     .origins-dot {
       background-color: #36454F;
-    }
-    .origins-dot:hover {
-      background-color: #2F4F4F;
-      box-shadow: 0 0 10px rgba(47, 79, 79, 0.5);
     }
     
     /* Music Dot Container for Submenu - Expanded Hover Area */
@@ -143,9 +127,6 @@
       transform: translate(-50%, -50%);
       transition: opacity 0.3s ease;
     }
-    .main-dot.hidden {
-      opacity: 0;
-    }
     .sub-dots {
       position: absolute;
       top: 50%;
@@ -165,14 +146,11 @@
       border-radius: 50%;
       background-size: cover;
       background-position: center;
-      opacity: 0;
+      opacity: 0.7;
       transition: opacity 0.3s ease, transform 0.3s ease;
       cursor: pointer;
       text-decoration: none;
       box-shadow: 0 0 5px rgba(0,0,0,0.5);
-    }
-    .sub-dots.active .sub-dot {
-      opacity: 0.7;
     }
     .sub-dot:hover {
       transform: scale(1.5);
