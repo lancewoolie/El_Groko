@@ -35,6 +35,27 @@
       position: relative;
     }
     
+    /* Floating Subscribe Tab */
+    .floating-subscribe {
+      position: fixed;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 31, 63, 0.9);
+      color: #FFD700;
+      padding: 10px 15px;
+      text-decoration: none;
+      font-size: 14px;
+      border: 1px solid #0074D9;
+      border-radius: 5px;
+      z-index: 1000;
+      transition: background 0.3s ease;
+      white-space: nowrap;
+    }
+    .floating-subscribe:hover {
+      background: rgba(0, 116, 217, 0.9);
+    }
+    
     /* Interactive Dots with Custom Colors - Increased Size - Bullet Hole Image */
     .interactive-dot {
       position: absolute;
@@ -104,8 +125,8 @@
     /* Music Dot Container for Submenu - Expanded Hover Area */
     .dot-container, .merch-container {
       position: absolute;
-      width: 200px; /* 300% larger hover area */
-      height: 200px; /* 300% larger hover area */
+      width: 400px; /* Larger hover area to encompass sub-dots */
+      height: 400px; /* Larger hover area to encompass sub-dots */
       z-index: 3;
     }
     .music-container {
@@ -126,6 +147,9 @@
       top: 50%;
       transform: translate(-50%, -50%);
       transition: opacity 0.3s ease;
+    }
+    .main-dot.hidden {
+      opacity: 0;
     }
     .sub-dots {
       position: absolute;
@@ -353,6 +377,8 @@
   </script>
 </head>
 <body>
+  <a href="contact.html" class="floating-subscribe">Subscribe</a>
+
   <div id="nav-placeholder"></div> <!-- Dynamic Nav Insert Here -->
 
   <!-- Hero Section (Mimicking Crockett's Hero with Interactive Dots Only) -->
@@ -512,7 +538,7 @@
         hideTimeout = setTimeout(() => {
           subDots.classList.remove('active');
           mainDot.classList.remove('hidden');
-        }, 200);
+        }, 500); // Increased timeout for easier navigation
       });
 
       container.querySelectorAll('.sub-dot').forEach(sub => {
@@ -523,7 +549,7 @@
           hideTimeout = setTimeout(() => {
             subDots.classList.remove('active');
             mainDot.classList.remove('hidden');
-          }, 200);
+          }, 500); // Increased timeout
         });
       });
     });
