@@ -71,34 +71,11 @@ function generateNav() {
   }
 }
 
-// Reusable Footer Generator (Updated to include elaborate newsletter signup card and text social links)
+// Reusable Footer Generator (Updated to remove newsletter signup, tighter layout with social links)
 function generateFooter() {
   const footerHTML = `
-    <footer class="footer bg-dark text-light py-3" style="position: fixed; bottom: 0; left: 0; right: 0; z-index: 1001; border-top: 1px solid #0074D9;">
+    <footer class="footer bg-dark text-light py-2" style="position: fixed; bottom: 0; left: 0; right: 0; z-index: 1001; border-top: 1px solid #0074D9;">
       <div class="container">
-        <!-- Newsletter Signup (Shown only on index) -->
-        <div class="row justify-content-center mb-3" id="newsletter-section" style="display: none;">
-          <div class="col-md-8">
-            <div class="card bg-dark text-light border-light">
-              <div class="card-body">
-                <h3 class="card-title text-center mb-4">Sign Up for Exclusive Events & Pre-Releases</h3>
-                <p class="text-center mb-3">Get first dibs on swamp-side shows, early track drops, and bayou insider vibes. Your info stays locked in the vault—privacy first.</p>
-                <form id="newsletter-form" class="row g-3 justify-content-center">
-                  <div class="col-md-6">
-                    <label for="signup-email" class="form-label text-light">Email</label>
-                    <input type="email" class="form-control bg-secondary text-light" id="signup-email" placeholder="your@bayou.com" required>
-                  </div>
-                  <div class="col-md-6 d-flex align-items-end">
-                    <button type="submit" class="btn btn-gold w-100">Do it. Sign Up</button>
-                  </div>
-                </form>
-                <div id="newsletter-success" class="success-message text-center mt-3" style="display: none; color: #FFD700;">Signed up—exclusive twang incoming! Check your inbox.</div>
-                <p class="text-center small mt-2 text-muted">Powered by Firebase—secure, GDPR-compliant. No spam, just twang.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
         <!-- Social Links (Text) -->
         <div class="row justify-content-center mb-2">
           <div class="col-md-6 text-center">
@@ -156,11 +133,6 @@ function generateFooter() {
       ];
       cowboyHat.addEventListener('click', () => surprises[Math.floor(Math.random() * surprises.length)]());
     }
-    // Show newsletter on index page
-    if (window.location.pathname.includes('index.html') || window.location.pathname === '/') {
-      const newsletterSection = document.getElementById('newsletter-section');
-      if (newsletterSection) newsletterSection.style.display = 'block';
-    }
   } else {
     console.warn('Footer placeholder not found—add <div id="footer-placeholder"></div> before </body>');
   }
@@ -202,32 +174,6 @@ document.addEventListener('DOMContentLoaded', () => {
         form.reset();
       } catch (error) {
         alert('Send failed—try again.');
-        console.error(error);
-      }
-    });
-  }
-
-  // Newsletter Form Handler (Updated to show success div and hide form)
-  const newsletterForm = document.getElementById('newsletter-form');
-  if (newsletterForm && window.db) {
-    newsletterForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const email = document.getElementById('signup-email').value.trim();
-      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        alert('Valid email required.');
-        return;
-      }
-      try {
-        await window.addDoc(window.collection(window.db, 'contacts'), {
-          email, type: 'newsletter', timestamp: window.serverTimestamp()
-        });
-        const successDiv = document.getElementById('newsletter-success');
-        if (successDiv) {
-          newsletterForm.style.display = 'none';
-          successDiv.style.display = 'block';
-        }
-      } catch (error) {
-        alert('Signup snag—try again.');
         console.error(error);
       }
     });
