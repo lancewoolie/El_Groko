@@ -93,14 +93,10 @@
       display: none;
       pointer-events: none;
     }
-    .dot-container:hover .sub-dots {
-      display: block;
-      pointer-events: all;
-    }
     .sub-dot {
       position: absolute;
-      width: 20px;
-      height: 20px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       background-size: cover;
       background-position: center;
@@ -115,18 +111,18 @@
       opacity: 1;
       box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
     }
-    /* X Shape Positions (60px radius at 45° angles) */
-    .sub-dot:nth-child(1) { /* NE 45° */
-      transform: translate(-50%, -50%) translate(42px, -42px);
+    /* X Shape Positions (45° angles, ~62px radius) */
+    .sub-dots .sub-dot:nth-child(1) { /* NE 45° */
+      transform: translate(-50%, -50%) translate(44px, -44px);
     }
-    .sub-dot:nth-child(2) { /* NW 135° */
-      transform: translate(-50%, -50%) translate(-42px, -42px);
+    .sub-dots .sub-dot:nth-child(2) { /* NW 135° */
+      transform: translate(-50%, -50%) translate(-44px, -44px);
     }
-    .sub-dot:nth-child(3) { /* SW 225° */
-      transform: translate(-50%, -50%) translate(-42px, 42px);
+    .sub-dots .sub-dot:nth-child(3) { /* SW 225° */
+      transform: translate(-50%, -50%) translate(-44px, 44px);
     }
-    .sub-dot:nth-child(4) { /* SE 315° */
-      transform: translate(-50%, -50%) translate(42px, 42px);
+    .sub-dots .sub-dot:nth-child(4) { /* SE 315° */
+      transform: translate(-50%, -50%) translate(44px, 44px);
     }
     
     /* Footer Float Lock */
@@ -329,13 +325,13 @@
         <a href="music.html" class="interactive-dot main-dot" data-title="Music"></a>
         <div class="sub-dots">
           <!-- Uber -->
-          <a href="https://orcd.co/a4glqme" class="sub-dot" style="background-image: url('img/Ubersmall.jpg');" target="_blank" title="Uber"></a>
+          <a href="https://orcd.co/a4glqme" class="sub-dot" style="background-image: url('img/Ubermenu.jpg');" target="_blank" title="Uber"></a>
           <!-- Too Drunk -->
-          <a href="https://orcd.co/lancewoolietoodrunk" class="sub-dot" style="background-image: url('img/TooDrunkSmall.jpg');" target="_blank" title="Too Drunk"></a>
+          <a href="https://orcd.co/lancewoolietoodrunk" class="sub-dot" style="background-image: url('img/TooDrunkmenu.jpg');" target="_blank" title="Too Drunk"></a>
           <!-- Worst Enemy -->
-          <a href="https://orcd.co/lancewoolieworstenemy" class="sub-dot" style="background-image: url('img/WorstEnemySmall.jpg');" target="_blank" title="Worst Enemy"></a>
-          <!-- Full Catalog (Country Paradise) -->
-          <a href="https://orcd.co/o4qa0ba" class="sub-dot" style="background-image: url('img/CountryParadiseSmall.jpg');" target="_blank" title="Full Catalog"></a>
+          <a href="https://orcd.co/lancewoolieworstenemy" class="sub-dot" style="background-image: url('img/WorstEnemymenu.jpg');" target="_blank" title="Worst Enemy"></a>
+          <!-- Full Catalog -->
+          <a href="music.html" class="sub-dot" style="background-image: url('img/Fullcatalogmenu.jpg');" title="Full Catalog"></a>
         </div>
       </div>
       
@@ -348,7 +344,7 @@
   </section>
 
   <!-- Combined Latest Release & Featured Merch Section -->
-  <section id="music" class="py-5 combined-section">
+  <section class="py-5 combined-section">
     <div class="container">
       <h2 class="text-center mb-4" style="color: white;">Latest Release & Featured Merch</h2>
       <div class="row">
@@ -416,7 +412,7 @@
   </section>
 
   <!-- Upcoming Events Section -->
-  <section id="events" class="py-5" style="background-color: rgba(30, 58, 138, 0.8);">
+  <section class="py-5" style="background-color: rgba(30, 58, 138, 0.8);">
     <div class="container">
       <h2 class="text-center mb-4" style="color: white;">Upcoming Events</h2>
       <div class="row justify-content-center">
@@ -459,8 +455,32 @@
       this.reset();
     });
 
-    // Smooth scroll for dots - but now external links, so no need for scroll
-    // Removed scroll logic as links go to pages
+    // Music submenu logic
+    const mainDot = document.querySelector('.main-dot');
+    const subDots = document.querySelector('.sub-dots');
+    let hideTimeout;
+
+    mainDot.addEventListener('mouseenter', () => {
+      clearTimeout(hideTimeout);
+      subDots.style.display = 'block';
+    });
+
+    mainDot.addEventListener('mouseleave', () => {
+      hideTimeout = setTimeout(() => {
+        subDots.style.display = 'none';
+      }, 100);
+    });
+
+    document.querySelectorAll('.sub-dot').forEach(sub => {
+      sub.addEventListener('mouseenter', () => {
+        clearTimeout(hideTimeout);
+      });
+      sub.addEventListener('mouseleave', () => {
+        hideTimeout = setTimeout(() => {
+          subDots.style.display = 'none';
+        }, 100);
+      });
+    });
   </script>
 </body>
 </html>
