@@ -42,13 +42,12 @@
       height: 32px;
       border-radius: 50%;
       opacity: 0.5;
-      transition: transform 0.3s ease, opacity 0.3s ease, background-color 0.3s ease;
+      transition: opacity 0.3s ease, background-color 0.3s ease;
       cursor: pointer;
       z-index: 3;
       text-decoration: none;
     }
     .interactive-dot:hover {
-      transform: scale(2);
       opacity: 1;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     }
@@ -136,6 +135,10 @@
       left: 50%;
       top: 50%;
       transform: translate(-50%, -50%);
+      transition: opacity 0.3s ease;
+    }
+    .main-dot.hidden {
+      opacity: 0;
     }
     .sub-dots {
       position: absolute;
@@ -144,6 +147,10 @@
       transform: translate(-50%, -50%);
       display: none;
       pointer-events: none;
+    }
+    .sub-dots.active {
+      display: block;
+      pointer-events: all;
     }
     .sub-dot {
       position: absolute;
@@ -179,37 +186,45 @@
       pointer-events: none;
     }
     
-    /* X Shape Positions (45° angles, ~88px radius adjusted) */
+    /* X Shape Positions (45° angles, spaced further for visibility) */
     .sub-dots .sub-dot:nth-child(1) { /* NE 45° */
-      transform: translate(-50%, -50%) translate(70px, -70px);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) translate(100px, -100px);
       animation-delay: 0.1s;
     }
     .sub-dots .sub-dot:nth-child(2) { /* NW 135° */
-      transform: translate(-50%, -50%) translate(-70px, -70px);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) translate(-100px, -100px);
       animation-delay: 0.2s;
     }
     .sub-dots .sub-dot:nth-child(3) { /* SW 225° */
-      transform: translate(-50%, -50%) translate(-70px, 70px);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) translate(-100px, 100px);
       animation-delay: 0.3s;
     }
     .sub-dots .sub-dot:nth-child(4) { /* SE 315° */
-      transform: translate(-50%, -50%) translate(70px, 70px);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) translate(100px, 100px);
       animation-delay: 0.4s;
     }
     
-    /* Snazzy Emergence Animation - Fixed to not override positioning */
+    /* Snazzy Emergence Animation - From center outward */
     @keyframes emerge {
       0% {
         opacity: 0;
-        transform: scale(0) rotate(0deg);
+        transform: translate(-50%, -50%) scale(0.2) rotate(0deg);
       }
       50% {
         opacity: 0.5;
-        transform: scale(0.5) rotate(180deg);
+        transform: translate(-50%, -50%) scale(0.6) rotate(180deg);
       }
       100% {
         opacity: 0.7;
-        transform: scale(1) rotate(360deg);
+        transform: translate(-50%, -50%) scale(1) rotate(360deg);
       }
     }
     
@@ -545,12 +560,14 @@
 
     // Music submenu logic - Improved hover persistence
     const dotContainer = document.querySelector('.dot-container');
+    const mainDot = document.querySelector('.main-dot');
     const subDots = document.querySelector('.sub-dots');
     let hideTimeout;
 
     dotContainer.addEventListener('mouseenter', () => {
       clearTimeout(hideTimeout);
-      subDots.style.display = 'block';
+      mainDot.classList.add('hidden');
+      subDots.classList.add('active');
       // Restart animations for sub-dots
       document.querySelectorAll('.sub-dot').forEach((sub, index) => {
         sub.style.animation = 'none';
@@ -561,7 +578,8 @@
 
     dotContainer.addEventListener('mouseleave', () => {
       hideTimeout = setTimeout(() => {
-        subDots.style.display = 'none';
+        subDots.classList.remove('active');
+        mainDot.classList.remove('hidden');
       }, 200); // Increased delay for better UX
     });
 
@@ -571,7 +589,8 @@
       });
       sub.addEventListener('mouseleave', () => {
         hideTimeout = setTimeout(() => {
-          subDots.style.display = 'none';
+          subDots.classList.remove('active');
+          mainDot.classList.remove('hidden');
         }, 200);
       });
     });
