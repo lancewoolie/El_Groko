@@ -95,8 +95,8 @@
     }
     .sub-dot {
       position: absolute;
-      width: 40px;
-      height: 40px;
+      width: 80px;
+      height: 80px;
       border-radius: 50%;
       background-size: cover;
       background-position: center;
@@ -111,18 +111,18 @@
       opacity: 1;
       box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
     }
-    /* X Shape Positions (45° angles, ~62px radius) */
+    /* X Shape Positions (45° angles, ~88px radius) */
     .sub-dots .sub-dot:nth-child(1) { /* NE 45° */
-      transform: translate(-50%, -50%) translate(44px, -44px);
+      transform: translate(-50%, -50%) translate(62px, -62px);
     }
     .sub-dots .sub-dot:nth-child(2) { /* NW 135° */
-      transform: translate(-50%, -50%) translate(-44px, -44px);
+      transform: translate(-50%, -50%) translate(-62px, -62px);
     }
     .sub-dots .sub-dot:nth-child(3) { /* SW 225° */
-      transform: translate(-50%, -50%) translate(-44px, 44px);
+      transform: translate(-50%, -50%) translate(-62px, 62px);
     }
     .sub-dots .sub-dot:nth-child(4) { /* SE 315° */
-      transform: translate(-50%, -50%) translate(44px, 44px);
+      transform: translate(-50%, -50%) translate(62px, 62px);
     }
     
     /* Footer Float Lock */
@@ -353,37 +353,37 @@
             <div class="carousel-inner">
               <div class="carousel-item active">
                 <div class="merch-card card">
-                  <img src="img/merch1.jpg" alt="Cluck Yeah Chicken Socks" class="card-img-top">
+                  <img src="https://f4.bcbits.com/img/0041177986_10.jpg" alt="Cluck Yeah Chicken Socks" class="card-img-top">
                   <div class="card-body">
                     <h3>Cluck Yeah Chicken Socks</h3>
                     <p>Exclusive jet-black socks from premium Chinese cotton, one size fits all.</p>
                     <span class="price-tag">$10</span>
                     <br>
-                    <a href="#" class="btn btn-buy mt-2">Buy Now</a>
+                    <a href="https://lancewoolie.bandcamp.com/merch/chicken-socks-cluck-yeah-step-into-the-flock" class="btn btn-buy mt-2" target="_blank">Buy Now</a>
                   </div>
                 </div>
               </div>
               <div class="carousel-item">
                 <div class="merch-card card">
-                  <img src="img/merch2.jpg" alt="Uber (Single)" class="card-img-top">
+                  <img src="https://f4.bcbits.com/img/a2855470268_10.jpg" alt="Uber Single Cover" class="card-img-top">
                   <div class="card-body">
                     <h3>Uber (Single)</h3>
                     <p>Danceable neotraditional tune evoking lost love, featuring Brent Mason.</p>
                     <span class="price-tag">$1.29</span>
                     <br>
-                    <a href="#" class="btn btn-buy mt-2">Buy Now</a>
+                    <a href="https://lancewoolie.bandcamp.com/track/uber" class="btn btn-buy mt-2" target="_blank">Buy Now</a>
                   </div>
                 </div>
               </div>
               <div class="carousel-item">
                 <div class="merch-card card">
-                  <img src="img/merch3.jpg" alt="Too Drunk (Single)" class="card-img-top">
+                  <img src="https://f4.bcbits.com/img/a1387979790_10.jpg" alt="Too Drunk Single Cover" class="card-img-top">
                   <div class="card-body">
                     <h3>Too Drunk (Single)</h3>
                     <p>Debut release co-created with Legendary Guitarist Brent Mason—raw country grit.</p>
                     <span class="price-tag">$1.29</span>
                     <br>
-                    <a href="#" class="btn btn-buy mt-2">Buy Now</a>
+                    <a href="https://lancewoolie.bandcamp.com/track/too-drunk-ft-brent-mason" class="btn btn-buy mt-2" target="_blank">Buy Now</a>
                   </div>
                 </div>
               </div>
@@ -437,7 +437,7 @@
     </div>
   </section>
 
-  <div id="footer-placeholder"> <!-- Dynamic Footer Insert Here - Floating Fixed -->
+  <div id="footer-placeholder" class="tight-footer"> <!-- Dynamic Footer Insert Here - Floating Fixed -->
     <!-- Condensed Signup in Footer (Taskbar Style) -->
     <form id="newsletterForm" class="footer-signup">
       <input type="email" class="form-control" placeholder="Email for updates" required>
