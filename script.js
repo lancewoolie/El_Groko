@@ -71,7 +71,7 @@ function generateNav() {
   }
 }
 
-// Reusable Footer Generator (Updated to emulate taller Charley Crockett-style footer with social links)
+// Reusable Footer Generator (Updated with direct image URLs for social icons from Simple Icons CDN)
 function generateFooter() {
   const footerHTML = `
     <footer class="footer bg-dark text-light py-4" style="position: fixed; bottom: 0; left: 0; right: 0; z-index: 1001; border-top: 1px solid #0074D9;">
@@ -85,11 +85,21 @@ function generateFooter() {
             <p class="mb-0 small">&copy; 2025 Lance Woolie. All rights reserved.</p>
           </div>
           <div class="col-md-4 text-end">
-            <a href="https://x.com/LanceWoolie" target="_blank" class="text-light me-3" title="X (Twitter)"><i class="bi bi-twitter-x fs-4"></i></a>
-            <a href="https://www.facebook.com/lancewoolie/" target="_blank" class="text-light me-3" title="Facebook"><i class="bi bi-facebook fs-4"></i></a>
-            <a href="https://www.tiktok.com/@lancewoolie" target="_blank" class="text-light me-3" title="TikTok"><i class="bi bi-tiktok fs-4"></i></a>
-            <a href="https://www.youtube.com/@LanceWoolie" target="_blank" class="text-light me-3" title="YouTube"><i class="bi bi-youtube fs-4"></i></a>
-            <a href="https://www.instagram.com/lancewoolie/" target="_blank" class="text-light" title="Instagram"><i class="bi bi-instagram fs-4"></i></a>
+            <a href="https://x.com/LanceWoolie" target="_blank" class="me-3" title="X (Twitter)" style="display: inline-block; width: 24px; height: 24px; margin-right: 8px;">
+              <img src="https://cdn.simpleicons.org/x/ffffff/24" alt="X" style="width: 24px; height: 24px;">
+            </a>
+            <a href="https://www.facebook.com/lancewoolie/" target="_blank" class="me-3" title="Facebook" style="display: inline-block; width: 24px; height: 24px; margin-right: 8px;">
+              <img src="https://cdn.simpleicons.org/facebook/ffffff/24" alt="Facebook" style="width: 24px; height: 24px;">
+            </a>
+            <a href="https://www.tiktok.com/@lancewoolie" target="_blank" class="me-3" title="TikTok" style="display: inline-block; width: 24px; height: 24px; margin-right: 8px;">
+              <img src="https://cdn.simpleicons.org/tiktok/ffffff/24" alt="TikTok" style="width: 24px; height: 24px;">
+            </a>
+            <a href="https://www.youtube.com/@LanceWoolie" target="_blank" class="me-3" title="YouTube" style="display: inline-block; width: 24px; height: 24px; margin-right: 8px;">
+              <img src="https://cdn.simpleicons.org/youtube/ffffff/24" alt="YouTube" style="width: 24px; height: 24px;">
+            </a>
+            <a href="https://www.instagram.com/lancewoolie/" target="_blank" title="Instagram" style="display: inline-block; width: 24px; height: 24px;">
+              <img src="https://cdn.simpleicons.org/instagram/ffffff/24" alt="Instagram" style="width: 24px; height: 24px;">
+            </a>
           </div>
         </div>
         <!-- Newsletter Signup (Global, but hidden on non-index pages if needed) -->
