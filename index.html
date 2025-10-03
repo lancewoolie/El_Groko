@@ -170,6 +170,7 @@
       cursor: pointer;
       text-decoration: none;
       box-shadow: 0 0 5px rgba(0,0,0,0.5);
+      animation: subDotEmerge 0.4s ease-out forwards;
     }
     .sub-dots.active .sub-dot {
       opacity: 0.7;
@@ -199,21 +200,37 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%) translate(100px, -100px);
+      animation-delay: 0.05s;
     }
     .sub-dots .sub-dot:nth-child(2) { /* NW 135° */
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%) translate(-100px, -100px);
+      animation-delay: 0.1s;
     }
     .sub-dots .sub-dot:nth-child(3) { /* SW 225° */
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%) translate(-100px, 100px);
+      animation-delay: 0.15s;
     }
     .sub-dots .sub-dot:nth-child(4) { /* SE 315° */
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%) translate(100px, 100px);
+      animation-delay: 0.2s;
+    }
+    
+    /* Sub Dot Emergence Animation */
+    @keyframes subDotEmerge {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5);
+      }
+      100% {
+        opacity: 0.7;
+        transform: translate(-50%, -50%) scale(1);
+      }
     }
     
     /* Footer Float Lock */
