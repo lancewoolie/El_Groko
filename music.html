@@ -29,8 +29,7 @@
       overflow: hidden;
       transition: all 0.3s ease;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-      max-width: 800px; /* Consistent max width for all cards */
-      margin: 0 auto; /* Center the cards */
+      height: 100%; /* Equal height for cards in row */
     }
     .card:hover {
       transform: translateY(-10px);
@@ -39,6 +38,8 @@
     .card-body {
       color: #eceff1;
       padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
     }
     h1, h3 {
       color: #ffffff !important; /* White headers for contrast */
@@ -50,6 +51,7 @@
     p {
       color: #b0bec5;
       line-height: 1.6;
+      flex-grow: 1;
     }
     a {
       color: #ffeb3b; /* Gold links */
@@ -62,6 +64,7 @@
       border-color: #ffeb3b;
       color: #263238;
       font-weight: bold;
+      align-self: flex-start;
     }
     .btn-success:hover {
       background-color: #fdd835;
@@ -85,6 +88,7 @@
     .video-embed {
       border-radius: 8px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      flex-grow: 1;
     }
     .tight-footer {
       background: #263238 !important;
@@ -98,7 +102,14 @@
       border-top: 1px solid #546e7a;
     }
     .container {
-      max-width: 900px;
+      max-width: 1200px;
+    }
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .row > [class*="col-"] {
+      display: flex;
     }
     @media (max-width: 768px) {
       .album-art {
@@ -106,9 +117,6 @@
       }
       iframe {
         height: 200px !important;
-      }
-      .card {
-        max-width: 100%;
       }
     }
   </style>
@@ -120,9 +128,9 @@
     <h1 class="text-center mb-5">Music & Videos</h1>
     <p class="lead text-center">Dive into Lance's catalog—from raw country anthems to soulful live sessions. Stream on Spotify, watch on YouTube.</p>
 
-    <div class="row justify-content-center">
+    <div class="row">
       <!-- Uber 2025 -->
-      <div class="col-12 release-card">
+      <div class="col-md-6 release-card">
         <div class="card">
           <div class="card-body">
             <img src="https://img.youtube.com/vi/0nTop80SCvs/0.jpg" alt="Uber Cover Art" class="album-art">
@@ -135,7 +143,7 @@
       </div>
 
       <!-- Too Drunk 2024 -->
-      <div class="col-12 release-card">
+      <div class="col-md-6 release-card">
         <div class="card">
           <div class="card-body">
             <img src="https://img.youtube.com/vi/K6c5kCqZHOc/0.jpg" alt="Too Drunk Cover Art" class="album-art">
@@ -148,7 +156,7 @@
       </div>
 
       <!-- Worst Enemy 2023 -->
-      <div class="col-12 release-card">
+      <div class="col-md-6 release-card">
         <div class="card">
           <div class="card-body">
             <img src="https://img.youtube.com/vi/neRw6xjusAg/0.jpg" alt="Worst Enemy Cover Art" class="album-art">
@@ -161,7 +169,7 @@
       </div>
 
       <!-- Road To Texas 2021 -->
-      <div class="col-12 release-card">
+      <div class="col-md-6 release-card">
         <div class="card">
           <div class="card-body">
             <img src="https://img.youtube.com/vi/WliGvdfdWxw/0.jpg" alt="Road To Texas Cover Art" class="album-art">
@@ -188,7 +196,7 @@
       </div>
 
       <!-- Bonus Live Video -->
-      <div class="col-12 release-card">
+      <div class="col-md-6 release-card">
         <div class="card">
           <div class="card-body">
             <img src="https://img.youtube.com/vi/MXyIZonwOEk/0.jpg" alt="Little Wing Live Cover" class="album-art">
