@@ -9,54 +9,83 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" type="image/png" href="img/LanceWoolieHeadonly.png">
   <meta name="description" content="Music & Videos - Lance Woolie - Do it. Dive into raw country anthems.">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://cdn.jsdelivr.net https://www.youtube.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https: blob:; frame-src 'self' https://www.youtube.com; font-src 'self' https://fonts.gstatic.com; object-src 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://cdn.jsdelivr.net https://www.youtube.com https://img.youtube.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https: blob:; frame-src 'self' https://www.youtube.com; font-src 'self' https://fonts.gstatic.com; object-src 'none'">
   <meta http-equiv="X-Frame-Options" content="DENY">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
   <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
   <style>
     body {
-      background-color: #1e3a8a; /* Dark royal blue - matches events */
-      color: #E0E0E0; /* Light grey text */
+      background-color: #263238; /* Dark blue-grey */
+      color: #eceff1; /* Light grey text */
       padding-bottom: 60px; /* Space for fixed footer */
+      font-family: 'Georgia', serif;
     }
     .card {
-      background-color: #1e3a8a; /* Dark bg like events cards */
-      color: #E0E0E0;
-      border: 1px solid #0074D9; /* Blue border accent */
+      background-color: #37474f; /* Slightly lighter blue-grey for cards */
+      color: #eceff1;
+      border: 1px solid #546e7a; /* Subtle blue-grey border */
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
     }
     .card-body {
-      color: #E0E0E0;
+      color: #eceff1;
+      padding: 1.5rem;
     }
     h1, h3 {
-      color: #001f3f !important; /* Navy headers like events */
+      color: #ffffff !important; /* White headers for contrast */
+      font-weight: bold;
     }
     .lead {
-      color: #E0E0E0;
+      color: #cfd8dc;
     }
     p {
-      color: #E0E0E0;
+      color: #b0bec5;
+      line-height: 1.6;
     }
     a {
-      color: #FFD700; /* Gold links */
+      color: #ffeb3b; /* Gold links */
     }
     a:hover {
-      color: #e6c200; /* Gold hover */
+      color: #fdd835; /* Slightly darker gold hover */
     }
     .btn-success {
-      background-color: #FFD700; /* Gold buttons */
-      border-color: #FFD700;
-      color: #001f3f;
+      background-color: #ffeb3b; /* Gold buttons */
+      border-color: #ffeb3b;
+      color: #263238;
+      font-weight: bold;
     }
     .btn-success:hover {
-      background-color: #e6c200;
-      border-color: #e6c200;
+      background-color: #fdd835;
+      border-color: #fdd835;
     }
     .release-card {
       margin-bottom: 2rem;
     }
+    .album-art {
+      display: block;
+      margin: 0 auto 1rem auto;
+      max-height: 150px;
+      width: auto;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease;
+    }
+    .album-art:hover {
+      transform: scale(1.05);
+    }
+    .video-embed {
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
     .tight-footer {
-      background: #001f3f !important;
+      background: #263238 !important;
       opacity: 1 !important;
       position: fixed !important;
       bottom: 0 !important;
@@ -64,7 +93,18 @@
       right: 0 !important;
       width: 100% !important;
       z-index: 1001 !important;
-      border-top: 1px solid #0074D9;
+      border-top: 1px solid #546e7a;
+    }
+    .container {
+      max-width: 1200px;
+    }
+    @media (max-width: 768px) {
+      .album-art {
+        max-height: 120px;
+      }
+      iframe {
+        height: 200px !important;
+      }
     }
   </style>
 </head>
@@ -72,7 +112,7 @@
   <div id="nav-placeholder"></div> <!-- Dynamic Nav Insert Here -->
 
   <div class="container py-5" style="margin-top: 80px;">
-    <h1 class="text-center mb-5 text-dark-blue">Music & Videos</h1>
+    <h1 class="text-center mb-5">Music & Videos</h1>
     <p class="lead text-center">Dive into Lance's catalog—from raw country anthems to soulful live sessions. Stream on Spotify, watch on YouTube.</p>
 
     <div class="row">
@@ -80,10 +120,11 @@
       <div class="col-md-6 release-card">
         <div class="card">
           <div class="card-body">
+            <img src="https://img.youtube.com/vi/0nTop80SCvs/0.jpg" alt="Uber Cover Art" class="album-art">
             <h3>Uber (2025)</h3>
             <p>A danceable neotraditional tune, evoking lost love with "I would give anything to see you walk through that door." Lance's striking, one-of-a-kind vocal uses no auto-tune. Uber features Brent Mason (14-time ACM Guitarist, Grammy winner, recently working with Zack Top & Post Malone), Scotty Sanders (I Never Lie- Zach Top & steel guitar for Gene Watson, Dolly Parton), and Brian Brignac (drummer for Eric Clapton, Wayne Toups). Perfect for modern "Country Gold" & '90s playlists.</p>
             <a href="https://orcd.co/a4glqme" class="btn btn-success" target="_blank">Stream</a>
-            <iframe width="100%" height="200" src="https://www.youtube.com/embed/0nTop80SCvs" title="Uber Video" frameborder="0" allowfullscreen class="mt-2"></iframe>
+            <iframe width="100%" height="250" src="https://www.youtube.com/embed/0nTop80SCvs" title="Uber Video" frameborder="0" allowfullscreen class="mt-2 video-embed"></iframe>
           </div>
         </div>
       </div>
@@ -92,10 +133,11 @@
       <div class="col-md-6 release-card">
         <div class="card">
           <div class="card-body">
+            <img src="https://img.youtube.com/vi/K6c5kCqZHOc/0.jpg" alt="Too Drunk Cover Art" class="album-art">
             <h3>Too Drunk (2024)</h3>
             <p>Lance Woolie's debut release "Too Drunk" was created in collaboration the renowned Legendary Guitarist of the Year Brent Mason. It's worth noting that Lance came up with the initial tune while Jefferey Allen Imler was visiting a session in the studio. This unique combination of talent and creativity resulted in a remarkable piece of music that is sure to captivate audiences.</p>
             <a href="https://orcd.co/lancewoolietoodrunk" class="btn btn-success" target="_blank">Stream</a>
-            <iframe width="100%" height="200" src="https://www.youtube.com/embed/K6c5kCqZHOc" title="Too Drunk Video" frameborder="0" allowfullscreen class="mt-2"></iframe>
+            <iframe width="100%" height="250" src="https://www.youtube.com/embed/K6c5kCqZHOc" title="Too Drunk Video" frameborder="0" allowfullscreen class="mt-2 video-embed"></iframe>
           </div>
         </div>
       </div>
@@ -104,10 +146,11 @@
       <div class="col-md-6 release-card">
         <div class="card">
           <div class="card-body">
+            <img src="https://img.youtube.com/vi/neRw6xjusAg/0.jpg" alt="Worst Enemy Cover Art" class="album-art">
             <h3>Worst Enemy (2023)</h3>
             <p>With raw and honest lyrics like “I’ll gouge out both my eyes then complain that I can’t see,” this song captures the struggles of self-sabotage. Set against the backdrop of Louisiana, with references to Bourbon Street and Mardi Gras, this song brings the vibrant southern culture to life. The soulful vocals and authentic instrumentation add to the rich tapestry of the story, taking listeners on a journey through the highs and lows of the human experience. 50 time Grammy Award winner. Brent Mason's lead guitar adds a perfect blend for fans of classic country music and those looking for a song that speaks modern truths of the heart.</p>
             <a href="https://orcd.co/lancewoolieworstenemy" class="btn btn-success" target="_blank">Stream</a>
-            <iframe width="100%" height="200" src="https://www.youtube.com/embed/neRw6xjusAg" title="Worst Enemy Video" frameborder="0" allowfullscreen class="mt-2"></iframe>
+            <iframe width="100%" height="250" src="https://www.youtube.com/embed/neRw6xjusAg" title="Worst Enemy Video" frameborder="0" allowfullscreen class="mt-2 video-embed"></iframe>
           </div>
         </div>
       </div>
@@ -116,10 +159,11 @@
       <div class="col-md-6 release-card">
         <div class="card">
           <div class="card-body">
+            <img src="https://img.youtube.com/vi/WliGvdfdWxw/0.jpg" alt="Road To Texas Cover Art" class="album-art">
             <h3>Road To Texas (2021)</h3>
             <p>Written in Honor of the late legendary radio Gawd John Walton.</p>
             <a href="https://orcd.co/pbadp4n" class="btn btn-success" target="_blank">Stream</a>
-            <iframe width="100%" height="200" src="https://www.youtube.com/embed/WliGvdfdWxw" title="Road To Texas Video" frameborder="0" allowfullscreen class="mt-2"></iframe>
+            <iframe width="100%" height="250" src="https://www.youtube.com/embed/WliGvdfdWxw" title="Road To Texas Video" frameborder="0" allowfullscreen class="mt-2 video-embed"></iframe>
           </div>
         </div>
       </div>
@@ -130,7 +174,7 @@
           <div class="card-body">
             <h3>Country Paradise (2021) - Full Album</h3>
             <a href="https://orcd.co/o4qa0ba" target="_blank">
-              <img src="img/COUNTRY-PARADISE-scaled.jpg" alt="Country Paradise Album Cover" class="img-fluid mb-2 rounded" style="width: 100%; height: auto;">
+              <img src="img/COUNTRY-PARADISE-scaled.jpg" alt="Country Paradise Album Cover" class="img-fluid mb-2 rounded" style="width: 100%; height: auto; max-height: 300px; display: block; margin: 0 auto;">
             </a>
             <p>The debut album by Hogleg band with frontman Lance Woolie</p>
             <a href="https://orcd.co/o4qa0ba" class="btn btn-success" target="_blank">Stream Album</a>
@@ -142,8 +186,9 @@
       <div class="col-md-6 release-card mx-auto">
         <div class="card">
           <div class="card-body">
+            <img src="https://img.youtube.com/vi/MXyIZonwOEk/0.jpg" alt="Little Wing Live Cover" class="album-art">
             <h3>Live: Little Wing at The Texas Club (2025)</h3>
-            <iframe width="100%" height="200" src="https://www.youtube.com/embed/MXyIZonwOEk" title="Little Wing Live" frameborder="0" allowfullscreen class="mt-2"></iframe>
+            <iframe width="100%" height="250" src="https://www.youtube.com/embed/MXyIZonwOEk" title="Little Wing Live" frameborder="0" allowfullscreen class="mt-2 video-embed"></iframe>
           </div>
         </div>
       </div>
