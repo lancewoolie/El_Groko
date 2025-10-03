@@ -72,66 +72,72 @@
       opacity: 1;
     }
     
-    /* Music Dot - Maroon */
+    /* Music Dot - Saddle Brown */
     .music-dot {
-      background-color: #800000;
+      background-color: #8B4513;
     }
     .music-dot:hover {
-      background-color: #A52A2A;
-      box-shadow: 0 0 10px rgba(165, 42, 42, 0.5);
+      background-color: #A0522D;
+      box-shadow: 0 0 10px rgba(160, 82, 45, 0.5);
     }
     
-    /* Merch Dot - Green */
+    /* Merch Dot - Sienna */
     .merch-dot {
-      background-color: #008000;
+      background-color: #A0522D;
     }
     .merch-dot:hover {
-      background-color: #228B22;
-      box-shadow: 0 0 10px rgba(34, 139, 34, 0.5);
+      background-color: #CD853F;
+      box-shadow: 0 0 10px rgba(205, 133, 63, 0.5);
     }
     
-    /* Contact Dot - Light Brown */
+    /* Contact Dot - Chocolate */
     .contact-dot {
-      background-color: #D2B48C;
+      background-color: #D2691E;
     }
     .contact-dot:hover {
-      background-color: #DEB887;
-      box-shadow: 0 0 10px rgba(222, 184, 135, 0.5);
+      background-color: #DA70D6;
+      box-shadow: 0 0 10px rgba(218, 112, 214, 0.5);
     }
     
-    /* Events Dot - Yellow */
+    /* Events Dot - Dark Goldenrod */
     .events-dot {
-      background-color: #FFD700;
+      background-color: #B8860B;
     }
     .events-dot:hover {
-      background-color: #FFA500;
-      box-shadow: 0 0 10px rgba(255, 165, 0, 0.5);
+      background-color: #DAA520;
+      box-shadow: 0 0 10px rgba(218, 165, 32, 0.5);
     }
     
-    /* Origins Dot - Black */
+    /* Origins Dot - Charcoal */
     .origins-dot {
-      background-color: #000000;
+      background-color: #36454F;
     }
     .origins-dot:hover {
-      background-color: #333333;
-      box-shadow: 0 0 10px rgba(51, 51, 51, 0.5);
+      background-color: #2F4F4F;
+      box-shadow: 0 0 10px rgba(47, 79, 79, 0.5);
     }
     
     /* Music Dot Container for Submenu - Expanded Hover Area */
-    .dot-container {
+    .dot-container, .merch-container {
       position: absolute;
-      top: 25%;
-      left: 17%; /* Shifted right one space */
       width: 200px; /* 300% larger hover area */
       height: 200px; /* 300% larger hover area */
       z-index: 3;
+    }
+    .music-container {
+      top: 25%;
+      left: 17%; /* Shifted right one space */
+    }
+    .merch-container {
+      top: 50%;
+      left: 50%;
     }
     .main-dot {
       display: block;
       position: relative;
       z-index: 4;
-      width: 80px; /* 250% increase from 32px */
-      height: 80px; /* 250% increase from 32px */
+      width: 80px;
+      height: 80px;
       left: 50%;
       top: 50%;
       transform: translate(-50%, -50%);
@@ -154,16 +160,19 @@
     }
     .sub-dot {
       position: absolute;
-      width: 120px; /* 150% increase from 80px */
-      height: 120px; /* 150% increase from 80px */
+      width: 120px;
+      height: 120px;
       border-radius: 50%;
       background-size: cover;
       background-position: center;
-      opacity: 0.7;
-      transition: transform 0.3s ease, opacity 0.3s ease;
+      opacity: 0;
+      transition: opacity 0.3s ease, transform 0.3s ease;
       cursor: pointer;
       text-decoration: none;
       box-shadow: 0 0 5px rgba(0,0,0,0.5);
+    }
+    .sub-dots.active .sub-dot {
+      opacity: 0.7;
     }
     .sub-dot:hover {
       transform: scale(1.5);
@@ -403,7 +412,7 @@
     <div class="hero-overlay">
       
       <!-- Music Dot Container with Submenu -->
-      <div class="dot-container">
+      <div class="dot-container music-container">
         <a href="music.html" class="interactive-dot main-dot music-dot" data-title="Music"></a>
         <div class="sub-dots">
           <!-- Uber -->
@@ -417,11 +426,25 @@
         </div>
       </div>
       
-      <!-- Other Interactive Dots (Swapped Contact and Merch) -->
+      <!-- Merch Dot Container with Submenu -->
+      <div class="dot-container merch-container">
+        <a href="merch.html" class="interactive-dot main-dot merch-dot" data-title="Merch"></a>
+        <div class="sub-dots">
+          <!-- Cluck Yeah Chicken Socks -->
+          <a href="https://lancewoolie.bandcamp.com/merch/chicken-socks-cluck-yeah-step-into-the-flock" class="sub-dot" style="background-image: url('https://f4.bcbits.com/img/0041177986_10.jpg');" target="_blank" data-title="Chicken Socks"></a>
+          <!-- Uber Single -->
+          <a href="https://lancewoolie.bandcamp.com/track/uber" class="sub-dot" style="background-image: url('https://f4.bcbits.com/img/a2855470268_10.jpg');" target="_blank" data-title="Uber"></a>
+          <!-- Too Drunk Single -->
+          <a href="https://lancewoolie.bandcamp.com/track/too-drunk-ft-brent-mason" class="sub-dot" style="background-image: url('https://f4.bcbits.com/img/a1387979790_10.jpg');" target="_blank" data-title="Too Drunk"></a>
+          <!-- Country Paradise Album -->
+          <a href="https://lancewoolie.bandcamp.com/album/country-paradise" class="sub-dot" style="background-image: url('img/COUNTRY-PARADISE-scaled.jpg');" target="_blank" data-title="Country Paradise"></a>
+        </div>
+      </div>
+      
+      <!-- Other Interactive Dots (Swapped Contact and Merch positions, but Merch now has container) -->
       <a href="origins.html" class="interactive-dot origins-dot" data-title="Origins" style="top: 40%; left: 80%;"></a>
       <a href="events.html" class="interactive-dot events-dot" data-title="Events" style="top: 60%; left: 30%;"></a>
       <a href="contact.html" class="interactive-dot contact-dot" data-title="Contact" style="top: 75%; left: 70%;"></a>
-      <a href="merch.html" class="interactive-dot merch-dot" data-title="Merch" style="top: 50%; left: 50%;"></a>
     </div>
   </section>
 
@@ -537,34 +560,35 @@
       this.reset();
     });
 
-    // Music submenu logic - Improved hover persistence
-    const dotContainer = document.querySelector('.dot-container');
-    const mainDot = document.querySelector('.main-dot');
-    const subDots = document.querySelector('.sub-dots');
-    let hideTimeout;
+    // Generic submenu logic for containers
+    document.querySelectorAll('.dot-container').forEach(container => {
+      const mainDot = container.querySelector('.main-dot');
+      const subDots = container.querySelector('.sub-dots');
+      let hideTimeout;
 
-    dotContainer.addEventListener('mouseenter', () => {
-      clearTimeout(hideTimeout);
-      mainDot.classList.add('hidden');
-      subDots.classList.add('active');
-    });
-
-    dotContainer.addEventListener('mouseleave', () => {
-      hideTimeout = setTimeout(() => {
-        subDots.classList.remove('active');
-        mainDot.classList.remove('hidden');
-      }, 200); // Increased delay for better UX
-    });
-
-    document.querySelectorAll('.sub-dot').forEach(sub => {
-      sub.addEventListener('mouseenter', () => {
+      container.addEventListener('mouseenter', () => {
         clearTimeout(hideTimeout);
+        mainDot.classList.add('hidden');
+        subDots.classList.add('active');
       });
-      sub.addEventListener('mouseleave', () => {
+
+      container.addEventListener('mouseleave', () => {
         hideTimeout = setTimeout(() => {
           subDots.classList.remove('active');
           mainDot.classList.remove('hidden');
         }, 200);
+      });
+
+      container.querySelectorAll('.sub-dot').forEach(sub => {
+        sub.addEventListener('mouseenter', () => {
+          clearTimeout(hideTimeout);
+        });
+        sub.addEventListener('mouseleave', () => {
+          hideTimeout = setTimeout(() => {
+            subDots.classList.remove('active');
+            mainDot.classList.remove('hidden');
+          }, 200);
+        });
       });
     });
   </script>
