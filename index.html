@@ -94,6 +94,9 @@
 .interactive-dot:hover::after {
   opacity: 1;
 }
+.main-dot::after {
+  display: none;
+}
 
 /* Music Dot - Muted Maroon */
 .music-dot {
@@ -148,6 +151,20 @@
 }
 .main-dot.hidden {
   opacity: 0;
+}
+.main-label {
+  position: absolute;
+  left: 50%;
+  top: calc(50% + 50px);
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: #E0E0E0;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 5;
+  pointer-events: none;
 }
 .sub-dots {
   position: absolute;
@@ -361,6 +378,7 @@
   <!-- Music Dot Container with Submenu -->
   <div class="dot-container music-container">
     <a href="music.html" class="interactive-dot main-dot music-dot" data-title="Music & Videos"></a>
+    <span class="main-label">Music & Videos</span>
     <div class="sub-dots">
       <!-- Uber -->
       <a href="https://orcd.co/a4glqme" class="sub-dot" style="background-image: url('img/Ubermenu.jpg');" target="_blank" data-title="Uber"></a>
@@ -376,6 +394,7 @@
   <!-- Merch Dot Container with Submenu -->
   <div class="dot-container merch-container">
     <a href="merch.html" class="interactive-dot main-dot merch-dot" data-title="Merch & More"></a>
+    <span class="main-label">Merch & More</span>
     <div class="sub-dots">
       <!-- Cluck Yeah Chicken Socks -->
       <a href="https://lancewoolie.bandcamp.com/merch/chicken-socks-cluck-yeah-step-into-the-flock" class="sub-dot" style="background-image: url('https://f4.bcbits.com/img/0041177986_10.jpg');" target="_blank" data-title="Chicken Socks"></a>
@@ -397,7 +416,7 @@
   <!-- Combined Latest Release & Featured Merch Section -->
   <section class="py-5 combined-section">
     <div class="container">
-      <h2 class="text-center mb-4" style="color: white;">Latest Release & Featured Merch</h2>
+      <h2 class="text-center mb-4" style="color: white;">Latest Releases & Featured Merch</h2>
       <div class="row">
         <div class="col-md-6">
           <div id="merchCarousel" class="carousel slide" data-bs-ride="carousel">
@@ -453,12 +472,61 @@
           </div>
         </div>
         <div class="col-md-6">
-          <div class="card latest-card">
-            <div class="card-body text-center">
-              <h5 class="card-title" style="color: #FFD700;">Latest Release: Uber (2025)</h5>
-              <p class="card-text small">A danceable neotraditional tune evoking lost love. Features Brent Mason, Scotty Sanders, and Brian Brignac.</p>
-              <iframe width="100%" height="200" src="https://www.youtube.com/embed/0nTop80SCvs" title="Uber Official Video" frameborder="0" allowfullscreen class="mb-2"></iframe>
+          <div id="musicCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <div class="merch-card card">
+                  <img src="img/Ubermenu.jpg" alt="Uber Cover" class="card-img-top">
+                  <div class="card-body">
+                    <h3>Uber</h3>
+                    <p>Danceable neotraditional tune evoking lost love, featuring Brent Mason.</p>
+                    <span class="price-tag">$1.29</span>
+                    <a href="https://lancewoolie.bandcamp.com/track/uber" class="btn btn-buy mt-2" target="_blank">Buy Now</a>
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="merch-card card">
+                  <img src="img/TooDrunkmenu.jpg" alt="Too Drunk Cover" class="card-img-top">
+                  <div class="card-body">
+                    <h3>Too Drunk</h3>
+                    <p>Debut release co-created with Legendary Guitarist Brent Mason—raw country grit.</p>
+                    <span class="price-tag">$1.29</span>
+                    <a href="https://lancewoolie.bandcamp.com/track/too-drunk-ft-brent-mason" class="btn btn-buy mt-2" target="_blank">Buy Now</a>
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="merch-card card">
+                  <img src="img/RoadToTexas.jpg" alt="Road To Texas Cover" class="card-img-top">
+                  <div class="card-body">
+                    <h3>Road To Texas</h3>
+                    <p>Upbeat journey through the heart of Texas country roads.</p>
+                    <span class="price-tag">$1.29</span>
+                    <a href="https://lancewoolie.bandcamp.com/track/road-to-texas" class="btn btn-buy mt-2" target="_blank">Buy Now</a>
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="merch-card card">
+                  <img src="img/LittleWingLive.jpg" alt="Little Wing Live Cover" class="card-img-top">
+                  <div class="card-body">
+                    <h3>Little Wing (Live)</h3>
+                    <p>Live rendition of the Jimi Hendrix classic, captured in intimate setting.</p>
+                    <span class="price-tag">$1.29</span>
+                    <a href="https://lancewoolie.bandcamp.com/track/little-wing-live" class="btn btn-buy mt-2" target="_blank">Buy Now</a>
+                  </div>
+                </div>
+              </div>
             </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#musicCarousel" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#musicCarousel" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
           </div>
         </div>
       </div>
@@ -531,4 +599,3 @@
   </script>
 </body>
 </html>
-
