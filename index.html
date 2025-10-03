@@ -20,7 +20,7 @@
       font-family: 'Georgia', serif;
     }
     
-    /* Smaller Red Circular Dots Background Pattern (Passive) */
+    /* Smaller Maroon Circular Dots Background Pattern (Passive) */
     body::before {
       content: '';
       position: fixed;
@@ -29,15 +29,15 @@
       width: 100%;
       height: 100%;
       background-image: 
-        radial-gradient(circle at 10% 20%, #ff0000 1px, transparent 1px),
-        radial-gradient(circle at 30% 60%, #ff0000 1px, transparent 1px),
-        radial-gradient(circle at 50% 10%, #ff0000 1px, transparent 1px),
-        radial-gradient(circle at 70% 80%, #ff0000 1px, transparent 1px),
-        radial-gradient(circle at 90% 40%, #ff0000 1px, transparent 1px),
-        radial-gradient(circle at 15% 70%, #ff0000 1px, transparent 1px),
-        radial-gradient(circle at 40% 90%, #ff0000 1px, transparent 1px),
-        radial-gradient(circle at 65% 30%, #ff0000 1px, transparent 1px),
-        radial-gradient(circle at 85% 50%, #ff0000 1px, transparent 1px);
+        radial-gradient(circle at 10% 20%, #800000 1px, transparent 1px),
+        radial-gradient(circle at 30% 60%, #800000 1px, transparent 1px),
+        radial-gradient(circle at 50% 10%, #800000 1px, transparent 1px),
+        radial-gradient(circle at 70% 80%, #800000 1px, transparent 1px),
+        radial-gradient(circle at 90% 40%, #800000 1px, transparent 1px),
+        radial-gradient(circle at 15% 70%, #800000 1px, transparent 1px),
+        radial-gradient(circle at 40% 90%, #800000 1px, transparent 1px),
+        radial-gradient(circle at 65% 30%, #800000 1px, transparent 1px),
+        radial-gradient(circle at 85% 50%, #800000 1px, transparent 1px);
       background-repeat: repeat;
       background-size: 200px 150px;
       opacity: 0.3;
@@ -61,15 +61,15 @@
       position: relative;
     }
     
-    /* Interactive Red Dots (1/3 Nickel Size ~ Pencil Diameter, ~8px) */
+    /* Interactive Maroon Dots (Twice as Big ~16px, Faded to Full on Hover) */
     .interactive-dot {
       position: absolute;
-      width: 8px;
-      height: 8px;
-      background-color: #ff0000;
+      width: 16px;
+      height: 16px;
+      background-color: #800000;
       border-radius: 50%;
-      opacity: 0.8;
-      transition: transform 0.3s ease, opacity 0.3s ease;
+      opacity: 0.5;
+      transition: transform 0.3s ease, opacity 0.3s ease, background-color 0.3s ease;
       cursor: pointer;
       z-index: 3;
       text-decoration: none;
@@ -77,8 +77,8 @@
     .interactive-dot:hover {
       transform: scale(2);
       opacity: 1;
-      background-color: #ff4444;
-      box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+      background-color: #A52A2A;
+      box-shadow: 0 0 10px rgba(160, 42, 42, 0.5);
     }
     .interactive-dot::after {
       content: attr(data-title);
@@ -174,14 +174,6 @@
     .tour-time {
       color: #E0E0E0;
       font-size: 1.1rem;
-    }
-    
-    /* Origins Section Styles */
-    .origins-card {
-      background-color: #1e3a8a;
-      border: 1px solid #0074D9;
-      border-radius: 10px;
-      padding: 2rem;
     }
     
     /* Newsletter Section Styles */
@@ -320,28 +312,12 @@
         </div>
       </div>
       
-      <!-- Interactive Red Dots -->
+      <!-- Interactive Maroon Dots -->
       <a href="#music" class="interactive-dot" data-title="Music" style="top: 25%; left: 15%;"></a>
       <a href="#origins" class="interactive-dot" data-title="Origins" style="top: 40%; left: 80%;"></a>
       <a href="#events" class="interactive-dot" data-title="Events" style="top: 60%; left: 30%;"></a>
       <a href="#merch" class="interactive-dot" data-title="Merch" style="top: 75%; left: 70%;"></a>
       <a href="#contact" class="interactive-dot" data-title="Contact" style="top: 50%; left: 50%;"></a>
-    </div>
-  </section>
-
-  <!-- Origins Section -->
-  <section id="origins" class="py-5" style="background-color: rgba(30, 58, 138, 0.8);">
-    <div class="container">
-      <h2 class="text-center mb-4" style="color: white;">Origins</h2>
-      <div class="row justify-content-center">
-        <div class="col-md-8">
-          <div class="origins-card">
-            <div class="card-body text-center">
-              <p>Lance Woolie is a neotraditional country artist with a striking, one-of-a-kind vocal style. Drawing from lost love and danceable tunes, his music blends modern country gold with '90s vibes. No auto-tune, just pure authenticity.</p>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -406,7 +382,6 @@
               <h5 class="card-title" style="color: #FFD700;">Latest Release: Uber (2025)</h5>
               <p class="card-text small">A danceable neotraditional tune evoking lost love. Features Brent Mason, Scotty Sanders, and Brian Brignac.</p>
               <iframe width="100%" height="200" src="https://www.youtube.com/embed/0nTop80SCvs" title="Uber Official Video" frameborder="0" allowfullscreen class="mb-2"></iframe>
-              <a href="https://orcd.co/a4glqme" class="btn btn-success btn-sm" target="_blank">Stream Now</a>
             </div>
           </div>
         </div>
@@ -477,7 +452,10 @@
       dot.addEventListener('click', function(e) {
         e.preventDefault();
         const target = this.getAttribute('href');
-        document.querySelector(target).scrollIntoView({ behavior: 'smooth' });
+        const targetElement = document.querySelector(target);
+        if (targetElement) {
+          targetElement.scrollIntoView({ behavior: 'smooth' });
+        }
       });
     });
   </script>
