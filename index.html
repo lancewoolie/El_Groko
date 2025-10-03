@@ -121,6 +121,8 @@
 /* Origins Dot - Charcoal */
 .origins-dot {
   background-color: transparent;
+  top: 50%;
+  left: 50%;
 }
 
 /* Music Dot Container for Submenu - Expanded Hover Area */
@@ -131,11 +133,19 @@
   z-index: 3;
 }
 .music-container {
-  top: 25%;
-  left: 17%; /* Shifted right one space */
+  top: 50%;
+  left: 25%;
 }
 .merch-container {
-  top: 50%;
+  top: 60%;
+  left: 75%;
+}
+.events-dot {
+  top: 40%;
+  left: 55%;
+}
+.contact-dot {
+  top: 70%;
   left: 50%;
 }
 .main-dot {
@@ -211,26 +221,26 @@
   pointer-events: none;
 }
 
-/* X Shape Positions (45° angles, spaced further for visibility) */
-.sub-dots .sub-dot:nth-child(1) { /* NE 45° */
+/* Circular Moon Positions */
+.sub-dots .sub-dot:nth-child(1) { /* Top */
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) translate(100px, -100px);
+  transform: translate(-50%, -50%) translate(0, -120px);
 }
-.sub-dots .sub-dot:nth-child(2) { /* NW 135° */
+.sub-dots .sub-dot:nth-child(2) { /* Right */
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) translate(-100px, -100px);
+  transform: translate(-50%, -50%) translate(120px, 0);
 }
-.sub-dots .sub-dot:nth-child(3) { /* SW 225° */
+.sub-dots .sub-dot:nth-child(3) { /* Bottom */
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) translate(-100px, 100px);
+  transform: translate(-50%, -50%) translate(0, 120px);
 }
-.sub-dots .sub-dot:nth-child(4) { /* SE 315° */
+.sub-dots .sub-dot:nth-child(4) { /* Left */
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) translate(100px, 100px);
+  transform: translate(-50%, -50%) translate(-120px, 0);
 }
 
 /* Footer Float Lock */
@@ -407,10 +417,10 @@
     </div>
   </div>
   
-  <!-- Other Interactive Dots (Swapped Contact and Merch positions, but Merch now has container) -->
-  <a href="origins.html" class="interactive-dot origins-dot" data-title="Origins" style="top: 40%; left: 80%;"></a>
-  <a href="events.html" class="interactive-dot events-dot" data-title="Events" style="top: 60%; left: 30%;"></a>
-  <a href="contact.html" class="interactive-dot contact-dot" data-title="Contact" style="top: 75%; left: 70%;"></a>
+  <!-- Other Interactive Dots -->
+  <a href="origins.html" class="interactive-dot origins-dot" data-title="Origins"></a>
+  <a href="events.html" class="interactive-dot events-dot" data-title="Events"></a>
+  <a href="contact.html" class="interactive-dot contact-dot" data-title="Contact"></a>
 </div>  </section>
 
   <!-- Combined Latest Release & Featured Merch Section -->
