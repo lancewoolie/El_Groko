@@ -71,27 +71,18 @@ function generateNav() {
   }
 }
 
-// Reusable Footer Generator (Updated to remove newsletter signup, tighter layout with social links)
+// Reusable Footer Generator (Updated to remove Follow & Connect text links, tighter layout)
 function generateFooter() {
   const footerHTML = `
-    <footer class="footer bg-dark text-light py-2" style="position: fixed; bottom: 0; left: 0; right: 0; z-index: 1001; border-top: 1px solid #0074D9;">
+    <footer class="footer bg-dark text-light py-1" style="position: fixed; bottom: 0; left: 0; right: 0; z-index: 1001; border-top: 1px solid #0074D9;">
       <div class="container">
-        <!-- Social Links (Text) -->
-        <div class="row justify-content-center mb-2">
-          <div class="col-md-6 text-center">
-            <h5 class="text-light mb-2">Follow & Connect</h5>
-            <p class="mb-0 small">YouTube: <a href="https://www.youtube.com/channel/UC9NUm7_BejCwctJ9u6dps7g" target="_blank" class="text-light">Lance Woolie</a><br>
-            Facebook: <a href="https://www.facebook.com/lancewooliemusic/" target="_blank" class="text-light">@lancewooliemusic</a></p>
-          </div>
-        </div>
-
         <!-- Bottom Row: Contact, Copyright, Icons -->
         <div class="row align-items-center">
           <div class="col-md-4">
             <a href="contact.html" class="text-light">Contact</a>
           </div>
           <div class="col-md-4 text-center">
-            <div class="cowboy-hat-icon mb-2" id="cowboy-hat">🤠</div>
+            <div class="cowboy-hat-icon mb-1" id="cowboy-hat">🤠</div>
             <p class="mb-0 small">&copy; 2025 Lance Woolie. All rights reserved.</p>
           </div>
           <div class="col-md-4 text-end">
