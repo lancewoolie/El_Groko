@@ -78,27 +78,27 @@
     
     /* Music Dot - Muted Maroon */
     .music-dot {
-      background-color: #8B0000;
+      background-color: transparent;
     }
     
     /* Merch Dot - Muted Seafoam */
     .merch-dot {
-      background-color: #2E8B57;
+      background-color: transparent;
     }
     
     /* Contact Dot - Chocolate */
     .contact-dot {
-      background-color: #D2691E;
+      background-color: transparent;
     }
     
     /* Events Dot - Dark Goldenrod */
     .events-dot {
-      background-color: #B8860B;
+      background-color: transparent;
     }
     
     /* Origins Dot - Charcoal */
     .origins-dot {
-      background-color: #36454F;
+      background-color: transparent;
     }
     
     /* Music Dot Container for Submenu - Expanded Hover Area */
@@ -253,36 +253,6 @@
     .tour-time {
       color: #E0E0E0;
       font-size: 1.1rem;
-    }
-    
-    /* Footer Signup Styles (Taskbar Search Like) */
-    .footer-signup {
-      position: absolute;
-      right: 20px;
-      top: 50%;
-      transform: translateY(-50%);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .footer-signup .form-control {
-      width: 200px;
-      background-color: #001f3f;
-      border: 1px solid #0074D9;
-      color: #E0E0E0;
-      padding: 5px 10px;
-      font-size: 14px;
-    }
-    .footer-signup .form-control:focus {
-      background-color: #001f3f;
-      border-color: #FFD700;
-      color: #E0E0E0;
-      box-shadow: 0 0 0 0.2rem rgba(255, 215, 0, 0.25);
-    }
-    .footer-signup .btn-success {
-      padding: 5px 15px;
-      font-size: 14px;
-      white-space: nowrap;
     }
     
     /* Merch Carousel Styles (Sexy Hover Effects - Matches Merch Page) */
@@ -521,23 +491,11 @@
   </section>
 
   <div id="footer-placeholder" class="tight-footer"> <!-- Dynamic Footer Insert Here - Floating Fixed -->
-    <!-- Condensed Signup in Footer (Taskbar Style) -->
-    <form id="newsletterForm" class="footer-signup">
-      <input type="email" class="form-control" placeholder="Email for updates" required>
-      <button type="submit" class="btn btn-success">Subscribe</button>
-    </form>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
   <script>
-    // Simple newsletter form handler (integrate with Firebase if needed)
-    document.getElementById('newsletterForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      alert('Thank you for subscribing!');
-      this.reset();
-    });
-
     // Generic submenu logic for containers
     document.querySelectorAll('.dot-container').forEach(container => {
       const mainDot = container.querySelector('.main-dot');
