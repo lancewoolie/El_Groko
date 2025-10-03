@@ -110,19 +110,19 @@
   transform: translateY(-50%);
 }
 .origins-container {
-  left: 10%;
-}
-.music-container {
-  left: 30%;
-}
-.merch-container {
-  left: 55%;
+  left: 5%;
 }
 .events-container {
-  left: 75%;
+  left: 25%;
+}
+.music-container {
+  left: 45%;
+}
+.merch-container {
+  left: 65%;
 }
 .contact-container {
-  left: 95%;
+  left: 85%;
 }
 .main-dot {
   display: block;
@@ -228,6 +228,8 @@
   height: 100%;
   z-index: 1;
   pointer-events: none;
+  transform: rotate(13deg);
+  transform-origin: 5% 50%;
 }
 .solar-orbits ellipse {
   stroke: rgba(255, 255, 255, 0.1);
@@ -365,6 +367,27 @@
 }
 .carousel-inner {
   background-color: #1e3a8a; /* Dark bg for carousel */
+}
+
+/* Video Carousel Styles */
+.carousel-item .video-card {
+  background-color: #1e3a8a;
+  border: 2px solid #0074D9;
+  border-radius: 15px;
+  overflow: hidden;
+  height: 100%;
+  text-align: center;
+  padding: 1rem;
+}
+.carousel-item .video-card h5 {
+  color: #FFD700;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+.carousel-item .video-card iframe {
+  width: 100%;
+  height: 200px;
+  border-radius: 10px;
 }  </style></head>
 <body>
   <a href="contact.html" class="floating-subscribe">
@@ -376,17 +399,24 @@
   <!-- Hero Section (Mimicking Crockett's Hero with Interactive Dots Only) -->
   <section class="hero">
     <div class="hero-overlay">
-      <svg class="solar-orbits">
-        <ellipse cx="10%" cy="50%" rx="20%" ry="2%" />
-        <ellipse cx="10%" cy="50%" rx="45%" ry="3%" />
-        <ellipse cx="10%" cy="50%" rx="65%" ry="2%" />
-        <ellipse cx="10%" cy="50%" rx="85%" ry="4%" stroke-dasharray="3,3" />
+      <svg class="solar-orbits" viewBox="0 0 100 100">
+        <ellipse cx="5" cy="50" rx="20" ry="2" />
+        <ellipse cx="5" cy="50" rx="40" ry="3" />
+        <ellipse cx="5" cy="50" rx="60" ry="2" />
+        <ellipse cx="5" cy="50" rx="80" ry="4" stroke-dasharray="3,3" />
       </svg>
       
   <!-- Origins Container -->
   <div class="dot-container origins-container">
     <a href="origins.html" class="interactive-dot main-dot origins-dot"></a>
     <span class="main-label">Origins</span>
+    <div class="sub-dots"></div>
+  </div>
+  
+  <!-- Events Container -->
+  <div class="dot-container events-container">
+    <a href="events.html" class="interactive-dot main-dot events-dot"></a>
+    <span class="main-label">Events</span>
     <div class="sub-dots"></div>
   </div>
   
@@ -421,13 +451,6 @@
       <a href="https://lancewoolie.bandcamp.com/album/country-paradise" class="sub-dot" style="background-image: url('img/COUNTRY-PARADISE-scaled.jpg');" target="_blank" data-title="Country Paradise"></a>
     </div>
   </div>
-
-  <!-- Events Container -->
-  <div class="dot-container events-container">
-    <a href="events.html" class="interactive-dot main-dot events-dot"></a>
-    <span class="main-label">Events</span>
-    <div class="sub-dots"></div>
-  </div>
   
   <!-- Contact Container -->
   <div class="dot-container contact-container">
@@ -440,7 +463,7 @@
   <!-- Combined Latest Release & Featured Merch Section -->
   <section class="py-5 combined-section">
     <div class="container">
-      <h2 class="text-center mb-4" style="color: white;">Latest Releases & Featured Merch</h2>
+      <h2 class="text-center mb-4" style="color: white;">Featured Merch & Latest Music Videos</h2>
       <div class="row">
         <div class="col-md-6">
           <div id="merchCarousel" class="carousel slide" data-bs-ride="carousel">
@@ -499,47 +522,27 @@
           <div id="musicCarousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
               <div class="carousel-item active">
-                <div class="merch-card card">
-                  <img src="img/Ubermenu.jpg" alt="Uber Cover" class="card-img-top">
-                  <div class="card-body">
-                    <h3>Uber</h3>
-                    <p>Danceable neotraditional tune evoking lost love, featuring Brent Mason.</p>
-                    <span class="price-tag">$1.29</span>
-                    <a href="https://lancewoolie.bandcamp.com/track/uber" class="btn btn-buy mt-2" target="_blank">Buy Now</a>
-                  </div>
+                <div class="video-card card">
+                  <h5>Uber</h5>
+                  <iframe src="https://www.youtube.com/embed/0nTop80SCvs" title="Uber Official Music Video" frameborder="0" allowfullscreen></iframe>
                 </div>
               </div>
               <div class="carousel-item">
-                <div class="merch-card card">
-                  <img src="img/TooDrunkmenu.jpg" alt="Too Drunk Cover" class="card-img-top">
-                  <div class="card-body">
-                    <h3>Too Drunk</h3>
-                    <p>Debut release co-created with Legendary Guitarist Brent Mason—raw country grit.</p>
-                    <span class="price-tag">$1.29</span>
-                    <a href="https://lancewoolie.bandcamp.com/track/too-drunk-ft-brent-mason" class="btn btn-buy mt-2" target="_blank">Buy Now</a>
-                  </div>
+                <div class="video-card card">
+                  <h5>Too Drunk</h5>
+                  <iframe src="https://www.youtube.com/embed/K6c5kCqZHOc" title="Too Drunk Official Music Video" frameborder="0" allowfullscreen></iframe>
                 </div>
               </div>
               <div class="carousel-item">
-                <div class="merch-card card">
-                  <img src="img/RoadToTexas.jpg" alt="Road To Texas Cover" class="card-img-top">
-                  <div class="card-body">
-                    <h3>Road To Texas</h3>
-                    <p>Upbeat journey through the heart of Texas country roads.</p>
-                    <span class="price-tag">$1.29</span>
-                    <a href="https://lancewoolie.bandcamp.com/track/road-to-texas" class="btn btn-buy mt-2" target="_blank">Buy Now</a>
-                  </div>
+                <div class="video-card card">
+                  <h5>Worst Enemy</h5>
+                  <iframe src="https://www.youtube.com/embed/LQNnYN2J_9w" title="Worst Enemy Official Music Video" frameborder="0" allowfullscreen></iframe>
                 </div>
               </div>
               <div class="carousel-item">
-                <div class="merch-card card">
-                  <img src="img/LittleWingLive.jpg" alt="Little Wing Live Cover" class="card-img-top">
-                  <div class="card-body">
-                    <h3>Little Wing (Live)</h3>
-                    <p>Live rendition of the Jimi Hendrix classic, captured in intimate setting.</p>
-                    <span class="price-tag">$1.29</span>
-                    <a href="https://lancewoolie.bandcamp.com/track/little-wing-live" class="btn btn-buy mt-2" target="_blank">Buy Now</a>
-                  </div>
+                <div class="video-card card">
+                  <h5>Road To Texas</h5>
+                  <iframe src="https://www.youtube.com/embed/ooabUmI-jL8" title="Road To Texas Official Music Video" frameborder="0" allowfullscreen></iframe>
                 </div>
               </div>
             </div>
