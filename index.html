@@ -74,29 +74,6 @@
   opacity: 1;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
-.interactive-dot::after {
-  content: attr(data-title);
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.8);
-  color: #E0E0E0;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  white-space: nowrap;
-  opacity: 0;
-  transition: opacity 0.3s;
-  pointer-events: none;
-  margin-bottom: 5px;
-}
-.interactive-dot:hover::after {
-  opacity: 1;
-}
-.main-dot::after {
-  display: none;
-}
 
 /* Music Dot - Muted Maroon */
 .music-dot {
@@ -121,32 +98,31 @@
 /* Origins Dot - Charcoal */
 .origins-dot {
   background-color: transparent;
-  top: 50%;
-  left: 50%;
 }
 
 /* Music Dot Container for Submenu - Expanded Hover Area */
-.dot-container, .merch-container {
+.dot-container {
   position: absolute;
-  width: 400px; /* Larger hover area to encompass sub-dots */
-  height: 400px; /* Larger hover area to encompass sub-dots */
+  width: 300px;
+  height: 300px;
   z-index: 3;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.origins-container {
+  left: 10%;
 }
 .music-container {
-  top: 50%;
-  left: 25%;
+  left: 30%;
 }
 .merch-container {
-  top: 60%;
-  left: 75%;
-}
-.events-dot {
-  top: 40%;
   left: 55%;
 }
-.contact-dot {
-  top: 70%;
-  left: 50%;
+.events-container {
+  left: 75%;
+}
+.contact-container {
+  left: 95%;
 }
 .main-dot {
   display: block;
@@ -241,6 +217,22 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) translate(-120px, 0);
+}
+
+/* Solar Orbits */
+.solar-orbits {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+.solar-orbits ellipse {
+  stroke: rgba(255, 255, 255, 0.1);
+  fill: none;
+  stroke-width: 0.5;
 }
 
 /* Footer Float Lock */
@@ -384,10 +376,23 @@
   <!-- Hero Section (Mimicking Crockett's Hero with Interactive Dots Only) -->
   <section class="hero">
     <div class="hero-overlay">
+      <svg class="solar-orbits">
+        <ellipse cx="10%" cy="50%" rx="20%" ry="2%" />
+        <ellipse cx="10%" cy="50%" rx="45%" ry="3%" />
+        <ellipse cx="10%" cy="50%" rx="65%" ry="2%" />
+        <ellipse cx="10%" cy="50%" rx="85%" ry="4%" stroke-dasharray="3,3" />
+      </svg>
       
+  <!-- Origins Container -->
+  <div class="dot-container origins-container">
+    <a href="origins.html" class="interactive-dot main-dot origins-dot"></a>
+    <span class="main-label">Origins</span>
+    <div class="sub-dots"></div>
+  </div>
+  
   <!-- Music Dot Container with Submenu -->
   <div class="dot-container music-container">
-    <a href="music.html" class="interactive-dot main-dot music-dot" data-title="Music & Videos"></a>
+    <a href="music.html" class="interactive-dot main-dot music-dot"></a>
     <span class="main-label">Music & Videos</span>
     <div class="sub-dots">
       <!-- Uber -->
@@ -403,7 +408,7 @@
   
   <!-- Merch Dot Container with Submenu -->
   <div class="dot-container merch-container">
-    <a href="merch.html" class="interactive-dot main-dot merch-dot" data-title="Merch & More"></a>
+    <a href="merch.html" class="interactive-dot main-dot merch-dot"></a>
     <span class="main-label">Merch & More</span>
     <div class="sub-dots">
       <!-- Cluck Yeah Chicken Socks -->
@@ -416,11 +421,20 @@
       <a href="https://lancewoolie.bandcamp.com/album/country-paradise" class="sub-dot" style="background-image: url('img/COUNTRY-PARADISE-scaled.jpg');" target="_blank" data-title="Country Paradise"></a>
     </div>
   </div>
+
+  <!-- Events Container -->
+  <div class="dot-container events-container">
+    <a href="events.html" class="interactive-dot main-dot events-dot"></a>
+    <span class="main-label">Events</span>
+    <div class="sub-dots"></div>
+  </div>
   
-  <!-- Other Interactive Dots -->
-  <a href="origins.html" class="interactive-dot origins-dot" data-title="Origins"></a>
-  <a href="events.html" class="interactive-dot events-dot" data-title="Events"></a>
-  <a href="contact.html" class="interactive-dot contact-dot" data-title="Contact"></a>
+  <!-- Contact Container -->
+  <div class="dot-container contact-container">
+    <a href="contact.html" class="interactive-dot main-dot contact-dot"></a>
+    <span class="main-label">Contact</span>
+    <div class="sub-dots"></div>
+  </div>
 </div>  </section>
 
   <!-- Combined Latest Release & Featured Merch Section -->
@@ -579,7 +593,10 @@
     document.querySelectorAll('.dot-container').forEach(container => {
       const mainDot = container.querySelector('.main-dot');
       const subDots = container.querySelector('.sub-dots');
+      const hasSubs = subDots.children.length > 0;
       let hideTimeout;
+
+      if (!hasSubs) return;
 
       container.addEventListener('mouseenter', () => {
         clearTimeout(hideTimeout);
