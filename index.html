@@ -35,12 +35,11 @@
       position: relative;
     }
     
-    /* Interactive Royal Blue Dots (200% Larger ~32px, Faded to Full on Hover) */
+    /* Interactive Dots with Custom Colors */
     .interactive-dot {
       position: absolute;
       width: 32px;
       height: 32px;
-      background-color: #4169E1;
       border-radius: 50%;
       opacity: 0.5;
       transition: transform 0.3s ease, opacity 0.3s ease, background-color 0.3s ease;
@@ -51,8 +50,7 @@
     .interactive-dot:hover {
       transform: scale(2);
       opacity: 1;
-      background-color: #6495ED;
-      box-shadow: 0 0 10px rgba(100, 149, 237, 0.5);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     }
     .interactive-dot::after {
       content: attr(data-title);
@@ -75,15 +73,64 @@
       opacity: 1;
     }
     
-    /* Music Dot Container for Submenu */
+    /* Music Dot - Maroon */
+    .music-dot {
+      background-color: #800000;
+    }
+    .music-dot:hover {
+      background-color: #A52A2A;
+      box-shadow: 0 0 10px rgba(165, 42, 42, 0.5);
+    }
+    
+    /* Merch Dot - Green */
+    .merch-dot {
+      background-color: #008000;
+    }
+    .merch-dot:hover {
+      background-color: #228B22;
+      box-shadow: 0 0 10px rgba(34, 139, 34, 0.5);
+    }
+    
+    /* Contact Dot - Light Brown */
+    .contact-dot {
+      background-color: #D2B48C;
+    }
+    .contact-dot:hover {
+      background-color: #DEB887;
+      box-shadow: 0 0 10px rgba(222, 184, 135, 0.5);
+    }
+    
+    /* Events Dot - Yellow */
+    .events-dot {
+      background-color: #FFD700;
+    }
+    .events-dot:hover {
+      background-color: #FFA500;
+      box-shadow: 0 0 10px rgba(255, 165, 0, 0.5);
+    }
+    
+    /* Origins Dot - Black */
+    .origins-dot {
+      background-color: #000000;
+    }
+    .origins-dot:hover {
+      background-color: #333333;
+      box-shadow: 0 0 10px rgba(51, 51, 51, 0.5);
+    }
+    
+    /* Music Dot Container for Submenu - Expanded Hover Area */
     .dot-container {
       position: absolute;
       top: 25%;
       left: 15%;
+      width: 200px; /* 300% larger hover area */
+      height: 200px; /* 300% larger hover area */
       z-index: 3;
     }
     .main-dot {
       display: block;
+      position: relative;
+      z-index: 4;
     }
     .sub-dots {
       position: absolute;
@@ -95,34 +142,70 @@
     }
     .sub-dot {
       position: absolute;
-      width: 80px;
-      height: 80px;
+      width: 120px; /* 150% increase from 80px */
+      height: 120px; /* 150% increase from 80px */
       border-radius: 50%;
       background-size: cover;
       background-position: center;
-      opacity: 0.7;
+      opacity: 0;
       transition: transform 0.3s ease, opacity 0.3s ease;
       cursor: pointer;
       text-decoration: none;
       box-shadow: 0 0 5px rgba(0,0,0,0.5);
+      animation: emerge 0.5s ease-out forwards;
     }
     .sub-dot:hover {
       transform: scale(1.5);
       opacity: 1;
       box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
     }
-    /* X Shape Positions (45° angles, ~88px radius) */
+    .sub-dot::after {
+      content: attr(data-title);
+      position: absolute;
+      bottom: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.8);
+      color: #E0E0E0;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    
+    /* X Shape Positions (45° angles, shifted right, ~88px radius adjusted) */
     .sub-dots .sub-dot:nth-child(1) { /* NE 45° */
-      transform: translate(-50%, -50%) translate(62px, -62px);
+      transform: translate(-50%, -50%) translate(70px, -70px);
+      animation-delay: 0.1s;
     }
     .sub-dots .sub-dot:nth-child(2) { /* NW 135° */
-      transform: translate(-50%, -50%) translate(-62px, -62px);
+      transform: translate(-50%, -50%) translate(-70px, -70px);
+      animation-delay: 0.2s;
     }
     .sub-dots .sub-dot:nth-child(3) { /* SW 225° */
-      transform: translate(-50%, -50%) translate(-62px, 62px);
+      transform: translate(-50%, -50%) translate(-70px, 70px);
+      animation-delay: 0.3s;
     }
     .sub-dots .sub-dot:nth-child(4) { /* SE 315° */
-      transform: translate(-50%, -50%) translate(62px, 62px);
+      transform: translate(-50%, -50%) translate(70px, 70px);
+      animation-delay: 0.4s;
+    }
+    
+    /* Snazzy Emergence Animation */
+    @keyframes emerge {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0) rotate(0deg);
+      }
+      50% {
+        opacity: 0.5;
+        transform: translate(-50%, -50%) scale(0.5) rotate(180deg);
+      }
+      100% {
+        opacity: 0.7;
+        transform: translate(-50%, -50%) scale(1) rotate(360deg);
+      }
     }
     
     /* Footer Float Lock */
@@ -322,24 +405,24 @@
       
       <!-- Music Dot Container with Submenu -->
       <div class="dot-container">
-        <a href="music.html" class="interactive-dot main-dot" data-title="Music"></a>
+        <a href="music.html" class="interactive-dot main-dot music-dot" data-title="Music"></a>
         <div class="sub-dots">
           <!-- Uber -->
-          <a href="https://orcd.co/a4glqme" class="sub-dot" style="background-image: url('img/Ubermenu.jpg');" target="_blank" title="Uber"></a>
+          <a href="https://orcd.co/a4glqme" class="sub-dot" style="background-image: url('img/Ubermenu.jpg');" target="_blank" data-title="Uber"></a>
           <!-- Too Drunk -->
-          <a href="https://orcd.co/lancewoolietoodrunk" class="sub-dot" style="background-image: url('img/TooDrunkmenu.jpg');" target="_blank" title="Too Drunk"></a>
+          <a href="https://orcd.co/lancewoolietoodrunk" class="sub-dot" style="background-image: url('img/TooDrunkmenu.jpg');" target="_blank" data-title="Too Drunk"></a>
           <!-- Worst Enemy -->
-          <a href="https://orcd.co/lancewoolieworstenemy" class="sub-dot" style="background-image: url('img/WorstEnemymenu.jpg');" target="_blank" title="Worst Enemy"></a>
+          <a href="https://orcd.co/lancewoolieworstenemy" class="sub-dot" style="background-image: url('img/WorstEnemymenu.jpg');" target="_blank" data-title="Worst Enemy"></a>
           <!-- Full Catalog -->
-          <a href="music.html" class="sub-dot" style="background-image: url('img/Fullcatalogmenu.jpg');" title="Full Catalog"></a>
+          <a href="music.html" class="sub-dot" style="background-image: url('img/Fullcatalogmenu.jpg');" data-title="Full Catalog"></a>
         </div>
       </div>
       
-      <!-- Other Interactive Dots -->
-      <a href="origins.html" class="interactive-dot" data-title="Origins" style="top: 40%; left: 80%;"></a>
-      <a href="events.html" class="interactive-dot" data-title="Events" style="top: 60%; left: 30%;"></a>
-      <a href="merch.html" class="interactive-dot" data-title="Merch" style="top: 75%; left: 70%;"></a>
-      <a href="contact.html" class="interactive-dot" data-title="Contact" style="top: 50%; left: 50%;"></a>
+      <!-- Other Interactive Dots (Swapped Contact and Merch) -->
+      <a href="origins.html" class="interactive-dot origins-dot" data-title="Origins" style="top: 40%; left: 80%;"></a>
+      <a href="events.html" class="interactive-dot events-dot" data-title="Events" style="top: 60%; left: 30%;"></a>
+      <a href="contact.html" class="interactive-dot contact-dot" data-title="Contact" style="top: 75%; left: 70%;"></a>
+      <a href="merch.html" class="interactive-dot merch-dot" data-title="Merch" style="top: 50%; left: 50%;"></a>
     </div>
   </section>
 
@@ -455,20 +538,25 @@
       this.reset();
     });
 
-    // Music submenu logic
-    const mainDot = document.querySelector('.main-dot');
+    // Music submenu logic - Improved hover persistence
+    const dotContainer = document.querySelector('.dot-container');
     const subDots = document.querySelector('.sub-dots');
     let hideTimeout;
 
-    mainDot.addEventListener('mouseenter', () => {
+    dotContainer.addEventListener('mouseenter', () => {
       clearTimeout(hideTimeout);
       subDots.style.display = 'block';
+      document.querySelectorAll('.sub-dot').forEach((sub, index) => {
+        sub.style.animation = 'none';
+        sub.offsetHeight; // Trigger reflow
+        sub.style.animation = null;
+      });
     });
 
-    mainDot.addEventListener('mouseleave', () => {
+    dotContainer.addEventListener('mouseleave', () => {
       hideTimeout = setTimeout(() => {
         subDots.style.display = 'none';
-      }, 100);
+      }, 200); // Increased delay for better UX
     });
 
     document.querySelectorAll('.sub-dot').forEach(sub => {
@@ -478,7 +566,7 @@
       sub.addEventListener('mouseleave', () => {
         hideTimeout = setTimeout(() => {
           subDots.style.display = 'none';
-        }, 100);
+        }, 200);
       });
     });
   </script>
