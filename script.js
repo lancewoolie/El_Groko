@@ -71,46 +71,44 @@ function generateNav() {
   }
 }
 
-// Reusable Footer Generator (Updated with fixed Firebase references, injected CSS for newsletter, and corrected social icon URLs)
+// Reusable Footer Generator (Updated to include elaborate newsletter signup card and text social links)
 function generateFooter() {
-  // Inject CSS for footer signup
-  let style = document.getElementById('footer-styles');
-  if (!style) {
-    style = document.createElement('style');
-    style.id = 'footer-styles';
-    style.textContent = `
-      .footer-signup {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        justify-content: center;
-      }
-      .footer-signup .form-control {
-        width: 250px;
-        background-color: #001f3f;
-        border: 1px solid #0074D9;
-        color: #FFFFFF;
-        padding: 5px 10px;
-        font-size: 14px;
-      }
-      .footer-signup .form-control:focus {
-        background-color: #001f3f;
-        border-color: #FFD700;
-        color: #FFFFFF;
-        box-shadow: 0 0 0 0.2rem rgba(255, 215, 0, 0.25);
-      }
-      .footer-signup .btn-success {
-        padding: 5px 15px;
-        font-size: 14px;
-        white-space: nowrap;
-      }
-    `;
-    document.head.appendChild(style);
-  }
-
   const footerHTML = `
-    <footer class="footer bg-dark text-light py-4" style="position: fixed; bottom: 0; left: 0; right: 0; z-index: 1001; border-top: 1px solid #0074D9;">
+    <footer class="footer bg-dark text-light py-3" style="position: fixed; bottom: 0; left: 0; right: 0; z-index: 1001; border-top: 1px solid #0074D9;">
       <div class="container">
+        <!-- Newsletter Signup (Shown only on index) -->
+        <div class="row justify-content-center mb-3" id="newsletter-section" style="display: none;">
+          <div class="col-md-8">
+            <div class="card bg-dark text-light border-light">
+              <div class="card-body">
+                <h3 class="card-title text-center mb-4">Sign Up for Exclusive Events & Pre-Releases</h3>
+                <p class="text-center mb-3">Get first dibs on swamp-side shows, early track drops, and bayou insider vibes. Your info stays locked in the vault—privacy first.</p>
+                <form id="newsletter-form" class="row g-3 justify-content-center">
+                  <div class="col-md-6">
+                    <label for="signup-email" class="form-label text-light">Email</label>
+                    <input type="email" class="form-control bg-secondary text-light" id="signup-email" placeholder="your@bayou.com" required>
+                  </div>
+                  <div class="col-md-6 d-flex align-items-end">
+                    <button type="submit" class="btn btn-gold w-100">Do it. Sign Up</button>
+                  </div>
+                </form>
+                <div id="newsletter-success" class="success-message text-center mt-3" style="display: none; color: #FFD700;">Signed up—exclusive twang incoming! Check your inbox.</div>
+                <p class="text-center small mt-2 text-muted">Powered by Firebase—secure, GDPR-compliant. No spam, just twang.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Social Links (Text) -->
+        <div class="row justify-content-center mb-2">
+          <div class="col-md-6 text-center">
+            <h5 class="text-light mb-2">Follow & Connect</h5>
+            <p class="mb-0 small">YouTube: <a href="https://www.youtube.com/channel/UC9NUm7_BejCwctJ9u6dps7g" target="_blank" class="text-light">Lance Woolie</a><br>
+            Facebook: <a href="https://www.facebook.com/lancewooliemusic/" target="_blank" class="text-light">@lancewooliemusic</a></p>
+          </div>
+        </div>
+
+        <!-- Bottom Row: Contact, Copyright, Icons -->
         <div class="row align-items-center">
           <div class="col-md-4">
             <a href="contact.html" class="text-light">Contact</a>
@@ -123,27 +121,18 @@ function generateFooter() {
             <a href="https://x.com/LanceWoolie" target="_blank" class="me-3" title="X (Twitter)" style="display: inline-block; width: 24px; height: 24px; margin-right: 8px;">
               <img src="https://cdn.simpleicons.org/x/ffffff/24.svg" alt="X" style="width: 24px; height: 24px;">
             </a>
-            <a href="https://www.facebook.com/lancewoolie/" target="_blank" class="me-3" title="Facebook" style="display: inline-block; width: 24px; height: 24px; margin-right: 8px;">
+            <a href="https://www.facebook.com/lancewooliemusic/" target="_blank" class="me-3" title="Facebook" style="display: inline-block; width: 24px; height: 24px; margin-right: 8px;">
               <img src="https://cdn.simpleicons.org/facebook/ffffff/24.svg" alt="Facebook" style="width: 24px; height: 24px;">
             </a>
             <a href="https://www.tiktok.com/@lancewoolie" target="_blank" class="me-3" title="TikTok" style="display: inline-block; width: 24px; height: 24px; margin-right: 8px;">
               <img src="https://cdn.simpleicons.org/tiktok/ffffff/24.svg" alt="TikTok" style="width: 24px; height: 24px;">
             </a>
-            <a href="https://www.youtube.com/@LanceWoolie" target="_blank" class="me-3" title="YouTube" style="display: inline-block; width: 24px; height: 24px; margin-right: 8px;">
+            <a href="https://www.youtube.com/channel/UC9NUm7_BejCwctJ9u6dps7g" target="_blank" class="me-3" title="YouTube" style="display: inline-block; width: 24px; height: 24px; margin-right: 8px;">
               <img src="https://cdn.simpleicons.org/youtube/ffffff/24.svg" alt="YouTube" style="width: 24px; height: 24px;">
             </a>
             <a href="https://www.instagram.com/lancewoolie/" target="_blank" title="Instagram" style="display: inline-block; width: 24px; height: 24px;">
               <img src="https://cdn.simpleicons.org/instagram/ffffff/24.svg" alt="Instagram" style="width: 24px; height: 24px;">
             </a>
-          </div>
-        </div>
-        <!-- Newsletter Signup (Global, but hidden on non-index pages if needed) -->
-        <div class="row mt-3" id="newsletter-row" style="display: none;">
-          <div class="col-12">
-            <form id="newsletterForm" class="footer-signup">
-              <input type="email" class="form-control" placeholder="Email for updates" required>
-              <button type="submit" class="btn btn-success">Subscribe</button>
-            </form>
           </div>
         </div>
       </div>
@@ -169,30 +158,8 @@ function generateFooter() {
     }
     // Show newsletter on index page
     if (window.location.pathname.includes('index.html') || window.location.pathname === '/') {
-      const newsletterRow = document.getElementById('newsletter-row');
-      if (newsletterRow) newsletterRow.style.display = 'block';
-      // Newsletter handler (fixed Firebase references)
-      const newsletterForm = document.getElementById('newsletterForm');
-      if (newsletterForm && window.db) {
-        newsletterForm.addEventListener('submit', async (e) => {
-          e.preventDefault();
-          const email = newsletterForm.querySelector('input[type="email"]').value.trim();
-          if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            alert('Valid email required.');
-            return;
-          }
-          try {
-            await window.addDoc(window.collection(window.db, 'contacts'), {
-              email, type: 'newsletter', timestamp: window.serverTimestamp()
-            });
-            alert('Signed up—exclusive twang incoming!');
-            newsletterForm.reset();
-          } catch (error) {
-            alert('Signup snag—try again.');
-            console.error(error);
-          }
-        });
-      }
+      const newsletterSection = document.getElementById('newsletter-section');
+      if (newsletterSection) newsletterSection.style.display = 'block';
     }
   } else {
     console.warn('Footer placeholder not found—add <div id="footer-placeholder"></div> before </body>');
@@ -240,7 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Newsletter Form (If on contact page, fixed references)
+  // Newsletter Form Handler (Updated to show success div and hide form)
   const newsletterForm = document.getElementById('newsletter-form');
   if (newsletterForm && window.db) {
     newsletterForm.addEventListener('submit', async (e) => {
@@ -254,8 +221,11 @@ document.addEventListener('DOMContentLoaded', () => {
         await window.addDoc(window.collection(window.db, 'contacts'), {
           email, type: 'newsletter', timestamp: window.serverTimestamp()
         });
-        alert('Signed up—exclusive twang incoming!');
-        newsletterForm.reset();
+        const successDiv = document.getElementById('newsletter-success');
+        if (successDiv) {
+          newsletterForm.style.display = 'none';
+          successDiv.style.display = 'block';
+        }
       } catch (error) {
         alert('Signup snag—try again.');
         console.error(error);
