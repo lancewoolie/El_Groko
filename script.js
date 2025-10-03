@@ -71,8 +71,43 @@ function generateNav() {
   }
 }
 
-// Reusable Footer Generator (Updated with direct image URLs for social icons from Simple Icons CDN)
+// Reusable Footer Generator (Updated with fixed Firebase references, injected CSS for newsletter, and corrected social icon URLs)
 function generateFooter() {
+  // Inject CSS for footer signup
+  let style = document.getElementById('footer-styles');
+  if (!style) {
+    style = document.createElement('style');
+    style.id = 'footer-styles';
+    style.textContent = `
+      .footer-signup {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        justify-content: center;
+      }
+      .footer-signup .form-control {
+        width: 250px;
+        background-color: #001f3f;
+        border: 1px solid #0074D9;
+        color: #FFFFFF;
+        padding: 5px 10px;
+        font-size: 14px;
+      }
+      .footer-signup .form-control:focus {
+        background-color: #001f3f;
+        border-color: #FFD700;
+        color: #FFFFFF;
+        box-shadow: 0 0 0 0.2rem rgba(255, 215, 0, 0.25);
+      }
+      .footer-signup .btn-success {
+        padding: 5px 15px;
+        font-size: 14px;
+        white-space: nowrap;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
   const footerHTML = `
     <footer class="footer bg-dark text-light py-4" style="position: fixed; bottom: 0; left: 0; right: 0; z-index: 1001; border-top: 1px solid #0074D9;">
       <div class="container">
@@ -86,27 +121,27 @@ function generateFooter() {
           </div>
           <div class="col-md-4 text-end">
             <a href="https://x.com/LanceWoolie" target="_blank" class="me-3" title="X (Twitter)" style="display: inline-block; width: 24px; height: 24px; margin-right: 8px;">
-              <img src="https://cdn.simpleicons.org/x/ffffff/24" alt="X" style="width: 24px; height: 24px;">
+              <img src="https://cdn.simpleicons.org/x/ffffff/24.svg" alt="X" style="width: 24px; height: 24px;">
             </a>
             <a href="https://www.facebook.com/lancewoolie/" target="_blank" class="me-3" title="Facebook" style="display: inline-block; width: 24px; height: 24px; margin-right: 8px;">
-              <img src="https://cdn.simpleicons.org/facebook/ffffff/24" alt="Facebook" style="width: 24px; height: 24px;">
+              <img src="https://cdn.simpleicons.org/facebook/ffffff/24.svg" alt="Facebook" style="width: 24px; height: 24px;">
             </a>
             <a href="https://www.tiktok.com/@lancewoolie" target="_blank" class="me-3" title="TikTok" style="display: inline-block; width: 24px; height: 24px; margin-right: 8px;">
-              <img src="https://cdn.simpleicons.org/tiktok/ffffff/24" alt="TikTok" style="width: 24px; height: 24px;">
+              <img src="https://cdn.simpleicons.org/tiktok/ffffff/24.svg" alt="TikTok" style="width: 24px; height: 24px;">
             </a>
             <a href="https://www.youtube.com/@LanceWoolie" target="_blank" class="me-3" title="YouTube" style="display: inline-block; width: 24px; height: 24px; margin-right: 8px;">
-              <img src="https://cdn.simpleicons.org/youtube/ffffff/24" alt="YouTube" style="width: 24px; height: 24px;">
+              <img src="https://cdn.simpleicons.org/youtube/ffffff/24.svg" alt="YouTube" style="width: 24px; height: 24px;">
             </a>
             <a href="https://www.instagram.com/lancewoolie/" target="_blank" title="Instagram" style="display: inline-block; width: 24px; height: 24px;">
-              <img src="https://cdn.simpleicons.org/instagram/ffffff/24" alt="Instagram" style="width: 24px; height: 24px;">
+              <img src="https://cdn.simpleicons.org/instagram/ffffff/24.svg" alt="Instagram" style="width: 24px; height: 24px;">
             </a>
           </div>
         </div>
         <!-- Newsletter Signup (Global, but hidden on non-index pages if needed) -->
         <div class="row mt-3" id="newsletter-row" style="display: none;">
           <div class="col-12">
-            <form id="newsletterForm" class="footer-signup d-flex justify-content-center">
-              <input type="email" class="form-control me-2" placeholder="Email for updates" required style="width: 250px;">
+            <form id="newsletterForm" class="footer-signup">
+              <input type="email" class="form-control" placeholder="Email for updates" required>
               <button type="submit" class="btn btn-success">Subscribe</button>
             </form>
           </div>
@@ -136,7 +171,7 @@ function generateFooter() {
     if (window.location.pathname.includes('index.html') || window.location.pathname === '/') {
       const newsletterRow = document.getElementById('newsletter-row');
       if (newsletterRow) newsletterRow.style.display = 'block';
-      // Newsletter handler
+      // Newsletter handler (fixed Firebase references)
       const newsletterForm = document.getElementById('newsletterForm');
       if (newsletterForm && window.db) {
         newsletterForm.addEventListener('submit', async (e) => {
@@ -147,8 +182,8 @@ function generateFooter() {
             return;
           }
           try {
-            await addDoc(collection(db, 'contacts'), {
-              email, type: 'newsletter', timestamp: serverTimestamp()
+            await window.addDoc(window.collection(window.db, 'contacts'), {
+              email, type: 'newsletter', timestamp: window.serverTimestamp()
             });
             alert('Signed up—exclusive twang incoming!');
             newsletterForm.reset();
@@ -180,7 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Contact Form Handler (Firebase - If on contact page)
+  // Contact Form Handler (Firebase - If on contact page, fixed references)
   const form = document.getElementById('contact-form');
   if (form && window.db) {
     form.addEventListener('submit', async (e) => {
@@ -193,8 +228,8 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
       try {
-        await addDoc(collection(db, 'contacts'), {
-          name, email, message, type: 'general', timestamp: serverTimestamp()
+        await window.addDoc(window.collection(window.db, 'contacts'), {
+          name, email, message, type: 'general', timestamp: window.serverTimestamp()
         });
         alert('Message sent—bayou reply incoming.');
         form.reset();
@@ -205,7 +240,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Newsletter Form (If on contact page)
+  // Newsletter Form (If on contact page, fixed references)
   const newsletterForm = document.getElementById('newsletter-form');
   if (newsletterForm && window.db) {
     newsletterForm.addEventListener('submit', async (e) => {
@@ -216,8 +251,8 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
       try {
-        await addDoc(collection(db, 'contacts'), {
-          email, type: 'newsletter', timestamp: serverTimestamp()
+        await window.addDoc(window.collection(window.db, 'contacts'), {
+          email, type: 'newsletter', timestamp: window.serverTimestamp()
         });
         alert('Signed up—exclusive twang incoming!');
         newsletterForm.reset();
