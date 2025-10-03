@@ -35,25 +35,23 @@
       position: relative;
     }
     
-    /* Floating Subscribe Tab */
+    /* Floating Subscribe Image */
     .floating-subscribe {
       position: fixed;
       left: 20px;
       top: 50%;
-      transform: translateY(-50%);
-      background: rgba(0, 31, 63, 0.9);
-      color: #FFD700;
-      padding: 10px 15px;
-      text-decoration: none;
-      font-size: 14px;
-      border: 1px solid #0074D9;
-      border-radius: 5px;
+      transform: translateY(-50%) translateX(-66.67%);
+      transition: transform 0.3s ease;
       z-index: 1000;
-      transition: background 0.3s ease;
-      white-space: nowrap;
+      display: block;
     }
     .floating-subscribe:hover {
-      background: rgba(0, 116, 217, 0.9);
+      transform: translateY(-50%) translateX(0);
+    }
+    .floating-subscribe img {
+      display: block;
+      max-width: none;
+      height: auto;
     }
     
     /* Interactive Dots with Custom Colors - Increased Size - Bullet Hole Image */
@@ -377,7 +375,9 @@
   </script>
 </head>
 <body>
-  <a href="contact.html" class="floating-subscribe">Subscribe</a>
+  <a href="contact.html" class="floating-subscribe">
+    <img src="img/subscribe.gif" alt="Subscribe">
+  </a>
 
   <div id="nav-placeholder"></div> <!-- Dynamic Nav Insert Here -->
 
