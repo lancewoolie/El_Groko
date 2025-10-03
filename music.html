@@ -29,6 +29,8 @@
       overflow: hidden;
       transition: all 0.3s ease;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      max-width: 800px; /* Consistent max width for all cards */
+      margin: 0 auto; /* Center the cards */
     }
     .card:hover {
       transform: translateY(-10px);
@@ -96,7 +98,7 @@
       border-top: 1px solid #546e7a;
     }
     .container {
-      max-width: 1200px;
+      max-width: 900px;
     }
     @media (max-width: 768px) {
       .album-art {
@@ -104,6 +106,9 @@
       }
       iframe {
         height: 200px !important;
+      }
+      .card {
+        max-width: 100%;
       }
     }
   </style>
@@ -115,9 +120,9 @@
     <h1 class="text-center mb-5">Music & Videos</h1>
     <p class="lead text-center">Dive into Lance's catalog—from raw country anthems to soulful live sessions. Stream on Spotify, watch on YouTube.</p>
 
-    <div class="row">
+    <div class="row justify-content-center">
       <!-- Uber 2025 -->
-      <div class="col-md-6 release-card">
+      <div class="col-12 release-card">
         <div class="card">
           <div class="card-body">
             <img src="https://img.youtube.com/vi/0nTop80SCvs/0.jpg" alt="Uber Cover Art" class="album-art">
@@ -130,7 +135,7 @@
       </div>
 
       <!-- Too Drunk 2024 -->
-      <div class="col-md-6 release-card">
+      <div class="col-12 release-card">
         <div class="card">
           <div class="card-body">
             <img src="https://img.youtube.com/vi/K6c5kCqZHOc/0.jpg" alt="Too Drunk Cover Art" class="album-art">
@@ -143,7 +148,7 @@
       </div>
 
       <!-- Worst Enemy 2023 -->
-      <div class="col-md-6 release-card">
+      <div class="col-12 release-card">
         <div class="card">
           <div class="card-body">
             <img src="https://img.youtube.com/vi/neRw6xjusAg/0.jpg" alt="Worst Enemy Cover Art" class="album-art">
@@ -156,7 +161,7 @@
       </div>
 
       <!-- Road To Texas 2021 -->
-      <div class="col-md-6 release-card">
+      <div class="col-12 release-card">
         <div class="card">
           <div class="card-body">
             <img src="https://img.youtube.com/vi/WliGvdfdWxw/0.jpg" alt="Road To Texas Cover Art" class="album-art">
@@ -174,7 +179,7 @@
           <div class="card-body">
             <h3>Country Paradise (2021) - Full Album</h3>
             <a href="https://orcd.co/o4qa0ba" target="_blank">
-              <img src="img/COUNTRY-PARADISE-scaled.jpg" alt="Country Paradise Album Cover" class="img-fluid mb-2 rounded" style="width: 100%; height: auto; max-height: 300px; display: block; margin: 0 auto;">
+              <img src="img/COUNTRY-PARADISE-scaled.jpg" alt="Country Paradise Album Cover" class="album-art">
             </a>
             <p>The debut album by Hogleg band with frontman Lance Woolie</p>
             <a href="https://orcd.co/o4qa0ba" class="btn btn-success" target="_blank">Stream Album</a>
@@ -183,7 +188,7 @@
       </div>
 
       <!-- Bonus Live Video -->
-      <div class="col-md-6 release-card mx-auto">
+      <div class="col-12 release-card">
         <div class="card">
           <div class="card-body">
             <img src="https://img.youtube.com/vi/MXyIZonwOEk/0.jpg" alt="Little Wing Live Cover" class="album-art">
