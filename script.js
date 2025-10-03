@@ -71,13 +71,36 @@ function generateNav() {
   }
 }
 
-// Reusable Footer Generator (Dynamic Insert - Fixed Floating)
+// Reusable Footer Generator (Updated to emulate taller Charley Crockett-style footer with social links)
 function generateFooter() {
   const footerHTML = `
-    <footer class="tight-footer">
-      <div class="container d-flex justify-content-between align-items-center">
-        <a href="contact.html" class="text-light">Contact</a>
-        <div class="cowboy-hat-icon" id="cowboy-hat">🤠</div>
+    <footer class="footer bg-dark text-light py-4" style="position: fixed; bottom: 0; left: 0; right: 0; z-index: 1001; border-top: 1px solid #0074D9;">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-md-4">
+            <a href="contact.html" class="text-light">Contact</a>
+          </div>
+          <div class="col-md-4 text-center">
+            <div class="cowboy-hat-icon mb-2" id="cowboy-hat">🤠</div>
+            <p class="mb-0 small">&copy; 2025 Lance Woolie. All rights reserved.</p>
+          </div>
+          <div class="col-md-4 text-end">
+            <a href="https://x.com/LanceWoolie" target="_blank" class="text-light me-3" title="X (Twitter)"><i class="bi bi-twitter-x fs-4"></i></a>
+            <a href="https://www.facebook.com/lancewoolie/" target="_blank" class="text-light me-3" title="Facebook"><i class="bi bi-facebook fs-4"></i></a>
+            <a href="https://www.tiktok.com/@lancewoolie" target="_blank" class="text-light me-3" title="TikTok"><i class="bi bi-tiktok fs-4"></i></a>
+            <a href="https://www.youtube.com/@LanceWoolie" target="_blank" class="text-light me-3" title="YouTube"><i class="bi bi-youtube fs-4"></i></a>
+            <a href="https://www.instagram.com/lancewoolie/" target="_blank" class="text-light" title="Instagram"><i class="bi bi-instagram fs-4"></i></a>
+          </div>
+        </div>
+        <!-- Newsletter Signup (Global, but hidden on non-index pages if needed) -->
+        <div class="row mt-3" id="newsletter-row" style="display: none;">
+          <div class="col-12">
+            <form id="newsletterForm" class="footer-signup d-flex justify-content-center">
+              <input type="email" class="form-control me-2" placeholder="Email for updates" required style="width: 250px;">
+              <button type="submit" class="btn btn-success">Subscribe</button>
+            </form>
+          </div>
+        </div>
       </div>
     </footer>
   `;
@@ -98,6 +121,33 @@ function generateFooter() {
         () => { window.scrollTo({ top: 0, behavior: 'smooth' }); cowboyHat.textContent = '⬆️'; setTimeout(() => cowboyHat.textContent = '🤠', 1000); }
       ];
       cowboyHat.addEventListener('click', () => surprises[Math.floor(Math.random() * surprises.length)]());
+    }
+    // Show newsletter on index page
+    if (window.location.pathname.includes('index.html') || window.location.pathname === '/') {
+      const newsletterRow = document.getElementById('newsletter-row');
+      if (newsletterRow) newsletterRow.style.display = 'block';
+      // Newsletter handler
+      const newsletterForm = document.getElementById('newsletterForm');
+      if (newsletterForm && window.db) {
+        newsletterForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const email = newsletterForm.querySelector('input[type="email"]').value.trim();
+          if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            alert('Valid email required.');
+            return;
+          }
+          try {
+            await addDoc(collection(db, 'contacts'), {
+              email, type: 'newsletter', timestamp: serverTimestamp()
+            });
+            alert('Signed up—exclusive twang incoming!');
+            newsletterForm.reset();
+          } catch (error) {
+            alert('Signup snag—try again.');
+            console.error(error);
+          }
+        });
+      }
     }
   } else {
     console.warn('Footer placeholder not found—add <div id="footer-placeholder"></div> before </body>');
@@ -133,8 +183,8 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
       try {
-        await window.addDoc(window.collection(window.db, 'contacts'), {
-          name, email, message, type: 'general', timestamp: window.serverTimestamp()
+        await addDoc(collection(db, 'contacts'), {
+          name, email, message, type: 'general', timestamp: serverTimestamp()
         });
         alert('Message sent—bayou reply incoming.');
         form.reset();
@@ -156,8 +206,8 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
       try {
-        await window.addDoc(window.collection(window.db, 'contacts'), {
-          email, type: 'newsletter', timestamp: window.serverTimestamp()
+        await addDoc(collection(db, 'contacts'), {
+          email, type: 'newsletter', timestamp: serverTimestamp()
         });
         alert('Signed up—exclusive twang incoming!');
         newsletterForm.reset();
