@@ -9,6 +9,9 @@ const clickSounds = [
 ];
 clickSounds.forEach(sound => sound.preload = 'auto');
 
+// Global mouse position for particle reactivity
+let mousePos = { x: 0, y: 0 };
+
 // Score management
 let score = 0;
 let scoreEl = null;
@@ -17,7 +20,8 @@ function updateScore(points, x = undefined, y = undefined) {
   score += points;
   sessionStorage.setItem('score', score.toString());
   if (scoreEl) {
-    scoreEl.textContent = score;
+    const displayText = score.toString().padStart(6, '0');
+    scoreEl.textContent = displayText;
     // Trigger pulse animation
     const display = scoreEl.closest('.score-display');
     if (display) {
@@ -26,56 +30,111 @@ function updateScore(points, x = undefined, y = undefined) {
     }
     // Update total score color class
     scoreEl.className = '';
-    if (score < 100) scoreEl.classList.add('score-low');
-    else if (score < 1000) scoreEl.classList.add('score-mid');
-    else if (score < 2001) scoreEl.classList.add('score-high');
-    else scoreEl.classList.add('score-max');
+    if (score === 0) {
+      scoreEl.classList.add('score-zero');
+    } else if (score < 100) {
+      scoreEl.classList.add('score-low');
+    } else if (score < 1000) {
+      scoreEl.classList.add('score-mid');
+    } else if (score < 2001) {
+      scoreEl.classList.add('score-high');
+    } else {
+      scoreEl.classList.add('score-max');
+    }
   }
   if (x !== undefined && y !== undefined) {
     showFloatingPoints(points, x, y);
   }
 }
 
-function showFloatingPoints(points, x, y) {
-  const div = document.createElement('div');
-  div.textContent = `+${points}`;
+function showFloatingPoints(points, mx, my) {
   let color = '#FFD700'; // Default
   if (points < 100) color = 'rgba(255, 165, 0, 0.8)'; // Faded orange
   else if (points < 1000) color = '#FFA500'; // Yellow orange
   else if (points < 2001) color = '#FF4500'; // Red yellow (orangered)
   else color = '#00FFFF'; // Cyan
 
-  div.style.cssText = `
+  const canvas = document.createElement('canvas');
+  const size = 200;
+  const fontSize = 36; // 300% of original 12px
+  canvas.width = size;
+  canvas.height = size / 2;
+  canvas.style.cssText = `
     position: fixed;
-    left: ${x}px;
-    top: ${y - 40}px;
-    color: ${color};
-    font-family: 'Courier New', monospace;
-    font-size: 12px;
-    font-weight: bold;
+    left: ${mx - size / 2}px;
+    top: ${my - size / 4 - 20}px;
     pointer-events: none;
     z-index: 10000;
-    opacity: 1;
-    transform: translate(-50%, 0);
-    text-shadow: 0 0 3px ${color};
   `;
-  document.body.appendChild(div);
+  const ctx = canvas.getContext('2d');
+  ctx.font = `bold ${fontSize}px 'Courier New', monospace`;
+  ctx.fillStyle = color;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(`+${points}`, size / 2, size / 4);
 
-  let opacity = 1;
-  const animate = () => {
-    opacity -= 0.05;
-    div.style.opacity = opacity;
-    div.style.transform = `translate(-50%, ${-20 * (1 - opacity)}px)`;
-    if (opacity > 0) {
+  // Sample pixels for particles (every 2px for performance)
+  const imageData = ctx.getImageData(0, 0, size, size / 2);
+  const particles = [];
+  for (let py = 0; py < size / 2; py += 2) {
+    for (let px = 0; px < size; px += 2) {
+      const i = (py * size + px) * 4;
+      if (imageData.data[i + 3] > 128) {
+        particles.push({
+          x: px,
+          y: py,
+          vx: (Math.random() - 0.5) * 6, // Scatter velocity
+          vy: (Math.random() - 0.5) * 6 - 1, // Slight upward bias
+          life: 1,
+          decay: 0.015,
+          size: 2,
+          color: color
+        });
+      }
+    }
+  }
+
+  document.body.appendChild(canvas);
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const canvasRect = canvas.getBoundingClientRect();
+    let alive = false;
+    particles.forEach(p => {
+      // Reactive swarm: attract to cursor if in proximity
+      const dx = mousePos.x - (canvasRect.left + p.x);
+      const dy = mousePos.y - (canvasRect.top + p.y);
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 150) {
+        const force = 0.8 / (dist + 1);
+        p.vx += dx * force * 0.1;
+        p.vy += dy * force * 0.1;
+      }
+
+      // Update position
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vx *= 0.97; // Friction
+      p.vy *= 0.97;
+      p.life -= p.decay;
+
+      if (p.life > 0) {
+        alive = true;
+        ctx.fillStyle = p.color.replace(/[\d.]+(?=\))/, (m) => (parseFloat(m) * p.life).toFixed(2));
+        ctx.fillRect(p.x - p.size / 2, p.y - p.size / 2, p.size, p.size); // Pixel art style
+      }
+    });
+
+    if (alive) {
       requestAnimationFrame(animate);
     } else {
-      div.remove();
+      canvas.remove();
     }
-  };
-  setTimeout(animate, 100);
+  }
+  animate();
 }
 
-// Reusable Nav Generator (Unchanged)
+// Reusable Nav Generator (Updated with Scoreboard in Header)
 function generateNav() {
   let navHTML = `
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
@@ -83,6 +142,11 @@ function generateNav() {
         <a class="navbar-brand" href="index.html">
           <img src="img/BEARDsmall.png" alt="Lance Woolie" style="height: 20px;"> Lance Woolie
         </a>
+        <div class="score-header mx-auto d-flex justify-content-center">
+          <div class="score-display">
+            SCORE: <span id="score-value">000000</span>
+          </div>
+        </div>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -148,7 +212,7 @@ function generateNav() {
   }
 }
 
-// Reusable Footer Generator (Updated with Scoreboard)
+// Reusable Footer Generator (Removed Scoreboard)
 function generateFooter() {
   const footerHTML = `
     <footer class="footer bg-dark text-light py-1" style="position: fixed; bottom: 0; left: 0; right: 0; z-index: 1001; border-top: 1px solid #0074D9;">
@@ -161,9 +225,6 @@ function generateFooter() {
           <div class="col-md-4 text-center">
             <div class="cowboy-hat-icon mb-1" id="cowboy-hat">🤠</div>
             <p class="mb-0 small">&copy; 2025 Lance Woolie. All rights reserved.</p>
-            <div class="score-display mb-0 small">
-              SCORE: <span id="score-value">0</span>
-            </div>
           </div>
           <div class="col-md-4 text-end">
             <a href="https://x.com/LanceWoolie" target="_blank" class="me-3" title="X (Twitter)" style="display: inline-block; width: 24px; height: 24px; margin-right: 8px;">
@@ -189,7 +250,7 @@ function generateFooter() {
 
   let placeholder = document.getElementById('footer-placeholder');
   if (!placeholder) {
-    // Fallback: Append directly to body if placeholder missing (fixes index page issue)
+    // Fallback: Append directly to body if placeholder missing
     placeholder = document.createElement('div');
     placeholder.id = 'footer-placeholder';
     document.body.appendChild(placeholder);
@@ -197,10 +258,10 @@ function generateFooter() {
   }
   placeholder.innerHTML = footerHTML;
 
-  // Ensure footer is always on top, especially on index
+  // Ensure footer is always on top
   const footer = placeholder.querySelector('.footer');
   if (footer) {
-    footer.style.zIndex = '1002'; // Slightly higher
+    footer.style.zIndex = '1002';
   }
 
   // Re-init cowboy hat after insert
@@ -217,8 +278,6 @@ function generateFooter() {
     ];
     cowboyHat.addEventListener('click', () => surprises[Math.floor(Math.random() * surprises.length)]());
   }
-  // Init score display
-  scoreEl = document.getElementById('score-value');
 }
 
 // Load Nav & Footer on DOM Ready
@@ -228,6 +287,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
   generateNav();
   generateFooter();
+
+  // Init score display after nav generation
+  scoreEl = document.getElementById('score-value');
+  if (scoreEl) {
+    const displayText = score.toString().padStart(6, '0');
+    scoreEl.textContent = displayText;
+    // Set initial color class
+    if (score === 0) {
+      scoreEl.classList.add('score-zero');
+    } else if (score < 100) {
+      scoreEl.classList.add('score-low');
+    } else if (score < 1000) {
+      scoreEl.classList.add('score-mid');
+    } else if (score < 2001) {
+      scoreEl.classList.add('score-high');
+    } else {
+      scoreEl.classList.add('score-max');
+    }
+  }
 
   const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
 
@@ -282,14 +360,14 @@ document.addEventListener('DOMContentLoaded', () => {
     updateScore(points, e.clientX, e.clientY);
   });
 
-  // Custom red laser dot reticle cursor (75% opacity)
+  // Custom red laser dot reticle cursor (50% smaller: 10px)
   const cursor = document.createElement('div');
   cursor.style.cssText = `
     position: fixed;
-    width: 20px;
-    height: 20px;
+    width: 10px;
+    height: 10px;
     background: radial-gradient(circle, rgba(255, 0, 0, 0.75) 0%, transparent 70%);
-    border: 2px solid rgba(255, 0, 0, 0.5);
+    border: 1px solid rgba(255, 0, 0, 0.5);
     border-radius: 50%;
     pointer-events: none;
     z-index: 9999;
@@ -302,8 +380,8 @@ document.addEventListener('DOMContentLoaded', () => {
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 2px;
-      height: 20px;
+      width: 1px;
+      height: 10px;
       background: rgba(255, 0, 0, 0.75);
       transform: translate(-50%, -50%) rotate(0deg);
     "></div>
@@ -312,8 +390,8 @@ document.addEventListener('DOMContentLoaded', () => {
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 20px;
-      height: 2px;
+      width: 10px;
+      height: 1px;
       background: rgba(255, 0, 0, 0.75);
       transform: translate(-50%, -50%) rotate(90deg);
     "></div>
@@ -322,6 +400,8 @@ document.addEventListener('DOMContentLoaded', () => {
   document.body.style.cursor = 'none';
 
   document.addEventListener('mousemove', (e) => {
+    mousePos.x = e.clientX;
+    mousePos.y = e.clientY;
     cursor.style.left = e.clientX + 'px';
     cursor.style.top = e.clientY + 'px';
   });
@@ -422,15 +502,5 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       });
     });
-  }
-
-  // Update score display after footer generation
-  if (scoreEl) {
-    scoreEl.textContent = score;
-    // Set initial color class
-    if (score < 100) scoreEl.classList.add('score-low');
-    else if (score < 1000) scoreEl.classList.add('score-mid');
-    else if (score < 2001) scoreEl.classList.add('score-high');
-    else scoreEl.classList.add('score-max');
   }
 });
