@@ -2,6 +2,13 @@
 const ricochetSound = new Audio('sounds/multiple-ricochets.mp3');
 ricochetSound.preload = 'auto';  // Ensures buffering
 
+// Preload click ricochet sounds
+const clickSounds = [
+  new Audio('sounds/ricochet-1.mp3'),
+  new Audio('sounds/ricochet-2.mp3')
+];
+clickSounds.forEach(sound => sound.preload = 'auto');
+
 // Reusable Nav Generator (Unchanged)
 function generateNav() {
   let navHTML = `
@@ -137,6 +144,15 @@ function generateFooter() {
 document.addEventListener('DOMContentLoaded', () => {
   generateNav();
   generateFooter();
+
+  // Site-wide click sound on links and buttons
+  document.addEventListener('click', (e) => {
+    if (e.target.matches('a, button, [role="button"]')) {
+      const sound = clickSounds[Math.floor(Math.random() * clickSounds.length)];
+      sound.currentTime = 0;
+      sound.play().catch(err => console.log('Click audio play failed:', err));
+    }
+  });
 
   // Smooth Scroll for Internal Links
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
