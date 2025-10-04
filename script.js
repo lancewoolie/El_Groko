@@ -9,6 +9,53 @@ const clickSounds = [
 ];
 clickSounds.forEach(sound => sound.preload = 'auto');
 
+// Score management
+let score = 0;
+let scoreEl = null;
+
+function updateScore(points, x = undefined, y = undefined) {
+  score += points;
+  sessionStorage.setItem('score', score.toString());
+  if (scoreEl) {
+    scoreEl.textContent = score;
+  }
+  if (x !== undefined && y !== undefined) {
+    showFloatingPoints(points, x, y);
+  }
+}
+
+function showFloatingPoints(points, x, y) {
+  const div = document.createElement('div');
+  div.textContent = `+${points}`;
+  div.style.cssText = `
+    position: fixed;
+    left: ${x}px;
+    top: ${y}px;
+    color: #FFD700;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    font-weight: bold;
+    pointer-events: none;
+    z-index: 10000;
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  `;
+  document.body.appendChild(div);
+
+  let opacity = 1;
+  const animate = () => {
+    opacity -= 0.05;
+    div.style.opacity = opacity;
+    div.style.transform = `translate(-50%, ${-20 * (1 - opacity)}px)`;
+    if (opacity > 0) {
+      requestAnimationFrame(animate);
+    } else {
+      div.remove();
+    }
+  };
+  setTimeout(animate, 100);
+}
+
 // Reusable Nav Generator (Unchanged)
 function generateNav() {
   let navHTML = `
@@ -82,7 +129,7 @@ function generateNav() {
   }
 }
 
-// Reusable Footer Generator (Updated to remove Follow & Connect text links, tighter layout)
+// Reusable Footer Generator (Updated with Scoreboard)
 function generateFooter() {
   const footerHTML = `
     <footer class="footer bg-dark text-light py-1" style="position: fixed; bottom: 0; left: 0; right: 0; z-index: 1001; border-top: 1px solid #0074D9;">
@@ -95,6 +142,9 @@ function generateFooter() {
           <div class="col-md-4 text-center">
             <div class="cowboy-hat-icon mb-1" id="cowboy-hat">🤠</div>
             <p class="mb-0 small">&copy; 2025 Lance Woolie. All rights reserved.</p>
+            <div class="score-display mb-0 small text-warning" style="font-family: 'Courier New', monospace; font-weight: bold; letter-spacing: 1px;">
+              SCORE: <span id="score-value">0</span>
+            </div>
           </div>
           <div class="col-md-4 text-end">
             <a href="https://x.com/LanceWoolie" target="_blank" class="me-3" title="X (Twitter)" style="display: inline-block; width: 24px; height: 24px; margin-right: 8px;">
@@ -135,6 +185,8 @@ function generateFooter() {
       ];
       cowboyHat.addEventListener('click', () => surprises[Math.floor(Math.random() * surprises.length)]());
     }
+    // Init score display
+    scoreEl = document.getElementById('score-value');
   } else {
     console.warn('Footer placeholder not found—add <div id="footer-placeholder"></div> before </body>');
   }
@@ -142,14 +194,63 @@ function generateFooter() {
 
 // Load Nav & Footer on DOM Ready
 document.addEventListener('DOMContentLoaded', () => {
+  // Initialize score
+  score = parseInt(sessionStorage.getItem('score')) || 0;
+
   generateNav();
   generateFooter();
 
-  // Site-wide click sound on all clicks
+  const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
+
+  // YouTube play detection (music page only)
+  if (currentPage === 'music') {
+    document.querySelectorAll('iframe[src*="youtube.com"], iframe[src*="youtu.be"]').forEach(iframe => {
+      if (!iframe.src.includes('enablejsapi=1')) {
+        iframe.src += (iframe.src.includes('?') ? '&' : '?') + 'enablejsapi=1';
+      }
+    });
+
+    window.addEventListener('message', (e) => {
+      if (e.origin !== 'https://www.youtube.com') return;
+      const data = e.data;
+      if (data && data.event === 'onStateChange' && data.data === 1) { // YT.PlayerState.PLAYING
+        updateScore(1000, window.innerWidth / 2, window.innerHeight / 2);
+      }
+    });
+  }
+
+  // Site-wide click sound and scoring on all clicks
   document.addEventListener('click', (e) => {
     const sound = clickSounds[Math.floor(Math.random() * clickSounds.length)];
     sound.currentTime = 0;
     sound.play().catch(err => console.log('Click audio play failed:', err));
+
+    let points = 69; // Default for blank non-menu clicks
+
+    const target = e.target;
+
+    // Sub menu clicks (dropdown items)
+    if (target.closest('.dropdown-item')) {
+      points = 500;
+    }
+
+    // Merch link in header nav
+    if (target.closest('a[href="merch.html"]')) {
+      points = 2500;
+    }
+
+    // Raccoon subscribe button (cowboy hat)
+    if (target.closest('#cowboy-hat')) {
+      points = 420;
+    }
+
+    // Email submit button click (gives 100 points)
+    const form = document.getElementById('contact-form');
+    if (form && target.type === 'submit' && form.contains(target)) {
+      points = 100;
+    }
+
+    updateScore(points, e.clientX, e.clientY);
   });
 
   // Custom red laser dot reticle cursor (75% opacity)
@@ -225,6 +326,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         alert('Message sent—bayou reply incoming.');
         form.reset();
+        // Add extra points after successful submit (total 10420 with the 100 from click)
+        updateScore(10320);
       } catch (error) {
         alert('Send failed—try again.');
         console.error(error);
@@ -233,7 +336,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Index Page Specific: Ricochet Load Animation (post content load, post site shaking, on load of bullet hole dots)
-  const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
   if (currentPage === 'index') {
     window.addEventListener('load', () => {
       const body = document.body;
@@ -291,5 +393,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       });
     });
+  }
+
+  // Update score display after footer generation
+  if (scoreEl) {
+    scoreEl.textContent = score;
   }
 });
