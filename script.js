@@ -72,66 +72,70 @@ function showFloatingPoints(points, mx, my) {
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillText(`+${points}`, size / 2, size / 4);
-
-  // Sample pixels for particles (every 2px for performance)
-  const imageData = ctx.getImageData(0, 0, size, size / 2);
-  const particles = [];
-  for (let py = 0; py < size / 2; py += 2) {
-    for (let px = 0; px < size; px += 2) {
-      const i = (py * size + px) * 4;
-      if (imageData.data[i + 3] > 128) {
-        particles.push({
-          x: px,
-          y: py,
-          vx: (Math.random() - 0.5) * 6, // Scatter velocity
-          vy: (Math.random() - 0.5) * 6 - 1, // Slight upward bias
-          life: 1,
-          decay: 0.015,
-          size: 2,
-          color: color
-        });
-      }
-    }
-  }
+  ctx.textShadow = `0 0 3px ${color}`;
 
   document.body.appendChild(canvas);
 
-  function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const canvasRect = canvas.getBoundingClientRect();
-    let alive = false;
-    particles.forEach(p => {
-      // Reactive swarm: attract to cursor if in proximity
-      const dx = mousePos.x - (canvasRect.left + p.x);
-      const dy = mousePos.y - (canvasRect.top + p.y);
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < 150) {
-        const force = 0.8 / (dist + 1);
-        p.vx += dx * force * 0.1;
-        p.vy += dy * force * 0.1;
+  // Delay particle effect by 300ms
+  setTimeout(() => {
+    // Sample pixels for particles (every 2px for performance)
+    const imageData = ctx.getImageData(0, 0, size, size / 2);
+    const particles = [];
+    for (let py = 0; py < size / 2; py += 2) {
+      for (let px = 0; px < size; px += 2) {
+        const i = (py * size + px) * 4;
+        if (imageData.data[i + 3] > 128) {
+          particles.push({
+            x: px,
+            y: py,
+            vx: (Math.random() - 0.5) * 6, // Scatter velocity
+            vy: (Math.random() - 0.5) * 6 - 1, // Slight upward bias
+            life: 1,
+            decay: 0.015,
+            size: 2,
+            color: color
+          });
+        }
       }
-
-      // Update position
-      p.x += p.vx;
-      p.y += p.vy;
-      p.vx *= 0.97; // Friction
-      p.vy *= 0.97;
-      p.life -= p.decay;
-
-      if (p.life > 0) {
-        alive = true;
-        ctx.fillStyle = p.color.replace(/[\d.]+(?=\))/, (m) => (parseFloat(m) * p.life).toFixed(2));
-        ctx.fillRect(p.x - p.size / 2, p.y - p.size / 2, p.size, p.size); // Pixel art style
-      }
-    });
-
-    if (alive) {
-      requestAnimationFrame(animate);
-    } else {
-      canvas.remove();
     }
-  }
-  animate();
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const canvasRect = canvas.getBoundingClientRect();
+      let alive = false;
+      particles.forEach(p => {
+        // Reactive swarm: attract to cursor if in proximity
+        const dx = mousePos.x - (canvasRect.left + p.x);
+        const dy = mousePos.y - (canvasRect.top + p.y);
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 150) {
+          const force = 0.8 / (dist + 1);
+          p.vx += dx * force * 0.1;
+          p.vy += dy * force * 0.1;
+        }
+
+        // Update position
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vx *= 0.97; // Friction
+        p.vy *= 0.97;
+        p.life -= p.decay;
+
+        if (p.life > 0) {
+          alive = true;
+          ctx.fillStyle = p.color.replace(/[\d.]+(?=\))/, (m) => (parseFloat(m) * p.life).toFixed(2));
+          ctx.fillRect(p.x - p.size / 2, p.y - p.size / 2, p.size, p.size); // Pixel art style
+        }
+      });
+
+      if (alive) {
+        requestAnimationFrame(animate);
+      } else {
+        canvas.remove();
+      }
+    }
+    animate();
+  }, 300);
 }
 
 // Reusable Nav Generator (Updated with Scoreboard in Header)
@@ -144,7 +148,7 @@ function generateNav() {
         </a>
         <div class="score-header mx-auto d-flex justify-content-center">
           <div class="score-display">
-            SCORE: <span id="score-value">000000</span>
+            <span class="score-label">Your Score</span> <span id="score-value">000000</span>
           </div>
         </div>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
