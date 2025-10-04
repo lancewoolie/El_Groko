@@ -1,0 +1,45 @@
+body {
+    margin: 0;
+    padding: 20px;
+    background-color: #F4A460; /* Sandy brown */
+    font-family: 'Courier New', monospace;
+    color: #8B0000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.game-container {
+    text-align: center;
+    background: linear-gradient(to bottom, #DEB887, #8B4513);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+h1 {
+    font-size: 2em;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.hud {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+#gameCanvas {
+    border: 3px solid #8B0000;
+    background-color: #F5DEB3; /* Wheat for canvas bg */
+    cursor: crosshair;
+}
+
+.instructions {
+    margin-top: 10px;
+    font-style: italic;
+    color: #654321;
+}
