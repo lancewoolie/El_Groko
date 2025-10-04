@@ -145,13 +145,55 @@ document.addEventListener('DOMContentLoaded', () => {
   generateNav();
   generateFooter();
 
-  // Site-wide click sound on links and buttons
+  // Site-wide click sound on all clicks
   document.addEventListener('click', (e) => {
-    if (e.target.matches('a, button, [role="button"]')) {
-      const sound = clickSounds[Math.floor(Math.random() * clickSounds.length)];
-      sound.currentTime = 0;
-      sound.play().catch(err => console.log('Click audio play failed:', err));
-    }
+    const sound = clickSounds[Math.floor(Math.random() * clickSounds.length)];
+    sound.currentTime = 0;
+    sound.play().catch(err => console.log('Click audio play failed:', err));
+  });
+
+  // Custom red laser dot reticle cursor (75% opacity)
+  const cursor = document.createElement('div');
+  cursor.style.cssText = `
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    background: radial-gradient(circle, rgba(255, 0, 0, 0.75) 0%, transparent 70%);
+    border: 2px solid rgba(255, 0, 0, 0.5);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease;
+  `;
+  cursor.innerHTML = `
+    <div style="
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 2px;
+      height: 20px;
+      background: rgba(255, 0, 0, 0.75);
+      transform: translate(-50%, -50%) rotate(0deg);
+    "></div>
+    <div style="
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 20px;
+      height: 2px;
+      background: rgba(255, 0, 0, 0.75);
+      transform: translate(-50%, -50%) rotate(90deg);
+    "></div>
+  `;
+  document.body.appendChild(cursor);
+  document.body.style.cursor = 'none';
+
+  document.addEventListener('mousemove', (e) => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
   });
 
   // Smooth Scroll for Internal Links
