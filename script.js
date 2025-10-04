@@ -1,3 +1,7 @@
+// Preload the sound effect early (global, buffers on script load)
+const ricochetSound = new Audio('sounds/multiple-ricochets.mp3');
+ricochetSound.preload = 'auto';  // Ensures buffering
+
 // Reusable Nav Generator (Unchanged)
 function generateNav() {
   let navHTML = `
@@ -167,6 +171,67 @@ document.addEventListener('DOMContentLoaded', () => {
         alert('Send failed—try again.');
         console.error(error);
       }
+    });
+  }
+
+  // Index Page Specific: Ricochet Load Animation (post content load, post site shaking, on load of bullet hole dots)
+  const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
+  if (currentPage === 'index') {
+    window.addEventListener('load', () => {
+      const body = document.body;
+      const dots = document.querySelectorAll('.main-dot');
+
+      // Shake the body
+      body.classList.add('shake');
+
+      setTimeout(() => {
+        // Trigger playback post-shake, synced with bullet hole dots animation
+        ricochetSound.play().catch(e => console.log('Audio play failed:', e));
+        // Fire dots one by one (ricochet animation for bullet holes)
+        dots.forEach((dot, index) => {
+          setTimeout(() => {
+            dot.classList.add('ricochet');
+            setTimeout(() => {
+              dot.classList.add('visible');
+            }, 250);
+          }, index * 150);
+        });
+      }, 1000);
+    });
+
+    // Generic submenu logic for containers (index page only, but safe to run globally)
+    document.querySelectorAll('.dot-container').forEach(container => {
+      const mainDot = container.querySelector('.main-dot');
+      const subDots = container.querySelector('.sub-dots');
+      const hasSubs = subDots.children.length > 0;
+      let hideTimeout;
+
+      if (!hasSubs) return;
+
+      container.addEventListener('mouseenter', () => {
+        clearTimeout(hideTimeout);
+        mainDot.classList.add('hidden');
+        subDots.classList.add('active');
+      });
+
+      container.addEventListener('mouseleave', () => {
+        hideTimeout = setTimeout(() => {
+          subDots.classList.remove('active');
+          mainDot.classList.remove('hidden');
+        }, 1000); // Increased timeout for easier navigation
+      });
+
+      container.querySelectorAll('.sub-dot').forEach(sub => {
+        sub.addEventListener('mouseenter', () => {
+          clearTimeout(hideTimeout);
+        });
+        sub.addEventListener('mouseleave', () => {
+          hideTimeout = setTimeout(() => {
+            subDots.classList.remove('active');
+            mainDot.classList.remove('hidden');
+          }, 1000); // Increased timeout
+        });
+      });
     });
   }
 });
