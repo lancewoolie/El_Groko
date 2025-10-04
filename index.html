@@ -118,23 +118,27 @@
   width: 300px;
   height: 300px;
   z-index: 3;
-  top: 50%;
   transform: translateY(-50%);
 }
 .origins-container {
-  left: 5%;
+  left: 10%;
+  top: 50%;
 }
 .events-container {
-  left: 18%;
+  left: 24%;
+  top: 48%;
 }
 .music-container {
-  left: 31%;
+  left: 38%;
+  top: 52%;
 }
 .merch-container {
-  left: 44%;
+  left: 52%;
+  top: 47%;
 }
 .contact-container {
-  left: 57%;
+  left: 66%;
+  top: 51%;
 }
 .main-dot {
   display: block;
@@ -231,27 +235,6 @@
   transform: translate(-50%, -50%) translate(-120px, 0);
 }
 
-/* Sub Orbit Lines */
-.sub-orbit {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) rotate(7deg);
-  width: 240px;
-  height: 240px;
-  z-index: -1;
-  display: none;
-}
-.sub-dots.active .sub-orbit {
-  display: block;
-}
-.sub-orbit circle {
-  stroke: rgba(255, 255, 255, 0.05);
-  fill: none;
-  stroke-width: 0.2;
-  stroke-dasharray: 2, 2;
-}
-
 /* Solar Orbits */
 .solar-orbits {
   position: absolute;
@@ -263,9 +246,9 @@
   pointer-events: none;
 }
 .solar-orbits ellipse {
-  stroke: rgba(255, 255, 255, 0.05);
+  stroke: rgba(255, 255, 255, 0.03);
   fill: none;
-  stroke-width: 0.2;
+  stroke-width: 0.1;
 }
 
 /* Footer Float Lock */
@@ -432,10 +415,10 @@
     <div class="hero-overlay">
       <div class="solar-system">
         <svg class="solar-orbits" viewBox="0 0 100 100">
-          <ellipse cx="5" cy="50" rx="13" ry="2" />
-          <ellipse cx="5" cy="50" rx="33" ry="3" />
-          <ellipse cx="5" cy="50" rx="53" ry="2" />
-          <ellipse cx="5" cy="50" rx="73" ry="4" stroke-dasharray="3,3" />
+          <ellipse cx="10" cy="50" rx="14" ry="1" />
+          <ellipse cx="10" cy="50" rx="28" ry="1" />
+          <ellipse cx="10" cy="50" rx="42" ry="1" />
+          <ellipse cx="10" cy="50" rx="56" ry="1" />
         </svg>
         
     <!-- Origins Container -->
@@ -465,9 +448,6 @@
         <a href="https://orcd.co/lancewoolieworstenemy" class="sub-dot" style="background-image: url('img/WorstEnemymenu.jpg');" target="_blank" data-title="Worst Enemy"></a>
         <!-- Full Catalog -->
         <a href="music.html" class="sub-dot" style="background-image: url('img/Fullcatalogmenu.jpg');" data-title="Full Catalog"></a>
-        <svg class="sub-orbit" viewBox="0 0 240 240">
-          <circle cx="120" cy="120" r="120" />
-        </svg>
       </div>
     </div>
     
@@ -484,9 +464,6 @@
         <a href="https://lancewoolie.bandcamp.com/track/too-drunk-ft-brent-mason" class="sub-dot" style="background-image: url('https://f4.bcbits.com/img/a1387979790_10.jpg');" target="_blank" data-title="Too Drunk"></a>
         <!-- Country Paradise Album -->
         <a href="https://lancewoolie.bandcamp.com/album/country-paradise" class="sub-dot" style="background-image: url('img/COUNTRY-PARADISE-scaled.jpg');" target="_blank" data-title="Country Paradise"></a>
-        <svg class="sub-orbit" viewBox="0 0 240 240">
-          <circle cx="120" cy="120" r="120" />
-        </svg>
       </div>
     </div>
     
