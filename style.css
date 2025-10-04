@@ -159,6 +159,27 @@ body {
   box-sizing: border-box !important; /* Contain padding */
 }
 
+/* Floating Subscribe Raccoon (Behind Footer) */
+.floating-subscribe {
+  position: fixed;
+  bottom: 0;
+  left: 20px;
+  transform: translateY(50%) translateX(-66.67%);
+  transition: transform 0.3s ease;
+  z-index: 999; /* Behind footer (1001) */
+  display: block;
+  cursor: pointer;
+}
+.floating-subscribe:hover {
+  transform: translateY(0) translateX(0);
+}
+.floating-subscribe img {
+  display: block;
+  max-width: none;
+  height: auto;
+  width: auto; /* Adjust as needed for raccoon size */
+}
+
 /* Scoreboard Styles - Mad Max Shooter Arcade Look (Header Version) */
 .score-display {
   font-family: 'Courier New', monospace;
@@ -364,6 +385,10 @@ body {
   .score-display::before,
   .score-display::after {
     font-size: 0.7em;
+  }
+
+  .floating-subscribe {
+    left: 10px; /* Closer on mobile */
   }
 }
 
