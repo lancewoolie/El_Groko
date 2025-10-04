@@ -776,6 +776,13 @@
     const ricochetSound = new Audio('sounds/multiple-ricochets.mp3');
     ricochetSound.preload = 'auto';  // Ensures buffering
 
+    function animateDot(dot) {
+      dot.classList.add('ricochet');
+      setTimeout(() => {
+        dot.classList.add('visible');
+      }, 250);
+    }
+
     // Ricochet Load Animation (post content load, post site shaking, synced with bullet hole dots loading/animating)
     window.addEventListener('load', () => {
       const body = document.body;
@@ -788,16 +795,17 @@
         // Play audio post-shake, timed to coincide with the start of bullet hole dots ricochet animation (their "load")
         ricochetSound.play().catch(e => console.log('Audio play failed:', e));
         
-        // Fire dots one by one (their ricochet animation represents "loading" the bullet holes)
-        dots.forEach((dot, index) => {
-          setTimeout(() => {
-            dot.classList.add('ricochet');
-            // Optional: If finer sync per-dot is needed, could clone/play short audio snippets here, but keeping single play for multiple ricochets
-            setTimeout(() => {
-              dot.classList.add('visible');
-            }, 250);
-          }, index * 150);
-        });
+        // Fire first 3 dots quicker (100ms intervals)
+        setTimeout(() => animateDot(dots[0]), 0);
+        setTimeout(() => animateDot(dots[1]), 100);
+        setTimeout(() => animateDot(dots[2]), 200);
+        
+        // Pause 0.3s (300ms) after the third dot
+        setTimeout(() => {
+          // Then fire last 2 dots quick like the first 3 (100ms interval)
+          animateDot(dots[3]);
+          setTimeout(() => animateDot(dots[4]), 100);
+        }, 500); // 200 (last first-dot) + 300 pause = 500ms
       }, 1000);
     });
 
