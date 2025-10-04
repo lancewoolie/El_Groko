@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saloon Shooting Gallery</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <h1>Saloon Shooting Gallery</h1>
+        <div class="hud">
+            <span>Score: <span id="score">0</span></span>
+            <span>Time: <span id="time">60</span>s</span>
+        </div>
+        <canvas id="gameCanvas" width="800" height="500"></canvas>
+        <p class="instructions">Click the bottles to shoot 'em! Quick draw, cowboy!</p>
+    </div>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreEl = document.getElementById('score');
+        const timeEl = document.getElementById('time');
+
+        let score = 0;
+        let timeLeft = 60;
+        let gameRunning = true;
+        let targets = [];
+        let particles = []; // For hit effects
+
+        // Target object
+        class Target {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.width = 40;
+                this.height = 80;
+                this.visible = true;
+                this.life = 100; // For shattering effect
+            }
+
+            draw() {
+                if (!this.visible) return;
+
+                // Draw bottle body
+                ctx.fillStyle = '#8B4513'; // Brown
+                ctx.fillRect(this.x, this.y + 20, this.width, this.height - 20);
+                ctx.fillStyle = '#DEB887'; // Tan neck
+                ctx.fillRect(this.x + 10, this.y, this.width - 20, 20);
+
+                // Shatter effect if hit
+                if (this.life < 100) {
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+                    for (let i = 0; i < 5; i++) {
+                        ctx.beginPath();
+                        ctx.arc(this.x + Math.random() * this.width, this.y + Math.random() * this.height, 3, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                }
+            }
+
+            hit() {
+                this.life -= 20;
+                if (this.life <= 0) {
+                    this.visible = false;
+                    // Add particles
+                    for (let i = 0; i < 10; i++) {
+                        particles.push({
+                            x: this.x + this.width / 2,
+                            y: this.y + this.height / 2,
+                            vx: (Math.random() - 0.5) * 10,
+                            vy: (Math.random() - 0.5) * 10,
+                            life: 20
+                        });
+                    }
+                    score += 10;
+                    scoreEl.textContent = score;
+                }
+            }
+        }
+
+        // Particle for explosion effect
+        class Particle {
+            constructor(x, y, vx, vy, life) {
+                this.x = x;
+                this.y = y;
+                this.vx = vx;
+                this.vy = vy;
+                this.life = life;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.vy += 0.5; // Gravity
+                this.life--;
+            }
+
+            draw() {
+                ctx.fillStyle = `rgba(255, 165, 0, ${this.life / 20})`; // Orange fade
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        // Spawn random targets
+        function spawnTarget() {
+            if (!gameRunning) return;
+            const x = Math.random() * (canvas.width - 60) + 30;
+            const y = Math.random() * (canvas.height - 100) + 50;
+            targets.push(new Target(x, y));
+        }
+
+        // Game loop
+        function gameLoop() {
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw saloon background (simple)
+            ctx.fillStyle = '#D2691E'; // Saddle brown floor
+            ctx.fillRect(0, canvas.height - 100, canvas.width, 100);
+            ctx.fillStyle = '#8B0000'; // Dark red walls
+            ctx.fillRect(0, 0, canvas.width, canvas.height - 100);
+
+            // Draw targets
+            targets.forEach(target => target.draw());
+
+            // Update and draw particles
+            particles = particles.filter(p => {
+                p.update();
+                p.draw();
+                return p.life > 0;
+            });
+
+            // Remove invisible targets
+            targets = targets.filter(t => t.visible);
+
+            // Spawn new targets occasionally
+            if (Math.random() < 0.02 && targets.length < 5) {
+                spawnTarget();
+            }
+
+            if (gameRunning) {
+                requestAnimationFrame(gameLoop);
+            }
+        }
+
+        // Click handler
+        canvas.addEventListener('click', (e) => {
+            if (!gameRunning) return;
+            const rect = canvas.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const clickY = e.clientY - rect.top;
+
+            targets.forEach(target => {
+                if (target.visible &&
+                    clickX >= target.x && clickX <= target.x + target.width &&
+                    clickY >= target.y && clickY <= target.y + target.height) {
+                    target.hit();
+                }
+            });
+        });
+
+        // Timer
+        const timer = setInterval(() => {
+            timeLeft--;
+            timeEl.textContent = timeLeft;
+            if (timeLeft <= 0) {
+                gameRunning = false;
+                clearInterval(timer);
+                alert(`Game Over! Final Score: ${score}`);
+            }
+        }, 1000);
+
+        // Start game
+        spawnTarget(); // Initial target
+        gameLoop();
+    </script>
+</body>
+</html>
