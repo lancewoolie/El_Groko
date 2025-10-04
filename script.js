@@ -18,6 +18,18 @@ function updateScore(points, x = undefined, y = undefined) {
   sessionStorage.setItem('score', score.toString());
   if (scoreEl) {
     scoreEl.textContent = score;
+    // Trigger pulse animation
+    const display = scoreEl.closest('.score-display');
+    if (display) {
+      display.classList.add('updated');
+      setTimeout(() => display.classList.remove('updated'), 500);
+    }
+    // Update total score color class
+    scoreEl.className = '';
+    if (score < 100) scoreEl.classList.add('score-low');
+    else if (score < 1000) scoreEl.classList.add('score-mid');
+    else if (score < 2001) scoreEl.classList.add('score-high');
+    else scoreEl.classList.add('score-max');
   }
   if (x !== undefined && y !== undefined) {
     showFloatingPoints(points, x, y);
@@ -27,18 +39,25 @@ function updateScore(points, x = undefined, y = undefined) {
 function showFloatingPoints(points, x, y) {
   const div = document.createElement('div');
   div.textContent = `+${points}`;
+  let color = '#FFD700'; // Default
+  if (points < 100) color = 'rgba(255, 165, 0, 0.8)'; // Faded orange
+  else if (points < 1000) color = '#FFA500'; // Yellow orange
+  else if (points < 2001) color = '#FF4500'; // Red yellow (orangered)
+  else color = '#00FFFF'; // Cyan
+
   div.style.cssText = `
     position: fixed;
     left: ${x}px;
-    top: ${y}px;
-    color: #FFD700;
+    top: ${y - 40}px;
+    color: ${color};
     font-family: 'Courier New', monospace;
     font-size: 12px;
     font-weight: bold;
     pointer-events: none;
     z-index: 10000;
     opacity: 1;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, 0);
+    text-shadow: 0 0 3px ${color};
   `;
   document.body.appendChild(div);
 
@@ -142,7 +161,7 @@ function generateFooter() {
           <div class="col-md-4 text-center">
             <div class="cowboy-hat-icon mb-1" id="cowboy-hat">🤠</div>
             <p class="mb-0 small">&copy; 2025 Lance Woolie. All rights reserved.</p>
-            <div class="score-display mb-0 small text-warning" style="font-family: 'Courier New', monospace; font-weight: bold; letter-spacing: 1px;">
+            <div class="score-display mb-0 small">
               SCORE: <span id="score-value">0</span>
             </div>
           </div>
@@ -168,28 +187,38 @@ function generateFooter() {
     </footer>
   `;
 
-  const placeholder = document.getElementById('footer-placeholder');
-  if (placeholder) {
-    placeholder.innerHTML = footerHTML;
-    // Re-init cowboy hat after insert
-    const cowboyHat = document.getElementById('cowboy-hat');
-    if (cowboyHat) {
-      cowboyHat.textContent = '🤠';
-      const surprises = [
-        () => { cowboyHat.textContent = '🪕'; setTimeout(() => cowboyHat.textContent = '🤠', 1000); },
-        () => { cowboyHat.style.color = '#FFD700'; setTimeout(() => cowboyHat.style.color = 'white', 1000); },
-        () => { alert('Twang! "Do it." – Lance'); },
-        () => { cowboyHat.style.transform = 'rotate(360deg)'; setTimeout(() => cowboyHat.style.transform = 'rotate(0deg)', 500); },
-        () => { cowboyHat.textContent = '🌵'; setTimeout(() => cowboyHat.textContent = '🤠', 1000); },
-        () => { window.scrollTo({ top: 0, behavior: 'smooth' }); cowboyHat.textContent = '⬆️'; setTimeout(() => cowboyHat.textContent = '🤠', 1000); }
-      ];
-      cowboyHat.addEventListener('click', () => surprises[Math.floor(Math.random() * surprises.length)]());
-    }
-    // Init score display
-    scoreEl = document.getElementById('score-value');
-  } else {
-    console.warn('Footer placeholder not found—add <div id="footer-placeholder"></div> before </body>');
+  let placeholder = document.getElementById('footer-placeholder');
+  if (!placeholder) {
+    // Fallback: Append directly to body if placeholder missing (fixes index page issue)
+    placeholder = document.createElement('div');
+    placeholder.id = 'footer-placeholder';
+    document.body.appendChild(placeholder);
+    console.log('Footer placeholder missing; created and appended to body.');
   }
+  placeholder.innerHTML = footerHTML;
+
+  // Ensure footer is always on top, especially on index
+  const footer = placeholder.querySelector('.footer');
+  if (footer) {
+    footer.style.zIndex = '1002'; // Slightly higher
+  }
+
+  // Re-init cowboy hat after insert
+  const cowboyHat = document.getElementById('cowboy-hat');
+  if (cowboyHat) {
+    cowboyHat.textContent = '🤠';
+    const surprises = [
+      () => { cowboyHat.textContent = '🪕'; setTimeout(() => cowboyHat.textContent = '🤠', 1000); },
+      () => { cowboyHat.style.color = '#FFD700'; setTimeout(() => cowboyHat.style.color = 'white', 1000); },
+      () => { alert('Twang! "Do it." – Lance'); },
+      () => { cowboyHat.style.transform = 'rotate(360deg)'; setTimeout(() => cowboyHat.style.transform = 'rotate(0deg)', 500); },
+      () => { cowboyHat.textContent = '🌵'; setTimeout(() => cowboyHat.textContent = '🤠', 1000); },
+      () => { window.scrollTo({ top: 0, behavior: 'smooth' }); cowboyHat.textContent = '⬆️'; setTimeout(() => cowboyHat.textContent = '🤠', 1000); }
+    ];
+    cowboyHat.addEventListener('click', () => surprises[Math.floor(Math.random() * surprises.length)]());
+  }
+  // Init score display
+  scoreEl = document.getElementById('score-value');
 }
 
 // Load Nav & Footer on DOM Ready
@@ -398,5 +427,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // Update score display after footer generation
   if (scoreEl) {
     scoreEl.textContent = score;
+    // Set initial color class
+    if (score < 100) scoreEl.classList.add('score-low');
+    else if (score < 1000) scoreEl.classList.add('score-mid');
+    else if (score < 2001) scoreEl.classList.add('score-high');
+    else scoreEl.classList.add('score-max');
   }
 });
