@@ -560,7 +560,6 @@
   border-radius: 10px;
 }  </style></head>
 <body>
-  <audio id="ricochetSound" src="sounds/multiple-ricochets.mp3" preload="auto"></audio>
   <a href="contact.html" class="floating-subscribe">
     <img src="img/subscribe.gif" alt="Subscribe">
   </a>
@@ -773,21 +772,27 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
   <script>
-    // Ricochet Load Animation
+    // Preload the sound effect early (on script load, which is post-DOM but pre-full load)
+    const ricochetSound = new Audio('sounds/multiple-ricochets.mp3');
+    ricochetSound.preload = 'auto';  // Ensures buffering
+
+    // Ricochet Load Animation (post content load, post site shaking, synced with bullet hole dots loading/animating)
     window.addEventListener('load', () => {
       const body = document.body;
       const dots = document.querySelectorAll('.main-dot');
-      const audio = document.getElementById('ricochetSound');
 
-      // Shake the body
+      // Shake the body first
       body.classList.add('shake');
 
       setTimeout(() => {
-        audio.play().catch(e => console.log('Audio play failed:', e));
-        // Fire dots one by one
+        // Play audio post-shake, timed to coincide with the start of bullet hole dots ricochet animation (their "load")
+        ricochetSound.play().catch(e => console.log('Audio play failed:', e));
+        
+        // Fire dots one by one (their ricochet animation represents "loading" the bullet holes)
         dots.forEach((dot, index) => {
           setTimeout(() => {
             dot.classList.add('ricochet');
+            // Optional: If finer sync per-dot is needed, could clone/play short audio snippets here, but keeping single play for multiple ricochets
             setTimeout(() => {
               dot.classList.add('visible');
             }, 250);
