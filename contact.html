@@ -218,131 +218,82 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
+
+  <!-- EmailJS Library (included once) -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script type="text/javascript">
+    (function() {
+      emailjs.init("CHqNrS_37-ZHjibQR"); // Your EmailJS public key
+    })();
+  </script>
+
   <script>
-  // Submit Forms to Firestore (General & Newsletter) - Fixed with Confirmation
-  document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM loaded, checking forms...');
+    // Form Handlers: Contact (EmailJS only) + Newsletter (Firebase only)
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('DOM loaded, setting up forms...');
 
-    // General Inquiries
-    const contactForm = document.getElementById('contact-form');
-    if (contactForm && window.db) {
-      console.log('Contact form found, adding listener');
-      contactForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        console.log('Contact submit triggered');
-        const name = document.getElementById('name').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const message = document.getElementById('message').value.trim();
-        if (!name || !email || !message || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-          alert('Whoa, partner—fill it right (name, valid email, message).');
-          return;
-        }
-        try {
-          await window.addDoc(window.collection(window.db, 'contacts'), {
-            name,
-            email,
-            message,
-            type: 'general',
-            timestamp: window.serverTimestamp()
-          });
-          alert('Message sent—bayou reply incoming.');
-          contactForm.reset();
-          document.getElementById('contact-success').style.display = 'block';
-        } catch (error) {
-          alert('Send failed—try again or email directly.');
-          console.error('Contact error:', error);
-        }
-      });
-    } else {
-      console.warn('Contact form or DB missing');
-    }
+      // Contact Form: EmailJS Only (no Firebase storage)
+      const contactForm = document.getElementById('contact-form');
+      if (contactForm) {
+        console.log('Contact form found, adding EmailJS listener');
+        contactForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          console.log('Contact submit triggered');
+          const name = document.getElementById('name').value.trim();
+          const email = document.getElementById('email').value.trim();
+          const message = document.getElementById('message').value.trim();
+          if (!name || !email || !message || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            alert('Whoa, partner—fill it right (name, valid email, message).');
+            return;
+          }
+          try {
+            await emailjs.send('service_n08jdhv', 'template_of9jflr', {
+              from_name: name,
+              from_email: email,
+              message: message
+            });
+            alert('Message sent—bayou reply incoming.');
+            contactForm.reset();
+            document.getElementById('contact-success').style.display = 'block';
+          } catch (error) {
+            alert('Send failed—try again or email directly.');
+            console.error('EmailJS error:', error);
+          }
+        });
+      } else {
+        console.warn('Contact form missing');
+      }
 
-    // Newsletter Signup
-    const newsletterForm = document.getElementById('newsletter-form');
-    if (newsletterForm && window.db) {
-      console.log('Newsletter form found, adding listener');
-      newsletterForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        console.log('Newsletter submit triggered');
-        const email = document.getElementById('signup-email').value.trim();
-        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-          alert('Valid email required for signup.');
-          return;
-        }
-        try {
-          await window.addDoc(window.collection(window.db, 'subscribers'), {
-            email,
-            type: 'newsletter',
-            timestamp: window.serverTimestamp()
-          });
-          alert('Signed up—exclusive twang incoming!');
-          newsletterForm.reset();
-          document.getElementById('newsletter-success').style.display = 'block';
-        } catch (error) {
-          alert('Signup snag—try again.');
-          console.error('Newsletter error:', error);
-        }
-      });
-    } else {
-      console.warn('Newsletter form or DB missing');
-    }
-  });
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script type="text/javascript">
-  (function() {
-    emailjs.init("CHqNrS_37-ZHjibQR"); // Replace with your public key
-  })();
-</script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script type="text/javascript">
-  (function() {
-    emailjs.init("CHqNrS_37-ZHjibQR"); // Your public key
-  })();
-</script>
-
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script type="text/javascript">
-  (function() {
-    emailjs.init("CHqNrS_37-ZHjibQR"); // Your public key
-  })();
-</script>
-<script>
-  // Submit Message Form to EmailJS
-  document.addEventListener('DOMContentLoaded', () => {
-    const contactForm = document.getElementById('contact-form');
-    if (contactForm) {
-      contactForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const name = document.getElementById('name').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const message = document.getElementById('message').value.trim();
-        if (!name || !email || !message || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-          alert('Whoa, partner—fill it right (name, valid email, message).');
-          return;
-        }
-        try {
-          await emailjs.send('service_n08jdhv', 'template_of9jflr', { // Replace YOUR_TEMPLATE_ID with actual from dashboard
-            from_name: name,
-            from_email: email,
-            message: message
-          });
-          alert('Message sent—bayou reply incoming.');
-          contactForm.reset();
-          document.getElementById('contact-success').style.display = 'block';
-        } catch (error) {
-          alert('Send failed—try again or email directly.');
-          console.error('EmailJS error:', error);
-        }
-      });
-    }
-  });
-</script>
-</script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script type="text/javascript">
-  (function() {
-    emailjs.init("CHqNrS_37-ZHjibQR"); // Replace with your public key from EmailJS dashboard
-  })();
-</script>
+      // Newsletter Form: Firebase Only (as intended)
+      const newsletterForm = document.getElementById('newsletter-form');
+      if (newsletterForm && window.db) {
+        console.log('Newsletter form found, adding Firebase listener');
+        newsletterForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          console.log('Newsletter submit triggered');
+          const email = document.getElementById('signup-email').value.trim();
+          if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            alert('Valid email required for signup.');
+            return;
+          }
+          try {
+            await window.addDoc(window.collection(window.db, 'subscribers'), {
+              email,
+              type: 'newsletter',
+              timestamp: window.serverTimestamp()
+            });
+            alert('Signed up—exclusive twang incoming!');
+            newsletterForm.reset();
+            document.getElementById('newsletter-success').style.display = 'block';
+          } catch (error) {
+            alert('Signup snag—try again.');
+            console.error('Newsletter error:', error);
+          }
+        });
+      } else {
+        console.warn('Newsletter form or DB missing');
+      }
+    });
+  </script>
 </body>
 </html>
