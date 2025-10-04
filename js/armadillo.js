@@ -1,9 +1,9 @@
 // Armadillo Scurry Animation (Integrated for lancewoolie.com)
 // Place this inside the existing DOMContentLoaded event listener, after cursor setup
 
-// Preload armadillo sprite (use local path if uploaded to img/; otherwise GitHub raw)
+// Preload armadillo sprite (local path on site)
 const armadilloImg = new Image();
-armadilloImg.src = 'https://raw.githubusercontent.com/yourusername/armadillo-assets/main/assets/Armadillo%20Sprite%20Sheet.png';  // Replace with your GitHub raw URL or 'img/Armadillo Sprite Sheet.png' if local
+armadilloImg.src = 'img/sprites/Armadillo Sprite Sheet.png';  // Local URL; browser handles space
 
 const canvas = document.createElement('canvas');
 canvas.width = 64;  // Double sprite size for visibility
@@ -20,6 +20,7 @@ const ctx = canvas.getContext('2d');
 let frameIndex = 0;
 const frameWidth = 32;
 const frameHeight = 32;
+const sourceY = 32;  // Movement row (second row, 0-indexed) for scurrying with leg/tail animation
 const animationSpeed = 0.2;  // Frames per tick
 let x = -100;  // Starting x position
 let y = window.innerHeight / 2 - 32;  // Mid-screen y (will randomize)
@@ -27,21 +28,21 @@ let speed = 2;  // Pixels per frame
 let isAnimating = false;
 let mouseX = 0, mouseY = 0;
 
-// Reuse existing mouse tracking (from cursor mousemove), but add armadillo-specific listener for precision
+// Reuse existing mouse tracking (from cursor mousemove), but ensure listener for armadillo
 document.addEventListener('mousemove', (e) => {
     mouseX = e.clientX;
     mouseY = e.clientY;
     // Existing cursor update here if integrating fully
 });
 
-// Cycle through movement frames (assume 6 frames starting at x=0 in sprite sheet; adjust based on your sheet—inspect PNG for exact count)
+// Cycle through movement frames (6 frames in movement row for walking/scurrying)
 function drawArmadillo() {
     if (!armadilloImg.complete) return;
     const sourceX = frameIndex * frameWidth;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(armadilloImg, sourceX, 0, frameWidth, frameHeight, 0, 0, canvas.width, canvas.height);
+    ctx.drawImage(armadilloImg, sourceX, sourceY, frameWidth, frameHeight, 0, 0, canvas.width, canvas.height);
     frameIndex += animationSpeed;
-    if (frameIndex >= 6) frameIndex = 0;  // Loop 6 frames; update if your sheet has different (e.g., 8 for full walk cycle)
+    if (frameIndex >= 6) frameIndex = 0;  // Loop 6 frames for full cycle (legs, tail, scales via frames)
 }
 
 function updatePosition() {
