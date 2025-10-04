@@ -64,11 +64,14 @@
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  opacity: 0.5;
+  opacity: 0;
   transition: opacity 0.3s ease;
   cursor: pointer;
   z-index: 3;
   text-decoration: none;
+}
+.interactive-dot.visible {
+  opacity: 0.5;
 }
 .interactive-dot:hover {
   opacity: 1;
@@ -112,6 +115,36 @@
   z-index: 1;
 }
 
+/* Shake Animation */
+.shake {
+  animation: shake 1s cubic-bezier(.36,.07,.19,.97) both;
+}
+@keyframes shake {
+  10%, 90% { transform: translate3d(-1px, 0, 0); }
+  20%, 80% { transform: translate3d(2px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+  40%, 60% { transform: translate3d(4px, 0, 0); }
+}
+
+/* Ricochet Animation for Dots */
+.ricochet {
+  animation: ricochet 0.5s ease-out forwards;
+}
+@keyframes ricochet {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.2) rotate(180deg);
+  }
+  100% {
+    opacity: 0.5;
+    transform: translate(-50%, -50%) scale(1) rotate(360deg);
+  }
+}
+
 /* Animated Orbiting Dot */
 .animated-dot {
   position: absolute;
@@ -143,6 +176,27 @@
   animation-duration: 45s;
   animation: orbit3 45s linear infinite;
 }
+.animated-dot:nth-child(4) {
+  width: 3px;
+  height: 3px;
+  background: rgba(80, 80, 80, 0.25);
+  animation-duration: 15s;
+  animation: orbit4 15s linear infinite;
+}
+.animated-dot:nth-child(5) {
+  width: 4px;
+  height: 4px;
+  background: rgba(120, 120, 120, 0.35);
+  animation-duration: 25s;
+  animation: orbit5 25s linear infinite;
+}
+.animated-dot:nth-child(6) {
+  width: 2px;
+  height: 2px;
+  background: rgba(140, 140, 140, 0.15);
+  animation-duration: 30s;
+  animation: orbit6 30s linear infinite;
+}
 @keyframes orbit1 {
   0% { transform: rotate(0deg) translateX(40vw) rotate(0deg); }
   100% { transform: rotate(360deg) translateX(40vw) rotate(-360deg); }
@@ -154,6 +208,18 @@
 @keyframes orbit3 {
   0% { transform: rotate(0deg) translateX(60vw) rotate(0deg); }
   100% { transform: rotate(360deg) translateX(60vw) rotate(-360deg); }
+}
+@keyframes orbit4 {
+  0% { transform: rotate(0deg) translateX(30vw) rotate(0deg); }
+  100% { transform: rotate(360deg) translateX(30vw) rotate(-360deg); }
+}
+@keyframes orbit5 {
+  0% { transform: rotate(0deg) translateX(45vw) rotate(0deg); }
+  100% { transform: rotate(360deg) translateX(45vw) rotate(-360deg); }
+}
+@keyframes orbit6 {
+  0% { transform: rotate(0deg) translateX(55vw) rotate(0deg); }
+  100% { transform: rotate(360deg) translateX(55vw) rotate(-360deg); }
 }
 
 /* Music Dot Container for Submenu - Expanded Hover Area */
@@ -494,6 +560,7 @@
   border-radius: 10px;
 }  </style></head>
 <body>
+  <audio id="ricochetSound" src="sounds/multiple-ricochets.mp3" preload="auto"></audio>
   <a href="contact.html" class="floating-subscribe">
     <img src="img/subscribe.gif" alt="Subscribe">
   </a>
@@ -509,6 +576,9 @@
           <ellipse cx="50" cy="50" rx="50" ry="0.8" />
           <ellipse cx="50" cy="50" rx="60" ry="0.6" />
         </svg>
+        <div class="animated-dot"></div>
+        <div class="animated-dot"></div>
+        <div class="animated-dot"></div>
         <div class="animated-dot"></div>
         <div class="animated-dot"></div>
         <div class="animated-dot"></div>
@@ -703,6 +773,29 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
   <script>
+    // Ricochet Load Animation
+    window.addEventListener('load', () => {
+      const body = document.body;
+      const dots = document.querySelectorAll('.main-dot');
+      const audio = document.getElementById('ricochetSound');
+
+      // Shake the body
+      body.classList.add('shake');
+
+      setTimeout(() => {
+        audio.play().catch(e => console.log('Audio play failed:', e));
+        // Fire dots one by one
+        dots.forEach((dot, index) => {
+          setTimeout(() => {
+            dot.classList.add('ricochet');
+            setTimeout(() => {
+              dot.classList.add('visible');
+            }, 250);
+          }, index * 150);
+        });
+      }, 1000);
+    });
+
     // Generic submenu logic for containers
     document.querySelectorAll('.dot-container').forEach(container => {
       const mainDot = container.querySelector('.main-dot');
