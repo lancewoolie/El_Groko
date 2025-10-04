@@ -112,13 +112,33 @@
   z-index: 1;
 }
 
+/* Animated Orbiting Dot */
+.animated-dot {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  top: 50%;
+  left: 10%;
+  animation: orbit 30s linear infinite;
+  z-index: 2;
+}
+@keyframes orbit {
+  0% {
+    transform: rotate(0deg) translateX(60vw) rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg) translateX(60vw) rotate(-360deg);
+  }
+}
+
 /* Music Dot Container for Submenu - Expanded Hover Area */
 .dot-container {
   position: absolute;
   width: 300px;
   height: 300px;
   z-index: 3;
-  transform: translateY(-50%);
 }
 .origins-container {
   left: 10%;
@@ -126,19 +146,19 @@
 }
 .events-container {
   left: 24%;
-  top: 48%;
+  top: 40%;
 }
 .music-container {
   left: 38%;
-  top: 52%;
+  top: 60%;
 }
 .merch-container {
   left: 52%;
-  top: 47%;
+  top: 42%;
 }
 .contact-container {
   left: 66%;
-  top: 51%;
+  top: 58%;
 }
 .main-dot {
   display: block;
@@ -415,11 +435,12 @@
     <div class="hero-overlay">
       <div class="solar-system">
         <svg class="solar-orbits" viewBox="0 0 100 100">
-          <ellipse cx="10" cy="50" rx="14" ry="1" />
-          <ellipse cx="10" cy="50" rx="28" ry="1" />
-          <ellipse cx="10" cy="50" rx="42" ry="1" />
-          <ellipse cx="10" cy="50" rx="56" ry="1" />
+          <ellipse cx="10" cy="50" rx="14" ry="0.8" />
+          <ellipse cx="10" cy="48" rx="28" ry="1.2" />
+          <ellipse cx="10" cy="52" rx="42" ry="0.9" />
+          <ellipse cx="10" cy="49" rx="56" ry="1.1" />
         </svg>
+        <div class="animated-dot"></div>
         
     <!-- Origins Container -->
     <div class="dot-container origins-container">
@@ -434,7 +455,7 @@
       <span class="main-label">Events</span>
       <div class="sub-dots">
         <!-- Upcoming Event -->
-        <a href="https://www.facebook.com/events/1285222389594134" class="sub-dot" style="background-image: url('img/Eventsmenu.jpg');" target="_blank" data-title="Upcoming Event"></a>
+        <a href="https://www.facebook.com/events/1285222389594134" class="sub-dot" style="background-image: url('img/OCT 24.png');" target="_blank" data-title="Upcoming Event"></a>
       </div>
     </div>
     
