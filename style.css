@@ -82,6 +82,21 @@ body {
   opacity: 1;
 }
 
+/* Score Header in Nav */
+.score-header {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+}
+
+@media (max-width: 991.98px) {
+  .score-header {
+    display: none; /* Hide on mobile to save space */
+  }
+}
+
 /* Bayou Hero (Video-Compatible) */
 .hero {
   height: 100vh;
@@ -144,7 +159,7 @@ body {
   box-sizing: border-box !important; /* Contain padding */
 }
 
-/* Scoreboard Styles - Mad Max Shooter Arcade Look */
+/* Scoreboard Styles - Mad Max Shooter Arcade Look (Header Version) */
 .score-display {
   font-family: 'Courier New', monospace;
   font-weight: bold;
@@ -155,16 +170,16 @@ body {
     2px 2px 4px rgba(0, 0, 0, 0.8),
     -2px -2px 4px rgba(139, 69, 19, 0.6); /* Rusty shadow for grit */
   transition: text-shadow 0.3s ease, transform 0.3s ease;
-  background: linear-gradient(145deg, rgba(139, 69, 19, 0.9), rgba(160, 82, 45, 0.9)); /* Rusty metal gradient */
-  border: 2px solid #8B4513; /* Saddle brown border */
-  border-radius: 5px;
-  padding: 5px 10px;
+  background: linear-gradient(145deg, #FF1493, #FF69B4); /* Bright non-primary pink gradient */
+  border: 2px solid #FFD700; /* Gold border framing all sides */
+  border-radius: 15px; /* Rounded rectangle */
+  padding: 8px 15px;
   box-shadow: 
     inset 0 0 10px rgba(255, 0, 0, 0.3), /* Inner red glow like engine heat */
-    0 0 15px rgba(255, 69, 0, 0.4); /* Outer orange flicker */
+    0 4px 8px rgba(0, 0, 0, 0.5), /* Layered shadow for depth */
+    0 0 15px rgba(255, 20, 147, 0.4); /* Outer pink flicker */
   position: relative;
   display: inline-block;
-  margin-top: 5px;
 }
 
 .score-display::before {
@@ -193,11 +208,12 @@ body {
 }
 
 @keyframes flicker {
-  0% { box-shadow: inset 0 0 10px rgba(255, 0, 0, 0.3), 0 0 15px rgba(255, 69, 0, 0.4); }
-  100% { box-shadow: inset 0 0 15px rgba(255, 0, 0, 0.5), 0 0 20px rgba(255, 69, 0, 0.6); }
+  0% { box-shadow: inset 0 0 10px rgba(255, 0, 0, 0.3), 0 4px 8px rgba(0, 0, 0, 0.5), 0 0 15px rgba(255, 20, 147, 0.4); }
+  100% { box-shadow: inset 0 0 15px rgba(255, 0, 0, 0.5), 0 4px 8px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 20, 147, 0.6); }
 }
 
 /* Total Score Color Tiers (Mad Max heat levels) */
+#score-value.score-zero { color: #808080; text-shadow: 0 0 5px rgba(128, 128, 128, 0.5); } /* Grey for starting */
 #score-value.score-low { color: rgba(255, 165, 0, 0.7); text-shadow: 0 0 5px rgba(255, 165, 0, 0.5); } /* Faded orange - low heat */
 #score-value.score-mid { color: #FFA500; text-shadow: 0 0 5px rgba(255, 165, 0, 0.8); } /* Yellow orange - building fury */
 #score-value.score-high { color: #FF4500; text-shadow: 0 0 5px rgba(255, 69, 0, 0.9); } /* Red yellow - engine roar */
@@ -218,14 +234,10 @@ body {
   font-size: 1.2em; /* Larger for legibility */
 }
 
-/* Ensure footer integration */
-.footer .score-display {
-  text-align: center;
-}
-
 /* Ensure Content Doesn't Overlap Footer */
 body {
-  padding-bottom: 80px !important; /* Slightly taller buffer for spiced-up scoreboard */
+  padding-bottom: 70px !important; /* Buffer for footer */
+  padding-top: 70px !important; /* Buffer for header with score */
 }
 
 /* Video No-Bleed Lock */
