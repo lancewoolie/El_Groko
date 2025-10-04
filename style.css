@@ -144,6 +144,38 @@ body {
   box-sizing: border-box !important; /* Contain padding */
 }
 
+/* Scoreboard Styles - Arcade Snazzy Look */
+.score-display {
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: #FFD700; /* Gold for arcade pop */
+  text-shadow: 0 0 5px rgba(255, 215, 0, 0.5); /* Subtle glow */
+  transition: text-shadow 0.3s ease; /* Smooth updates */
+}
+
+.score-display.updated {
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.4); /* Pulse on score change */
+  animation: scorePulse 0.5s ease-out;
+}
+
+@keyframes scorePulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+#score-value {
+  color: #FFD700;
+  font-size: 1.1em; /* Slightly larger for legibility */
+}
+
+/* Ensure footer integration */
+.footer .score-display {
+  margin-top: 5px; /* Space from copyright */
+  text-align: center;
+}
+
 /* Ensure Content Doesn't Overlap Footer */
 body {
   padding-bottom: 70px !important; /* Taller buffer for footer height */
@@ -154,8 +186,6 @@ body {
   z-index: -1 !important;
   mix-blend-mode: normal !important;
 }
-
-
 
 .cowboy-hat-icon {
   font-size: 1.5rem;
@@ -241,6 +271,10 @@ body {
     width: 100px;
     height: 100px; /* Smaller thumbs on mobile */
   }
+
+  .score-display {
+    font-size: 0.8rem; /* Smaller on mobile */
+  }
 }
 
 /* Video BG Fix (Inline Styles Moved Here) */
@@ -263,4 +297,3 @@ body {
   position: relative;
   z-index: 2;
 }
-
