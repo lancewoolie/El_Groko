@@ -216,7 +216,7 @@ function generateNav() {
   }
 }
 
-// Reusable Footer Generator (Removed Scoreboard)
+// Reusable Footer Generator (Removed Scoreboard, Added Subscribe Raccoon)
 function generateFooter() {
   const footerHTML = `
     <footer class="footer bg-dark text-light py-1" style="position: fixed; bottom: 0; left: 0; right: 0; z-index: 1001; border-top: 1px solid #0074D9;">
@@ -249,6 +249,8 @@ function generateFooter() {
           </div>
         </div>
       </div>
+      <!-- Subscribe Raccoon Behind Footer -->
+      <img id="subscribe-raccoon" class="floating-subscribe" src="img/racoon.png" alt="Subscribe Raccoon">
     </footer>
   `;
 
@@ -350,7 +352,12 @@ document.addEventListener('DOMContentLoaded', () => {
       points = 2500;
     }
 
-    // Raccoon subscribe button (cowboy hat)
+    // Subscribe raccoon click (420 points)
+    if (target.closest('#subscribe-raccoon')) {
+      points = 420;
+    }
+
+    // Raccoon subscribe button (cowboy hat) - kept for surprises
     if (target.closest('#cowboy-hat')) {
       points = 420;
     }
