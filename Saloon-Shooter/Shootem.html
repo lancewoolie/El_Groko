@@ -3,163 +3,407 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saloon Shooting Gallery</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Shoot 'Em Up Saloon</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="game-container">
-        <h1>Saloon Shooting Gallery</h1>
+        <h1>Shoot 'Em Up Saloon</h1>
         <div class="hud">
             <span>Score: <span id="score">0</span></span>
-            <span>Time: <span id="time">60</span>s</span>
+            <span>Health: <span id="health">3</span> ❤️</span>
+            <span>Time: <span id="time">90</span>s</span>
+            <span>High: <span id="highScore">0</span></span>
         </div>
-        <canvas id="gameCanvas" width="800" height="500"></canvas>
-        <p class="instructions">Click the bottles to shoot 'em! Quick draw, cowboy!</p>
+        <canvas id="gameCanvas" width="900" height="600"></canvas>
+        <p class="instructions">Quick on the draw! Blast bottles, beasts, and bushwhackers. Miss too much and you're coyote chow.</p>
+        <div id="gameOver" class="game-over hidden">
+            <h2>Draw's Over, Stranger!</h2>
+            <p>Final Score: <span id="finalScore"></span></p>
+            <button onclick="location.reload()">Saddle Up Again</button>
+        </div>
     </div>
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         const scoreEl = document.getElementById('score');
+        const healthEl = document.getElementById('health');
         const timeEl = document.getElementById('time');
+        const highScoreEl = document.getElementById('highScore');
+        const gameOverEl = document.getElementById('gameOver');
+        const finalScoreEl = document.getElementById('finalScore');
 
-        let score = 0;
-        let timeLeft = 60;
-        let gameRunning = true;
-        let targets = [];
-        let particles = []; // For hit effects
-
-        // Target object
-        class Target {
-            constructor(x, y) {
-                this.x = x;
-                this.y = y;
-                this.width = 40;
-                this.height = 80;
-                this.visible = true;
-                this.life = 100; // For shattering effect
-            }
-
-            draw() {
-                if (!this.visible) return;
-
-                // Draw bottle body
-                ctx.fillStyle = '#8B4513'; // Brown
-                ctx.fillRect(this.x, this.y + 20, this.width, this.height - 20);
-                ctx.fillStyle = '#DEB887'; // Tan neck
-                ctx.fillRect(this.x + 10, this.y, this.width - 20, 20);
-
-                // Shatter effect if hit
-                if (this.life < 100) {
-                    ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-                    for (let i = 0; i < 5; i++) {
-                        ctx.beginPath();
-                        ctx.arc(this.x + Math.random() * this.width, this.y + Math.random() * this.height, 3, 0, Math.PI * 2);
-                        ctx.fill();
-                    }
-                }
-            }
-
-            hit() {
-                this.life -= 20;
-                if (this.life <= 0) {
-                    this.visible = false;
-                    // Add particles
-                    for (let i = 0; i < 10; i++) {
-                        particles.push({
-                            x: this.x + this.width / 2,
-                            y: this.y + this.height / 2,
-                            vx: (Math.random() - 0.5) * 10,
-                            vy: (Math.random() - 0.5) * 10,
-                            life: 20
-                        });
-                    }
-                    score += 10;
-                    scoreEl.textContent = score;
-                }
-            }
+        // Audio context for sfx
+        let audioCtx;
+        function initAudio() {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        function playSound(frequency, duration, type = 'sine') {
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            oscillator.frequency.value = frequency;
+            oscillator.type = type;
+            gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+            oscillator.start(audioCtx.currentTime);
+            oscillator.stop(audioCtx.currentTime + duration);
         }
 
-        // Particle for explosion effect
-        class Particle {
-            constructor(x, y, vx, vy, life) {
+        let score = 0;
+        let highScore = localStorage.getItem('saloonHigh') || 0;
+        highScoreEl.textContent = highScore;
+        let health = 3;
+        let timeLeft = 90;
+        let gameRunning = true;
+        let targets = [];
+        let particles = [];
+        let misses = 0;
+        let recoil = 0; // For gun kick
+        let crosshairX = canvas.width / 2;
+        let crosshairY = canvas.height / 2;
+        let difficulty = 1; // Increases over time
+
+        // Base Target class
+        class Target {
+            constructor(x, y, type) {
                 this.x = x;
                 this.y = y;
-                this.vx = vx;
-                this.vy = vy;
-                this.life = life;
+                this.type = type;
+                this.visible = true;
+                this.life = 100;
+                this.points = 10;
+                this.speed = 1 + Math.random() * difficulty;
+                this.vx = (Math.random() - 0.5) * this.speed * 2;
+                this.vy = (Math.random() - 0.5) * this.speed;
+                this.angle = 0;
+                this.size = 50;
             }
 
             update() {
                 this.x += this.vx;
                 this.y += this.vy;
-                this.vy += 0.5; // Gravity
+                this.angle += 0.1;
+                // Bounce off edges
+                if (this.x < 0 || this.x > canvas.width - this.size) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height - this.size) this.vy *= -1;
+                // Auto-despawn if off-screen long
+                if (this.x < -100 || this.x > canvas.width + 100 || this.y < -100 || this.y > canvas.height + 100) {
+                    this.visible = false;
+                    if (this.type !== 'piano') misses++;
+                }
+            }
+
+            draw() {
+                if (!this.visible) return;
+                ctx.save();
+                ctx.translate(this.x + this.size / 2, this.y + this.size / 2);
+                ctx.rotate(this.angle);
+
+                switch (this.type) {
+                    case 'liquor':
+                        // Brown bottle with label
+                        ctx.fillStyle = '#8B4513';
+                        ctx.fillRect(-this.size/2, -this.size/2 + 10, this.size, this.size - 10);
+                        ctx.fillStyle = '#DEB887';
+                        ctx.fillRect(-this.size/2 + 8, -this.size/2, this.size - 16, 10);
+                        ctx.fillStyle = '#000';
+                        ctx.fillText('WHISKEY', -15, this.size/4);
+                        break;
+                    case 'wine':
+                        // Curvy red bottle
+                        ctx.fillStyle = '#8B0000';
+                        ctx.beginPath();
+                        ctx.ellipse(0, 0, this.size/3, this.size/2, 0, 0, Math.PI * 2);
+                        ctx.fill();
+                        ctx.fillStyle = '#228B22';
+                        ctx.fillRect(-this.size/4, -this.size/2 - 5, this.size/2, 10);
+                        break;
+                    case 'coyote':
+                        // Wolf silhouette running
+                        ctx.fillStyle = '#654321';
+                        ctx.beginPath();
+                        ctx.ellipse(0, 0, this.size/2, this.size/3, 0, 0, Math.PI * 2);
+                        ctx.fill();
+                        ctx.fillStyle = '#FFD700';
+                        ctx.fillRect(-this.size/2, -5, this.size, 10); // Ears
+                        break;
+                    case 'varmint':
+                        // Rat or snake - small zigzagger
+                        this.size = 30;
+                        ctx.fillStyle = '#696969';
+                        ctx.beginPath();
+                        ctx.moveTo(0, 0);
+                        for (let i = 0; i < 5; i++) {
+                            ctx.lineTo(Math.sin(i) * 10, i * 6);
+                        }
+                        ctx.lineTo(0, 30);
+                        ctx.fill();
+                        break;
+                    case 'pan':
+                        // Spinning pan
+                        ctx.fillStyle = '#A9A9A9';
+                        ctx.beginPath();
+                        ctx.arc(0, 0, this.size/2, 0, Math.PI * 2);
+                        ctx.fill();
+                        ctx.fillStyle = '#000';
+                        ctx.beginPath();
+                        ctx.arc(0, 0, this.size/4, 0, Math.PI * 2);
+                        ctx.fill(); // Handle hole
+                        break;
+                    case 'piano':
+                        // Big upright piano
+                        this.size = 120;
+                        ctx.fillStyle = '#000';
+                        ctx.fillRect(-this.size/2, -this.size/2, this.size, this.size);
+                        ctx.fillStyle = '#FFF';
+                        for (let i = 0; i < 8; i++) {
+                            ctx.fillRect(-this.size/2 + i * 12, -this.size/2, 10, 20); // Keys
+                        }
+                        break;
+                    case 'outlaw':
+                        // Silhouette behind barrel
+                        ctx.fillStyle = '#2F4F2F';
+                        ctx.beginPath();
+                        ctx.arc(0, 0, this.size/2, 0, Math.PI * 2); // Hat
+                        ctx.fill();
+                        ctx.fillRect(-this.size/3, 0, this.size * 2/3, this.size);
+                        break;
+                }
+                ctx.restore();
+
+                // Damage cracks
+                if (this.life < 100) {
+                    ctx.fillStyle = 'rgba(255, 0, 0, 0.3)';
+                    for (let i = 0; i < 3; i++) {
+                        ctx.beginPath();
+                        ctx.moveTo(this.x + Math.random() * this.size, this.y + Math.random() * this.size);
+                        ctx.lineTo(this.x + Math.random() * this.size, this.y + Math.random() * this.size);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            hit() {
+                playSound(200, 0.1, 'square'); // Hit sfx
+                this.life -= 30;
+                if (this.life <= 0) {
+                    this.visible = false;
+                    score += this.points;
+                    scoreEl.textContent = score;
+                    if (score > highScore) {
+                        highScore = score;
+                        highScoreEl.textContent = highScore;
+                        localStorage.setItem('saloonHigh', highScore);
+                    }
+                    // Explosive particles based on type
+                    let numParticles = 10;
+                    let color = '#FFD700';
+                    switch (this.type) {
+                        case 'wine': color = '#8B0000'; numParticles = 15; break;
+                        case 'coyote': color = '#654321'; numParticles = 8; playSound(300, 0.2); break;
+                        case 'pan': color = '#A9A9A9'; numParticles = 12; break;
+                        case 'piano': color = '#000'; numParticles = 20; break;
+                    }
+                    for (let i = 0; i < numParticles; i++) {
+                        particles.push(new Particle(
+                            this.x + this.size / 2,
+                            this.y + this.size / 2,
+                            (Math.random() - 0.5) * 15,
+                            (Math.random() - 0.5) * 15,
+                            30,
+                            color
+                        ));
+                    }
+                }
+            }
+        }
+
+        // Particle system
+        class Particle {
+            constructor(x, y, vx, vy, life, color) {
+                this.x = x;
+                this.y = y;
+                this.vx = vx;
+                this.vy = vy;
+                this.life = life;
+                this.maxLife = life;
+                this.color = color;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.vy += 0.3; // Gravity
+                this.vx *= 0.98; // Friction
                 this.life--;
             }
 
             draw() {
-                ctx.fillStyle = `rgba(255, 165, 0, ${this.life / 20})`; // Orange fade
+                const alpha = this.life / this.maxLife;
+                ctx.fillStyle = this.color.replace(')', `, ${alpha})`).replace('rgb', 'rgba');
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+                ctx.arc(this.x, this.y, 4 * alpha, 0, Math.PI * 2);
                 ctx.fill();
             }
         }
 
-        // Spawn random targets
+        // Spawn logic
         function spawnTarget() {
             if (!gameRunning) return;
-            const x = Math.random() * (canvas.width - 60) + 30;
+            const types = ['liquor', 'wine', 'coyote', 'varmint', 'pan', 'outlaw'];
+            if (Math.random() < 0.1) types.push('piano'); // Rare piano
+            const type = types[Math.floor(Math.random() * types.length)];
+            const side = Math.random() < 0.5 ? 0 : canvas.width;
+            const x = side === 0 ? -50 : canvas.width + 50;
             const y = Math.random() * (canvas.height - 100) + 50;
-            targets.push(new Target(x, y));
+            const target = new Target(x, y, type);
+            target.points = { liquor: 10, wine: 15, coyote: 20, varmint: 5, pan: 25, piano: 50, outlaw: 30 }[type];
+            if (type === 'coyote') target.vx = (side === 0 ? 3 : -3) + Math.random() * 2; // Dash direction
+            if (type === 'varmint') target.speed *= 2; // Faster
+            targets.push(target);
+        }
+
+        // Background draw with parallax
+        function drawBackground() {
+            // Sky gradient
+            const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            grad.addColorStop(0, '#87CEEB');
+            grad.addColorStop(1, '#D2691E');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Saloon floor (wood planks)
+            ctx.fillStyle = '#8B4513';
+            for (let i = 0; i < canvas.width; i += 40) {
+                ctx.fillRect(i, canvas.height - 80, 40, 80);
+            }
+
+            // Walls with details
+            ctx.fillStyle = '#8B0000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height - 80);
+            // Barrels
+            ctx.fillStyle = '#654321';
+            for (let i = 0; i < 3; i++) {
+                ctx.beginPath();
+                ctx.arc(100 + i * 200, canvas.height - 40, 30, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            // Swinging doors (simple animation)
+            ctx.save();
+            ctx.translate(canvas.width / 2, canvas.height - 40);
+            ctx.rotate(Math.sin(Date.now() / 500) * 0.1);
+            ctx.fillStyle = '#DEB887';
+            ctx.fillRect(-50, -60, 100, 60);
+            ctx.restore();
+            // Lantern glow
+            const glowGrad = ctx.createRadialGradient(canvas.width - 100, 50, 0, canvas.width - 100, 50, 60);
+            glowGrad.addColorStop(0, 'rgba(255, 215, 0, 0.8)');
+            glowGrad.addColorStop(1, 'rgba(255, 215, 0, 0)');
+            ctx.fillStyle = glowGrad;
+            ctx.beginPath();
+            ctx.arc(canvas.width - 100, 50, 60, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        // Crosshair
+        function drawCrosshair() {
+            ctx.strokeStyle = '#FFD700';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(crosshairX - 20, crosshairY);
+            ctx.lineTo(crosshairX + 20, crosshairY);
+            ctx.moveTo(crosshairX, crosshairY - 20);
+            ctx.lineTo(crosshairX, crosshairY + 20);
+            ctx.stroke();
+            // Recoil shake
+            if (recoil > 0) {
+                ctx.translate(Math.random() * recoil - recoil/2, Math.random() * recoil - recoil/2);
+                recoil -= 2;
+            }
         }
 
         // Game loop
         function gameLoop() {
-            // Clear canvas
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawBackground();
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Wait, no—draw bg first, then clear? Fix: draw bg inside loop after clear? Nah, redraw bg each frame.
+            drawBackground(); // Redraw every frame for parallax/animation
 
-            // Draw saloon background (simple)
-            ctx.fillStyle = '#D2691E'; // Saddle brown floor
-            ctx.fillRect(0, canvas.height - 100, canvas.width, 100);
-            ctx.fillStyle = '#8B0000'; // Dark red walls
-            ctx.fillRect(0, 0, canvas.width, canvas.height - 100);
-
-            // Draw targets
-            targets.forEach(target => target.draw());
-
-            // Update and draw particles
-            particles = particles.filter(p => {
-                p.update();
-                p.draw();
-                return p.life > 0;
+            // Update targets
+            targets.forEach(target => {
+                target.update();
+                target.draw();
             });
-
-            // Remove invisible targets
             targets = targets.filter(t => t.visible);
 
-            // Spawn new targets occasionally
-            if (Math.random() < 0.02 && targets.length < 5) {
+            // Particles
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            particles = particles.filter(p => p.life > 0);
+
+            drawCrosshair();
+
+            // Spawn rate increases
+            if (Math.random() < 0.03 * difficulty && targets.length < 8) {
                 spawnTarget();
             }
 
+            // Miss penalty
+            if (misses >= 5) {
+                health--;
+                healthEl.textContent = health;
+                misses = 0;
+                playSound(100, 0.5, 'sawtooth'); // Oof sfx
+                if (health <= 0) {
+                    endGame();
+                }
+            }
+
             if (gameRunning) {
+                difficulty += 0.001; // Ramp up
                 requestAnimationFrame(gameLoop);
             }
         }
 
-        // Click handler
+        // Input: Mouse move for crosshair
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            crosshairX = e.clientX - rect.left;
+            crosshairY = e.clientY - rect.top;
+        });
+
+        // Click/tap to shoot
         canvas.addEventListener('click', (e) => {
             if (!gameRunning) return;
+            playSound(440, 0.05, 'square'); // Gunshot
+            recoil = 10; // Kick
             const rect = canvas.getBoundingClientRect();
             const clickX = e.clientX - rect.left;
             const clickY = e.clientY - rect.top;
 
+            let hit = false;
             targets.forEach(target => {
                 if (target.visible &&
-                    clickX >= target.x && clickX <= target.x + target.width &&
-                    clickY >= target.y && clickY <= target.y + target.height) {
+                    clickX >= target.x && clickX <= target.x + target.size &&
+                    clickY >= target.y && clickY <= target.y + target.size) {
                     target.hit();
+                    hit = true;
                 }
             });
+            if (!hit) misses++;
+        });
+
+        // Touch for mobile
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const rect = canvas.getBoundingClientRect();
+            crosshairX = touch.clientX - rect.left;
+            crosshairY = touch.clientY - rect.top;
+            canvas.dispatchEvent(new MouseEvent('click', { clientX: touch.clientX, clientY: touch.clientY }));
         });
 
         // Timer
@@ -167,14 +411,21 @@
             timeLeft--;
             timeEl.textContent = timeLeft;
             if (timeLeft <= 0) {
-                gameRunning = false;
-                clearInterval(timer);
-                alert(`Game Over! Final Score: ${score}`);
+                endGame();
             }
         }, 1000);
 
-        // Start game
-        spawnTarget(); // Initial target
+        function endGame() {
+            gameRunning = false;
+            clearInterval(timer);
+            finalScoreEl.textContent = score;
+            gameOverEl.classList.remove('hidden');
+        }
+
+        // Init
+        initAudio();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        spawnTarget();
         gameLoop();
     </script>
 </body>
