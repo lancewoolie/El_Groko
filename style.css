@@ -1,414 +1,50 @@
-/* Lean Dark Tesla Theme - Updated to Dark Royal Blue Body */
-body {
-  font-family: 'Georgia', serif;
-  line-height: 1.6;
-  color: #E0E0E0; /* Light grey text */
-  background-color: #1e3a8a; /* Dark royal blue background */
-}
-
-.bg-dark-blue {
-  background-color: #001f3f !important;
-}
-
-.text-dark-blue {
-  color: #001f3f !important;
-}
-
-.accent-blue {
-  color: #0074D9 !important;
-}
-
-.btn-gold {
-  background-color: #FFD700;
-  border-color: #FFD700;
-  color: #001f3f;
-}
-
-.btn-gold:hover {
-  background-color: #e6c200;
-  border-color: #e6c200;
-}
-
-/* Tight Header/Navbar (Tesla-Style) */
-.tight-header {
-  background: #001f3f;
-  padding: 10px 0;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 1000;
-  border-bottom: 1px solid #0074D9;
-}
-
-.nav-list {
-  list-style: none;
-  display: flex;
-  margin: 0;
-  padding: 0;
-  gap: 20px;
-}
-
-.nav-link {
-  color: white;
-  text-decoration: none;
-  padding: 10px 15px;
-  position: relative;
-  transition: color 0.3s;
-  font-weight: bold;
-}
-
-.nav-link:hover {
-  color: #FFD700;
-}
-
-/* Active Nav Highlight */
-.navbar-nav .nav-item.active .nav-link {
-  color: #FFD700 !important;
-  border-bottom: 2px solid #FFD700;
-}
-
-.nav-link::after {
-  content: attr(data-icon);
-  position: absolute;
-  bottom: -20px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 1.5rem;
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
-.nav-link:hover::after {
-  opacity: 1;
-}
-
-/* Score Header in Nav */
-.score-header {
-  flex-grow: 1;
+/* Heart Progress Bar Styles (Adapted for Header) */
+.health-bar {
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 0 10px;
 }
 
+#health-container {
+  position: relative;
+}
+
+#health-canvas {
+  width: 60px !important; /* Scaled for header */
+  height: 45px !important; /* Proportional scale */
+  background: transparent !important; /* No bg in header */
+  overflow: visible;
+}
+
+#health-canvas #liquid {
+  filter: url(#goo);
+}
+
+#health-canvas #liquid-bubbles circle {
+  fill: rgba(255,255,255,0.2);
+  animation: bubble 2s infinite ease-in-out;
+}
+
+@keyframes bubble {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-25px) scale(1.1); }
+}
+
+#health-canvas #ekg-outer {
+  filter: drop-shadow(0 0 5px #F56476);
+  animation: ekg 1.5s infinite ease-in-out;
+}
+
+@keyframes ekg {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Hide health on mobile if needed */
 @media (max-width: 991.98px) {
+  .health-bar {
+    display: none;
+  }
   .score-header {
-    display: none; /* Hide on mobile to save space */
+    justify-content: center !important;
   }
-}
-
-/* Bayou Hero (Video-Compatible) */
-.hero {
-  height: 100vh;
-  /* Removed bg-image to prioritize video */
-  background: none;
-  background-position: center;
-  background-attachment: fixed;
-  margin-top: 60px; /* Offset for fixed header */
-  position: relative;
-}
-
-.hero-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 31, 63, 0.7); /* Darker for video readability */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-}
-
-/* Cards & Sections */
-.card {
-  border: none;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s;
-  background-color: #1e3a8a; /* Match body bg */
-  color: #E0E0E0; /* Light grey text */
-}
-
-.card-body {
-  color: #E0E0E0;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-}
-
-/* Tight Footer - Bulletproof Fixed Floating (Above Content) */
-.tight-footer {
-  background-color: #001f3f !important;
-  background: linear-gradient(#001f3f, #001f3f) !important; /* Solid fallback */
-  opacity: 1 !important;
-  isolation: isolate !important; /* Block parent transparency */
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important; /* Safari fix */
-  padding: 10px 0;
-  position: fixed !important;
-  bottom: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  width: 100% !important;
-  z-index: 1001 !important; /* Above nav/video */
-  border-top: 1px solid #0074D9 !important;
-  font-size: 0.9rem;
-  color: white !important;
-  box-sizing: border-box !important; /* Contain padding */
-}
-
-/* Floating Subscribe Raccoon (Behind Footer) */
-.floating-subscribe {
-  position: fixed;
-  bottom: 0;
-  left: 20px;
-  transform: translateY(50%) translateX(-66.67%);
-  transition: transform 0.3s ease;
-  z-index: 999; /* Behind footer (1001) */
-  display: block;
-  cursor: pointer;
-}
-.floating-subscribe:hover {
-  transform: translateY(0) translateX(0);
-}
-.floating-subscribe img {
-  display: block;
-  max-width: none;
-  height: auto;
-  width: auto; /* Adjust as needed for raccoon size */
-}
-
-/* Scoreboard Styles - Mad Max Shooter Arcade Look (Header Version) */
-.score-display {
-  font-family: 'Courier New', monospace;
-  font-weight: bold;
-  letter-spacing: 2px;
-  color: #FFD700; /* Base gold for arcade pop */
-  text-shadow: 
-    0 0 5px rgba(255, 215, 0, 0.5),
-    2px 2px 4px rgba(0, 0, 0, 0.8),
-    -2px -2px 4px rgba(139, 69, 19, 0.6); /* Rusty shadow for grit */
-  transition: text-shadow 0.3s ease, transform 0.3s ease;
-  background: linear-gradient(145deg, #FF1493, #FF69B4); /* Bright non-primary pink gradient */
-  border: 2px solid #FFD700; /* Gold border framing all sides */
-  border-radius: 15px; /* Rounded rectangle */
-  padding: 8px 15px;
-  box-shadow: 
-    inset 0 0 10px rgba(255, 0, 0, 0.3), /* Inner red glow like engine heat */
-    0 4px 8px rgba(0, 0, 0, 0.5), /* Layered shadow for depth */
-    0 0 15px rgba(255, 20, 147, 0.4); /* Outer pink flicker */
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 1.4em; /* Larger default font */
-}
-
-.score-label {
-  color: #FFD700;
-  text-shadow: 0 0 5px rgba(255, 215, 0, 0.8);
-  font-weight: bold;
-}
-
-.score-display::before {
-  content: '💀⚡ '; /* Mad Max skull and lightning emojis for wasteland vibe */
-  font-size: 0.8em;
-}
-
-.score-display::after {
-  content: ' 🔥'; /* Flame emoji for post-apoc heat */
-  font-size: 0.8em;
-}
-
-.score-display.updated {
-  text-shadow: 
-    0 0 10px rgba(255, 215, 0, 0.8), 
-    0 0 20px rgba(255, 215, 0, 0.4),
-    4px 4px 8px rgba(0, 0, 0, 0.9),
-    -4px -4px 8px rgba(139, 69, 19, 0.8); /* Enhanced pulse with grit */
-  animation: scorePulse 0.5s ease-out, flicker 0.1s infinite alternate;
-}
-
-@keyframes scorePulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
-}
-
-@keyframes flicker {
-  0% { box-shadow: inset 0 0 10px rgba(255, 0, 0, 0.3), 0 4px 8px rgba(0, 0, 0, 0.5), 0 0 15px rgba(255, 20, 147, 0.4); }
-  100% { box-shadow: inset 0 0 15px rgba(255, 0, 0, 0.5), 0 4px 8px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 20, 147, 0.6); }
-}
-
-/* Total Score Color Tiers (Mad Max heat levels) */
-#score-value.score-zero { color: #808080; text-shadow: 0 0 5px rgba(128, 128, 128, 0.5); } /* Grey for starting */
-#score-value.score-low { color: rgba(255, 165, 0, 0.7); text-shadow: 0 0 5px rgba(255, 165, 0, 0.5); } /* Faded orange - low heat */
-#score-value.score-mid { color: #FFA500; text-shadow: 0 0 5px rgba(255, 165, 0, 0.8); } /* Yellow orange - building fury */
-#score-value.score-high { color: #FF4500; text-shadow: 0 0 5px rgba(255, 69, 0, 0.9); } /* Red yellow - engine roar */
-#score-value.score-max { 
-  color: #00FFFF; 
-  text-shadow: 
-    0 0 5px #00FFFF, 
-    0 0 10px #00FFFF; /* Cyan glow - immortal shine */
-  animation: cyberGlow 1s ease-in-out infinite alternate;
-}
-
-@keyframes cyberGlow {
-  0% { text-shadow: 0 0 5px #00FFFF, 0 0 10px #00FFFF; }
-  100% { text-shadow: 0 0 10px #00FFFF, 0 0 20px #00FFFF, 0 0 30px #FFFFFF; }
-}
-
-#score-value {
-  font-size: 1.5em; /* Even larger for the numerical value */
-  background: rgba(0, 0, 0, 0.7); /* Dark box like form field */
-  border: 1px solid #FFD700;
-  border-radius: 5px;
-  padding: 4px 8px;
-  min-width: 80px;
-  text-align: center;
-}
-
-/* Ensure Content Doesn't Overlap Footer */
-body {
-  padding-bottom: 70px !important; /* Buffer for footer */
-  padding-top: 70px !important; /* Buffer for header with score */
-}
-
-/* Video No-Bleed Lock */
-#bg-video {
-  z-index: -1 !important;
-  mix-blend-mode: normal !important;
-}
-
-.cowboy-hat-icon {
-  font-size: 1.5rem;
-  cursor: pointer;
-  transition: transform 0.3s;
-}
-
-.cowboy-hat-icon:hover {
-  transform: rotate(15deg);
-}
-
-/* Hero Headshot */
-.hero-headshot {
-  width: 30%;
-  max-width: 250px;
-  height: auto;
-  object-fit: cover;
-  border-radius: 50%;
-}
-
-/* Horizontal Dropdown */
-.horizontal-dropdown {
-  position: absolute;
-  top: 100%;
-  left: auto;
-  right: 0;
-  min-width: 200px;
-  background: #1e3a8a; /* Match body bg */
-  border: 1px solid #0074D9;
-  z-index: 1001;
-  flex-direction: row;
-  display: flex;
-}
-
-.horizontal-dropdown .dropdown-item {
-  color: #E0E0E0; /* Light grey text */
-  padding: 10px 20px;
-  border-bottom: none;
-  display: flex;
-  align-items: center;
-}
-
-.horizontal-dropdown .dropdown-item:hover {
-  background: #0074D9;
-}
-
-.horizontal-dropdown .dropdown-img {
-  width: 200px;
-  height: 200px;
-  margin-right: 10px;
-  object-fit: cover;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .hero {
-    background-attachment: scroll;
-    margin-top: 50px; /* Adjust for mobile header */
-  }
-
-  .nav-list {
-    flex-direction: column;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    background: #1e3a8a; /* Match body bg */
-  }
-
-  .nav-link::after {
-    bottom: 5px;
-    left: 10px;
-  }
-
-  .horizontal-dropdown {
-    position: static;
-    right: auto;
-    flex-direction: column;
-    width: 100%;
-  }
-
-  .horizontal-dropdown .dropdown-img {
-    width: 100px;
-    height: 100px; /* Smaller thumbs on mobile */
-  }
-
-  .score-display {
-    font-size: 1.1em; /* Adjusted for mobile */
-    padding: 6px 12px;
-  }
-
-  .score-label {
-    font-size: 1em;
-  }
-
-  #score-value {
-    font-size: 1.2em;
-    min-width: 70px;
-    padding: 3px 6px;
-  }
-
-  .score-display::before,
-  .score-display::after {
-    font-size: 0.7em;
-  }
-
-  .floating-subscribe {
-    left: 10px; /* Closer on mobile */
-  }
-}
-
-/* Video BG Fix (Inline Styles Moved Here) */
-#bg-video {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  object-fit: cover;
-  z-index: -1;
-}
-
-body {
-  position: relative;
-  z-index: 1;
-}
-
-.hero, .py-5, .bg-light {
-  position: relative;
-  z-index: 2;
 }
