@@ -575,6 +575,140 @@
   width: 100%;
   height: 200px;
   border-radius: 10px;
+}
+
+/* Enhanced Header Styles for Scoreboard and Health Bar */
+.score-header {
+  background: linear-gradient(90deg, #1e3a8a, #001f3f, #1e3a8a);
+  border-radius: 25px;
+  padding: 8px 16px;
+  box-shadow: 0 4px 15px rgba(0, 116, 217, 0.3), inset 0 1px 0 rgba(255, 215, 0, 0.1);
+  border: 1px solid #0074D9;
+  position: relative;
+  overflow: hidden;
+}
+
+.score-header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.05), transparent);
+  animation: shimmer 3s infinite;
+  z-index: 0;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+  100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+}
+
+.health-display, .score-display {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 4px 8px;
+  border-radius: 15px;
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.health-display:hover, .score-display:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(255, 215, 0, 0.4);
+  border-color: #FFD700;
+}
+
+.health-label, .score-label {
+  font-size: 0.85rem;
+  color: #E0E0E0;
+  font-weight: bold;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+#score-value {
+  font-family: 'Courier New', monospace;
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  min-width: 80px;
+  text-align: right;
+}
+
+.score-zero { color: #808080; }
+.score-low { color: #FFA500; }
+.score-mid { color: #FFD700; }
+.score-high { color: #FF4500; }
+.score-max { color: #00FFFF; }
+
+.score-display.updated, .health-display.updated {
+  animation: pulse 0.5s ease;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); box-shadow: 0 0 0 rgba(255, 215, 0, 0); }
+  50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(255, 215, 0, 0.6); }
+  100% { transform: scale(1); box-shadow: 0 0 0 rgba(255, 215, 0, 0); }
+}
+
+/* Heart Progress Bar Styles (Enhanced for Visibility and Dazzle) */
+.health-bar {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+#health-container {
+  position: relative;
+  z-index: 1;
+}
+
+#health-canvas {
+  width: 60px !important; /* Scaled for header */
+  height: 45px !important; /* Proportional scale */
+  background: transparent !important; /* No bg in header */
+  overflow: visible;
+  filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.3));
+}
+
+#health-canvas #liquid {
+  filter: url(#goo);
+}
+
+#health-canvas #liquid-bubbles circle {
+  fill: rgba(255,255,255,0.2);
+  animation: bubble 2s infinite ease-in-out;
+}
+
+@keyframes bubble {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-25px) scale(1.1); }
+}
+
+#health-canvas #ekg-outer {
+  filter: drop-shadow(0 0 5px #F56476);
+  animation: ekg 1.5s infinite ease-in-out;
+}
+
+@keyframes ekg {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Hide health on mobile if needed */
+@media (max-width: 991.98px) {
+  .health-bar {
+    display: none;
+  }
+  .score-header {
+    justify-content: center !important;
+  }
 }  </style></head>
 <body>
   <a href="contact.html" class="floating-subscribe">
