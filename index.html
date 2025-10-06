@@ -20,669 +20,703 @@
       font-family: 'Georgia', serif;
     }
      
-.hero, .py-5 {
-  position: relative;
-  z-index: 2;
-}
-.hero {
-  min-height: 100vh;
-}
-.hero-overlay {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
+    .hero, .py-5 {
+      position: relative;
+      z-index: 2;
+    }
+    .hero {
+      min-height: 100vh;
+    }
+    .hero-overlay {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
 
-/* Floating Subscribe Image */
-.floating-subscribe {
-  position: fixed;
-  left: 20px;
-  top: 50%;
-  transform: translateY(-50%) translateX(-66.67%);
-  transition: transform 0.3s ease;
-  z-index: 1000;
-  display: block;
-}
-.floating-subscribe:hover {
-  transform: translateY(-50%) translateX(0);
-}
-.floating-subscribe img {
-  display: block;
-  max-width: none;
-  height: auto;
-}
+    /* Floating Subscribe Image */
+    .floating-subscribe {
+      position: fixed;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%) translateX(-66.67%);
+      transition: transform 0.3s ease;
+      z-index: 1000;
+      display: block;
+    }
+    .floating-subscribe:hover {
+      transform: translateY(-50%) translateX(0);
+    }
+    .floating-subscribe img {
+      display: block;
+      max-width: none;
+      height: auto;
+    }
 
-/* Interactive Dots with Custom Colors - Increased Size - Bullet Hole Image */
-.interactive-dot {
-  position: absolute;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-image: url('img/BULLETHOLE.gif');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  cursor: pointer;
-  z-index: 3;
-  text-decoration: none;
-}
-.interactive-dot.visible {
-  opacity: 0.5;
-}
-.interactive-dot:hover {
-  opacity: 1;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
+    /* Interactive Dots with Custom Colors - Increased Size - Bullet Hole Image */
+    .interactive-dot {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-image: url('img/BULLETHOLE.gif');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      cursor: pointer;
+      z-index: 3;
+      text-decoration: none;
+    }
+    .interactive-dot.visible {
+      opacity: 0.5;
+    }
+    .interactive-dot:hover {
+      opacity: 1;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
 
-/* Music Dot - Muted Maroon */
-.music-dot {
-  background-color: transparent;
-}
+    /* Music Dot - Muted Maroon */
+    .music-dot {
+      background-color: transparent;
+    }
 
-/* Merch Dot - Muted Seafoam */
-.merch-dot {
-  background-color: transparent;
-}
+    /* Merch Dot - Muted Seafoam */
+    .merch-dot {
+      background-color: transparent;
+    }
 
-/* Contact Dot - Chocolate */
-.contact-dot {
-  background-color: transparent;
-}
+    /* Contact Dot - Chocolate */
+    .contact-dot {
+      background-color: transparent;
+    }
 
-/* Events Dot - Dark Goldenrod */
-.events-dot {
-  background-color: transparent;
-}
+    /* Events Dot - Dark Goldenrod */
+    .events-dot {
+      background-color: transparent;
+    }
 
-/* Origins Dot - Charcoal */
-.origins-dot {
-  background-color: transparent;
-}
+    /* Origins Dot - Charcoal */
+    .origins-dot {
+      background-color: transparent;
+    }
 
-/* Solar System Wrapper */
-.solar-system {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  transform: rotate(0deg);
-  transform-origin: center;
-  z-index: 1;
-}
+    /* Solar System Wrapper */
+    .solar-system {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      transform: rotate(0deg);
+      transform-origin: center;
+      z-index: 1;
+    }
 
-/* Shake Animation */
-.shake {
-  animation: shake 1s cubic-bezier(.36,.07,.19,.97) both;
-}
-@keyframes shake {
-  10%, 90% { transform: translate3d(-1px, 0, 0); }
-  20%, 80% { transform: translate3d(2px, 0, 0); }
-  30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
-  40%, 60% { transform: translate3d(4px, 0, 0); }
-}
+    /* Shake Animation */
+    .shake {
+      animation: shake 1s cubic-bezier(.36,.07,.19,.97) both;
+    }
+    @keyframes shake {
+      10%, 90% { transform: translate3d(-1px, 0, 0); }
+      20%, 80% { transform: translate3d(2px, 0, 0); }
+      30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+      40%, 60% { transform: translate3d(4px, 0, 0); }
+    }
 
-/* Ricochet Animation for Dots */
-.ricochet {
-  animation: ricochet 0.5s ease-out forwards;
-}
-@keyframes ricochet {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0) rotate(0deg);
-  }
-  50% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1.2) rotate(180deg);
-  }
-  100% {
-    opacity: 0.5;
-    transform: translate(-50%, -50%) scale(1) rotate(360deg);
-  }
-}
+    /* Ricochet Animation for Dots */
+    .ricochet {
+      animation: ricochet 0.5s ease-out forwards;
+    }
+    @keyframes ricochet {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0) rotate(0deg);
+      }
+      50% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.2) rotate(180deg);
+      }
+      100% {
+        opacity: 0.5;
+        transform: translate(-50%, -50%) scale(1) rotate(360deg);
+      }
+    }
 
-/* Animated Orbiting Dot */
-.animated-dot {
-  position: absolute;
-  border-radius: 50%;
-  top: 50%;
-  left: 10%;
-  animation: orbit linear infinite;
-  z-index: 2;
-  pointer-events: none;
-}
-.animated-dot:nth-child(1) {
-  width: 6px;
-  height: 6px;
-  background: rgba(128, 128, 128, 0.3);
-  animation-duration: 20s;
-  animation: orbit1 20s linear infinite;
-}
-.animated-dot:nth-child(2) {
-  width: 8px;
-  height: 8px;
-  background: rgba(100, 100, 100, 0.4);
-  animation-duration: 35s;
-  animation: orbit2 35s linear infinite;
-}
-.animated-dot:nth-child(3) {
-  width: 5px;
-  height: 5px;
-  background: rgba(150, 150, 150, 0.2);
-  animation-duration: 45s;
-  animation: orbit3 45s linear infinite;
-}
-.animated-dot:nth-child(4) {
-  width: 3px;
-  height: 3px;
-  background: rgba(80, 80, 80, 0.25);
-  animation-duration: 15s;
-  animation: orbit4 15s linear infinite;
-}
-.animated-dot:nth-child(5) {
-  width: 4px;
-  height: 4px;
-  background: rgba(120, 120, 120, 0.35);
-  animation-duration: 25s;
-  animation: orbit5 25s linear infinite;
-}
-.animated-dot:nth-child(6) {
-  width: 2px;
-  height: 2px;
-  background: rgba(140, 140, 140, 0.15);
-  animation-duration: 30s;
-  animation: orbit6 30s linear infinite;
-}
-@keyframes orbit1 {
-  0% { transform: rotate(0deg) translateX(40vw) rotate(0deg); }
-  100% { transform: rotate(360deg) translateX(40vw) rotate(-360deg); }
-}
-@keyframes orbit2 {
-  0% { transform: rotate(0deg) translateX(50vw) rotate(0deg); }
-  100% { transform: rotate(360deg) translateX(50vw) rotate(-360deg); }
-}
-@keyframes orbit3 {
-  0% { transform: rotate(0deg) translateX(60vw) rotate(0deg); }
-  100% { transform: rotate(360deg) translateX(60vw) rotate(-360deg); }
-}
-@keyframes orbit4 {
-  0% { transform: rotate(0deg) translateX(30vw) rotate(0deg); }
-  100% { transform: rotate(360deg) translateX(30vw) rotate(-360deg); }
-}
-@keyframes orbit5 {
-  0% { transform: rotate(0deg) translateX(45vw) rotate(0deg); }
-  100% { transform: rotate(360deg) translateX(45vw) rotate(-360deg); }
-}
-@keyframes orbit6 {
-  0% { transform: rotate(0deg) translateX(55vw) rotate(0deg); }
-  100% { transform: rotate(360deg) translateX(55vw) rotate(-360deg); }
-}
+    /* Animated Orbiting Dot */
+    .animated-dot {
+      position: absolute;
+      border-radius: 50%;
+      top: 50%;
+      left: 10%;
+      animation: orbit linear infinite;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .animated-dot:nth-child(1) {
+      width: 6px;
+      height: 6px;
+      background: rgba(128, 128, 128, 0.3);
+      animation-duration: 20s;
+      animation: orbit1 20s linear infinite;
+    }
+    .animated-dot:nth-child(2) {
+      width: 8px;
+      height: 8px;
+      background: rgba(100, 100, 100, 0.4);
+      animation-duration: 35s;
+      animation: orbit2 35s linear infinite;
+    }
+    .animated-dot:nth-child(3) {
+      width: 5px;
+      height: 5px;
+      background: rgba(150, 150, 150, 0.2);
+      animation-duration: 45s;
+      animation: orbit3 45s linear infinite;
+    }
+    .animated-dot:nth-child(4) {
+      width: 3px;
+      height: 3px;
+      background: rgba(80, 80, 80, 0.25);
+      animation-duration: 15s;
+      animation: orbit4 15s linear infinite;
+    }
+    .animated-dot:nth-child(5) {
+      width: 4px;
+      height: 4px;
+      background: rgba(120, 120, 120, 0.35);
+      animation-duration: 25s;
+      animation: orbit5 25s linear infinite;
+    }
+    .animated-dot:nth-child(6) {
+      width: 2px;
+      height: 2px;
+      background: rgba(140, 140, 140, 0.15);
+      animation-duration: 30s;
+      animation: orbit6 30s linear infinite;
+    }
+    @keyframes orbit1 {
+      0% { transform: rotate(0deg) translateX(40vw) rotate(0deg); }
+      100% { transform: rotate(360deg) translateX(40vw) rotate(-360deg); }
+    }
+    @keyframes orbit2 {
+      0% { transform: rotate(0deg) translateX(50vw) rotate(0deg); }
+      100% { transform: rotate(360deg) translateX(50vw) rotate(-360deg); }
+    }
+    @keyframes orbit3 {
+      0% { transform: rotate(0deg) translateX(60vw) rotate(0deg); }
+      100% { transform: rotate(360deg) translateX(60vw) rotate(-360deg); }
+    }
+    @keyframes orbit4 {
+      0% { transform: rotate(0deg) translateX(30vw) rotate(0deg); }
+      100% { transform: rotate(360deg) translateX(30vw) rotate(-360deg); }
+    }
+    @keyframes orbit5 {
+      0% { transform: rotate(0deg) translateX(45vw) rotate(0deg); }
+      100% { transform: rotate(360deg) translateX(45vw) rotate(-360deg); }
+    }
+    @keyframes orbit6 {
+      0% { transform: rotate(0deg) translateX(55vw) rotate(0deg); }
+      100% { transform: rotate(360deg) translateX(55vw) rotate(-360deg); }
+    }
 
-/* Music Dot Container for Submenu - Expanded Hover Area */
-.dot-container {
-  position: absolute;
-  width: 300px;
-  height: 300px;
-  z-index: 3;
-}
-.origins-container {
-  left: 10%;
-  top: 10%;
-}
-.events-container {
-  left: 20%;
-  top: 20%;
-}
-.music-container {
-  left: 30%;
-  top: 30%;
-}
-.merch-container {
-  left: 40%;
-  top: 40%;
-}
-.contact-container {
-  left: 50%;
-  top: 50%;
-}
-.main-dot {
-  display: block;
-  position: relative;
-  z-index: 4;
-  width: 40px;
-  height: 40px;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  transition: opacity 0.3s ease;
-}
-.main-dot.hidden {
-  opacity: 0;
-}
-.main-label {
-  position: absolute;
-  left: 50%;
-  top: calc(50% + 50px);
-  transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.8);
-  color: #E0E0E0;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 13px;
-  white-space: nowrap;
-  z-index: 5;
-  pointer-events: none;
-}
-.sub-dots {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: none;
-  pointer-events: none;
-}
-.sub-dots.active {
-  display: block;
-  pointer-events: all;
-}
-.sub-dot {
-  position: absolute;
-  width: 114px;
-  height: 114px;
-  border-radius: 50%;
-  background-size: cover;
-  background-position: center;
-  opacity: 0.7;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-  cursor: pointer;
-  text-decoration: none;
-  box-shadow: 0 0 5px rgba(0,0,0,0.5);
-  transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px));
-}
-.sub-dot:hover {
-  transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) scale(1.5);
-  opacity: 1;
-  box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-}
-.sub-dot::after {
-  content: attr(data-title);
-  position: absolute;
-  bottom: -30px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.8);
-  color: #E0E0E0;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 10px;
-  white-space: nowrap;
-  pointer-events: none;
-}
+    /* Music Dot Container for Submenu - Expanded Hover Area */
+    .dot-container {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      z-index: 3;
+    }
+    .origins-container {
+      left: calc(10% - 300px);
+      top: 10%;
+    }
+    .events-container {
+      left: calc(20% - 300px);
+      top: 20%;
+    }
+    .music-container {
+      left: calc(30% - 300px);
+      top: 30%;
+    }
+    .merch-container {
+      left: calc(40% - 300px);
+      top: 40%;
+    }
+    .contact-container {
+      left: calc(50% - 300px);
+      top: 50%;
+    }
+    .main-dot {
+      display: block;
+      position: relative;
+      z-index: 4;
+      width: 40px;
+      height: 40px;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      transition: opacity 0.3s ease;
+    }
+    .main-dot.hidden {
+      opacity: 0;
+    }
+    .main-label {
+      position: absolute;
+      left: 50%;
+      top: calc(50% + 50px);
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.8);
+      color: #E0E0E0;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 13px;
+      white-space: nowrap;
+      z-index: 5;
+      pointer-events: none;
+    }
+    .sub-dots {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: none;
+      pointer-events: none;
+    }
+    .sub-dots.active {
+      display: block;
+      pointer-events: all;
+    }
+    .sub-dot {
+      position: absolute;
+      width: 114px;
+      height: 114px;
+      border-radius: 50%;
+      background-size: cover;
+      background-position: center;
+      opacity: 0.7;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 0 5px rgba(0,0,0,0.5);
+      transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px));
+    }
+    .sub-dot:hover {
+      transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) scale(1.5);
+      opacity: 1;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    }
+    .sub-dot::after {
+      content: attr(data-title);
+      position: absolute;
+      bottom: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.8);
+      color: #E0E0E0;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      white-space: nowrap;
+      pointer-events: none;
+    }
 
-/* Hit Animation for Sub-Dots */
-.sub-dot.hit {
-  animation: hit-spin 0.8s ease-out forwards;
-  pointer-events: none;
-}
-@keyframes hit-spin {
-  0% {
-    transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) scale(1) rotate(0deg);
-    opacity: 1;
-  }
-  40% {
-    transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) scale(1.05) rotate(180deg);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) scale(0.5) rotate(360deg);
-    opacity: 0;
-  }
-}
+    /* Hit Animation for Sub-Dots */
+    .sub-dot.hit {
+      animation: hit-spin 0.8s ease-out forwards;
+      pointer-events: none;
+    }
+    @keyframes hit-spin {
+      0% {
+        transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) scale(1) rotate(0deg);
+        opacity: 1;
+      }
+      40% {
+        transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) scale(1.05) rotate(180deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) scale(0.5) rotate(360deg);
+        opacity: 0;
+      }
+    }
 
-/* Circular Moon Positions with CSS Vars */
-.sub-dots .sub-dot:nth-child(1) { /* Top */
-  --pos-x: 0px;
-  --pos-y: -114px;
-}
-.sub-dots .sub-dot:nth-child(2) { /* Right */
-  --pos-x: 114px;
-  --pos-y: 0px;
-}
-.sub-dots .sub-dot:nth-child(3) { /* Bottom */
-  --pos-x: 0px;
-  --pos-y: 114px;
-}
-.sub-dots .sub-dot:nth-child(4) { /* Left */
-  --pos-x: -114px;
-  --pos-y: 0px;
-}
+    /* Circular Moon Positions with CSS Vars */
+    .sub-dots .sub-dot:nth-child(1) { /* Top */
+      --pos-x: 0px;
+      --pos-y: -114px;
+    }
+    .sub-dots .sub-dot:nth-child(2) { /* Right */
+      --pos-x: 114px;
+      --pos-y: 0px;
+    }
+    .sub-dots .sub-dot:nth-child(3) { /* Bottom */
+      --pos-x: 0px;
+      --pos-y: 114px;
+    }
+    .sub-dots .sub-dot:nth-child(4) { /* Left */
+      --pos-x: -114px;
+      --pos-y: 0px;
+    }
 
-/* Asteroid Orbits */
-.asteroid-orbits {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  pointer-events: none;
-}
-.asteroid-orbits ellipse {
-  stroke: rgba(255, 255, 255, 0.02);
-  fill: none;
-  stroke-width: 0.05;
-}
+    /* Asteroid Orbits */
+    .asteroid-orbits {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .asteroid-orbits ellipse {
+      stroke: rgba(255, 255, 255, 0.02);
+      fill: none;
+      stroke-width: 0.05;
+    }
 
-/* Mobile Adjustments */
-@media (max-width: 768px) {
-  .dot-container {
-    width: 250px;
-    height: 250px;
-  }
-  .origins-container {
-    left: 5%;
-    top: 5%;
-  }
-  .events-container {
-    left: 15%;
-    top: 15%;
-  }
-  .music-container {
-    left: 25%;
-    top: 25%;
-  }
-  .merch-container {
-    left: 35%;
-    top: 35%;
-  }
-  .contact-container {
-    left: 45%;
-    top: 45%;
-  }
-  .sub-dot {
-    width: 100px;
-    height: 100px;
-  }
-  .sub-dots .sub-dot:nth-child(1) {
-    --pos-y: -100px;
-  }
-  .sub-dots .sub-dot:nth-child(2) {
-    --pos-x: 100px;
-  }
-  .sub-dots .sub-dot:nth-child(3) {
-    --pos-y: 100px;
-  }
-  .sub-dots .sub-dot:nth-child(4) {
-    --pos-x: -100px;
-  }
-  .main-label {
-    font-size: 12px;
-  }
-}
+    /* Mobile Adjustments */
+    @media (max-width: 768px) {
+      .dot-container {
+        width: 250px;
+        height: 250px;
+      }
+      .origins-container {
+        left: calc(5% - 300px);
+        top: 5%;
+      }
+      .events-container {
+        left: calc(15% - 300px);
+        top: 15%;
+      }
+      .music-container {
+        left: calc(25% - 300px);
+        top: 25%;
+      }
+      .merch-container {
+        left: calc(35% - 300px);
+        top: 35%;
+      }
+      .contact-container {
+        left: calc(45% - 300px);
+        top: 45%;
+      }
+      .sub-dot {
+        width: 100px;
+        height: 100px;
+      }
+      .sub-dots .sub-dot:nth-child(1) {
+        --pos-y: -100px;
+      }
+      .sub-dots .sub-dot:nth-child(2) {
+        --pos-x: 100px;
+      }
+      .sub-dots .sub-dot:nth-child(3) {
+        --pos-y: 100px;
+      }
+      .sub-dots .sub-dot:nth-child(4) {
+        --pos-x: -100px;
+      }
+      .main-label {
+        font-size: 12px;
+      }
+    }
 
-/* Footer Float Lock */
-.tight-footer {
-  background: #001f3f !important;
-  opacity: 1 !important;
-  position: fixed !important;
-  bottom: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  width: 100% !important;
-  z-index: 1001 !important;
-  border-top: 1px solid #0074D9;
-}
+    /* Footer Float Lock */
+    .tight-footer {
+      background: #001f3f !important;
+      opacity: 1 !important;
+      position: fixed !important;
+      bottom: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      width: 100% !important;
+      z-index: 1001 !important;
+      border-top: 1px solid #0074D9;
+    }
 
-/* Dark Card Theme for Release */
-.card {
-  background-color: #1e3a8a;
-  color: #E0E0E0;
-  border: 1px solid #0074D9;
-}
-.card-body {
-  color: #E0E0E0;
-}
-.btn-success {
-  background-color: #FFD700;
-  border-color: #FFD700;
-  color: #001f3f;
-}
-.btn-success:hover {
-  background-color: #e6c200;
-  border-color: #e6c200;
-}
+    /* Dark Card Theme for Release */
+    .card {
+      background-color: #1e3a8a;
+      color: #E0E0E0;
+      border: 1px solid #0074D9;
+    }
+    .card-body {
+      color: #E0E0E0;
+    }
+    .btn-success {
+      background-color: #FFD700;
+      border-color: #FFD700;
+      color: #001f3f;
+    }
+    .btn-success:hover {
+      background-color: #e6c200;
+      border-color: #e6c200;
+    }
 
-/* Combined Latest Release & Merch Styles - Smaller Scale */
-.combined-section .latest-card {
-  height: 300px;
-  overflow: hidden;
-}
-.combined-section iframe {
-  height: 200px !important;
-}
+    /* Combined Latest Release & Merch Styles - Smaller Scale */
+    .combined-section .latest-card {
+      height: 300px;
+      overflow: hidden;
+    }
+    .combined-section iframe {
+      height: 200px !important;
+    }
 
-/* Tour Section Styles */
-.tour-card {
-  background-color: #1e3a8a;
-  border: 1px solid #0074D9;
-  border-radius: 10px;
-  padding: 2rem;
-  margin-bottom: 1rem;
-}
-.tour-date {
-  color: #FFD700;
-  font-weight: bold;
-}
-.tour-venue {
-  color: #E0E0E0;
-}
-.tour-time {
-  color: #E0E0E0;
-  font-size: 1.1rem;
-}
+    /* Tour Section Styles */
+    .tour-card {
+      background-color: #1e3a8a;
+      border: 1px solid #0074D9;
+      border-radius: 10px;
+      padding: 2rem;
+      margin-bottom: 1rem;
+    }
+    .tour-date {
+      color: #FFD700;
+      font-weight: bold;
+    }
+    .tour-venue {
+      color: #E0E0E0;
+    }
+    .tour-time {
+      color: #E0E0E0;
+      font-size: 1.1rem;
+    }
 
-/* Merch Carousel Styles (Sexy Hover Effects - Matches Merch Page) */
-.carousel-item .merch-card {
-  background-color: #1e3a8a;
-  border: 2px solid #0074D9;
-  border-radius: 15px;
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  height: 100%;
-  cursor: pointer;
-}
-.carousel-item .merch-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 10px 25px rgba(0, 116, 217, 0.3);
-  border-color: #FFD700;
-}
-.carousel-item .merch-card img {
-  width: 100%;
-  height: 150px;
-  object-fit: cover;
-}
-.carousel-item .merch-card .card-body {
-  padding: 1rem;
-  text-align: center;
-}
-.carousel-item .merch-card h3 {
-  color: #FFD700; /* Gold titles */
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-  font-size: 1rem;
-}
-.carousel-item .merch-card p {
-  color: #E0E0E0;
-  font-size: 0.85rem;
-  margin-bottom: 0.5rem;
-}
-.carousel-item .btn-buy {
-  background-color: #FFD700;
-  border-color: #FFD700;
-  color: #001f3f;
-  font-weight: bold;
-  padding: 0.5rem 1.5rem;
-  border-radius: 25px;
-  transition: all 0.3s ease;
-  font-size: 0.9rem;
-}
-.carousel-item .btn-buy:hover {
-  background-color: #e6c200;
-  border-color: #e6c200;
-  transform: scale(1.05);
-  color: #001f3f;
-}
-.price-tag {
-  background: #001f3f;
-  color: #FFD700;
-  padding: 0.25rem 0.75rem;
-  border-radius: 20px;
-  font-weight: bold;
-  display: inline-block;
-  margin-top: 0.25rem;
-  font-size: 0.9rem;
-}
-.carousel-control-prev, .carousel-control-next {
-  filter: invert(1); /* White arrows on dark */
-}
-.carousel-indicators [data-bs-target] {
-  background-color: #FFD700;
-}
-.carousel-inner {
-  background-color: #1e3a8a; /* Dark bg for carousel */
-}
+    /* Merch Carousel Styles (Sexy Hover Effects - Matches Merch Page) */
+    .carousel-item .merch-card {
+      background-color: #1e3a8a;
+      border: 2px solid #0074D9;
+      border-radius: 15px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      height: 100%;
+      cursor: pointer;
+    }
+    .carousel-item .merch-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 25px rgba(0, 116, 217, 0.3);
+      border-color: #FFD700;
+    }
+    .carousel-item .merch-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+    }
+    .carousel-item .merch-card .card-body {
+      padding: 1rem;
+      text-align: center;
+    }
+    .carousel-item .merch-card h3 {
+      color: #FFD700; /* Gold titles */
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+    }
+    .carousel-item .merch-card p {
+      color: #E0E0E0;
+      font-size: 0.85rem;
+      margin-bottom: 0.5rem;
+    }
+    .carousel-item .btn-buy {
+      background-color: #FFD700;
+      border-color: #FFD700;
+      color: #001f3f;
+      font-weight: bold;
+      padding: 0.5rem 1.5rem;
+      border-radius: 25px;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+    }
+    .carousel-item .btn-buy:hover {
+      background-color: #e6c200;
+      border-color: #e6c200;
+      transform: scale(1.05);
+      color: #001f3f;
+    }
+    .price-tag {
+      background: #001f3f;
+      color: #FFD700;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-weight: bold;
+      display: inline-block;
+      margin-top: 0.25rem;
+      font-size: 0.9rem;
+    }
+    .carousel-control-prev, .carousel-control-next {
+      filter: invert(1); /* White arrows on dark */
+    }
+    .carousel-indicators [data-bs-target] {
+      background-color: #FFD700;
+    }
+    .carousel-inner {
+      background-color: #1e3a8a; /* Dark bg for carousel */
+    }
 
-/* Video Carousel Styles */
-.carousel-item .video-card {
-  background-color: #1e3a8a;
-  border: 2px solid #0074D9;
-  border-radius: 15px;
-  overflow: hidden;
-  height: 100%;
-  text-align: center;
-  padding: 1rem;
-}
-.carousel-item .video-card h5 {
-  color: #FFD700;
-  font-weight: bold;
-  margin-bottom: 1rem;
-}
-.carousel-item .video-card iframe {
-  width: 100%;
-  height: 200px;
-  border-radius: 10px;
-}
+    /* Video Carousel Styles */
+    .carousel-item .video-card {
+      background-color: #1e3a8a;
+      border: 2px solid #0074D9;
+      border-radius: 15px;
+      overflow: hidden;
+      height: 100%;
+      text-align: center;
+      padding: 1rem;
+    }
+    .carousel-item .video-card h5 {
+      color: #FFD700;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+    .carousel-item .video-card iframe {
+      width: 100%;
+      height: 200px;
+      border-radius: 10px;
+    }
 
-/* Enhanced Header Styles for Scoreboard and Health Bar */
-.score-header {
-  background: linear-gradient(90deg, #1e3a8a, #001f3f, #1e3a8a);
-  border-radius: 25px;
-  padding: 8px 16px;
-  box-shadow: 0 4px 15px rgba(0, 116, 217, 0.3), inset 0 1px 0 rgba(255, 215, 0, 0.1);
-  border: 1px solid #0074D9;
-  position: relative;
-  overflow: hidden;
-}
+    /* Enhanced Header Styles for Scoreboard and Health Bar */
+    .score-header {
+      background: linear-gradient(90deg, #1e3a8a, #001f3f, #1e3a8a);
+      border-radius: 25px;
+      padding: 8px 16px;
+      box-shadow: 0 4px 15px rgba(0, 116, 217, 0.3), inset 0 1px 0 rgba(255, 215, 0, 0.1);
+      border: 1px solid #0074D9;
+      position: relative;
+      overflow: hidden;
+    }
 
-.score-header::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.05), transparent);
-  animation: shimmer 3s infinite;
-  z-index: 0;
-}
+    .score-header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.05), transparent);
+      animation: shimmer 3s infinite;
+      z-index: 0;
+    }
 
-@keyframes shimmer {
-  0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-  100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-}
+    @keyframes shimmer {
+      0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+      100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+    }
 
-.health-display, .score-display {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(0, 0, 0, 0.2);
-  padding: 4px 8px;
-  border-radius: 15px;
-  border: 1px solid rgba(255, 215, 0, 0.3);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s ease;
-}
+    .health-display, .score-display {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 4px 8px;
+      border-radius: 15px;
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
 
-.health-display:hover, .score-display:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(255, 215, 0, 0.4);
-  border-color: #FFD700;
-}
+    .health-display:hover, .score-display:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(255, 215, 0, 0.4);
+      border-color: #FFD700;
+    }
 
-.health-label, .score-label {
-  font-size: 0.85rem;
-  color: #E0E0E0;
-  font-weight: bold;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-}
+    .score-label {
+      font-size: 0.85rem;
+      color: #E0E0E0;
+      font-weight: bold;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    }
 
-#score-value {
-  font-family: 'Courier New', monospace;
-  font-size: 1.1rem;
-  font-weight: bold;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-  min-width: 80px;
-  text-align: right;
-}
+    #score-value {
+      font-family: 'Courier New', monospace;
+      font-size: 1.1rem;
+      font-weight: bold;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+      min-width: 80px;
+      text-align: right;
+    }
 
-.score-zero { color: #808080; }
-.score-low { color: #FFA500; }
-.score-mid { color: #FFD700; }
-.score-high { color: #FF4500; }
-.score-max { color: #00FFFF; }
+    .score-zero { color: #808080; }
+    .score-low { color: #FFA500; }
+    .score-mid { color: #FFD700; }
+    .score-high { color: #FF4500; }
+    .score-max { color: #00FFFF; }
 
-.score-display.updated, .health-display.updated {
-  animation: pulse 0.5s ease;
-}
+    .score-display.updated, .health-display.updated {
+      animation: pulse 0.5s ease;
+    }
 
-@keyframes pulse {
-  0% { transform: scale(1); box-shadow: 0 0 0 rgba(255, 215, 0, 0); }
-  50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(255, 215, 0, 0.6); }
-  100% { transform: scale(1); box-shadow: 0 0 0 rgba(255, 215, 0, 0); }
-}
+    @keyframes pulse {
+      0% { transform: scale(1); box-shadow: 0 0 0 rgba(255, 215, 0, 0); }
+      50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(255, 215, 0, 0.6); }
+      100% { transform: scale(1); box-shadow: 0 0 0 rgba(255, 215, 0, 0); }
+    }
 
-/* Standard Health Bar Styles */
-#health-bar {
-  width: 60px;
-  height: 8px;
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 4px;
-  overflow: hidden;
-  border: 1px solid #0074D9;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(255, 215, 0, 0.3);
-}
+    /* Standard Health Bar Styles */
+    #health-bar {
+      width: 80px;
+      height: 8px;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid #0074D9;
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(255, 215, 0, 0.3);
+    }
 
-#health-progress {
-  height: 100%;
-  transition: width 0.8s ease, background-color 0.3s ease;
-  border-radius: 3px;
-}
+    #health-progress {
+      height: 100%;
+      transition: width 0.8s ease, background-color 0.3s ease;
+      border-radius: 3px;
+    }
 
-/* Hide health on mobile if needed */
-@media (max-width: 991.98px) {
-  .health-bar {
-    display: none;
-  }
-  .score-header {
-    justify-content: center !important;
-  }
-}  </style></head>
+    /* Blink Animation for Low Health */
+    .health-display.low-health {
+      animation: rapid-blink 0.2s infinite;
+    }
+
+    @keyframes rapid-blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0.3; }
+    }
+
+    /* Hide health on mobile if needed */
+    @media (max-width: 991.98px) {
+      .health-bar {
+        display: none;
+      }
+      .score-header {
+        justify-content: center !important;
+      }
+    }
+
+    /* Weapon Select Styles */
+    .weapon-select {
+      background: linear-gradient(90deg, #1e3a8a, #001f3f, #1e3a8a);
+      border-radius: 15px;
+      padding: 4px 8px;
+      border: 1px solid #0074D9;
+      margin-top: 5px;
+      display: inline-block;
+    }
+
+    .weapon-select select {
+      background: transparent;
+      color: #E0E0E0;
+      border: none;
+      font-size: 0.85rem;
+      font-weight: bold;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    }
+
+    .weapon-select option:disabled {
+      color: #808080;
+    }
+  </style></head>
 <body>
   <a href="contact.html#email-subscribe" class="floating-subscribe">
     <img src="img/subscribe.gif" alt="Subscribe">
@@ -909,24 +943,30 @@
         position: fixed;
         width: 2px;
         height: 0px;
-        background: linear-gradient(to bottom, #00ff00, #00aa00);
+        background: linear-gradient(to bottom, #00aa00, #00ff00);
         transform-origin: top center;
         z-index: 999;
         pointer-events: none;
-        transition: height 0.1s ease, transform 0.1s ease;
+        transition: height 0.1s ease, transform 0.1s ease, left 0.1s ease, top 0.1s ease;
       `;
       document.body.appendChild(beam);
 
       window.addEventListener('mousemove', (e) => {
         const anchorX = window.innerWidth / 2;
         const anchorY = window.innerHeight;
-        const dx = anchorX - e.clientX;
-        const dy = anchorY - e.clientY;
-        const dist = Math.sqrt(dx * dx + dy * dy);
+        let dx = e.clientX - anchorX;
+        let dy = e.clientY - anchorY;
+        let dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist === 0) return;
         const angle = Math.atan2(dy, dx) * (180 / Math.PI);
-        beam.style.left = e.clientX + 'px';
-        beam.style.top = e.clientY + 'px';
-        beam.style.height = `${dist}px`;
+        const trim = 0.15;
+        const trimDist = dist * trim;
+        const offsetX = (dx / dist) * trimDist;
+        const offsetY = (dy / dist) * trimDist;
+        const visibleDist = dist * (1 - 2 * trim);
+        beam.style.left = (anchorX + offsetX) + 'px';
+        beam.style.top = (anchorY + offsetY - visibleDist) + 'px';
+        beam.style.height = `${visibleDist}px`;
         beam.style.transform = `rotate(${angle}deg)`;
       });
     }
