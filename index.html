@@ -301,9 +301,10 @@
   cursor: pointer;
   text-decoration: none;
   box-shadow: 0 0 5px rgba(0,0,0,0.5);
+  transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px));
 }
 .sub-dot:hover {
-  transform: scale(1.5);
+  transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) scale(1.5);
   opacity: 1;
   box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
 }
@@ -329,39 +330,35 @@
 }
 @keyframes hit-spin {
   0% {
-    transform: scale(1);
+    transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) scale(1) rotate(0deg);
     opacity: 1;
   }
   40% {
-    transform: scale(1.05) rotate(180deg);
+    transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) scale(1.05) rotate(180deg);
     opacity: 1;
   }
   100% {
-    transform: scale(0.5) rotate(360deg);
+    transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) scale(0.5) rotate(360deg);
     opacity: 0;
   }
 }
 
-/* Circular Moon Positions */
+/* Circular Moon Positions with CSS Vars */
 .sub-dots .sub-dot:nth-child(1) { /* Top */
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) translate(0, -114px);
+  --pos-x: 0px;
+  --pos-y: -114px;
 }
 .sub-dots .sub-dot:nth-child(2) { /* Right */
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) translate(114px, 0);
+  --pos-x: 114px;
+  --pos-y: 0px;
 }
 .sub-dots .sub-dot:nth-child(3) { /* Bottom */
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) translate(0, 114px);
+  --pos-x: 0px;
+  --pos-y: 114px;
 }
 .sub-dots .sub-dot:nth-child(4) { /* Left */
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) translate(-114px, 0);
+  --pos-x: -114px;
+  --pos-y: 0px;
 }
 
 /* Asteroid Orbits */
@@ -411,16 +408,16 @@
     height: 100px;
   }
   .sub-dots .sub-dot:nth-child(1) {
-    transform: translate(-50%, -50%) translate(0, -100px);
+    --pos-y: -100px;
   }
   .sub-dots .sub-dot:nth-child(2) {
-    transform: translate(-50%, -50%) translate(100px, 0);
+    --pos-x: 100px;
   }
   .sub-dots .sub-dot:nth-child(3) {
-    transform: translate(-50%, -50%) translate(0, 100px);
+    --pos-y: 100px;
   }
   .sub-dots .sub-dot:nth-child(4) {
-    transform: translate(-50%, -50%) translate(-100px, 0);
+    --pos-x: -100px;
   }
   .main-label {
     font-size: 12px;
@@ -792,60 +789,6 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
   <script>
-    // Preload the sound effect early (on script load, which is post-DOM but pre-full load)
-    const ricochetSound = new Audio('sounds/multiple-ricochets.mp3');
-    ricochetSound.preload = 'auto';  // Ensures buffering
-
-    // Preload click ricochet sounds
-    const clickSounds = [
-      new Audio('sounds/ricochet-1.mp3'),
-      new Audio('sounds/ricochet-2.mp3')
-    ];
-    clickSounds.forEach(sound => sound.preload = 'auto');
-
-    function animateDot(dot) {
-      dot.classList.add('ricochet');
-      setTimeout(() => {
-        dot.classList.add('visible');
-      }, 250);
-    }
-
-    // Ricochet Load Animation (post content load, post site shaking, synced with bullet hole dots loading/animating)
-    window.addEventListener('load', () => {
-      const body = document.body;
-      const dots = document.querySelectorAll('.main-dot');
-
-      // Shake the body first
-      body.classList.add('shake');
-
-      setTimeout(() => {
-        // Play audio post-shake, timed to coincide with the start of bullet hole dots ricochet animation (their "load")
-        ricochetSound.play().catch(e => console.log('Audio play failed:', e));
-        
-        // Fire first 3 dots quicker (100ms intervals)
-        setTimeout(() => animateDot(dots[0]), 0);
-        setTimeout(() => animateDot(dots[1]), 100);
-        setTimeout(() => animateDot(dots[2]), 200);
-        
-        // Pause 0.3s (300ms) after the third dot
-        setTimeout(() => {
-          // Then fire last 2 dots quick like the first 3 (100ms interval)
-          animateDot(dots[3]);
-          setTimeout(() => animateDot(dots[4]), 100);
-        }, 500); // 200 (last first-dot) + 300 pause = 500ms
-      }, 1000);
-    });
-
-    // Click sound effect on bullet hole dots
-    document.querySelectorAll('.main-dot').forEach(dot => {
-      dot.addEventListener('click', (e) => {
-        e.preventDefault(); // Prevent immediate navigation, allow sound to play
-        const sound = clickSounds[Math.floor(Math.random() * 2)];
-        sound.play().catch(e => console.log('Click audio play failed:', e));
-        // Re-enable navigation after short delay if needed, but since it's a link, it will navigate after sound starts
-      });
-    });
-
     // Desktop-only mouse trailing laser beam effect
     let isDesktop = window.innerWidth > 768;
     window.addEventListener('resize', () => {
@@ -882,71 +825,39 @@
       });
     }
 
-    // Generic submenu logic for containers
-    document.querySelectorAll('.dot-container').forEach(container => {
-      const mainDot = container.querySelector('.main-dot');
-      const subDots = container.querySelector('.sub-dots');
-      const hasSubs = subDots.children.length > 0;
-      let hideTimeout;
+    // Add click handlers for sub-dots only (no duplication of hover)
+    document.querySelectorAll('.sub-dot').forEach(sub => {
+      sub.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const linkHref = sub.href;
+        const target = sub.target || '_self';
+        const rect = sub.getBoundingClientRect();
+        const x = rect.left + rect.width / 2;
+        const y = rect.top + rect.height / 2;
 
-      if (!hasSubs) return;
+        // Play ricochet sound
+        const sound = clickSounds[Math.floor(Math.random() * clickSounds.length)];
+        sound.currentTime = 0;
+        sound.play().catch(err => console.log('Sound play failed:', err));
 
-      container.addEventListener('mouseenter', () => {
-        clearTimeout(hideTimeout);
-        mainDot.classList.add('hidden');
-        subDots.classList.add('active');
-      });
+        // Trigger hit animation
+        sub.classList.add('hit');
 
-      container.addEventListener('mouseleave', () => {
-        hideTimeout = setTimeout(() => {
-          subDots.classList.remove('active');
-          mainDot.classList.remove('hidden');
-        }, 1000); // Increased timeout for easier navigation
-      });
+        // Award points and show floating points
+        updateScore(1000, x, y);
 
-      container.querySelectorAll('.sub-dot').forEach(sub => {
-        sub.addEventListener('mouseenter', () => {
-          clearTimeout(hideTimeout);
-        });
-        sub.addEventListener('mouseleave', () => {
-          hideTimeout = setTimeout(() => {
-            subDots.classList.remove('active');
-            mainDot.classList.remove('hidden');
-          }, 1000); // Increased timeout
-        });
+        // Trigger explosion particles
+        explode(x, y, '#FFD700');
 
-        // New click behavior: Animate spin and particles before navigation
-        sub.addEventListener('click', (e) => {
-          e.preventDefault();
-          const linkHref = sub.href;
-          const target = sub.target || '_self';
-          const rect = sub.getBoundingClientRect();
-          const x = rect.left + rect.width / 2;
-          const y = rect.top + rect.height / 2;
-
-          // Play ricochet sound
-          const sound = clickSounds[Math.floor(Math.random() * clickSounds.length)];
-          sound.currentTime = 0;
-          sound.play().catch(err => console.log('Sound play failed:', err));
-
-          // Trigger hit animation
-          sub.classList.add('hit');
-
-          // Award points and show floating points
-          updateScore(1000, x, y);
-
-          // Trigger explosion particles
-          explode(x, y, '#FFD700');
-
-          // Navigate after animation completes
-          setTimeout(() => {
-            if (target === '_blank') {
-              window.open(linkHref, '_blank');
-            } else {
-              window.location.href = linkHref;
-            }
-          }, 800);
-        });
+        // Navigate after animation completes
+        setTimeout(() => {
+          if (target === '_blank') {
+            window.open(linkHref, '_blank');
+          } else {
+            window.location.href = linkHref;
+          }
+        }, 800);
       });
     });
 
