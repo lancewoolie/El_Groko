@@ -612,7 +612,7 @@
       <span class="main-label">Events</span>
       <div class="sub-dots">
         <!-- Upcoming Event -->
-        <a href="https://www.facebook.com/events/1285222389594134" class="sub-dot" style="background-image: url('img/OCT 24.png');" target="_blank" data-title="Upcoming Event"></a>
+        <a href="https://www.facebook.com/events/1285222389594134" class="sub-dot" style="background-image: url('img/OCT 24.png');" target="_blank" data-title="Upcoming Event" data-id="events-oct24"></a>
       </div>
     </div>
     
@@ -622,13 +622,13 @@
       <span class="main-label">Music & Videos</span>
       <div class="sub-dots">
         <!-- Uber -->
-        <a href="https://orcd.co/a4glqme" class="sub-dot" style="background-image: url('img/Ubermenu.jpg');" target="_blank" data-title="Uber"></a>
+        <a href="https://orcd.co/a4glqme" class="sub-dot" style="background-image: url('img/Ubermenu.jpg');" target="_blank" data-title="Uber" data-id="music-uber"></a>
         <!-- Too Drunk -->
-        <a href="https://orcd.co/lancewoolietoodrunk" class="sub-dot" style="background-image: url('img/TooDrunkmenu.jpg');" target="_blank" data-title="Too Drunk"></a>
+        <a href="https://orcd.co/lancewoolietoodrunk" class="sub-dot" style="background-image: url('img/TooDrunkmenu.jpg');" target="_blank" data-title="Too Drunk" data-id="music-too-drunk"></a>
         <!-- Worst Enemy -->
-        <a href="https://orcd.co/lancewoolieworstenemy" class="sub-dot" style="background-image: url('img/WorstEnemymenu.jpg');" target="_blank" data-title="Worst Enemy"></a>
+        <a href="https://orcd.co/lancewoolieworstenemy" class="sub-dot" style="background-image: url('img/WorstEnemymenu.jpg');" target="_blank" data-title="Worst Enemy" data-id="music-worst-enemy"></a>
         <!-- Full Catalog -->
-        <a href="music.html" class="sub-dot" style="background-image: url('img/Fullcatalogmenu.jpg');" data-title="Full Catalog"></a>
+        <a href="music.html" class="sub-dot" style="background-image: url('img/Fullcatalogmenu.jpg');" data-title="Full Catalog" data-id="music-full-catalog"></a>
       </div>
     </div>
     
@@ -638,13 +638,13 @@
       <span class="main-label">Merch & More</span>
       <div class="sub-dots">
         <!-- Cluck Yeah Chicken Socks -->
-        <a href="https://lancewoolie.bandcamp.com/merch/chicken-socks-cluck-yeah-step-into-the-flock" class="sub-dot" style="background-image: url('https://f4.bcbits.com/img/0041177986_10.jpg');" target="_blank" data-title="Chicken Socks"></a>
+        <a href="https://lancewoolie.bandcamp.com/merch/chicken-socks-cluck-yeah-step-into-the-flock" class="sub-dot" style="background-image: url('https://f4.bcbits.com/img/0041177986_10.jpg');" target="_blank" data-title="Chicken Socks" data-id="merch-chicken-socks"></a>
         <!-- Uber Single -->
-        <a href="https://lancewoolie.bandcamp.com/track/uber" class="sub-dot" style="background-image: url('https://f4.bcbits.com/img/a2855470268_10.jpg');" target="_blank" data-title="Uber"></a>
+        <a href="https://lancewoolie.bandcamp.com/track/uber" class="sub-dot" style="background-image: url('https://f4.bcbits.com/img/a2855470268_10.jpg');" target="_blank" data-title="Uber" data-id="merch-uber"></a>
         <!-- Too Drunk Single -->
-        <a href="https://lancewoolie.bandcamp.com/track/too-drunk-ft-brent-mason" class="sub-dot" style="background-image: url('https://f4.bcbits.com/img/a1387979790_10.jpg');" target="_blank" data-title="Too Drunk"></a>
+        <a href="https://lancewoolie.bandcamp.com/track/too-drunk-ft-brent-mason" class="sub-dot" style="background-image: url('https://f4.bcbits.com/img/a1387979790_10.jpg');" target="_blank" data-title="Too Drunk" data-id="merch-too-drunk"></a>
         <!-- Country Paradise Album -->
-        <a href="https://lancewoolie.bandcamp.com/album/country-paradise" class="sub-dot" style="background-image: url('img/COUNTRY-PARADISE-scaled.jpg');" target="_blank" data-title="Country Paradise"></a>
+        <a href="https://lancewoolie.bandcamp.com/album/country-paradise" class="sub-dot" style="background-image: url('img/COUNTRY-PARADISE-scaled.jpg');" target="_blank" data-title="Country Paradise" data-id="merch-country-paradise"></a>
       </div>
     </div>
     
@@ -835,29 +835,45 @@
         const rect = sub.getBoundingClientRect();
         const x = rect.left + rect.width / 2;
         const y = rect.top + rect.height / 2;
+        const subId = sub.dataset.id;
 
-        // Play ricochet sound
-        const sound = clickSounds[Math.floor(Math.random() * clickSounds.length)];
-        sound.currentTime = 0;
-        sound.play().catch(err => console.log('Sound play failed:', err));
+        const clickedSubDots = JSON.parse(sessionStorage.getItem('clickedSubDots') || '[]');
 
-        // Trigger hit animation
-        sub.classList.add('hit');
-
-        // Award points and show floating points
-        updateScore(1000, x, y);
-
-        // Trigger explosion particles
-        explode(x, y, '#FFD700');
-
-        // Navigate after animation completes
-        setTimeout(() => {
+        if (clickedSubDots.includes(subId)) {
+          // Direct navigation if already clicked in session
           if (target === '_blank') {
             window.open(linkHref, '_blank');
           } else {
             window.location.href = linkHref;
           }
-        }, 800);
+        } else {
+          // Play ricochet sound
+          const sound = clickSounds[Math.floor(Math.random() * clickSounds.length)];
+          sound.currentTime = 0;
+          sound.play().catch(err => console.log('Sound play failed:', err));
+
+          // Trigger hit animation
+          sub.classList.add('hit');
+
+          // Award points and show floating points
+          updateScore(1000, x, y);
+
+          // Trigger explosion particles
+          explode(x, y, '#FFD700');
+
+          // Mark as clicked in session
+          clickedSubDots.push(subId);
+          sessionStorage.setItem('clickedSubDots', JSON.stringify(clickedSubDots));
+
+          // Navigate after animation completes
+          setTimeout(() => {
+            if (target === '_blank') {
+              window.open(linkHref, '_blank');
+            } else {
+              window.location.href = linkHref;
+            }
+          }, 800);
+        }
       });
     });
 
