@@ -1,13 +1,21 @@
 // Preload the sound effect early (global, buffers on script load)
 const ricochetSound = new Audio('sounds/multiple-ricochets.mp3');
 ricochetSound.preload = 'auto';  // Ensures buffering
+ricochetSound.volume = 0.85;
 
 // Preload click ricochet sounds
 const clickSounds = [
   new Audio('sounds/ricochet-1.mp3'),
   new Audio('sounds/ricochet-2.mp3')
 ];
-clickSounds.forEach(sound => sound.preload = 'auto');
+clickSounds.forEach(sound => {
+  sound.preload = 'auto';
+  sound.volume = 0.85;
+});
+
+// Preload game over sound
+const gameOverSound = new Audio('sounds/ScottySteel.mp3');
+gameOverSound.volume = 0.85;
 
 // Global mouse position for particle reactivity
 let mousePos = { x: 0, y: 0 };
@@ -20,6 +28,7 @@ let scoreEl = null;
 let health = parseFloat(sessionStorage.getItem('health')) || 100;
 let healthBar = null;
 let healthProgress = null;
+let gameOverShown = false;
 
 function updateScore(points, x = undefined, y = undefined) {
   score += points;
@@ -52,7 +61,7 @@ function updateScore(points, x = undefined, y = undefined) {
   }
   // Health behaviors
   if (points === 69) {
-    health = Math.max(0, health - 2);
+    health = Math.max(0, health - 5);
     sessionStorage.setItem('health', health.toString());
     updateHealthBar();
   } else {
@@ -63,8 +72,33 @@ function updateScore(points, x = undefined, y = undefined) {
 }
 
 function updateHealthBar() {
-  if (!healthProgress) return;
+  if (!healthProgress || !healthBar) return;
   const percent = health / 100;
+  const healthDisplay = healthBar.closest('.health-display');
+  if (percent <= 0) {
+    if (!gameOverShown) {
+      gameOverSound.play().catch(err => console.log('Game over sound failed:', err));
+      gameOverShown = true;
+      healthBar.innerHTML = '';
+      const gameOverText = document.createElement('div');
+      gameOverText.textContent = 'GAME OVER';
+      gameOverText.style.cssText = 'color: #F44336; font-size: 20px; font-weight: bold; text-align: center; line-height: 8px; padding: 0 5px;';
+      healthBar.appendChild(gameOverText);
+      setTimeout(() => {
+        health = 100;
+        score = 0;
+        sessionStorage.setItem('health', '100');
+        sessionStorage.setItem('score', '0');
+        gameOverShown = false;
+        if (scoreEl) {
+          scoreEl.textContent = '000000';
+          scoreEl.classList.add('score-zero');
+        }
+        updateHealthBar();
+      }, 5000);
+    }
+    return;
+  }
   healthProgress.style.width = `${percent * 100}%`;
   let color = '';
   if (percent >= 0.80) {
@@ -77,11 +111,16 @@ function updateHealthBar() {
     color = '#F44336'; // Red
   }
   healthProgress.style.backgroundColor = color;
+  // Blink if low health
+  if (percent < 0.1) {
+    if (healthDisplay) healthDisplay.classList.add('low-health');
+  } else {
+    if (healthDisplay) healthDisplay.classList.remove('low-health');
+  }
   // Trigger pulse on update
-  const display = healthBar.closest('.health-display');
-  if (display) {
-    display.classList.add('updated');
-    setTimeout(() => display.classList.remove('updated'), 500);
+  if (healthDisplay) {
+    healthDisplay.classList.add('updated');
+    setTimeout(() => healthDisplay.classList.remove('updated'), 500);
   }
 }
 
@@ -195,7 +234,6 @@ function generateNav() {
         </a>
         <div class="score-header mx-auto d-flex justify-content-center align-items-center gap-3">
           <div class="health-display">
-            <span class="health-label">Health</span>
             <div class="health-bar">
               <div id="health-bar">
                 <div id="health-progress"></div>
@@ -284,6 +322,13 @@ function generateFooter() {
           <div class="col-md-4 text-center">
             <div class="cowboy-hat-icon mb-1" id="cowboy-hat">🤠</div>
             <p class="mb-0 small">&copy; 2025 Lance Woolie. All rights reserved.</p>
+            <div class="weapon-select">
+              <select id="weapon-dropdown">
+                <option selected>Laser Sights</option>
+                <option disabled>Shotgun</option>
+                <option disabled>Bazooka</option>
+              </select>
+            </div>
           </div>
           <div class="col-md-4 text-end">
             <a href="https://x.com/LanceWoolie" target="_blank" class="me-3" title="X (Twitter)" style="display: inline-block; width: 24px; height: 24px; margin-right: 8px;">
@@ -372,6 +417,22 @@ document.addEventListener('DOMContentLoaded', () => {
   setTimeout(initHealthBar, 100); // Delay for render
 
   const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
+
+  // Randomize bullet menu positions on index
+  if (currentPage === 'index') {
+    const containers = document.querySelectorAll('.dot-container');
+    containers.forEach(container => {
+      const computedLeft = getComputedStyle(container).left;
+      const leftNum = parseFloat(computedLeft);
+      const randLeft = leftNum + (Math.random() - 0.5) * 20; // +/- 10% wildness
+      container.style.left = randLeft + '%';
+
+      const computedTop = getComputedStyle(container).top;
+      const topNum = parseFloat(computedTop);
+      const randTop = topNum + (Math.random() - 0.5) * 20; // +/- 10% wildness
+      container.style.top = randTop + '%';
+    });
+  }
 
   // YouTube play detection (music page only)
   if (currentPage === 'music') {
@@ -524,7 +585,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       setTimeout(() => {
         // Trigger playback post-shake, synced with bullet hole dots animation
-        ricochetSound.play().catch(e => console.log('Audio play failed:', e));
+        // ricochetSound.play().catch(e => console.log('Audio play failed:', e)); // Removed as overkill
         
         // Fire first 3 dots quicker (100ms intervals)
         setTimeout(() => animateDot(dots[0]), 0);
