@@ -16,19 +16,10 @@ let mousePos = { x: 0, y: 0 };
 let score = 0;
 let scoreEl = null;
 
-// Health management for heart bar
-let health = parseFloat(sessionStorage.getItem('health')) || 5;
-let healthCanvas = null;
-let progressLine = null;
-let progressLineOuter = null;
-let liquidBack = null;
-let liquidFront = null;
-let particlesLeft = null;
-let particlesRight = null;
-let bubbleGroup = null;
-let bubbleArray = [];
-let totalLength = 0;
-let animeLoaded = typeof anime !== 'undefined'; // Check if anime.js is loaded
+// Health management for bar
+let health = parseFloat(sessionStorage.getItem('health')) || 100;
+let healthBar = null;
+let healthProgress = null;
 
 function updateScore(points, x = undefined, y = undefined) {
   score += points;
@@ -59,151 +50,48 @@ function updateScore(points, x = undefined, y = undefined) {
   if (x !== undefined && y !== undefined) {
     showFloatingPoints(points, x, y);
   }
-  // Optional: Tie health loss to low scores (e.g., if points < 50, lose half heart)
-  if (points < 50) {
-    loseHalfHeart();
+  // Health behaviors
+  if (points === 69) {
+    health = Math.max(0, health - 2);
+    sessionStorage.setItem('health', health.toString());
+    updateHealthBar();
+  } else {
+    health = Math.min(100, health + 5);
+    sessionStorage.setItem('health', health.toString());
+    updateHealthBar();
   }
 }
 
-function loseHalfHeart() {
-  health = Math.max(0, health - 0.5);
-  sessionStorage.setItem('health', health.toString());
-  if (healthCanvas) {
-    const percent = health / 5;
-    updateHealthBar(percent);
-    // Optional: Play a damage sound here
-    console.log(`Health: ${health}/5`); // Or trigger UI feedback
+function updateHealthBar() {
+  if (!healthProgress) return;
+  const percent = health / 100;
+  healthProgress.style.width = `${percent * 100}%`;
+  let color = '';
+  if (percent >= 0.80) {
+    color = '#4CAF50'; // Green
+  } else if (percent >= 0.51) {
+    color = '#FFD700'; // Yellow
+  } else if (percent > 0) {
+    color = '#FF9800'; // Orange
+  } else {
+    color = '#F44336'; // Red
   }
-}
-
-function updateHealthBar(percent) {
-  if (!progressLine) return;
-  progressLine.style.strokeDashoffset = totalLength - (totalLength * percent);
-  if (animeLoaded) {
-    anime({
-      targets: liquidFront,
-      d: [liquidFront.getAttribute("d"), getLiquidPath(percent)],
-      duration: 800,
-      elasticity: 600
-    });
+  healthProgress.style.backgroundColor = color;
+  // Trigger pulse on update
+  const display = healthBar.closest('.health-display');
+  if (display) {
+    display.classList.add('updated');
+    setTimeout(() => display.classList.remove('updated'), 500);
   }
-  // Dynamic color change
-  const frontGrad = document.querySelector('#frontGrad');
-  if (frontGrad) {
-    if (health === 5) {
-      // Full blue
-      frontGrad.children[0].style.stopColor = '#1063c2';
-      frontGrad.children[1].style.stopColor = '#1063c2';
-    } else if (health > 0.5) {
-      // Red for 4.5–1
-      frontGrad.children[0].style.stopColor = '#ff0000';
-      frontGrad.children[1].style.stopColor = '#cc0000';
-    } else if (health === 0.5) {
-      // Yellow for last half
-      frontGrad.children[0].style.stopColor = '#FFD700';
-      frontGrad.children[1].style.stopColor = '#FFA500';
-    } else {
-      // Empty gray
-      frontGrad.children[0].style.stopColor = '#808080';
-      frontGrad.children[1].style.stopColor = '#606060';
-    }
-  }
-}
-
-function getLiquidPath(percent) {
-  var liquidHeight = 190 * percent;
-  var liquidPath = "M1200," + (400 - liquidHeight) + "l0-" + liquidHeight + "c-30.3,0-51.7,12.8-68,12.8c-28.7,0-41.6-12.7-83.8-12.7c-30.9,0-52.1,12.7-76.1,12.7c-27.1,0-39.3-4.1-67.1-4.1c-21.3,0-42.1,12.9-79.8,12.8c-35.7-0.1-47.9-12.8-83.6-12.8c-9.6,0-46.3,4.7-64.6,4.2c-20.8-0.6-37.9-12.8-76.9-12.8c-30.3,0-51.7,12.8-68,12.8c-28.7,0-41.6-12.7-83.8-12.7c-30.9,0-52.1,12.7-76.1,12.7c-27.1,0-39.3-4.1-67.1-4.1c-21.3,0-42.1,12.9-79.8,12.8c-35.7-0.1-47.9-12.8-83.6-12.8c-9.6,0-46.3,4.7-64.6,4.2C56.1,222.2,39,210,0,210l0," + liquidHeight + "H1200z";
-  return liquidPath;
 }
 
 function initHealthBar() {
-  healthCanvas = document.getElementById("health-canvas");
-  if (!healthCanvas) return;
-  progressLine = document.getElementById("progress-line-inner");
-  progressLineOuter = document.getElementById("progress-line-outer");
-  liquidBack = document.getElementById("liquid-back");
-  liquidFront = document.getElementById("liquid-front");
-  particlesLeft = document.getElementById("particles-left");
-  particlesRight = document.getElementById("particles-right");
-  bubbleGroup = document.getElementById("liquid-bubbles");
-  if (bubbleGroup) {
-    for (let i = 0; i < bubbleGroup.children.length; i++) {
-      bubbleArray.push(bubbleGroup.children[i]);
-    }
-  }
-
-  totalLength = progressLine.getTotalLength();
-  progressLine.style.strokeDasharray = totalLength;
-  progressLine.style.strokeDashoffset = totalLength;
-  progressLineOuter.style.strokeDasharray = totalLength;
-  progressLineOuter.style.strokeDashoffset = totalLength;
-
-  if (animeLoaded) {
-    anime({
-      targets: progressLineOuter,
-      strokeDashoffset: [totalLength, 0],
-      duration: 1000,
-      easing: "easeInOutSine",
-      delay: 500
-    });
-    anime({
-      targets: liquidBack,
-      d: [liquidBack.getAttribute("d"), liquidBack.getAttribute("d")], // No change for init
-      duration: 1500,
-      elasticity: 600,
-      delay: 1000
-    });
-    animateBubbles();
-    setInterval(addParticles, 300);
-  }
+  healthBar = document.getElementById("health-bar");
+  healthProgress = document.getElementById("health-progress");
+  if (!healthBar || !healthProgress) return;
 
   // Initial update
-  const initialPercent = health / 5;
-  updateHealthBar(initialPercent);
-}
-
-function animateBubbles() {
-  anime({
-    targets: bubbleArray,
-    translateY: -25,
-    duration: Math.random() * 2000 + 2000,
-    delay: anime.stagger(200),
-    loop: true,
-    easing: "easeOutElastic"
-  });
-}
-
-function addParticles() {
-  const numParticles = Math.floor(Math.random() * 5) + 1;
-  for (let i = 0; i < numParticles; i++) {
-    setTimeout(() => {
-      const cloneLeft = particlesLeft.cloneNode(true);
-      const cloneRight = particlesRight.cloneNode(true);
-      cloneLeft.style.opacity = "0";
-      cloneRight.style.opacity = "0";
-      healthCanvas.appendChild(cloneLeft);
-      healthCanvas.appendChild(cloneRight);
-      if (animeLoaded) {
-        anime({
-          targets: [cloneLeft, cloneRight],
-          translateY: [0, -20],
-          translateX: [0, (Math.random() - 0.5) * 40],
-          opacity: [0, 1, 0],
-          scale: [0, 1, 0],
-          duration: 1000,
-          delay: anime.stagger(100),
-          complete: () => {
-            cloneLeft.remove();
-            cloneRight.remove();
-          }
-        });
-      } else {
-        // Fallback: Simple fade without anime
-        cloneLeft.remove();
-        cloneRight.remove();
-      }
-    }, i * 100);
-  }
+  updateHealthBar();
 }
 
 function showFloatingPoints(points, mx, my) {
@@ -297,7 +185,7 @@ function showFloatingPoints(points, mx, my) {
   }, 300);
 }
 
-// Reusable Nav Generator (Updated with Heart Progress Bar in Header)
+// Reusable Nav Generator (Updated with Health Progress Bar in Header)
 function generateNav() {
   let navHTML = `
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
@@ -308,92 +196,10 @@ function generateNav() {
         <div class="score-header mx-auto d-flex justify-content-center align-items-center gap-3">
           <div class="health-display">
             <span class="health-label">Health</span>
-            <div id="health-container" class="health-bar">
-              <svg 
-                id="health-canvas"
-                version="1.1" 
-                viewBox="0 0 800 300"
-                xmlns="http://www.w3.org/2000/svg" 
-                xmlns:xlink="http://www.w3.org/1999/xlink">
-                <defs>
-                  <linearGradient id="frontGrad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="190">
-                    <stop offset="0" style="stop-color:#1063c2"/>
-                    <stop offset="0.5" style="stop-color:#1063c2"/>
-                  </linearGradient> 
-
-                  <linearGradient id="backGrad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="190">
-                    <stop offset="0" style="stop-color:#1063c2"/>
-                    <stop offset="0.3" style="stop-color:#2D0000"/>
-                  </linearGradient>
-
-                  <clipPath id="heart-clip">
-                    <path d="M398.5,208.3c0.9,0.7,2.2,0.7,3.1,0c6.9-5.5,35.7-28.7,53.2-49.4c14.6-14.8,25.3-50.3,0-63.6c-19.9-10.1-45-0.5-52.5,13.9c-0.9,1.8-3.5,1.8-4.4,0c-7.5-14.4-32.6-24-52.5-13.9c-25.4,13.5-15.1,48.2,0,63.6C362.8,179.6,391.6,202.8,398.5,208.3z"/>
-                  </clipPath>
-
-                  <mask id="heart-mask">
-                    <path d="M462.8,151.5c-0.6,0-1.8-0.5-1.8-0.5l3.6-6.5l320.2,0c1.9,0,3.5,1.6,3.5,3.5s-1.6,3.5-3.5,3.5L462.8,151.5z"/>
-                    <path d="M15.2,151.5c-1.9,0-3.5-1.6-3.5-3.5s1.6-3.5,3.5-3.5l320.3,0l3.6,6.5c0,0-1.1,0.5-1.8,0.5L15.2,151.5z"/>
-                    <path d="M398.5,208.3c0.9,0.7,2.2,0.7,3.1,0c6.9-5.5,35.7-28.7,53.2-49.4c14.6-14.8,25.3-50.3,0-63.6c-19.9-10.1-45-0.5-52.5,13.9c-0.9,1.8-3.5,1.8-4.4,0c-7.5-14.4-32.6-24-52.5-13.9c-25.4,13.5-15.1,48.2,0,63.6C362.8,179.6,391.6,202.8,398.5,208.3z"/>
-                  </mask>
-
-                  <filter id="goo" color-interpolation-filters="sRGB">
-                    <feGaussianBlur in="SourceGraphic" stdDeviation="4 4" result="blur"/>
-                    <feColorMatrix in="blur"
-                      mode="matrix"
-                      values="
-                      1 0 0 0 0
-                      0 1 0 0 0
-                      0 0 1 0 0
-                      0 0 0 19 -7"
-                      result="cm"/>
-                    <feComposite in="SourceGraphic" in2="cm" />
-                  </filter>
-                </defs>
-                <g id="particles-left" fill="url(#frontGrad)">
-                  <circle cx="337.4" cy="148" r="0.6"/>
-                  <circle cx="337.4" cy="148" r="0.9"/>
-                  <circle cx="337.4" cy="148" r="0.4"/>
-                  <circle cx="337.4" cy="148" r="0.3"/>
-                  <circle cx="337.4" cy="148" r="1"/>
-                </g>
-                <g id="particles-right" fill="url(#frontGrad)">
-                  <circle cx="462.7" cy="148" r="0.6"/>
-                  <circle cx="462.7" cy="148" r="0.9"/>
-                  <circle cx="462.7" cy="148" r="0.4"/>
-                  <circle cx="462.7" cy="148" r="0.3"/>
-                  <circle cx="462.7" cy="148" r="1"/>
-                </g>
-
-                <g id="liquid" clip-path="url(#heart-clip)">
-                  <path id="liquid-back" fill="url(#backGrad)" d="M1125,215.8c-27.9,0-47.5-2.4-75-1c-28.6,1.4-40.1,7.7-75,7.7c-28.8,0-43.9-3-75-3s-57.2,3.1-75,3.1c-24.9,0-36.1-5-75-7.7c-29.7-2-52.7,0.4-75,0.4s-48.2-5.3-75-5.3c-27.6,0-62.3,5.8-75,5.8c-27.9,0-47.6-2.7-75-1c-29,1.8-40.1,7.7-75,7.7c-28.8,0-43.9-3-75-3c-31.1,0-57.2,3.1-75,3.1c-24.9,0-45.3-5.6-75-7.7c-24.6-1.7-52.7,0.4-75,0.4c-22.3,0-48.2-5.3-75-5.3v190h1200V210C1172.4,210,1137.7,215.8,1125,215.8z"/>
-                  <g id="liquid-front-group" fill="url(#frontGrad)">
-                    <g id="liquid-bubbles">
-                      <circle id="bubble-0" cx="340" cy="217" r="3"/>
-                      <circle id="bubble-1" cx="350" cy="217" r="3.3"/>
-                      <circle id="bubble-2" cx="360" cy="217" r="6"/>
-                      <circle id="bubble-3" cx="370" cy="217" r="3"/>
-                      <circle id="bubble-4" cx="380" cy="217" r="2.5"/>
-                      <circle id="bubble-5" cx="390" cy="217" r="3.7"/>
-                      <circle id="bubble-6" cx="400" cy="217" r="5.9"/>
-                      <circle id="bubble-7" cx="410" cy="217" r="5.5"/>
-                      <circle id="bubble-8" cx="420" cy="217" r="3.5"/>
-                      <circle id="bubble-9" cx="430" cy="217" r="5.4"/>
-                      <circle id="bubble-10" cx="440" cy="217" r="4.7"/>
-                      <circle id="bubble-11" cx="450" cy="217" r="4.1"/>
-                      <circle id="bubble-12" cx="460" cy="217" r="5.3"/>
-                      <circle id="bubble-13" cx="470" cy="217" r="5.5"/>
-                    </g>
-                    <path id="liquid-front" fill="url(#frontGrad)" d="M1200,400l0-190c-30.3,0-51.7,12.8-68,12.8c-28.7,0-41.6-12.7-83.8-12.7c-30.9,0-52.1,12.7-76.1,12.7c-27.1,0-39.3-4.1-67.1-4.1c-21.3,0-42.1,12.9-79.8,12.8c-35.7-0.1-47.9-12.8-83.6-12.8c-9.6,0-46.3,4.7-64.6,4.2c-20.8-0.6-37.9-12.8-76.9-12.8c-30.3,0-51.7,12.8-68,12.8c-28.7,0-41.6-12.7-83.8-12.7c-30.9,0-52.1,12.7-76.1,12.7c-27.1,0-39.3-4.1-67.1-4.1c-21.3,0-42.1,12.9-79.8,12.8c-35.7-0.1-47.9-12.8-83.6-12.8c-9.6,0-46.3,4.7-64.6,4.2C56.1,222.2,39,210,0,210l0,190H1200z"/>
-                  </g>
-                </g>
-
-                <path id="track-right" fill="#FFFFFF" d="M462.8,151.5c-0.6,0-1.8-0.5-1.8-0.5l3.6-6.5l320.2,0c1.9,0,3.5,1.6,3.5,3.5s-1.6,3.5-3.5,3.5L462.8,151.5z"/>
-                <path id="track-left" fill="#FFFFFF" d="M15.2,151.5c-1.9,0-3.5-1.6-3.5-3.5s1.6-3.5,3.5-3.5l320.3,0l3.6,6.5c0,0-1.1,0.5-1.8,0.5L15.2,151.5z"/>
-                <path id="ekg-outer" fill="none" stroke="#F56476" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M15.2,148h357.2c0.2,0,0.5-0.1,0.7-0.3l3.1-3.1c0.4-0.4,1-0.4,1.3,0l5.7,5.7c0.3,0.3,0.9,0.4,1.3,0.1l4.9-4c0.6-0.5,1.4-0.1,1.5,0.6l2.5,22.7c0.1,1.1,1.8,1.1,1.9,0L399,125c0.1-1.1,1.7-1.2,1.9-0.1l4.5,26.5c0.1,0.9,1.3,1.1,1.7,0.3l5.3-9.4c0.4-0.6,1.2-0.6,1.6,0l3.3,5.3c0.2,0.3,0.5,0.4,0.8,0.4h366.5"/>
-                <line id="progress-line-outer" fill="none" stroke="url(#frontGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="15.2" y1="148" x2="784.8" y2="148"/>
-                <line id="progress-line-inner" clip-path="url(#heart-clip)" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="15.2" y1="148" x2="784.8" y2="148"/>
-                <path id="ekg-inner" clip-path="url(#heart-clip)" fill="none" stroke="#FFFFFF" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M15.2,148h357.2c0.2,0,0.5-0.1,0.7-0.3l3.1-3.1c0.4-0.4,1-0.4,1.3,0l5.7,5.7c0.3,0.3,0.9,0.4,1.3,0.1l4.9-4c0.6-0.5,1.4-0.1,1.5,0.6l2.5,22.7c0.1,1.1,1.8,1.1,1.9,0L399,125c0.1-1.1,1.7-1.2,1.9-0.1l4.5,26.5c0.1,0.9,1.3,1.1,1.7,0.3l5.3-9.4c0.4-0.6,1.2-0.6,1.6,0l3.3,5.3c0.2,0.3,0.5,0.4,0.8,0.4h366.5"/>
-              </svg>
+            <div class="health-bar">
+              <div id="health-bar">
+                <div id="health-progress"></div>
+              </div>
             </div>
           </div>
           <div class="score-display">
@@ -563,7 +369,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Init health bar after nav
-  setTimeout(initHealthBar, 100); // Delay for SVG render
+  setTimeout(initHealthBar, 100); // Delay for render
 
   const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
 
@@ -604,9 +410,9 @@ document.addEventListener('DOMContentLoaded', () => {
       points = 2500;
     }
 
-    // Subscribe raccoon click (420 points)
+    // Subscribe raccoon click (1500 points)
     if (target.closest('#subscribe-raccoon')) {
-      points = 420;
+      points = 1500;
     }
 
     // Raccoon subscribe button (cowboy hat) - kept for surprises
@@ -623,12 +429,12 @@ document.addEventListener('DOMContentLoaded', () => {
     updateScore(points, e.clientX, e.clientY);
   });
 
-  // Custom red laser dot reticle cursor (50% smaller: 10px)
+  // Custom red laser dot reticle cursor (75% larger: 15px)
   const cursor = document.createElement('div');
   cursor.style.cssText = `
     position: fixed;
-    width: 10px;
-    height: 10px;
+    width: 15px;
+    height: 15px;
     background: radial-gradient(circle, rgba(255, 0, 0, 0.75) 0%, transparent 70%);
     border: 1px solid rgba(255, 0, 0, 0.5);
     border-radius: 50%;
@@ -644,7 +450,7 @@ document.addEventListener('DOMContentLoaded', () => {
       left: 50%;
       transform: translate(-50%, -50%);
       width: 1px;
-      height: 10px;
+      height: 15px;
       background: rgba(255, 0, 0, 0.75);
       transform: translate(-50%, -50%) rotate(0deg);
     "></div>
@@ -653,7 +459,7 @@ document.addEventListener('DOMContentLoaded', () => {
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 10px;
+      width: 15px;
       height: 1px;
       background: rgba(255, 0, 0, 0.75);
       transform: translate(-50%, -50%) rotate(90deg);
