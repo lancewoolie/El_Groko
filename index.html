@@ -231,23 +231,23 @@
 }
 .origins-container {
   left: 10%;
-  top: 30%;
+  top: 10%;
 }
 .events-container {
-  left: 24%;
+  left: 20%;
   top: 20%;
 }
 .music-container {
-  left: 38%;
-  top: 40%;
+  left: 30%;
+  top: 30%;
 }
 .merch-container {
-  left: 52%;
-  top: 25%;
+  left: 40%;
+  top: 40%;
 }
 .contact-container {
-  left: 66%;
-  top: 45%;
+  left: 50%;
+  top: 50%;
 }
 .main-dot {
   display: block;
@@ -385,23 +385,23 @@
   }
   .origins-container {
     left: 5%;
-    top: 10%;
-  }
-  .events-container {
-    left: 20%;
     top: 5%;
   }
-  .music-container {
-    left: 35%;
+  .events-container {
+    left: 15%;
     top: 15%;
   }
+  .music-container {
+    left: 25%;
+    top: 25%;
+  }
   .merch-container {
-    left: 50%;
-    top: 10%;
+    left: 35%;
+    top: 35%;
   }
   .contact-container {
-    left: 65%;
-    top: 20%;
+    left: 45%;
+    top: 45%;
   }
   .sub-dot {
     width: 100px;
@@ -657,48 +657,21 @@
   100% { transform: scale(1); box-shadow: 0 0 0 rgba(255, 215, 0, 0); }
 }
 
-/* Heart Progress Bar Styles (Enhanced for Visibility and Dazzle) */
-.health-bar {
-  display: flex;
-  align-items: center;
-  position: relative;
+/* Standard Health Bar Styles */
+#health-bar {
+  width: 60px;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid #0074D9;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(255, 215, 0, 0.3);
 }
 
-#health-container {
-  position: relative;
-  z-index: 1;
-}
-
-#health-canvas {
-  width: 60px !important; /* Scaled for header */
-  height: 45px !important; /* Proportional scale */
-  background: transparent !important; /* No bg in header */
-  overflow: visible;
-  filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.3));
-}
-
-#health-canvas #liquid {
-  filter: url(#goo);
-}
-
-#health-canvas #liquid-bubbles circle {
-  fill: rgba(255,255,255,0.2);
-  animation: bubble 2s infinite ease-in-out;
-}
-
-@keyframes bubble {
-  0%, 100% { transform: translateY(0px) scale(1); }
-  50% { transform: translateY(-25px) scale(1.1); }
-}
-
-#health-canvas #ekg-outer {
-  filter: drop-shadow(0 0 5px #F56476);
-  animation: ekg 1.5s infinite ease-in-out;
-}
-
-@keyframes ekg {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+#health-progress {
+  height: 100%;
+  transition: width 0.8s ease, background-color 0.3s ease;
+  border-radius: 3px;
 }
 
 /* Hide health on mobile if needed */
@@ -711,7 +684,7 @@
   }
 }  </style></head>
 <body>
-  <a href="contact.html" class="floating-subscribe">
+  <a href="contact.html#email-subscribe" class="floating-subscribe">
     <img src="img/subscribe.gif" alt="Subscribe">
   </a>
 
@@ -934,13 +907,10 @@
       beam.id = 'laser-beam';
       beam.style.cssText = `
         position: fixed;
-        left: 50%;
-        bottom: 0;
-        transform: translateX(-50%);
         width: 2px;
         height: 0px;
-        background: linear-gradient(to top, #ff0000, #ff6600);
-        transform-origin: bottom center;
+        background: linear-gradient(to bottom, #00ff00, #00aa00);
+        transform-origin: top center;
         z-index: 999;
         pointer-events: none;
         transition: height 0.1s ease, transform 0.1s ease;
@@ -950,12 +920,14 @@
       window.addEventListener('mousemove', (e) => {
         const anchorX = window.innerWidth / 2;
         const anchorY = window.innerHeight;
-        const dx = e.clientX - anchorX;
-        const dy = e.clientY - anchorY;
+        const dx = anchorX - e.clientX;
+        const dy = anchorY - e.clientY;
         const dist = Math.sqrt(dx * dx + dy * dy);
         const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+        beam.style.left = e.clientX + 'px';
+        beam.style.top = e.clientY + 'px';
         beam.style.height = `${dist}px`;
-        beam.style.transform = `translateX(-50%) rotate(${angle}deg)`;
+        beam.style.transform = `rotate(${angle}deg)`;
       });
     }
 
@@ -970,8 +942,14 @@
         const x = rect.left + rect.width / 2;
         const y = rect.top + rect.height / 2;
         const subId = sub.dataset.id;
+        const container = sub.closest('.dot-container');
 
         const clickedSubDots = JSON.parse(sessionStorage.getItem('clickedSubDots') || '[]');
+
+        let bonusPoints = 0;
+        if (container && container.classList.contains('music-container')) {
+          bonusPoints = 420;
+        }
 
         if (clickedSubDots.includes(subId)) {
           // Direct navigation if already clicked in session
@@ -990,7 +968,7 @@
           sub.classList.add('hit');
 
           // Award points and show floating points
-          updateScore(1000, x, y);
+          updateScore(1000 + bonusPoints, x, y);
 
           // Trigger explosion particles
           explode(x, y, '#FFD700');
