@@ -716,16 +716,36 @@ document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
         // Trigger playback post-shake, synced with bullet hole dots animation
         ricochetSound.play().catch(e => console.log('Audio play failed:', e));
-        // Fire dots one by one (ricochet animation for bullet holes)
-        dots.forEach((dot, index) => {
-          setTimeout(() => {
-            dot.classList.add('ricochet');
-            setTimeout(() => {
-              dot.classList.add('visible');
-            }, 250);
-          }, index * 150);
-        });
+        
+        // Fire first 3 dots quicker (100ms intervals)
+        setTimeout(() => animateDot(dots[0]), 0);
+        setTimeout(() => animateDot(dots[1]), 100);
+        setTimeout(() => animateDot(dots[2]), 200);
+        
+        // Pause 0.3s (300ms) after the third dot
+        setTimeout(() => {
+          // Then fire last 2 dots quick like the first 3 (100ms interval)
+          animateDot(dots[3]);
+          setTimeout(() => animateDot(dots[4]), 100);
+        }, 500); // 200 (last first-dot) + 300 pause = 500ms
       }, 1000);
+    });
+
+    function animateDot(dot) {
+      dot.classList.add('ricochet');
+      setTimeout(() => {
+        dot.classList.add('visible');
+      }, 250);
+    }
+
+    // Click sound effect on bullet hole dots
+    document.querySelectorAll('.main-dot').forEach(dot => {
+      dot.addEventListener('click', (e) => {
+        e.preventDefault(); // Prevent immediate navigation, allow sound to play
+        const sound = clickSounds[Math.floor(Math.random() * 2)];
+        sound.play().catch(e => console.log('Click audio play failed:', e));
+        // Re-enable navigation after short delay if needed, but since it's a link, it will navigate after sound starts
+      });
     });
 
     // Generic submenu logic for containers (index page only, but safe to run globally)
