@@ -224,10 +224,10 @@ function showFloatingPoints(points, mx, my) {
   }, 300);
 }
 
-// Reusable Nav Generator (Updated with Health Progress Bar in Header)
+// Reusable Nav Generator (Updated with Health Progress Bar in Header - Floating)
 function generateNav() {
   let navHTML = `
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="position: fixed; top: 0; left: 0; right: 0; z-index: 1000;">
       <div class="container">
         <a class="navbar-brand" href="index.html">
           <img src="img/BEARDsmall.png" alt="Lance Woolie" style="height: 20px;"> Lance Woolie
@@ -309,7 +309,7 @@ function generateNav() {
   }
 }
 
-// Reusable Footer Generator (Removed Scoreboard, Added Subscribe Raccoon)
+// Reusable Footer Generator (Removed Scoreboard, Added Subscribe Raccoon - Floating)
 function generateFooter() {
   const footerHTML = `
     <footer class="footer bg-dark text-light py-1" style="position: fixed; bottom: 0; left: 0; right: 0; z-index: 1001; border-top: 1px solid #0074D9;">
