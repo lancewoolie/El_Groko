@@ -320,25 +320,54 @@ canvas {
       console.log('Subscribe clicked');
     });
   </script>
-  <script>
+<script>
   // Create and position cowboy hat emoji cursor
   const cursor = document.createElement('div');
   cursor.id = 'custom-cursor';
-  cursor.innerHTML = '🤠'; // Cowboy hat emoji
+  cursor.innerHTML = '🤠';
   document.body.appendChild(cursor);
 
-  let mouseX = 0, mouseY = 0;
-  document.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
+  let mouseX = window.innerWidth / 2; // Initial center X
+  let mouseY = window.innerHeight / 2; // Initial center Y
+  let ticking = false;
+
+  function updatePosition() {
     cursor.style.left = mouseX + 'px';
     cursor.style.top = mouseY + 'px';
+    ticking = false;
+  }
+
+  // Smooth RAF-based update
+  function requestTick() {
+    if (!ticking) {
+      requestAnimationFrame(updatePosition);
+      ticking = true;
+    }
+  }
+
+  document.addEventListener('mousemove', (e) => {
+    console.log('Mouse moved:', e.clientX, e.clientY); // Debug: Remove after testing
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    requestTick();
   });
 
-  // Optional: Hide on touch devices (neon may handle mobile better)
+  // Initial position set
+  setTimeout(() => {
+    updatePosition();
+  }, 100); // Slight delay for DOM settle
+
+  // Hide on touch devices (neon handles mobile better)
   if ('ontouchstart' in window) {
     cursor.style.display = 'none';
   }
+
+  // Re-center on resize (e.g., window drag)
+  window.addEventListener('resize', () => {
+    mouseX = window.innerWidth / 2;
+    mouseY = window.innerHeight / 2;
+    requestTick();
+  });
 </script>
 </body>
 </html>
