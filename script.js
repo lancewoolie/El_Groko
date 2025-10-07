@@ -1,8 +1,3 @@
-// Preload the sound effect early (global, buffers on script load)
-const ricochetSound = new Audio('sounds/multiple-ricochets.mp3');
-ricochetSound.preload = 'auto';  // Ensures buffering
-ricochetSound.volume = 0.85;
-
 // Preload click ricochet sounds
 const clickSounds = [
   new Audio('sounds/ricochet-1.mp3'),
