@@ -943,29 +943,29 @@
         position: fixed;
         width: 2px;
         height: 0px;
-        background: linear-gradient(to bottom, #00aa00, #00ff00);
+        background: linear-gradient(to bottom, #00ff00, #00aa00);
         transform-origin: top center;
         z-index: 999;
         pointer-events: none;
-        transition: height 0.1s ease, transform 0.1s ease, left 0.1s ease, top 0.1s ease;
+        transition: height 0.1s ease, transform 0.1s ease;
       `;
       document.body.appendChild(beam);
 
       window.addEventListener('mousemove', (e) => {
         const anchorX = window.innerWidth / 2;
         const anchorY = window.innerHeight;
-        let dx = e.clientX - anchorX;
-        let dy = e.clientY - anchorY;
-        let dist = Math.sqrt(dx * dx + dy * dy);
+        const dx = e.clientX - anchorX;
+        const dy = e.clientY - anchorY;
+        const dist = Math.sqrt(dx * dx + dy * dy);
         if (dist === 0) return;
         const angle = Math.atan2(dy, dx) * (180 / Math.PI);
         const trim = 0.15;
         const trimDist = dist * trim;
-        const offsetX = (dx / dist) * trimDist;
-        const offsetY = (dy / dist) * trimDist;
         const visibleDist = dist * (1 - 2 * trim);
+        const offsetX = dx * trim;
+        const offsetY = dy * trim;
         beam.style.left = (anchorX + offsetX) + 'px';
-        beam.style.top = (anchorY + offsetY - visibleDist) + 'px';
+        beam.style.top = (anchorY + offsetY) + 'px';
         beam.style.height = `${visibleDist}px`;
         beam.style.transform = `rotate(${angle}deg)`;
       });
