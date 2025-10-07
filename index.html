@@ -105,14 +105,14 @@
       background-color: transparent;
     }
 
-    /* Solar System Wrapper */
+    /* Solar System Wrapper - Rotated Counterclockwise 10 Degrees */
     .solar-system {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      transform: rotate(0deg);
+      transform: rotate(-10deg);
       transform-origin: center;
       z-index: 1;
     }
@@ -231,7 +231,7 @@
       height: 300px;
       z-index: 3;
     }
-    .origins-container {
+    .merch-container {
       left: 15%;
       top: 20%;
     }
@@ -243,7 +243,7 @@
       left: 30%;
       top: 40%;
     }
-    .merch-container {
+    .origins-container {
       left: 35%;
       top: 50%;
     }
@@ -392,7 +392,7 @@
         width: 250px;
         height: 250px;
       }
-      .origins-container {
+      .merch-container {
         left: 10% !important;
         top: 15% !important;
       }
@@ -404,7 +404,7 @@
         left: 25% !important;
         top: 35% !important;
       }
-      .merch-container {
+      .origins-container {
         left: 30% !important;
         top: 45% !important;
       }
@@ -668,8 +668,8 @@
 
     /* Standard Health Bar Styles */
     #health-bar {
-      width: 80px;
-      height: 8px;
+      width: 100px; /* Increased width for better GAME OVER fit */
+      height: 12px; /* Slightly taller */
       background: rgba(0, 0, 0, 0.3);
       border-radius: 4px;
       overflow: hidden;
@@ -816,11 +816,20 @@
         <div class="animated-dot"></div>
         <div class="animated-dot"></div>
         
-    <!-- Origins Container -->
-    <div class="dot-container origins-container">
-      <a href="origins.html" class="interactive-dot main-dot origins-dot"></a>
-      <span class="main-label">Origins</span>
-      <div class="sub-dots"></div>
+    <!-- Merch Container (Swapped with Origins) -->
+    <div class="dot-container merch-container">
+      <a href="merch.html" class="interactive-dot main-dot merch-dot"></a>
+      <span class="main-label">Merch & More</span>
+      <div class="sub-dots">
+        <!-- Cluck Yeah Chicken Socks -->
+        <a href="https://lancewoolie.bandcamp.com/merch/chicken-socks-cluck-yeah-step-into-the-flock" class="sub-dot" style="background-image: url('https://f4.bcbits.com/img/0041177986_10.jpg');" target="_blank" data-title="Chicken Socks" data-id="merch-chicken-socks"></a>
+        <!-- Uber Single -->
+        <a href="https://lancewoolie.bandcamp.com/track/uber" class="sub-dot" style="background-image: url('https://f4.bcbits.com/img/a2855470268_10.jpg');" target="_blank" data-title="Uber" data-id="merch-uber"></a>
+        <!-- Too Drunk Single -->
+        <a href="https://lancewoolie.bandcamp.com/track/too-drunk-ft-brent-mason" class="sub-dot" style="background-image: url('https://f4.bcbits.com/img/a1387979790_10.jpg');" target="_blank" data-title="Too Drunk" data-id="merch-too-drunk"></a>
+        <!-- Country Paradise Album -->
+        <a href="https://lancewoolie.bandcamp.com/album/country-paradise" class="sub-dot" style="background-image: url('img/COUNTRY-PARADISE-scaled.jpg');" target="_blank" data-title="Country Paradise" data-id="merch-country-paradise"></a>
+      </div>
     </div>
     
     <!-- Events Container -->
@@ -849,20 +858,11 @@
       </div>
     </div>
     
-    <!-- Merch Dot Container with Submenu -->
-    <div class="dot-container merch-container">
-      <a href="merch.html" class="interactive-dot main-dot merch-dot"></a>
-      <span class="main-label">Merch & More</span>
-      <div class="sub-dots">
-        <!-- Cluck Yeah Chicken Socks -->
-        <a href="https://lancewoolie.bandcamp.com/merch/chicken-socks-cluck-yeah-step-into-the-flock" class="sub-dot" style="background-image: url('https://f4.bcbits.com/img/0041177986_10.jpg');" target="_blank" data-title="Chicken Socks" data-id="merch-chicken-socks"></a>
-        <!-- Uber Single -->
-        <a href="https://lancewoolie.bandcamp.com/track/uber" class="sub-dot" style="background-image: url('https://f4.bcbits.com/img/a2855470268_10.jpg');" target="_blank" data-title="Uber" data-id="merch-uber"></a>
-        <!-- Too Drunk Single -->
-        <a href="https://lancewoolie.bandcamp.com/track/too-drunk-ft-brent-mason" class="sub-dot" style="background-image: url('https://f4.bcbits.com/img/a1387979790_10.jpg');" target="_blank" data-title="Too Drunk" data-id="merch-too-drunk"></a>
-        <!-- Country Paradise Album -->
-        <a href="https://lancewoolie.bandcamp.com/album/country-paradise" class="sub-dot" style="background-image: url('img/COUNTRY-PARADISE-scaled.jpg');" target="_blank" data-title="Country Paradise" data-id="merch-country-paradise"></a>
-      </div>
+    <!-- Origins Container (Swapped with Merch) -->
+    <div class="dot-container origins-container">
+      <a href="origins.html" class="interactive-dot main-dot origins-dot"></a>
+      <span class="main-label">Origins</span>
+      <div class="sub-dots"></div>
     </div>
     
     <!-- Contact Container -->
@@ -1107,7 +1107,7 @@
       document.body.appendChild(currentReticle);
     });
 
-    // Explosion particle function (add this for sub-dot hits)
+    // Explosion particle function (add this for sub-dot hits and game over reset)
     function explode(mx, my, hexColor) {
       const numParticles = 20;
       const canvas = document.createElement('canvas');
