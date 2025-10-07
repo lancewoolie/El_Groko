@@ -423,6 +423,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const isMobile = window.innerWidth <= 768;
     let basePositions;
     const halfWidth = isMobile ? 125 : 150;
+    const additionalShift = isMobile ? 100 : 300;
+    const totalShift = halfWidth + additionalShift;
     const wildness = isMobile ? 8 : 10;
     if (isMobile) {
       basePositions = {
@@ -449,7 +451,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const randOffset = (Math.random() - 0.5) * wildness;
         const randLeft = base.left + randOffset;
         const randTop = base.top + randOffset;
-        container.style.left = `calc(${randLeft}% - ${halfWidth}px)`;
+        container.style.left = `calc(${randLeft}% - ${totalShift}px)`;
         container.style.top = `${randTop}%`;
       }
     });
@@ -509,52 +511,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     updateScore(points, e.clientX, e.clientY);
-  });
-
-  // Custom red laser dot reticle cursor (75% larger: 15px)
-  const cursor = document.createElement('div');
-  cursor.style.cssText = `
-    position: fixed;
-    width: 15px;
-    height: 15px;
-    background: radial-gradient(circle, rgba(255, 0, 0, 0.75) 0%, transparent 70%);
-    border: 1px solid rgba(255, 0, 0, 0.5);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
-    transform: translate(-50%, -50%);
-    transition: transform 0.1s ease;
-  `;
-  cursor.innerHTML = `
-    <div style="
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 1px;
-      height: 15px;
-      background: rgba(255, 0, 0, 0.75);
-      transform: translate(-50%, -50%) rotate(0deg);
-    "></div>
-    <div style="
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 15px;
-      height: 1px;
-      background: rgba(255, 0, 0, 0.75);
-      transform: translate(-50%, -50%) rotate(90deg);
-    "></div>
-  `;
-  document.body.appendChild(cursor);
-  document.body.style.cursor = 'none';
-
-  document.addEventListener('mousemove', (e) => {
-    mousePos.x = e.clientX;
-    mousePos.y = e.clientY;
-    cursor.style.left = e.clientX + 'px';
-    cursor.style.top = e.clientY + 'px';
   });
 
   // Smooth Scroll for Internal Links
