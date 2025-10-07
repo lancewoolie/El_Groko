@@ -233,20 +233,18 @@ canvas {
   filter: brightness(0.4) contrast(1.1) hue-rotate(210deg) !important; /* Dims brightness, boosts contrast slightly, shifts to blue-violet for bayou vibe */
   opacity: 0.7 !important; /* Further softens intensity without losing glow */
 }
-    #custom-cursor {
+#custom-cursor {
   position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
   pointer-events: none !important;
-  z-index: 10001 !important; /* Above neon canvas */
+  z-index: 10001 !important; /* Above neon canvas & footer */
   user-select: none !important;
-  font-size: 1.5rem !important; /* Adjust size as needed; 1.5rem = ~24px */
-  transform: translate(-50%, -50%) scale(1); /* Centers on mouse */
-  transition: transform 0.1s ease; /* Smooth follow */
-  mix-blend-mode: screen !important; /* Blends glow if it overlaps neon */
+  font-size: 1.5rem !important; /* ~24px; tweak for size */
+  transform: translate(-50%, -50%) scale(1); /* Centers emoji on the exact mouse pos */
+  transition: transform 0.1s ease; /* Smooth follow; keeps it snappy */
+  mix-blend-mode: screen !important; /* Blends with neon glow */
 }
-#custom-cursor:hover { /* Optional: Subtle pulse on "hover" (mouse over it, but since it's following, it's always "on") */
-  transform: translate(-50%, -50%) scale(1.1);
+#custom-cursor:hover {
+  transform: translate(-50%, -50%) scale(1.1); /* Optional subtle pulse */
 }
   </style>
 </head>
