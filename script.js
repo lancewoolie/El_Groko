@@ -331,7 +331,7 @@ function showFloatingPoints(points, mx, my) {
 // Reusable Nav Generator (Updated with Health Progress Bar in Header - Floating)
 function generateNav() {
   let navHTML = `
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="position: fixed; top: 0; left: 0; right: 0; z-index: 1000;">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="position: fixed !important; top: 0; left: 0; right: 0; z-index: 1000 !important;">
       <div class="container">
         <a class="navbar-brand" href="index.html">
           <img src="img/BEARDsmall.png" alt="Lance Woolie" style="height: 20px;"> Lance Woolie
@@ -409,14 +409,24 @@ function generateNav() {
       new bootstrap.Collapse(myCollapse, { toggle: false });
     }
   } else {
-    console.warn('Nav placeholder not found');
+    // Fallback: Create and insert nav if placeholder missing
+    const newNav = document.createElement('div');
+    newNav.innerHTML = navHTML;
+    document.body.insertBefore(newNav, document.body.firstChild);
+    console.log('Nav placeholder missing; created and prepended to body.');
+    const myCollapse = document.getElementById('navbarNav');
+    if (myCollapse) {
+      const existingCollapse = bootstrap.Collapse.getInstance(myCollapse);
+      if (existingCollapse) existingCollapse.dispose();
+      new bootstrap.Collapse(myCollapse, { toggle: false });
+    }
   }
 }
 
 // Reusable Footer Generator (Removed Scoreboard, Added Subscribe Raccoon - Floating)
 function generateFooter() {
   const footerHTML = `
-    <footer class="footer bg-dark text-light py-1" style="position: fixed; bottom: 0; left: 0; right: 0; z-index: 1001; border-top: 1px solid #0074D9;">
+    <footer class="footer bg-dark text-light py-1" style="position: fixed !important; bottom: 0; left: 0; right: 0; z-index: 1001 !important; border-top: 1px solid #0074D9;">
       <div class="container">
         <!-- Bottom Row: Contact, Copyright, Icons -->
         <div class="row align-items-center">
@@ -606,10 +616,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Delay navigation for non-bullet links with sound completion
+  // Delay navigation for non-dropdown-toggle nav links with sound completion
   document.addEventListener('click', async (e) => {
     const link = e.target.closest('a');
-    if (!link || link.classList.contains('main-dot') || link.classList.contains('sub-dot')) return;
+    if (!link || link.classList.contains('main-dot') || link.classList.contains('sub-dot') || link.getAttribute('data-bs-toggle') === 'dropdown') return;
     e.preventDefault();
     const sound = clickSounds[Math.floor(Math.random() * clickSounds.length)];
     sound.currentTime = 0;
@@ -624,6 +634,24 @@ document.addEventListener('DOMContentLoaded', () => {
       window.open(link.href, '_blank');
     } else {
       window.location.href = link.href;
+    }
+  });
+
+  // Separate handler for dropdown items
+  document.addEventListener('click', async (e) => {
+    const dropdownItem = e.target.closest('.dropdown-item a');
+    if (!dropdownItem) return;
+    e.preventDefault();
+    e.stopPropagation();
+    const sound = clickSounds[Math.floor(Math.random() * clickSounds.length)];
+    sound.currentTime = 0;
+    await waitForAudio(sound);
+    const points = 500;
+    updateScore(points, e.clientX, e.clientY);
+    if (dropdownItem.target === '_blank') {
+      window.open(dropdownItem.href, '_blank');
+    } else {
+      window.location.href = dropdownItem.href;
     }
   });
 
