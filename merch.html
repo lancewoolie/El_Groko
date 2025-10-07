@@ -104,6 +104,112 @@
       z-index: 1001 !important;
       border-top: 1px solid #0074D9;
     }
+    /* Enhanced Header Styles for Scoreboard and Health Bar - from index */
+    .score-header {
+      background: linear-gradient(90deg, #1e3a8a, #001f3f, #1e3a8a);
+      border-radius: 25px;
+      padding: 8px 16px;
+      box-shadow: 0 4px 15px rgba(0, 116, 217, 0.3), inset 0 1px 0 rgba(255, 215, 0, 0.1);
+      border: 1px solid #0074D9;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .score-header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.05), transparent);
+      animation: shimmer 3s infinite;
+      z-index: 0;
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+      100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+    }
+
+    .health-display, .score-display {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 4px 8px;
+      border-radius: 15px;
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .health-display:hover, .score-display:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(255, 215, 0, 0.4);
+      border-color: #FFD700;
+    }
+
+    .score-label {
+      font-size: 0.85rem;
+      color: #E0E0E0;
+      font-weight: bold;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    }
+
+    #score-value {
+      font-family: 'Courier New', monospace;
+      font-size: 1.1rem;
+      font-weight: bold;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+      min-width: 80px;
+      text-align: right;
+    }
+
+    .score-zero { color: #808080; }
+    .score-low { color: #FFA500; }
+    .score-mid { color: #FFD700; }
+    .score-high { color: #FF4500; }
+    .score-max { color: #00FFFF; }
+
+    .score-display.updated, .health-display.updated {
+      animation: pulse 0.5s ease;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); box-shadow: 0 0 0 rgba(255, 215, 0, 0); }
+      50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(255, 215, 0, 0.6); }
+      100% { transform: scale(1); box-shadow: 0 0 0 rgba(255, 215, 0, 0); }
+    }
+
+    /* Standard Health Bar Styles */
+    #health-bar {
+      width: 100px;
+      height: 18px;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid #0074D9;
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(255, 215, 0, 0.3);
+    }
+
+    #health-progress {
+      height: 100%;
+      transition: width 0.8s ease, background-color 0.3s ease;
+      border-radius: 3px;
+    }
+
+    /* Blink Animation for Low Health */
+    .health-display.low-health {
+      animation: rapid-blink 0.2s infinite;
+    }
+
+    @keyframes rapid-blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0.3; }
+    }
   </style>
 </head>
 <body>
@@ -114,7 +220,7 @@
     <div class="container">
       <h1 class="mb-4">Shop the Swamp Soul</h1>
       <p class="lead">Exclusive gear and tunes straight from the bayou—wear the twang, stream the grit. Limited drops for true fans. Do it.</p>
-      <a href="#merch-grid" class="btn btn-gold btn-lg mt-3">Browse Collection</a>
+      <a href="#merch-grid" class="btn btn-success btn-lg mt-3">Browse Collection</a>
     </div>
   </section>
 
@@ -147,18 +253,18 @@
         </div>
       </div>
 
- <!-- Too Drunk Single -->
-<div class="col-md-6 col-lg-4">
-  <div class="merch-card">
-    <img src="https://f4.bcbits.com/img/a1387979790_10.jpg" alt="Too Drunk Single Cover" class="card-img-top">
-    <div class="card-body">
-      <h3>Too Drunk (Single)</h3>
-      <p>The debut release co-created with Legendary Guitarist Brent Mason—raw, captivating country grit.</p>
-      <span class="price-tag">$1.29</span>
-      <a href="https://lancewoolie.bandcamp.com/track/too-drunk-ft-brent-mason" class="btn btn-buy mt-3" target="_blank">Buy Now</a>
-    </div>
-  </div>
-</div>
+      <!-- Too Drunk Single -->
+      <div class="col-md-6 col-lg-4">
+        <div class="merch-card">
+          <img src="https://f4.bcbits.com/img/a1387979790_10.jpg" alt="Too Drunk Single Cover" class="card-img-top">
+          <div class="card-body">
+            <h3>Too Drunk (Single)</h3>
+            <p>The debut release co-created with Legendary Guitarist Brent Mason—raw, captivating country grit.</p>
+            <span class="price-tag">$1.29</span>
+            <a href="https://lancewoolie.bandcamp.com/track/too-drunk-ft-brent-mason" class="btn btn-buy mt-3" target="_blank">Buy Now</a>
+          </div>
+        </div>
+      </div>
 
       <!-- Country Paradise Album -->
       <div class="col-md-6 col-lg-4">
@@ -174,7 +280,7 @@
       </div>
     </div>
     <div class="text-center mt-5">
-      <p class="lead">Can't find what you're looking for? <a href="contact.html" class="text-gold">Hit us up</a> for custom requests—bayou style.</p>
+      <p class="lead">Can't find what you're looking for? <a href="contact.html">Hit us up</a> for custom requests—bayou style.</p>
     </div>
   </div>
 
