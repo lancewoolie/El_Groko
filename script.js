@@ -420,17 +420,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Randomize bullet menu positions on index
   if (currentPage === 'index') {
-    const containers = document.querySelectorAll('.dot-container');
-    containers.forEach(container => {
-      const computedLeft = getComputedStyle(container).left;
-      const leftNum = parseFloat(computedLeft);
-      const randLeft = leftNum + (Math.random() - 0.5) * 20; // +/- 10% wildness
-      container.style.left = randLeft + '%';
-
-      const computedTop = getComputedStyle(container).top;
-      const topNum = parseFloat(computedTop);
-      const randTop = topNum + (Math.random() - 0.5) * 20; // +/- 10% wildness
-      container.style.top = randTop + '%';
+    const isMobile = window.innerWidth <= 768;
+    let basePositions;
+    const shiftPx = isMobile ? 150 : 300;
+    const wildness = isMobile ? 8 : 10;
+    if (isMobile) {
+      basePositions = {
+        'origins-container': {left: 5, top: 5},
+        'events-container': {left: 15, top: 15},
+        'music-container': {left: 25, top: 25},
+        'merch-container': {left: 35, top: 35},
+        'contact-container': {left: 45, top: 45}
+      };
+    } else {
+      basePositions = {
+        'origins-container': {left: 10, top: 10},
+        'events-container': {left: 20, top: 20},
+        'music-container': {left: 30, top: 30},
+        'merch-container': {left: 40, top: 40},
+        'contact-container': {left: 50, top: 50}
+      };
+    }
+    document.querySelectorAll('.dot-container').forEach(container => {
+      const classList = Array.from(container.classList);
+      const containerClass = classList.find(cls => cls.endsWith('-container'));
+      const base = basePositions[containerClass];
+      if (base) {
+        const randOffset = (Math.random() - 0.5) * wildness;
+        const randLeft = base.left + randOffset;
+        const randTop = base.top + randOffset;
+        container.style.left = `calc(${randLeft}% - ${shiftPx}px)`;
+        container.style.top = `${randTop}%`;
+      }
     });
   }
 
