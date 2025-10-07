@@ -149,11 +149,11 @@ function updateScore(points, x = undefined, y = undefined) {
   }
   // Health behaviors
   if (points === 69) {
-    health = Math.max(0, health - 5);
+    health = Math.max(0, health - 7);
     sessionStorage.setItem('health', health.toString());
     updateHealthBar();
   } else {
-    health = Math.min(100, health + 5);
+    health = Math.min(100, health + 4);
     sessionStorage.setItem('health', health.toString());
     updateHealthBar();
   }
