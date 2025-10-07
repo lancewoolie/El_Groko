@@ -58,9 +58,9 @@ function waitForAnimation(element, animationName) {
 // Explosion particle function (add this for sub-dot hits and game over reset)
 function explode(mx, my, hexColor) {
   return new Promise((resolve) => {
-    const numParticles = 20;
+    const numParticles = 30;
     const canvas = document.createElement('canvas');
-    const size = 400;
+    const size = 600;
     canvas.width = size;
     canvas.height = size;
     canvas.style.cssText = `
@@ -149,7 +149,7 @@ function updateScore(points, x = undefined, y = undefined) {
   }
   // Health behaviors
   if (points === 69) {
-    health = Math.max(0, health - 7);
+    health = Math.max(0, health - 13);
     sessionStorage.setItem('health', health.toString());
     updateHealthBar();
   } else {
