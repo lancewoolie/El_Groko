@@ -18,6 +18,8 @@
       background-color: #1e3a8a; /* Fallback dark royal blue base */
       color: #E0E0E0; /* Light grey text */
       font-family: 'Georgia', serif;
+      padding-top: 0; /* No padding for fixed header overlay */
+      padding-bottom: 60px; /* Space for fixed footer overlay */
     }
      
     .hero, .py-5 {
@@ -230,23 +232,23 @@
       z-index: 3;
     }
     .origins-container {
-      left: calc(10% - 450px);
+      left: 10%;
       top: 10%;
     }
     .events-container {
-      left: calc(20% - 450px);
+      left: 20%;
       top: 20%;
     }
     .music-container {
-      left: calc(30% - 450px);
+      left: 30%;
       top: 30%;
     }
     .merch-container {
-      left: calc(40% - 450px);
+      left: 40%;
       top: 40%;
     }
     .contact-container {
-      left: calc(50% - 450px);
+      left: 50%;
       top: 50%;
     }
     .main-dot {
@@ -328,23 +330,19 @@
       pointer-events: none;
     }
 
-    /* Hit Animation for Sub-Dots */
+    /* Hit Animation for Sub-Dots - Updated to Quick 360 Y Rotation */
     .sub-dot.hit {
-      animation: hit-flip 0.8s ease-out forwards;
+      animation: hit-spin 0.4s ease-out forwards;
       pointer-events: none;
     }
-    @keyframes hit-flip {
+    @keyframes hit-spin {
       0% {
         transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) rotateY(0deg) scale(1);
         opacity: 1;
       }
-      40% {
-        transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) rotateY(90deg) scale(1.05);
-        opacity: 1;
-      }
       100% {
-        transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) rotateY(180deg) scale(0.5);
-        opacity: 0;
+        transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) rotateY(360deg) scale(1.1);
+        opacity: 0.7;
       }
     }
 
@@ -382,31 +380,31 @@
       stroke-width: 0.05;
     }
 
-    /* Mobile Adjustments */
+    /* Mobile Adjustments - Forced Positions Without Calc Offsets */
     @media (max-width: 768px) {
       .dot-container {
         width: 250px;
         height: 250px;
       }
       .origins-container {
-        left: calc(5% - 425px);
-        top: 5%;
+        left: 5% !important;
+        top: 5% !important;
       }
       .events-container {
-        left: calc(15% - 425px);
-        top: 15%;
+        left: 25% !important;
+        top: 15% !important;
       }
       .music-container {
-        left: calc(25% - 425px);
-        top: 25%;
+        left: 45% !important;
+        top: 25% !important;
       }
       .merch-container {
-        left: calc(35% - 425px);
-        top: 35%;
+        left: 65% !important;
+        top: 35% !important;
       }
       .contact-container {
-        left: calc(45% - 425px);
-        top: 45%;
+        left: 75% !important;
+        top: 45% !important;
       }
       .sub-dot {
         width: 100px;
@@ -735,6 +733,7 @@
     /* Laser Pointer Styles */
     html, html:hover {
       cursor: none;
+      touch-action: pan-y; /* Allow vertical scrolling on mobile */
     }
 
     .pointingjs {
@@ -766,6 +765,35 @@
 
     #trail {
       fill: transparent;
+      stroke: url(#linear);
+      stroke-width: 2;
+      filter: url(#glow);
+    }
+
+    /* Red Reticle Hit Marker */
+    .reticle {
+      position: fixed;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #ff0000;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 1000;
+      animation: reticle-fade 0.5s ease-out forwards;
+    }
+    @keyframes reticle-fade {
+      0% {
+        opacity: 1;
+        transform: scale(0.5);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.2);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(0);
+      }
     }
   </style></head>
 <body>
@@ -1056,9 +1084,21 @@
             } else {
               window.location.href = linkHref;
             }
-          }, 800);
+          }, 400);
         }
       });
+    });
+
+    // Red Reticle Hit Marker on Click
+    document.addEventListener('click', (e) => {
+      // Skip if clicking on interactive elements
+      if (e.target.closest('.interactive-dot, .sub-dot, a, button, .carousel-control, .navbar')) return;
+
+      const reticle = document.createElement('div');
+      reticle.classList.add('reticle');
+      reticle.style.left = (e.clientX - 10) + 'px';
+      reticle.style.top = (e.clientY - 10) + 'px';
+      document.body.appendChild(reticle);
     });
 
     // Explosion particle function (add this for sub-dot hits)
@@ -1121,7 +1161,7 @@
       animate();
     }
 
-    // Laser Pointer Effect
+    // Laser Pointer Effect - Updated for Trail Visibility and Mobile Scrolling
     const mouse = { x: 0, y: 0 };
     const trail = [];
     const pointerEl = document.querySelector('.pointer');
@@ -1132,8 +1172,8 @@
       trail.push({ x: mouse.x, y: mouse.y });
     }
 
+    // Touchmove without preventDefault to allow scrolling
     document.body.addEventListener('touchmove', (ev) => {
-      ev.preventDefault();
       if (ev.touches.length > 0) {
         const touch = ev.touches[0];
         pointerEl.style.left = (touch.pageX - 4) + 'px';
@@ -1141,7 +1181,7 @@
         mouse.x = touch.pageX;
         mouse.y = touch.pageY;
       }
-    }, { passive: false });
+    }, { passive: true });
 
     window.addEventListener('mousemove', (e) => {
       pointerEl.style.left = (e.pageX - 4) + 'px';
