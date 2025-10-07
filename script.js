@@ -418,19 +418,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
 
-  // Randomize bullet menu positions on index - Updated for forced visibility on mobile/desktop
-  if (currentPage === 'index') {
-    const isMobile = window.innerWidth <= 768;
-    const wildness = isMobile ? 3 : 5; // Further reduced for staircase stability
-    document.querySelectorAll('.dot-container').forEach(container => {
-      const randOffset = (Math.random() - 0.5) * wildness;
-      const baseLeft = parseFloat(container.style.left) || 0;
-      const baseTop = parseFloat(container.style.top) || 0;
-      container.style.left = (baseLeft + randOffset) + '%';
-      container.style.top = (baseTop + randOffset) + '%';
-    });
-  }
-
   // YouTube play detection (music page only)
   if (currentPage === 'music') {
     document.querySelectorAll('iframe[src*="youtube.com"], iframe[src*="youtu.be"]').forEach(iframe => {
