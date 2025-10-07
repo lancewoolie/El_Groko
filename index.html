@@ -230,23 +230,23 @@
       z-index: 3;
     }
     .origins-container {
-      left: calc(10% - 300px);
+      left: calc(10% - 150px);
       top: 10%;
     }
     .events-container {
-      left: calc(20% - 300px);
+      left: calc(20% - 150px);
       top: 20%;
     }
     .music-container {
-      left: calc(30% - 300px);
+      left: calc(30% - 150px);
       top: 30%;
     }
     .merch-container {
-      left: calc(40% - 300px);
+      left: calc(40% - 150px);
       top: 40%;
     }
     .contact-container {
-      left: calc(50% - 300px);
+      left: calc(50% - 150px);
       top: 50%;
     }
     .main-dot {
@@ -266,8 +266,8 @@
     .main-label {
       position: absolute;
       left: 50%;
-      top: calc(50% + 50px);
-      transform: translateX(-50%);
+      top: 50%;
+      transform: translate(-50%, -50%);
       background: rgba(0, 0, 0, 0.8);
       color: #E0E0E0;
       padding: 4px 8px;
@@ -276,6 +276,11 @@
       white-space: nowrap;
       z-index: 5;
       pointer-events: none;
+      opacity: 0.15;
+      transition: opacity 0.3s ease;
+    }
+    .dot-container:hover .main-label {
+      opacity: 1;
     }
     .sub-dots {
       position: absolute;
@@ -325,20 +330,20 @@
 
     /* Hit Animation for Sub-Dots */
     .sub-dot.hit {
-      animation: hit-spin 0.8s ease-out forwards;
+      animation: hit-flip 0.8s ease-out forwards;
       pointer-events: none;
     }
-    @keyframes hit-spin {
+    @keyframes hit-flip {
       0% {
-        transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) scale(1) rotate(0deg);
+        transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) rotateY(0deg) scale(1);
         opacity: 1;
       }
       40% {
-        transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) scale(1.05) rotate(180deg);
+        transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) rotateY(90deg) scale(1.05);
         opacity: 1;
       }
       100% {
-        transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) scale(0.5) rotate(360deg);
+        transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) rotateY(180deg) scale(0.5);
         opacity: 0;
       }
     }
@@ -384,23 +389,23 @@
         height: 250px;
       }
       .origins-container {
-        left: calc(5% - 300px);
+        left: calc(5% - 125px);
         top: 5%;
       }
       .events-container {
-        left: calc(15% - 300px);
+        left: calc(15% - 125px);
         top: 15%;
       }
       .music-container {
-        left: calc(25% - 300px);
+        left: calc(25% - 125px);
         top: 25%;
       }
       .merch-container {
-        left: calc(35% - 300px);
+        left: calc(35% - 125px);
         top: 35%;
       }
       .contact-container {
-        left: calc(45% - 300px);
+        left: calc(45% - 125px);
         top: 45%;
       }
       .sub-dot {
@@ -1051,7 +1056,7 @@
         const speed = Math.random() * 5 + 2;
         particles.push({
           x: size / 2,
-          y: size / 2,
+          y: size / 2;
           vx: Math.cos(angle) * speed,
           vy: Math.sin(angle) * speed,
           life: 1,
