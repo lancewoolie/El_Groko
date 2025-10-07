@@ -5,11 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Origins - Lance Woolie - Do it.</title>
   <link href="https://fonts.googleapis.com/css2?family=Georgia&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" type="image/png" href="img/LanceWoolieHeadonly.png">
   <meta name="description" content="Origins - Lance Woolie - Do it. From bayou struggles to country gold.">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://cdn.jsdelivr.net https://www.youtube.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https: blob:; frame-src 'self' https://www.youtube.com; font-src 'self' https://fonts.gstatic.com; object-src 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://cdn.jsdelivr.net https://www.youtube.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https: blob:; frame-src 'self' https://www.youtube.com; font-src 'self' https://fonts.gstatic.com; object-src 'none'">
   <meta http-equiv="X-Frame-Options" content="DENY">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
@@ -23,6 +24,19 @@
       color: #E0E0E0; /* Light grey text */
       padding-bottom: 60px; /* Space for fixed footer */
       font-family: 'Georgia', serif;
+      cursor: none !important;
+      touch-action: pan-y;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
     }
     .hero-origins {
       background: linear-gradient(rgba(0, 31, 63, 0.8), rgba(30, 58, 138, 0.8)), url('img/ai-bayou-swamp.jpg') center/cover;
@@ -63,11 +77,13 @@
     }
     .text-content img {
       width: 100%;
-      height: 400px;
-      object-fit: cover;
+      height: auto;
+      max-width: 500px;
+      display: block;
+      margin: 0 auto 2rem auto;
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-      margin-bottom: 2rem;
+      object-fit: contain;
     }
     h1 {
       color: #FFD700 !important; /* Gold header on dark gradient */
@@ -254,6 +270,23 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
+  <!-- Neon Cursor Toy Script -->
+  <script type="module">
+    import { neonCursor } from 'https://unpkg.com/threejs-toys@0.0.8/build/threejs-toys.module.cdn.min.js?module';
+    neonCursor({
+      el: document.body,
+      shaderPoints: 16,
+      curvePoints: 80,
+      curveLerp: 0.5,
+      radius1: 5,
+      radius2: 30,
+      velocityTreshold: 10,
+      sleepRadiusX: 100,
+      sleepRadiusY: 100,
+      sleepTimeCoefX: 0.0025,
+      sleepTimeCoefY: 0.0025
+    });
+  </script>
   <!-- Additional script for email signup functionality if needed -->
   <script>
     // Example behavior for subscribe button (redirect to signup page)
