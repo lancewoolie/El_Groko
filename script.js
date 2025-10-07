@@ -148,32 +148,32 @@ function updateHealthBar() {
       gameOverText.style.cssText = 'color: #F44336; font-size: 12px; font-weight: bold; text-align: center; line-height: 12px; padding: 0 5px;'; /* Smaller font and line-height for fit */
       healthBar.appendChild(gameOverText);
 
-      const onSoundEnd = () => {
+      const onSoundEnd = async () => {
         const healthRect = healthBar.getBoundingClientRect();
         const healthX = healthRect.left + healthRect.width / 2;
         const healthY = healthRect.top + healthRect.height / 2;
-        explode(healthX, healthY, '#FF4500').then(() => {
-          // Reset to initial state
-          healthBar.innerHTML = '<div id="health-progress"></div>';
-          healthProgress = document.getElementById('health-progress');
-          health = 100;
-          score = 0;
-          sessionStorage.setItem('health', '100');
-          sessionStorage.setItem('score', '0');
-          gameOverShown = false;
-          if (scoreEl) {
-            scoreEl.textContent = '000000';
-            scoreEl.classList.remove('score-low', 'score-mid', 'score-high', 'score-max');
-            scoreEl.classList.add('score-zero');
-          }
-          updateHealthBar();
-        });
+        await explode(healthX, healthY, '#FF4500'); // Red-orange particles for game over reset
+
+        // Reset to initial state
+        healthBar.innerHTML = '<div id="health-progress"></div>';
+        healthProgress = document.getElementById('health-progress');
+        health = 100;
+        score = 0;
+        sessionStorage.setItem('health', '100');
+        sessionStorage.setItem('score', '0');
+        gameOverShown = false;
+        if (scoreEl) {
+          scoreEl.textContent = '000000';
+          scoreEl.classList.remove('score-low', 'score-mid', 'score-high', 'score-max');
+          scoreEl.classList.add('score-zero');
+        }
+        updateHealthBar();
       };
 
+      gameOverSound.onended = onSoundEnd;
+      // Fallback if already ended
       if (gameOverSound.ended) {
         onSoundEnd();
-      } else {
-        gameOverSound.onended = onSoundEnd;
       }
     }
     return;
@@ -498,27 +498,24 @@ document.addEventListener('DOMContentLoaded', () => {
   const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
 
   // Delay navigation for non-bullet links with sound completion
-  document.addEventListener('click', (e) => {
+  document.addEventListener('click', async (e) => {
     const link = e.target.closest('a');
     if (!link || link.classList.contains('main-dot') || link.classList.contains('sub-dot')) return;
     e.preventDefault();
     const sound = clickSounds[Math.floor(Math.random() * clickSounds.length)];
     sound.currentTime = 0;
-    sound.play().catch(err => console.log('Sound play failed:', err));
+    await waitForAudio(sound);
     let points = 500; // Default for nav links
     const href = link.getAttribute('href');
     if (href === 'merch.html') points = 2500;
-    if (link.classList.contains('dropdown-item')) points = 500;
+    if (link.closest('.dropdown-item')) points = 500;
     if (href && href.includes('#email-subscribe')) points = 1500;
     updateScore(points, e.clientX, e.clientY);
-    const onEnd = () => {
-      if (link.target === '_blank') {
-        window.open(link.href, '_blank');
-      } else {
-        window.location.href = link.href;
-      }
-    };
-    sound.addEventListener('ended', onEnd, {once: true});
+    if (link.target === '_blank') {
+      window.open(link.href, '_blank');
+    } else {
+      window.location.href = link.href;
+    }
   });
 
   // YouTube play detection (music page only)
@@ -540,11 +537,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Site-wide click sound and scoring on all clicks (skip links/buttons handled elsewhere)
   const form = document.getElementById('contact-form');
-  document.addEventListener('click', (e) => {
+  document.addEventListener('click', async (e) => {
     if (e.target.closest('a, button')) return;
     const sound = clickSounds[Math.floor(Math.random() * clickSounds.length)];
     sound.currentTime = 0;
-    sound.play().catch(err => console.log('Click audio play failed:', err));
+    await waitForAudio(sound);
     let points = 69;
     const target = e.target;
     if (form && target.type === 'submit' && form.contains(target)) {
@@ -630,20 +627,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Click sound effect on bullet hole dots - updated to delay navigation
     document.querySelectorAll('.main-dot').forEach(dot => {
-      dot.addEventListener('click', (e) => {
+      dot.addEventListener('click', async (e) => {
         e.preventDefault();
         const sound = clickSounds[Math.floor(Math.random() * clickSounds.length)];
         sound.currentTime = 0;
-        sound.play().catch(err => console.log('Sound play failed:', err));
+        await waitForAudio(sound);
         const container = dot.closest('.dot-container');
         let bonusPoints = 0;
         if (container && container.classList.contains('music-container')) {
           bonusPoints = 420;
         }
         updateScore(800 + bonusPoints, e.clientX, e.clientY);
-        sound.addEventListener('ended', () => {
-          window.location.href = dot.href;
-        }, {once: true});
+        window.location.href = dot.href;
       });
     });
 
