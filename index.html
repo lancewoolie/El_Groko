@@ -230,6 +230,8 @@
       width: 300px;
       height: 300px;
       z-index: 3;
+      perspective: 1000px;
+      transform-style: preserve-3d;
     }
     .merch-container {
       left: 15%;
@@ -309,6 +311,7 @@
       text-decoration: none;
       box-shadow: 0 0 5px rgba(0,0,0,0.5);
       transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px));
+      will-change: transform;
     }
     .sub-dot:hover {
       transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) scale(1.5);
@@ -337,7 +340,7 @@
     }
     @keyframes hit-shot {
       0% {
-        transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) rotateY(0deg) scale(1);
+        transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) rotateY(0deg) scale(1) translateX(0px);
         opacity: 1;
         filter: brightness(1);
       }
@@ -357,12 +360,12 @@
         filter: brightness(1.8) hue-rotate(90deg);
       }
       80% {
-        transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) rotateY(360deg) scale(0.9);
+        transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) rotateY(360deg) scale(0.9) translateX(0px);
         opacity: 0.4;
         filter: brightness(0.5) grayscale(0.5);
       }
       100% {
-        transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) rotateY(720deg) scale(0.5);
+        transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) rotateY(720deg) scale(0.5) translateX(0px);
         opacity: 0;
         filter: brightness(0);
       }
@@ -1031,9 +1034,39 @@
     // Global for persistent reticle
     let currentReticle = null;
 
+    // Function to wait for audio to finish playing
+    function waitForAudio(sound) {
+      return sound.play().then(() => {
+        return new Promise((resolve) => {
+          sound.onended = () => {
+            sound.onended = null;
+            resolve();
+          };
+        });
+      }).catch(err => {
+        console.log('Sound play failed:', err);
+        return Promise.resolve(); // Proceed without waiting if play fails
+      });
+    }
+
+    // Function to wait for animation end
+    function waitForAnimation(element, animationName) {
+      return new Promise((resolve) => {
+        const handler = (e) => {
+          if (e.animationName === animationName) {
+            element.removeEventListener('animationend', handler);
+            resolve();
+          }
+        };
+        element.addEventListener('animationend', handler);
+        // Fallback timeout
+        setTimeout(resolve, 1200);
+      });
+    }
+
     // Add click handlers for sub-dots only (no duplication of hover)
     document.querySelectorAll('.sub-dot').forEach(sub => {
-      sub.addEventListener('click', (e) => {
+      sub.addEventListener('click', async (e) => {
         e.preventDefault();
         e.stopPropagation();
         const linkHref = sub.href;
@@ -1043,6 +1076,8 @@
         const y = rect.top + rect.height / 2;
         const subId = sub.dataset.id;
         const container = sub.closest('.dot-container');
+        const subDots = sub.closest('.sub-dots');
+        const mainDot = container.querySelector('.main-dot');
 
         const clickedSubDots = JSON.parse(sessionStorage.getItem('clickedSubDots') || '[]');
 
@@ -1059,32 +1094,39 @@
             window.location.href = linkHref;
           }
         } else {
-          // Play ricochet sound
+          // Play ricochet sound and wait
           const sound = clickSounds[Math.floor(Math.random() * clickSounds.length)];
           sound.currentTime = 0;
-          sound.play().catch(err => console.log('Sound play failed:', err));
+          const soundPromise = waitForAudio(sound);
 
-          // Trigger hit animation
+          // Trigger hit animation and wait
           sub.classList.add('hit');
+          const animPromise = waitForAnimation(sub, 'hit-shot');
 
-          // Award points and show floating points
+          // Award points and show floating points immediately
           updateScore(1000 + bonusPoints, x, y);
 
-          // Trigger explosion particles
-          explode(x, y, '#FFD700');
+          // Wait for both sound and animation to complete
+          await Promise.all([soundPromise, animPromise]);
+
+          // Deploy particle effects
+          await explode(x, y, '#FFD700');
+
+          // Reset to non-hover state
+          sub.classList.remove('hit');
+          subDots.classList.remove('active');
+          mainDot.classList.remove('hidden');
 
           // Mark as clicked in session
           clickedSubDots.push(subId);
           sessionStorage.setItem('clickedSubDots', JSON.stringify(clickedSubDots));
 
-          // Navigate after animation completes (extended for better visibility)
-          setTimeout(() => {
-            if (target === '_blank') {
-              window.open(linkHref, '_blank');
-            } else {
-              window.location.href = linkHref;
-            }
-          }, 1000);
+          // Navigate
+          if (target === '_blank') {
+            window.open(linkHref, '_blank');
+          } else {
+            window.location.href = linkHref;
+          }
         }
       });
     });
