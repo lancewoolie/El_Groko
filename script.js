@@ -82,9 +82,15 @@ function updateHealthBar() {
       healthBar.innerHTML = '';
       const gameOverText = document.createElement('div');
       gameOverText.textContent = 'GAME OVER';
-      gameOverText.style.cssText = 'color: #F44336; font-size: 20px; font-weight: bold; text-align: center; line-height: 8px; padding: 0 5px;';
+      gameOverText.style.cssText = 'color: #F44336; font-size: 12px; font-weight: bold; text-align: center; line-height: 12px; padding: 0 5px;'; /* Smaller font and line-height for fit */
       healthBar.appendChild(gameOverText);
       setTimeout(() => {
+        // Add particle explosion on reset
+        const healthRect = healthBar.getBoundingClientRect();
+        const healthX = healthRect.left + healthRect.width / 2;
+        const healthY = healthRect.top + healthRect.height / 2;
+        explode(healthX, healthY, '#FF4500'); // Red-orange particles for game over reset
+
         health = 100;
         score = 0;
         sessionStorage.setItem('health', '100');
@@ -241,7 +247,7 @@ function generateNav() {
             </div>
           </div>
           <div class="score-display">
-            <span class="score-label">Your Score</span> <span id="score-value">000000</span>
+            <span class="score-label">Score</span> <span id="score-value">000000</span> <!-- Removed "Your" -->
           </div>
         </div>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
