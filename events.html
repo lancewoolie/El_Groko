@@ -17,16 +17,33 @@
   <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
   <style>
     body {
-      background-color: #1a1a2e; /* Darker blue-grey non-primary */
+      background-color: #1e3a8a; /* Dark royal blue - matches merch */
       color: #E0E0E0; /* Light grey text */
       padding-bottom: 60px; /* Space for fixed footer */
       font-family: 'Georgia', serif;
+    }
+    .hero-events {
+      background: linear-gradient(rgba(0, 31, 63, 0.8), rgba(30, 58, 138, 0.8)), url('img/ai-bayou-swamp.jpg') center/cover;
+      color: white;
+      padding: 80px 0;
+      text-align: center;
+      margin-top: 80px;
+    }
+    .hero-events h1 {
+      font-size: 3rem;
+      font-weight: bold;
+      color: #FFD700; /* Gold hero title */
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+    .hero-events .lead {
+      font-size: 1.25rem;
+      color: #E0E0E0;
     }
     .lead {
       color: #E0E0E0;
     }
     h1, h2 {
-      color: white !important; /* White section titles */
+      color: #FFD700 !important; /* Gold section titles */
     }
     a {
       color: #FFD700; /* Gold links */
@@ -36,12 +53,18 @@
     }
     /* Upcoming Event Large Card */
     .upcoming-event {
-      background-color: #1a1a2e;
-      border: 1px solid #0074D9;
+      background-color: #1e3a8a;
+      border: 2px solid #0074D9;
       border-radius: 15px;
       overflow: hidden;
       margin-bottom: 2rem;
       box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .upcoming-event:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 25px rgba(0, 116, 217, 0.3);
+      border-color: #FFD700;
     }
     .upcoming-event .event-image {
       width: 100%;
@@ -50,6 +73,7 @@
     }
     .upcoming-event .event-details {
       padding: 2rem;
+      color: #E0E0E0;
     }
     .event-date {
       color: #FFD700;
@@ -87,17 +111,25 @@
     
     /* Past Events Small Cards */
     .past-events .card {
-      background-color: #1a1a2e;
-      border: 1px solid #0074D9;
+      background-color: #1e3a8a;
+      border: 2px solid #0074D9;
       color: #E0E0E0;
       margin-bottom: 1rem;
+      border-radius: 15px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .past-events .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 25px rgba(0, 116, 217, 0.3);
+      border-color: #FFD700;
     }
     .past-events .card-img-top {
       height: 150px;
       object-fit: cover;
     }
     .past-events .card-body {
-      padding: 1rem;
+      padding: 1.5rem;
     }
     .past-events .card-title {
       color: #FFD700;
@@ -122,16 +154,128 @@
       z-index: 1001 !important;
       border-top: 1px solid #0074D9;
     }
+    /* Enhanced Header Styles for Scoreboard and Health Bar - from index */
+    .score-header {
+      background: linear-gradient(90deg, #1e3a8a, #001f3f, #1e3a8a);
+      border-radius: 25px;
+      padding: 8px 16px;
+      box-shadow: 0 4px 15px rgba(0, 116, 217, 0.3), inset 0 1px 0 rgba(255, 215, 0, 0.1);
+      border: 1px solid #0074D9;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .score-header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.05), transparent);
+      animation: shimmer 3s infinite;
+      z-index: 0;
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+      100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+    }
+
+    .health-display, .score-display {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 4px 8px;
+      border-radius: 15px;
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .health-display:hover, .score-display:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(255, 215, 0, 0.4);
+      border-color: #FFD700;
+    }
+
+    .score-label {
+      font-size: 0.85rem;
+      color: #E0E0E0;
+      font-weight: bold;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    }
+
+    #score-value {
+      font-family: 'Courier New', monospace;
+      font-size: 1.1rem;
+      font-weight: bold;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+      min-width: 80px;
+      text-align: right;
+    }
+
+    .score-zero { color: #808080; }
+    .score-low { color: #FFA500; }
+    .score-mid { color: #FFD700; }
+    .score-high { color: #FF4500; }
+    .score-max { color: #00FFFF; }
+
+    .score-display.updated, .health-display.updated {
+      animation: pulse 0.5s ease;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); box-shadow: 0 0 0 rgba(255, 215, 0, 0); }
+      50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(255, 215, 0, 0.6); }
+      100% { transform: scale(1); box-shadow: 0 0 0 rgba(255, 215, 0, 0); }
+    }
+
+    /* Standard Health Bar Styles */
+    #health-bar {
+      width: 100px;
+      height: 18px;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid #0074D9;
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(255, 215, 0, 0.3);
+    }
+
+    #health-progress {
+      height: 100%;
+      transition: width 0.8s ease, background-color 0.3s ease;
+      border-radius: 3px;
+    }
+
+    /* Blink Animation for Low Health */
+    .health-display.low-health {
+      animation: rapid-blink 0.2s infinite;
+    }
+
+    @keyframes rapid-blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0.3; }
+    }
   </style>
   
 </head>
 <body>
   <div id="nav-placeholder"></div> <!-- Dynamic Nav Insert Here -->
 
-  <div class="container py-5" style="margin-top: 80px;">
-    <h1 class="text-center mb-5">Live Events</h1>
-    <p class="lead text-center mb-5">Upcoming and past performances—from intimate gigs to high-energy shows. Check back for updates!</p>
+  <!-- Hero Section -->
+  <section class="hero-events">
+    <div class="container">
+      <h1 class="mb-4">Live Events</h1>
+      <p class="lead">Upcoming and past performances—from intimate gigs to high-energy shows. Check back for updates!</p>
+      <a href="#events-grid" class="btn btn-success btn-lg mt-3">View Schedule</a>
+    </div>
+  </section>
 
+  <div class="container py-5" id="events-grid">
     <!-- Upcoming Events Section -->
     <section id="upcoming-events">
       <h2 class="text-center mb-4">Upcoming Events</h2>
@@ -513,8 +657,8 @@
       }
     ];
 
-    // Current date for filtering (October 03, 2025)
-    const currentDate = new Date('2025-10-03');
+    // Current date for filtering (October 07, 2025)
+    const currentDate = new Date('2025-10-07');
 
     // Function to generate upcoming large card
     function generateUpcomingCard(event) {
