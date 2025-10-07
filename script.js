@@ -25,6 +25,36 @@ let healthBar = null;
 let healthProgress = null;
 let gameOverShown = false;
 
+// Function to wait for audio to finish playing
+function waitForAudio(sound) {
+  return sound.play().then(() => {
+    return new Promise((resolve) => {
+      sound.onended = () => {
+        sound.onended = null;
+        resolve();
+      };
+    });
+  }).catch(err => {
+    console.log('Sound play failed:', err);
+    return Promise.resolve(); // Proceed without waiting if play fails
+  });
+}
+
+// Function to wait for animation end
+function waitForAnimation(element, animationName) {
+  return new Promise((resolve) => {
+    const handler = (e) => {
+      if (e.animationName === animationName) {
+        element.removeEventListener('animationend', handler);
+        resolve();
+      }
+    };
+    element.addEventListener('animationend', handler);
+    // Fallback timeout
+    setTimeout(resolve, 1200);
+  });
+}
+
 // Explosion particle function (add this for sub-dot hits and game over reset)
 function explode(mx, my, hexColor) {
   return new Promise((resolve) => {
@@ -492,6 +522,90 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
 
+  // Global sub-dot click handlers (works on index, empty on other pages)
+  document.querySelectorAll('.sub-dot').forEach(sub => {
+    sub.addEventListener('click', async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const linkHref = sub.href;
+      const target = sub.target || '_self';
+      const rect = sub.getBoundingClientRect();
+      const x = rect.left + rect.width / 2;
+      const y = rect.top + rect.height / 2;
+      const subId = sub.dataset.id;
+      const container = sub.closest('.dot-container');
+      const subDots = sub.closest('.sub-dots');
+      const mainDot = container ? container.querySelector('.main-dot') : null;
+
+      const clickedSubDots = JSON.parse(sessionStorage.getItem('clickedSubDots') || '[]');
+
+      let bonusPoints = 0;
+      if (container && container.classList.contains('music-container')) {
+        bonusPoints = 420;
+      }
+
+      if (clickedSubDots.includes(subId)) {
+        // Direct navigation if already clicked in session
+        if (target === '_blank') {
+          window.open(linkHref, '_blank');
+        } else {
+          window.location.href = linkHref;
+        }
+      } else {
+        // Play ricochet sound and wait
+        const sound = clickSounds[Math.floor(Math.random() * clickSounds.length)];
+        sound.currentTime = 0;
+        const soundPromise = waitForAudio(sound);
+
+        // Trigger hit animation and wait
+        sub.classList.add('hit');
+        const animPromise = waitForAnimation(sub, 'hit-shot');
+
+        // Award points and show floating points immediately
+        updateScore(1000 + bonusPoints, x, y);
+
+        // Wait for both sound and animation to complete
+        await Promise.all([soundPromise, animPromise]);
+
+        // Deploy particle effects
+        await explode(x, y, '#FFD700');
+
+        // Reset to non-hover state
+        sub.classList.remove('hit');
+        if (subDots) subDots.classList.remove('active');
+        if (mainDot) mainDot.classList.remove('hidden');
+
+        // Mark as clicked in session
+        clickedSubDots.push(subId);
+        sessionStorage.setItem('clickedSubDots', JSON.stringify(clickedSubDots));
+
+        // Navigate
+        if (target === '_blank') {
+          window.open(linkHref, '_blank');
+        } else {
+          window.location.href = linkHref;
+        }
+      }
+    });
+  });
+
+  // Global main-dot click handlers (works on index, empty on other pages)
+  document.querySelectorAll('.main-dot').forEach(dot => {
+    dot.addEventListener('click', async (e) => {
+      e.preventDefault();
+      const sound = clickSounds[Math.floor(Math.random() * clickSounds.length)];
+      sound.currentTime = 0;
+      await waitForAudio(sound);
+      const container = dot.closest('.dot-container');
+      let bonusPoints = 0;
+      if (container && container.classList.contains('music-container')) {
+        bonusPoints = 420;
+      }
+      updateScore(800 + bonusPoints, e.clientX, e.clientY);
+      window.location.href = dot.href;
+    });
+  });
+
   // Delay navigation for non-bullet links with sound completion
   document.addEventListener('click', async (e) => {
     const link = e.target.closest('a');
@@ -619,23 +733,6 @@ document.addEventListener('DOMContentLoaded', () => {
         dot.classList.add('visible');
       }, 250);
     }
-
-    // Click sound effect on bullet hole dots - updated to delay navigation
-    document.querySelectorAll('.main-dot').forEach(dot => {
-      dot.addEventListener('click', async (e) => {
-        e.preventDefault();
-        const sound = clickSounds[Math.floor(Math.random() * clickSounds.length)];
-        sound.currentTime = 0;
-        await waitForAudio(sound);
-        const container = dot.closest('.dot-container');
-        let bonusPoints = 0;
-        if (container && container.classList.contains('music-container')) {
-          bonusPoints = 420;
-        }
-        updateScore(800 + bonusPoints, e.clientX, e.clientY);
-        window.location.href = dot.href;
-      });
-    });
 
     // Generic submenu logic for containers (index page only, but safe to run globally)
     document.querySelectorAll('.dot-container').forEach(container => {
