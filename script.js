@@ -316,19 +316,19 @@ function generateFooter() {
       <div class="container">
         <!-- Bottom Row: Contact, Copyright, Icons -->
         <div class="row align-items-center">
-          <div class="col-md-4">
-            <a href="contact.html" class="text-light">Contact</a>
+          <div class="col-md-4 d-flex align-items-center">
+            <a href="contact.html" class="text-light me-3">Contact</a>
+            <div class="weapon-select">
+              <select id="weapon-dropdown">
+                <option selected>Laser sights (lv 1)</option>
+                <option disabled>2x Barrel Shogun (lv 2)</option>
+                <option disabled>Bazooka (lv 3)</option>
+              </select>
+            </div>
           </div>
           <div class="col-md-4 text-center">
             <div class="cowboy-hat-icon mb-1" id="cowboy-hat">🤠</div>
             <p class="mb-0 small">&copy; 2025 Lance Woolie. All rights reserved.</p>
-            <div class="weapon-select">
-              <select id="weapon-dropdown">
-                <option selected>Laser Sights</option>
-                <option disabled>Shotgun</option>
-                <option disabled>Bazooka</option>
-              </select>
-            </div>
           </div>
           <div class="col-md-4 text-end">
             <a href="https://x.com/LanceWoolie" target="_blank" class="me-3" title="X (Twitter)" style="display: inline-block; width: 24px; height: 24px; margin-right: 8px;">
@@ -422,7 +422,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (currentPage === 'index') {
     const isMobile = window.innerWidth <= 768;
     let basePositions;
-    const shiftPx = isMobile ? 150 : 300;
+    const halfWidth = isMobile ? 125 : 150;
     const wildness = isMobile ? 8 : 10;
     if (isMobile) {
       basePositions = {
@@ -449,7 +449,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const randOffset = (Math.random() - 0.5) * wildness;
         const randLeft = base.left + randOffset;
         const randTop = base.top + randOffset;
-        container.style.left = `calc(${randLeft}% - ${shiftPx}px)`;
+        container.style.left = `calc(${randLeft}% - ${halfWidth}px)`;
         container.style.top = `${randTop}%`;
       }
     });
@@ -632,10 +632,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Click sound effect on bullet hole dots
     document.querySelectorAll('.main-dot').forEach(dot => {
       dot.addEventListener('click', (e) => {
-        e.preventDefault(); // Prevent immediate navigation, allow sound to play
+        // No preventDefault, play sound and let link navigate
         const sound = clickSounds[Math.floor(Math.random() * 2)];
         sound.play().catch(e => console.log('Click audio play failed:', e));
-        // Re-enable navigation after short delay if needed, but since it's a link, it will navigate after sound starts
       });
     });
 
