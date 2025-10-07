@@ -232,24 +232,24 @@
       z-index: 3;
     }
     .origins-container {
-      left: 10%;
+      left: 5%;
       top: 10%;
     }
     .events-container {
       left: 20%;
-      top: 20%;
+      top: 15%;
     }
     .music-container {
-      left: 30%;
-      top: 30%;
+      left: 35%;
+      top: 20%;
     }
     .merch-container {
-      left: 40%;
-      top: 40%;
+      left: 50%;
+      top: 25%;
     }
     .contact-container {
-      left: 50%;
-      top: 50%;
+      left: 65%;
+      top: 30%;
     }
     .main-dot {
       display: block;
@@ -330,19 +330,41 @@
       pointer-events: none;
     }
 
-    /* Hit Animation for Sub-Dots - Updated to Quick 360 Y Rotation */
+    /* Hit Animation for Sub-Dots - Enhanced Cool Shot Reaction */
     .sub-dot.hit {
-      animation: hit-spin 0.4s ease-out forwards;
+      animation: hit-shot 1s ease-out forwards;
       pointer-events: none;
     }
-    @keyframes hit-spin {
+    @keyframes hit-shot {
       0% {
         transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) rotateY(0deg) scale(1);
         opacity: 1;
+        filter: brightness(1);
+      }
+      20% {
+        transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) rotateY(90deg) scale(1.2) translateX(10px);
+        opacity: 0.8;
+        filter: brightness(2) drop-shadow(0 0 20px #FFD700);
+      }
+      40% {
+        transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) rotateY(180deg) scale(0.8) translateX(-5px);
+        opacity: 0.6;
+        filter: brightness(1.5) sepia(0.3);
+      }
+      60% {
+        transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) rotateY(270deg) scale(1.1) translateX(5px);
+        opacity: 0.9;
+        filter: brightness(1.8) hue-rotate(90deg);
+      }
+      80% {
+        transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) rotateY(360deg) scale(0.9);
+        opacity: 0.4;
+        filter: brightness(0.5) grayscale(0.5);
       }
       100% {
-        transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) rotateY(360deg) scale(1.1);
-        opacity: 0.7;
+        transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) rotateY(720deg) scale(0.5);
+        opacity: 0;
+        filter: brightness(0);
       }
     }
 
@@ -392,19 +414,19 @@
       }
       .events-container {
         left: 25% !important;
-        top: 15% !important;
+        top: 10% !important;
       }
       .music-container {
         left: 45% !important;
-        top: 25% !important;
+        top: 15% !important;
       }
       .merch-container {
         left: 65% !important;
-        top: 35% !important;
+        top: 20% !important;
       }
       .contact-container {
         left: 75% !important;
-        top: 45% !important;
+        top: 25% !important;
       }
       .sub-dot {
         width: 100px;
@@ -770,7 +792,7 @@
       filter: url(#glow);
     }
 
-    /* Red Reticle Hit Marker */
+    /* Red Reticle Hit Marker - Persistent until next click */
     .reticle {
       position: fixed;
       width: 20px;
@@ -779,20 +801,16 @@
       border-radius: 50%;
       pointer-events: none;
       z-index: 1000;
-      animation: reticle-fade 0.5s ease-out forwards;
+      animation: reticle-pulse 1s ease-in-out infinite;
     }
-    @keyframes reticle-fade {
-      0% {
-        opacity: 1;
-        transform: scale(0.5);
+    @keyframes reticle-pulse {
+      0%, 100% { 
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7);
       }
-      50% {
-        opacity: 1;
+      50% { 
         transform: scale(1.2);
-      }
-      100% {
-        opacity: 0;
-        transform: scale(0);
+        box-shadow: 0 0 0 10px rgba(255, 0, 0, 0);
       }
     }
   </style></head>
@@ -1031,6 +1049,9 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
   <script>
+    // Global for persistent reticle
+    let currentReticle = null;
+
     // Add click handlers for sub-dots only (no duplication of hover)
     document.querySelectorAll('.sub-dot').forEach(sub => {
       sub.addEventListener('click', (e) => {
@@ -1077,28 +1098,34 @@
           clickedSubDots.push(subId);
           sessionStorage.setItem('clickedSubDots', JSON.stringify(clickedSubDots));
 
-          // Navigate after animation completes
+          // Navigate after animation completes (extended for better visibility)
           setTimeout(() => {
             if (target === '_blank') {
               window.open(linkHref, '_blank');
             } else {
               window.location.href = linkHref;
             }
-          }, 400);
+          }, 1000);
         }
       });
     });
 
-    // Red Reticle Hit Marker on Click
+    // Red Reticle Hit Marker on Click - Persistent
     document.addEventListener('click', (e) => {
       // Skip if clicking on interactive elements
       if (e.target.closest('.interactive-dot, .sub-dot, a, button, .carousel-control, .navbar')) return;
 
-      const reticle = document.createElement('div');
-      reticle.classList.add('reticle');
-      reticle.style.left = (e.clientX - 10) + 'px';
-      reticle.style.top = (e.clientY - 10) + 'px';
-      document.body.appendChild(reticle);
+      // Remove previous reticle
+      if (currentReticle) {
+        currentReticle.remove();
+      }
+
+      // Create new persistent reticle
+      currentReticle = document.createElement('div');
+      currentReticle.classList.add('reticle');
+      currentReticle.style.left = (e.clientX - 10) + 'px';
+      currentReticle.style.top = (e.clientY - 10) + 'px';
+      document.body.appendChild(currentReticle);
     });
 
     // Explosion particle function (add this for sub-dot hits)
