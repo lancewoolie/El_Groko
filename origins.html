@@ -233,6 +233,21 @@ canvas {
   filter: brightness(0.4) contrast(1.1) hue-rotate(210deg) !important; /* Dims brightness, boosts contrast slightly, shifts to blue-violet for bayou vibe */
   opacity: 0.7 !important; /* Further softens intensity without losing glow */
 }
+    #custom-cursor {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  pointer-events: none !important;
+  z-index: 10001 !important; /* Above neon canvas */
+  user-select: none !important;
+  font-size: 1.5rem !important; /* Adjust size as needed; 1.5rem = ~24px */
+  transform: translate(-50%, -50%) scale(1); /* Centers on mouse */
+  transition: transform 0.1s ease; /* Smooth follow */
+  mix-blend-mode: screen !important; /* Blends glow if it overlaps neon */
+}
+#custom-cursor:hover { /* Optional: Subtle pulse on "hover" (mouse over it, but since it's following, it's always "on") */
+  transform: translate(-50%, -50%) scale(1.1);
+}
   </style>
 </head>
 <body>
@@ -307,5 +322,25 @@ canvas {
       console.log('Subscribe clicked');
     });
   </script>
+  <script>
+  // Create and position cowboy hat emoji cursor
+  const cursor = document.createElement('div');
+  cursor.id = 'custom-cursor';
+  cursor.innerHTML = '🤠'; // Cowboy hat emoji
+  document.body.appendChild(cursor);
+
+  let mouseX = 0, mouseY = 0;
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    cursor.style.left = mouseX + 'px';
+    cursor.style.top = mouseY + 'px';
+  });
+
+  // Optional: Hide on touch devices (neon may handle mobile better)
+  if ('ontouchstart' in window) {
+    cursor.style.display = 'none';
+  }
+</script>
 </body>
 </html>
