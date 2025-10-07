@@ -421,7 +421,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Randomize bullet menu positions on index - Updated for forced visibility on mobile/desktop
   if (currentPage === 'index') {
     const isMobile = window.innerWidth <= 768;
-    const wildness = isMobile ? 5 : 8; // Reduced wildness for better visibility
+    const wildness = isMobile ? 3 : 5; // Further reduced for staircase stability
     document.querySelectorAll('.dot-container').forEach(container => {
       const randOffset = (Math.random() - 0.5) * wildness;
       const baseLeft = parseFloat(container.style.left) || 0;
