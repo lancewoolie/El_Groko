@@ -230,23 +230,23 @@
       z-index: 3;
     }
     .origins-container {
-      left: calc(10% - 150px);
+      left: calc(10% - 450px);
       top: 10%;
     }
     .events-container {
-      left: calc(20% - 150px);
+      left: calc(20% - 450px);
       top: 20%;
     }
     .music-container {
-      left: calc(30% - 150px);
+      left: calc(30% - 450px);
       top: 30%;
     }
     .merch-container {
-      left: calc(40% - 150px);
+      left: calc(40% - 450px);
       top: 40%;
     }
     .contact-container {
-      left: calc(50% - 150px);
+      left: calc(50% - 450px);
       top: 50%;
     }
     .main-dot {
@@ -389,23 +389,23 @@
         height: 250px;
       }
       .origins-container {
-        left: calc(5% - 125px);
+        left: calc(5% - 425px);
         top: 5%;
       }
       .events-container {
-        left: calc(15% - 125px);
+        left: calc(15% - 425px);
         top: 15%;
       }
       .music-container {
-        left: calc(25% - 125px);
+        left: calc(25% - 425px);
         top: 25%;
       }
       .merch-container {
-        left: calc(35% - 125px);
+        left: calc(35% - 425px);
         top: 35%;
       }
       .contact-container {
-        left: calc(45% - 125px);
+        left: calc(45% - 425px);
         top: 45%;
       }
       .sub-dot {
@@ -699,6 +699,16 @@
       }
     }
 
+    @media (max-width: 576px) {
+      .navbar .container {
+        padding-left: 0;
+        padding-right: 0;
+      }
+      .score-header {
+        padding: 4px 8px;
+      }
+    }
+
     /* Weapon Select Styles */
     .weapon-select {
       background: linear-gradient(90deg, #1e3a8a, #001f3f, #1e3a8a);
@@ -720,6 +730,42 @@
 
     .weapon-select option:disabled {
       color: #808080;
+    }
+
+    /* Laser Pointer Styles */
+    html, html:hover {
+      cursor: none;
+    }
+
+    .pointingjs {
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 999;
+      pointer-events: none;
+    }
+
+    .pointer {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      position: fixed;
+      background-color: #00ff00;
+      box-shadow: 0 0 8px #00ff00;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    .pointingjs svg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+
+    #trail {
+      fill: transparent;
     }
   </style></head>
 <body>
@@ -932,50 +978,31 @@
   <div id="footer-placeholder" class="tight-footer"> <!-- Dynamic Footer Insert Here - Floating Fixed -->
   </div>
 
+  <div class="pointingjs">
+    <div class="pointer"></div>
+    <svg xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="glow">
+          <feGaussianBlur result="coloredBlur" stdDeviation="4"></feGaussianBlur>
+          <feMerge>
+            <feMergeNode in="coloredBlur"></feMergeNode>
+            <feMergeNode in="coloredBlur"></feMergeNode>
+            <feMergeNode in="coloredBlur"></feMergeNode>
+            <feMergeNode in="SourceGraphic"></feMergeNode>
+          </feMerge>
+        </filter>
+        <linearGradient id="linear">
+          <stop offset="0" stop-color="#00ff00" stop-opacity="0"/>
+          <stop offset="1" stop-color="#00ff00"/>
+        </linearGradient>
+      </defs>
+      <path id="trail" fill="transparent"/>
+    </svg>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
   <script>
-    // Desktop-only mouse trailing laser beam effect
-    let isDesktop = window.innerWidth > 768;
-    window.addEventListener('resize', () => {
-      isDesktop = window.innerWidth > 768;
-    });
-
-    if (isDesktop) {
-      const beam = document.createElement('div');
-      beam.id = 'laser-beam';
-      beam.style.cssText = `
-        position: fixed;
-        width: 2px;
-        height: 0px;
-        background: linear-gradient(to bottom, #00ff00, #00aa00);
-        transform-origin: top center;
-        z-index: 999;
-        pointer-events: none;
-        transition: height 0.1s ease, transform 0.1s ease;
-      `;
-      document.body.appendChild(beam);
-
-      window.addEventListener('mousemove', (e) => {
-        const anchorX = window.innerWidth / 2;
-        const anchorY = window.innerHeight;
-        const dx = e.clientX - anchorX;
-        const dy = e.clientY - anchorY;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist === 0) return;
-        const angle = Math.atan2(dy, dx) * (180 / Math.PI);
-        const trim = 0.15;
-        const trimDist = dist * trim;
-        const visibleDist = dist * (1 - 2 * trim);
-        const offsetX = dx * trim;
-        const offsetY = dy * trim;
-        beam.style.left = (anchorX + offsetX) + 'px';
-        beam.style.top = (anchorY + offsetY) + 'px';
-        beam.style.height = `${visibleDist}px`;
-        beam.style.transform = `rotate(${angle}deg)`;
-      });
-    }
-
     // Add click handlers for sub-dots only (no duplication of hover)
     document.querySelectorAll('.sub-dot').forEach(sub => {
       sub.addEventListener('click', (e) => {
@@ -1056,7 +1083,7 @@
         const speed = Math.random() * 5 + 2;
         particles.push({
           x: size / 2,
-          y: size / 2;
+          y: size / 2,
           vx: Math.cos(angle) * speed,
           vy: Math.sin(angle) * speed,
           life: 1,
@@ -1093,6 +1120,81 @@
       }
       animate();
     }
+
+    // Laser Pointer Effect
+    const mouse = { x: 0, y: 0 };
+    const trail = [];
+    const pointerEl = document.querySelector('.pointer');
+    const trailEl = document.getElementById('trail');
+    const gradientEl = document.getElementById('linear');
+
+    for (let i = 0; i < 12; i++) {
+      trail.push({ x: mouse.x, y: mouse.y });
+    }
+
+    document.body.addEventListener('touchmove', (ev) => {
+      ev.preventDefault();
+      if (ev.touches.length > 0) {
+        const touch = ev.touches[0];
+        pointerEl.style.left = (touch.pageX - 4) + 'px';
+        pointerEl.style.top = (touch.pageY - 4) + 'px';
+        mouse.x = touch.pageX;
+        mouse.y = touch.pageY;
+      }
+    }, { passive: false });
+
+    window.addEventListener('mousemove', (e) => {
+      pointerEl.style.left = (e.pageX - 4) + 'px';
+      pointerEl.style.top = (e.pageY - 4) + 'px';
+      mouse.x = e.pageX;
+      mouse.y = e.pageY;
+      mousePos.x = e.clientX;
+      mousePos.y = e.clientY;
+    });
+
+    function draw() {
+      let x = mouse.x;
+      let y = mouse.y;
+      for (let i = 0; i < 12; i++) {
+        let nextDot = trail[i + 1] || trail[0];
+        trail[i].x = x;
+        trail[i].y = y;
+        x += (nextDot.x - x) * 0.3;
+        y += (nextDot.y - y) * 0.3;
+      }
+
+      let dx = mouse.x - trail[1].x;
+      let dy = mouse.y - trail[1].y;
+      let x1 = 0, y1 = 0, x2 = 0, y2 = 0;
+      if (Math.abs(dx) > Math.abs(dy)) {
+        if (dx > 0) {
+          x2 = 1;
+        } else {
+          x1 = 1;
+        }
+      } else {
+        if (dy > 0) {
+          y2 = 1;
+        } else {
+          y1 = 1;
+        }
+      }
+
+      gradientEl.setAttribute('x1', x1);
+      gradientEl.setAttribute('y1', y1);
+      gradientEl.setAttribute('x2', x2);
+      gradientEl.setAttribute('y2', y2);
+
+      const pathD = `M ${trail[11].x} ${trail[11].y} C ${trail[6].x} ${trail[6].y} ${trail[6].x} ${trail[6].y} ${trail[5].x} ${trail[5].y} S ${trail[2].x} ${trail[2].y} ${trail[1].x} ${trail[1].y} L ${mouse.x} ${mouse.y}`;
+      trailEl.setAttribute('d', pathD);
+    }
+
+    function animate() {
+      draw();
+      requestAnimationFrame(animate);
+    }
+
+    animate();
   </script>
 </body>
 </html>
