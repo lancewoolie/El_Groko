@@ -95,29 +95,25 @@
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
     import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+// Your config
+const firebaseConfig = {
+  apiKey: "AIzaSyAJQMdogiDwB0oLf2I_Jp-6NSLTDcXvVcQ",
+  authDomain: "lance-woolie-webfarm.firebaseapp.com",
+  projectId: "lance-woolie-webfarm",
+  storageBucket: "lance-woolie-webfarm.firebasestorage.app",
+  messagingSenderId: "278461194969",
+  appId: "1:278461194969:web:a2a03c9d27ccbb670814c8",
+  measurementId: "G-D734JL7BFR"
+};
 
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-    // Your config
-    const firebaseConfig = {
-      apiKey: "AIzaSyAJQMdogiDwB0oLf2I_Jp-6NSLTDcXvVcQ",
-      authDomain: "lance-woolie-webfarm.firebaseapp.com",
-      projectId: "lance-woolie-webfarm",
-      storageBucket: "lance-woolie-webfarm.firebasestorage.app",
-      messagingSenderId: "278461194969",
-      appId: "1:278461194969:web:a2a03c9d27ccbb670814c8",
-      measurementId: "G-D734JL7BFR"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    // Expose to global scope for inline scripts
-    window.db = db;
-    window.addDoc = addDoc;
-    window.collection = collection;
-    window.serverTimestamp = serverTimestamp;
-  </script>
-</head>
+// Expose to global scope for inline scripts
+window.db = db;
+window.addDoc = addDoc;
+window.collection = collection;
+window.serverTimestamp = serverTimestamp;  </script></head>
 <body>
   <div id="nav-placeholder"></div> <!-- Dynamic Nav Insert Here -->
 
@@ -127,42 +123,60 @@
       <div class="col-lg-8">
         <p class="lead text-center mb-5">Reach out for bookings, press, or just to say hey. Lance and the team are here to connect.</p>
 
-        <!-- Business Contacts (Moved Up) -->
-        <div class="row mb-5">
-          <div class="col-md-4 mb-4">
-            <div class="card h-100">
-              <img src="img/MARATHON.png" class="card-img-top" alt="Marathon Music Group">
-              <div class="card-body text-center">
-                <h5 class="card-title accent-blue">Artist Management</h5>
-                <p class="card-text">Marathon Music Group</p>
-                <a href="https://marathonmusicgroup.com/" class="btn btn-outline-primary" target="_blank">Visit Site</a>
-              </div>
-            </div>
+    <!-- Newsletter Signup (Moved to First Piece of Content) -->
+    <div class="card mb-5">
+      <div class="card-body">
+        <h3 class="card-title text-center mb-4">Sign Up for Exclusive Events & Pre-Releases</h3>
+        <p class="text-center mb-3">Get first dibs on swamp-side shows, early track drops, and bayou insider vibes. Your info stays locked in the vault—privacy first.</p>
+        <form id="newsletter-form" class="row g-3 justify-content-center">
+          <div class="col-md-6">
+            <label for="signup-email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="signup-email" placeholder="your@bayou.com" required>
           </div>
-          <div class="col-md-4 mb-4">
-            <div class="card h-100">
-              <img src="img/doug.jpg" class="card-img-top" alt="Doug Deutsch">
-              <div class="card-body text-center">
-                <h5 class="card-title accent-blue">Public Affairs</h5>
-                <p class="card-text">Doug Deutsch</p>
-                <a href="mailto:dougdeutschpr1956@gmail.com" class="btn btn-outline-primary">Email Doug</a>
-              </div>
-            </div>
+          <div class="col-md-6 d-flex align-items-end">
+            <button type="submit" class="btn btn-gold w-100">Do it. Sign Up</button>
           </div>
-          <div class="col-md-4 mb-4">
-            <div class="card h-100">
-              <img src="img/Gilligan Music Group - FULL COLOR.jpg" class="card-img-top" alt="Gilligan Music Group">
-              <div class="card-body text-center">
-                <h5 class="card-title accent-blue">Radio Promotion</h5>
-                <p class="card-text">David Gilligan</p>
-                <a href="mailto:david@gilliganpromotions.com" class="btn btn-outline-primary">Email David</a>
-              </div>
-            </div>
+        </form>
+        <div id="newsletter-success" class="success-message">Signed up—exclusive twang incoming! Check your inbox.</div>
+        <p class="text-center small mt-2 text-muted">Powered by Firebase—secure, GDPR-compliant. No spam, just twang.</p>
+      </div>
+    </div>
+
+    <!-- Business Contacts (Agents) -->
+    <div class="row mb-5">
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <img src="img/MARATHON.png" class="card-img-top" alt="Marathon Music Group">
+          <div class="card-body text-center">
+            <h5 class="card-title accent-blue">Artist Management</h5>
+            <p class="card-text">Marathon Music Group</p>
+            <a href="https://marathonmusicgroup.com/" class="btn btn-outline-primary" target="_blank">Visit Site</a>
           </div>
         </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <img src="img/doug.jpg" class="card-img-top" alt="Doug Deutsch">
+          <div class="card-body text-center">
+            <h5 class="card-title accent-blue">Public Affairs</h5>
+            <p class="card-text">Doug Deutsch</p>
+            <a href="mailto:dougdeutschpr1956@gmail.com" class="btn btn-outline-primary">Email Doug</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <img src="img/Gilligan Music Group - FULL COLOR.jpg" class="card-img-top" alt="Gilligan Music Group">
+          <div class="card-body text-center">
+            <h5 class="card-title accent-blue">Radio Promotion</h5>
+            <p class="card-text">David Gilligan</p>
+            <a href="mailto:david@gilliganpromotions.com" class="btn btn-outline-primary">Email David</a>
+          </div>
+        </div>
+      </div>
+    </div>
 
-     <!-- General Inquiries Form -->
-<div class="card mb-5">
+ <!-- General Inquiries Form (Message Form) --><div class="card mb-5">
   <div class="card-body">
     <h3 class="card-title text-center mb-4">General Inquiries</h3>
     <form id="contact-form">
@@ -183,36 +197,18 @@
     </form>
   </div>
 </div>
-        <!-- Newsletter Signup -->
-        <div class="card">
-          <div class="card-body">
-            <h3 class="card-title text-center mb-4">Sign Up for Exclusive Events & Pre-Releases</h3>
-            <p class="text-center mb-3">Get first dibs on swamp-side shows, early track drops, and bayou insider vibes. Your info stays locked in the vault—privacy first.</p>
-            <form id="newsletter-form" class="row g-3 justify-content-center">
-              <div class="col-md-6">
-                <label for="signup-email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="signup-email" placeholder="your@bayou.com" required>
-              </div>
-              <div class="col-md-6 d-flex align-items-end">
-                <button type="submit" class="btn btn-gold w-100">Do it. Sign Up</button>
-              </div>
-            </form>
-            <div id="newsletter-success" class="success-message">Signed up—exclusive twang incoming! Check your inbox.</div>
-            <p class="text-center small mt-2 text-muted">Powered by Firebase—secure, GDPR-compliant. No spam, just twang.</p>
-          </div>
-        </div>
 
-        <!-- Social Links -->
-        <div class="row justify-content-center mt-4">
-          <div class="col-md-6 text-center">
-            <h5>Follow & Connect</h5>
-            <p>YouTube: <a href="https://www.youtube.com/channel/UC9NUm7_BejCwctJ9u6dps7g" target="_blank">Lance Woolie</a><br>
-            Facebook: <a href="https://www.facebook.com/lancewooliemusic/" target="_blank">@lancewooliemusic</a></p>
-          </div>
-        </div>
+    <!-- Social Links -->
+    <div class="row justify-content-center mt-4">
+      <div class="col-md-6 text-center">
+        <h5>Follow & Connect</h5>
+        <p>YouTube: <a href="https://www.youtube.com/channel/UC9NUm7_BejCwctJ9u6dps7g" target="_blank">Lance Woolie</a>
+
+        Facebook: <a href="https://www.facebook.com/lancewooliemusic/" target="_blank">@lancewooliemusic</a></p>
       </div>
     </div>
   </div>
+</div>  </div>
 
   <div id="footer-placeholder"></div> <!-- Dynamic Footer Insert Here - Fixed Floating -->
 
@@ -297,3 +293,4 @@
   </script>
 </body>
 </html>
+
