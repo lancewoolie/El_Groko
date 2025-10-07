@@ -30,6 +30,69 @@ let healthBar = null;
 let healthProgress = null;
 let gameOverShown = false;
 
+// Explosion particle function (add this for sub-dot hits and game over reset)
+function explode(mx, my, hexColor) {
+  return new Promise((resolve) => {
+    const numParticles = 20;
+    const canvas = document.createElement('canvas');
+    const size = 400;
+    canvas.width = size;
+    canvas.height = size;
+    canvas.style.cssText = `
+      position: fixed;
+      left: ${mx - size / 2}px;
+      top: ${my - size / 2}px;
+      pointer-events: none;
+      z-index: 10000;
+    `;
+    document.body.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+    const particles = [];
+    for (let i = 0; i < numParticles; i++) {
+      const angle = (Math.PI * 2 * i) / numParticles;
+      const speed = Math.random() * 5 + 2;
+      particles.push({
+        x: size / 2,
+        y: size / 2,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        life: 1,
+        decay: 0.02,
+        size: Math.random() * 4 + 2,
+        color: hexColor
+      });
+    }
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      let alive = false;
+      particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vx *= 0.98;
+        p.vy *= 0.98;
+        p.life -= p.decay;
+        if (p.life > 0) {
+          alive = true;
+          const r = parseInt(hexColor.slice(1, 3), 16);
+          const g = parseInt(hexColor.slice(3, 5), 16);
+          const b = parseInt(hexColor.slice(5, 7), 16);
+          ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${p.life})`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      });
+      if (alive) {
+        requestAnimationFrame(animate);
+      } else {
+        canvas.remove();
+        resolve();
+      }
+    }
+    animate();
+  });
+}
+
 function updateScore(points, x = undefined, y = undefined) {
   score += points;
   sessionStorage.setItem('score', score.toString());
@@ -84,24 +147,34 @@ function updateHealthBar() {
       gameOverText.textContent = 'GAME OVER';
       gameOverText.style.cssText = 'color: #F44336; font-size: 12px; font-weight: bold; text-align: center; line-height: 12px; padding: 0 5px;'; /* Smaller font and line-height for fit */
       healthBar.appendChild(gameOverText);
-      setTimeout(() => {
-        // Add particle explosion on reset
+
+      const onSoundEnd = () => {
         const healthRect = healthBar.getBoundingClientRect();
         const healthX = healthRect.left + healthRect.width / 2;
         const healthY = healthRect.top + healthRect.height / 2;
-        explode(healthX, healthY, '#FF4500'); // Red-orange particles for game over reset
+        explode(healthX, healthY, '#FF4500').then(() => {
+          // Reset to initial state
+          healthBar.innerHTML = '<div id="health-progress"></div>';
+          healthProgress = document.getElementById('health-progress');
+          health = 100;
+          score = 0;
+          sessionStorage.setItem('health', '100');
+          sessionStorage.setItem('score', '0');
+          gameOverShown = false;
+          if (scoreEl) {
+            scoreEl.textContent = '000000';
+            scoreEl.classList.remove('score-low', 'score-mid', 'score-high', 'score-max');
+            scoreEl.classList.add('score-zero');
+          }
+          updateHealthBar();
+        });
+      };
 
-        health = 100;
-        score = 0;
-        sessionStorage.setItem('health', '100');
-        sessionStorage.setItem('score', '0');
-        gameOverShown = false;
-        if (scoreEl) {
-          scoreEl.textContent = '000000';
-          scoreEl.classList.add('score-zero');
-        }
-        updateHealthBar();
-      }, 5000);
+      if (gameOverSound.ended) {
+        onSoundEnd();
+      } else {
+        gameOverSound.onended = onSoundEnd;
+      }
     }
     return;
   }
@@ -424,6 +497,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
 
+  // Delay navigation for non-bullet links with sound completion
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('a');
+    if (!link || link.classList.contains('main-dot') || link.classList.contains('sub-dot')) return;
+    e.preventDefault();
+    const sound = clickSounds[Math.floor(Math.random() * clickSounds.length)];
+    sound.currentTime = 0;
+    sound.play().catch(err => console.log('Sound play failed:', err));
+    let points = 500; // Default for nav links
+    const href = link.getAttribute('href');
+    if (href === 'merch.html') points = 2500;
+    if (link.classList.contains('dropdown-item')) points = 500;
+    if (href && href.includes('#email-subscribe')) points = 1500;
+    updateScore(points, e.clientX, e.clientY);
+    const onEnd = () => {
+      if (link.target === '_blank') {
+        window.open(link.href, '_blank');
+      } else {
+        window.location.href = link.href;
+      }
+    };
+    sound.addEventListener('ended', onEnd, {once: true});
+  });
+
   // YouTube play detection (music page only)
   if (currentPage === 'music') {
     document.querySelectorAll('iframe[src*="youtube.com"], iframe[src*="youtu.be"]').forEach(iframe => {
@@ -441,42 +538,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Site-wide click sound and scoring on all clicks
+  // Site-wide click sound and scoring on all clicks (skip links/buttons handled elsewhere)
+  const form = document.getElementById('contact-form');
   document.addEventListener('click', (e) => {
+    if (e.target.closest('a, button')) return;
     const sound = clickSounds[Math.floor(Math.random() * clickSounds.length)];
     sound.currentTime = 0;
     sound.play().catch(err => console.log('Click audio play failed:', err));
-
-    let points = 69; // Default for blank non-menu clicks
-
+    let points = 69;
     const target = e.target;
-
-    // Sub menu clicks (dropdown items)
-    if (target.closest('.dropdown-item')) {
-      points = 500;
-    }
-
-    // Merch link in header nav
-    if (target.closest('a[href="merch.html"]')) {
-      points = 2500;
-    }
-
-    // Subscribe raccoon click (1500 points)
-    if (target.closest('#subscribe-raccoon')) {
-      points = 1500;
-    }
-
-    // Raccoon subscribe button (cowboy hat) - kept for surprises
-    if (target.closest('#cowboy-hat')) {
-      points = 420;
-    }
-
-    // Email submit button click (gives 100 points)
-    const form = document.getElementById('contact-form');
     if (form && target.type === 'submit' && form.contains(target)) {
       points = 100;
     }
-
+    if (target.closest('#cowboy-hat')) {
+      points = 420;
+    }
     updateScore(points, e.clientX, e.clientY);
   });
 
@@ -492,9 +568,9 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Contact Form Handler (Firebase - If on contact page, fixed references)
-  const form = document.getElementById('contact-form');
-  if (form && window.db) {
-    form.addEventListener('submit', async (e) => {
+  const contactForm = document.getElementById('contact-form');
+  if (contactForm && window.db) {
+    contactForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const name = document.getElementById('name').value.trim();
       const email = document.getElementById('email').value.trim();
@@ -508,7 +584,7 @@ document.addEventListener('DOMContentLoaded', () => {
           name, email, message, type: 'general', timestamp: window.serverTimestamp()
         });
         alert('Message sent—bayou reply incoming.');
-        form.reset();
+        contactForm.reset();
         // Add extra points after successful submit (total 10420 with the 100 from click)
         updateScore(10320);
       } catch (error) {
@@ -552,12 +628,22 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 250);
     }
 
-    // Click sound effect on bullet hole dots
+    // Click sound effect on bullet hole dots - updated to delay navigation
     document.querySelectorAll('.main-dot').forEach(dot => {
       dot.addEventListener('click', (e) => {
-        // No preventDefault, play sound and let link navigate
-        const sound = clickSounds[Math.floor(Math.random() * 2)];
-        sound.play().catch(e => console.log('Click audio play failed:', e));
+        e.preventDefault();
+        const sound = clickSounds[Math.floor(Math.random() * clickSounds.length)];
+        sound.currentTime = 0;
+        sound.play().catch(err => console.log('Sound play failed:', err));
+        const container = dot.closest('.dot-container');
+        let bonusPoints = 0;
+        if (container && container.classList.contains('music-container')) {
+          bonusPoints = 420;
+        }
+        updateScore(800 + bonusPoints, e.clientX, e.clientY);
+        sound.addEventListener('ended', () => {
+          window.location.href = dot.href;
+        }, {once: true});
       });
     });
 
