@@ -292,12 +292,10 @@
                 songsData[artist].songs.forEach(song => {
                     const escapedArtist = artist.replace(/'/g, "\\'");
                     const escapedSong = song.replace(/'/g, "\\'");
+                    const tier = songsData[artist].prices[song];
+                    const price = prices[tier];
                     const icon = songsData[artist].icons[song] || '';
-                    let songDisplay = song;
-                    if (artist === 'Anybody You Choose' && song === 'Happy Birthday Song') {
-                        songDisplay += ' <strong>($25)</strong>';
-                    }
-                    html += `<li onclick="addSong('${escapedArtist}', '${escapedSong}')"><span class="song-icon">${icon}</span>${songDisplay}</li>`;
+                    html += `<li onclick="addSong('${escapedArtist}', '${escapedSong}')">${song} ($${price}) <span class="song-icon">${icon}</span></li>`;
                 });
                 html += '</ul></details>';
             });
