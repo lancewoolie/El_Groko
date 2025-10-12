@@ -14,9 +14,12 @@
         #tip-section button:hover { background: #218838; }
         input, textarea { width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
         #cart-icon { position: fixed; top: 10px; right: 10px; background: #ffc107; padding: 10px; border-radius: 50px; font-weight: bold; }
-        details ul { list-style: none; padding: 0; }
-        details li { padding: 10px; background: white; margin: 5px 0; cursor: pointer; border-radius: 5px; }
+        details { margin: 10px 0; }
+        details summary { padding: 10px; background: #007bff; color: white; cursor: pointer; border-radius: 5px; font-weight: bold; }
+        details ul { list-style: none; padding: 0; margin: 0; }
+        details li { padding: 10px; background: white; margin: 5px 0; cursor: pointer; border-radius: 5px; border: 1px solid #ddd; }
         details li:hover { background: #e9ecef; }
+        #artists-section { margin: 20px 0; }
         #cart-section { display: none; background: white; padding: 20px; margin: 20px 0; border-radius: 5px; }
         #cart-items li { padding: 10px; border-bottom: 1px solid #ddd; }
         #thankyou { display: none; text-align: center; background: #d4edda; padding: 20px; border-radius: 5px; color: #155724; }
@@ -47,12 +50,15 @@
 
     <button onclick="showCart()">View Song Cue (Cart)</button>
 
-    <div id="artists-section"></div>
+    <h2>Song Requests by Artist</h2>
+    <div id="artists-section">
+        <!-- Artists will load here -->
+    </div>
 
     <div id="custom-section">
         <h2>Custom Request (Not Listed?)</h2>
         <input id="custom-song" placeholder='e.g. "Star Spangled Banner"'>
-        <button onclick="addCustomSong()">Add $15 Custom Request</button>
+        <button onclick="addCustomSong()">Add $50 Custom Request</button>
     </div>
 
     <div id="cart-section">
@@ -82,15 +88,8 @@
         const EMAILJS_TEMPLATE_ID = 'YOUR_EMAILJS_TEMPLATE_ID';
         const EMAIL_TO = 'lancewoolie@gmail.com';
 
-        // Init Firebase
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database().ref('signups');
-
-        // Init EmailJS
-        emailjs.init(EMAILJS_USER_ID);
-
         // Songs Data (prices hidden: A=50, B=25, C=15, D=10, E=5)
-        const songsData = {"Aaron Watson": {"songs": ["July In Cheyenne"], "prices": {"July In Cheyenne": "E"}}, "Alabama": {"songs": ["Dixieland Delight", "My Homes In Alabama"], "prices": {"Dixieland Delight": "E", "My Homes In Alabama": "E"}}, "Alan Jackson": {"songs": ["Midnight in Montgomery", "Dont Rock The Jukebox", "Chatahooche"], "prices": {"Midnight in Montgomery": "E", "Dont Rock The Jukebox": "E", "Chatahooche": "E"}}, "Alice in Chains": {"songs": ["Nutshell", "Man in The Box"], "prices": {"Nutshell": "E", "Man in The Box": "E"}}, "Andrea Bocelli": {"songs": ["Canciones Desinfindada", "Bésame"], "prices": {"Canciones Desinfindada": "E", "Bésame": "E"}}, "Bad Religion": {"songs": ["Whispers In Time", "Man With a Mission"], "prices": {"Whispers In Time": "E", "Man With a Mission": "E"}}, "Blackberry Smoke": {"songs": ["1 Horse Town", "Up The Road", "I've Got This Song"], "prices": {"1 Horse Town": "E", "Up The Road": "E", "I've Got This Song": "E"}}, "Brooks & Dunn": {"songs": ["Brand New Man", "Neon Moon"], "prices": {"Brand New Man": "E", "Neon Moon": "E"}}, "Charley Pride": {"songs": ["Kiss An Angel Good Mornin"], "prices": {"Kiss An Angel Good Mornin": "E"}}, "Charlie Crockett": {"songs": ["Just Like Honey", "just a Clown"], "prices": {"Just Like Honey": "E", "just a Clown": "E"}}, "Chris Isaak": {"songs": ["Wicked Game"], "prices": {"Wicked Game": "E"}}, "Conway Twitty": {"songs": ["I Don't Know A Thing About Love", "Tight Fitting Jeans"], "prices": {"I Don't Know A Thing About Love": "E", "Tight Fitting Jeans": "E"}}, "David Allan Coe": {"songs": ["The Ride", "Never Called Me By My Name"], "prices": {"The Ride": "E", "Never Called Me By My Name": "E"}}, "Dixie Chicks": {"songs": ["Wide Open Spaces", "You Were Mine"], "prices": {"Wide Open Spaces": "E", "You Were Mine": "E"}}, "Dwight Yoakam": {"songs": ["Honkey Tonk Man", "Guitars Cadillac's"], "prices": {"Honkey Tonk Man": "E", "Guitars Cadillac's": "E"}}, "Elvis Presley": {"songs": ["I Can't Help Falling In Love with You", "That's Alright Mama"], "prices": {"I Can't Help Falling In Love with You": "E", "That's Alright Mama": "E"}}, "Garth Brooks": {"songs": ["Thunder Rolls", "The Dance", "Low Places"], "prices": {"Thunder Rolls": "E", "The Dance": "E", "Low Places": "C"}}, "George Jones": {"songs": ["The Good Times Ain't Over", "Who's Gonna Fill Those Shoes"], "prices": {"The Good Times Ain't Over": "E", "Who's Gonna Fill Those Shoes": "E"}}, "George Strait": {"songs": ["Marina Del Rey", "All My Ex's Live In Texas", "Amarillo By Morning", "The Chair", "Unwound", "Nobody In His Right Mind"], "prices": {"Marina Del Rey": "E", "All My Ex's Live In Texas": "E", "Amarillo By Morning": "E", "The Chair": "E", "Unwound": "E", "Nobody In His Right Mind": "E"}}, "Green Day": {"songs": ["Good Riddance"], "prices": {"Good Riddance": "E"}}, "Hank Williams Jr.": {"songs": ["Family Tradition", "Dinosaur", "Whiskey Bent", "Women I Never Had"], "prices": {"Family Tradition": "E", "Dinosaur": "E", "Whiskey Bent": "E", "Women I Never Had": "E"}}, "Hank Williams Sr.": {"songs": ["Jambalaya", "Buckets Got A Hole In It", "Your Cheatin Heart"], "prices": {"Jambalaya": "E", "Buckets Got A Hole In It": "E", "Your Cheatin Heart": "E"}}, "Hogleg Band": {"songs": ["How It Feels To Be Cowboy", "Road To Texas", "My Dog Still Loves Me", "1 of Us Is Wrong"], "prices": {"How It Feels To Be Cowboy": "D", "Road To Texas": "D", "My Dog Still Loves Me": "D", "1 of Us Is Wrong": "D"}}, "James Taylor": {"songs": ["Sweet Baby James"], "prices": {"Sweet Baby James": "E"}}, "Jamey Johnson": {"songs": ["In Color"], "prices": {"In Color": "E"}}, "Jimi Hendrix": {"songs": ["Wind Cries Mary", "Red House", "Little Wing"], "prices": {"Wind Cries Mary": "E", "Red House": "E", "Little Wing": "E"}}, "Jimmy Buffett": {"songs": ["Margaritaville"], "prices": {"Margaritaville": "E"}}, "John Anderson": {"songs": ["Black Sheep", "Chuck Of Coal"], "prices": {"Black Sheep": "E", "Chuck Of Coal": "E"}}, "John Denver": {"songs": ["Country Roads"], "prices": {"Country Roads": "E"}}, "Johnny Cash": {"songs": ["Ring Of Fire", "Folsom Prison Blues", "Hurt"], "prices": {"Ring Of Fire": "E", "Folsom Prison Blues": "E", "Hurt": "E"}}, "Keith Whitley": {"songs": ["Honkey Tonk Heart", "No Stranger To The Rain", "Don't Close Your Eyes", "I Wonder Do You Think Of Me"], "prices": {"Honkey Tonk Heart": "E", "No Stranger To The Rain": "E", "Don't Close Your Eyes": "E", "I Wonder Do You Think Of Me": "E"}}, "Lance": {"songs": ["Custom Happy Birthday Tribute Song"], "prices": {"Custom Happy Birthday Tribute Song": "B"}}, "Lance Woolie": {"songs": ["Too Drunk", "Worst Enemy", "Uber", "How It Feels To Be a Cowboy", "Road To Texas", "Crazy Arms", "Back Home", "TRUST", "One of Us is Wrong"], "prices": {"Too Drunk": "E", "Worst Enemy": "E", "Uber": "E", "How It Feels To Be a Cowboy": "E", "Road To Texas": "E", "Crazy Arms": "E", "Back Home": "E", "TRUST": "E", "One of Us is Wrong": "E"}}, "Lee Greenwood": {"songs": ["God Bless The USA"], "prices": {"God Bless The USA": "A"}}, "Lynyrd Skynyrd": {"songs": ["Simple Man", "Free Bird", "Sweet Home Alabama"], "prices": {"Simple Man": "E", "Free Bird": "A", "Sweet Home Alabama": "E"}}, "Merle Haggard": {"songs": ["That's The Way Love Goes", "Big City", "Working Man Blues", "I Just Stay Here and Drink"], "prices": {"That's The Way Love Goes": "E", "Big City": "E", "Working Man Blues": "E", "I Just Stay Here and Drink": "E"}}, "Michael Jackson": {"songs": ["I Want You Back"], "prices": {"I Want You Back": "E"}}, "Midland": {"songs": ["Drinking Problem"], "prices": {"Drinking Problem": "E"}}, "Nirvana": {"songs": ["Man Who Sold The World", "All Apologies"], "prices": {"Man Who Sold The World": "E", "All Apologies": "E"}}, "Parker McCollum": {"songs": ["Pretty Heart"], "prices": {"Pretty Heart": "E"}}, "Post Malone": {"songs": ["Circles"], "prices": {"Circles": "E"}}, "REM": {"songs": ["Losing My Religion"], "prices": {"Losing My Religion": "E"}}, "Randy Travis": {"songs": ["Forever & Ever Amen", "Digging Up Bones", "I Told You So"], "prices": {"Forever & Ever Amen": "E", "Digging Up Bones": "E", "I Told You So": "E"}}, "Ricky Skaggs": {"songs": ["Heartbroke", "Country Boy", "Highway 40 Blues"], "prices": {"Heartbroke": "E", "Country Boy": "E", "Highway 40 Blues": "E"}}, "Rolling Stones": {"songs": ["Wild Horses", "Angel"], "prices": {"Wild Horses": "E", "Angel": "E"}}, "Ronnie Milsap": {"songs": ["Stranger In My House", "Smokey Mountain Rain", "The Freeze"], "prices": {"Stranger In My House": "E", "Smokey Mountain Rain": "E", "The Freeze": "E"}}, "Stevie Wonder": {"songs": ["I Just Called To Say I Love You", "Superstition"], "prices": {"I Just Called To Say I Love You": "E", "Superstition": "E"}}, "The Civil Wars": {"songs": ["20 Years", "Dance Me To The End Of Love"], "prices": {"20 Years": "E", "Dance Me To The End Of Love": "E"}}, "The Eagles": {"songs": ["Tequila Sunrise", "Witchy Woman", "Hotel California"], "prices": {"Tequila Sunrise": "E", "Witchy Woman": "E", "Hotel California": "E"}}, "The Highwaymen": {"songs": ["Highwayman"], "prices": {"Highwayman": "E"}}, "Tom Petty": {"songs": ["Won't Back Down", "You Got Lucky"], "prices": {"Won't Back Down": "E", "You Got Lucky": "E"}}, "Tracy Lawrence": {"songs": ["Time Marches On"], "prices": {"Time Marches On": "E"}}, "Travis Tritt": {"songs": ["Help Me Hold On"], "prices": {"Help Me Hold On": "E"}}, "Vince Gill": {"songs": ["Tryin To Get Over You"], "prices": {"Tryin To Get Over You": "E"}}, "Waylon Jennings": {"songs": ["Mamas Don't Let Your Babies", "Luckenbach Texas"], "prices": {"Mamas Don't Let Your Babies": "E", "Luckenbach Texas": "E"}}, "Willie Nelson": {"songs": ["Blue Eyes Crying ", "On The Road Again", "City OF New Orleans"], "prices": {"Blue Eyes Crying ": "E", "On The Road Again": "E", "City OF New Orleans": "E"}}, "Zach Top": {"songs": ["Bad Luck", "I Never Lie", "Dirt To Gold", "When You See Me"], "prices": {"Bad Luck": "E", "I Never Lie": "E", "Dirt To Gold": "E", "When You See Me": "E"}}};
+        const songsData = {"Aaron Watson":{"songs":["July In Cheyenne"],"prices":{"July In Cheyenne":"E"}},"Alabama":{"songs":["Dixieland Delight","My Homes In Alabama"],"prices":{"Dixieland Delight":"E","My Homes In Alabama":"E"}},"Alan Jackson":{"songs":["Midnight in Montgomery","Dont Rock The Jukebox","Chatahooche"],"prices":{"Midnight in Montgomery":"E","Dont Rock The Jukebox":"E","Chatahooche":"E"}},"Alice in Chains":{"songs":["Nutshell","Man in The Box"],"prices":{"Nutshell":"E","Man in The Box":"E"}},"Andrea Bocelli":{"songs":["Canciones Desinfindada","Bésame"],"prices":{"Canciones Desinfindada":"E","Bésame":"E"}},"Bad Religion":{"songs":["Whispers In Time","Man With a Mission"],"prices":{"Whispers In Time":"E","Man With a Mission":"E"}},"Blackberry Smoke":{"songs":["1 Horse Town","Up The Road","I've Got This Song"],"prices":{"1 Horse Town":"E","Up The Road":"E","I've Got This Song":"E"}},"Brooks & Dunn":{"songs":["Brand New Man","Neon Moon"],"prices":{"Brand New Man":"E","Neon Moon":"E"}},"Charley Pride":{"songs":["Kiss An Angel Good Mornin"],"prices":{"Kiss An Angel Good Mornin":"E"}},"Charlie Crockett":{"songs":["Just Like Honey","just a Clown"],"prices":{"Just Like Honey":"E","just a Clown":"E"}},"Chris Isaak":{"songs":["Wicked Game"],"prices":{"Wicked Game":"E"}},"Conway Twitty":{"songs":["I Don't Know A Thing About Love","Tight Fitting Jeans"],"prices":{"I Don't Know A Thing About Love":"E","Tight Fitting Jeans":"E"}},"David Allan Coe":{"songs":["The Ride","Never Called Me By My Name"],"prices":{"The Ride":"E","Never Called Me By My Name":"E"}},"Dixie Chicks":{"songs":["Wide Open Spaces","You Were Mine"],"prices":{"Wide Open Spaces":"E","You Were Mine":"E"}},"Dwight Yoakam":{"songs":["Honkey Tonk Man","Guitars Cadillac's"],"prices":{"Honkey Tonk Man":"E","Guitars Cadillac's":"E"}},"Elvis Presley":{"songs":["I Can't Help Falling In Love with You","That's Alright Mama"],"prices":{"I Can't Help Falling In Love with You":"E","That's Alright Mama":"E"}},"Garth Brooks":{"songs":["Thunder Rolls","The Dance","Low Places"],"prices":{"Thunder Rolls":"E","The Dance":"E","Low Places":"C"}},"George Jones":{"songs":["The Good Times Ain't Over","Who's Gonna Fill Those Shoes"],"prices":{"The Good Times Ain't Over":"E","Who's Gonna Fill Those Shoes":"E"}},"George Strait":{"songs":["Marina Del Rey","All My Ex's Live In Texas","Amarillo By Morning","The Chair","Unwound","Nobody In His Right Mind"],"prices":{"Marina Del Rey":"E","All My Ex's Live In Texas":"E","Amarillo By Morning":"E","The Chair":"E","Unwound":"E","Nobody In His Right Mind":"E"}},"Green Day":{"songs":["Good Riddance"],"prices":{"Good Riddance":"E"}},"Hank Williams Jr.":{"songs":["Family Tradition","Dinosaur","Whiskey Bent","Women I Never Had"],"prices":{"Family Tradition":"E","Dinosaur":"E","Whiskey Bent":"E","Women I Never Had":"E"}},"Hank Williams Sr.":{"songs":["Jambalaya","Buckets Got A Hole In It","Your Cheatin Heart"],"prices":{"Jambalaya":"E","Buckets Got A Hole In It":"E","Your Cheatin Heart":"E"}},"Hogleg Band":{"songs":["How It Feels To Be Cowboy","Road To Texas","My Dog Still Loves Me","1 of Us Is Wrong"],"prices":{"How It Feels To Be Cowboy":"D","Road To Texas":"D","My Dog Still Loves Me":"D","1 of Us Is Wrong":"D"}},"James Taylor":{"songs":["Sweet Baby James"],"prices":{"Sweet Baby James":"E"}},"Jamey Johnson":{"songs":["In Color"],"prices":{"In Color":"E"}},"Jimi Hendrix":{"songs":["Wind Cries Mary","Red House","Little Wing"],"prices":{"Wind Cries Mary":"E","Red House":"E","Little Wing":"E"}},"Jimmy Buffett":{"songs":["Margaritaville"],"prices":{"Margaritaville":"E"}},"John Anderson":{"songs":["Black Sheep","Chuck Of Coal"],"prices":{"Black Sheep":"E","Chuck Of Coal":"E"}},"John Denver":{"songs":["Country Roads"],"prices":{"Country Roads":"E"}},"Johnny Cash":{"songs":["Ring Of Fire","Folsom Prison Blues","Hurt"],"prices":{"Ring Of Fire":"E","Folsom Prison Blues":"E","Hurt":"E"}},"Keith Whitley":{"songs":["Honkey Tonk Heart","No Stranger To The Rain","Don't Close Your Eyes","I Wonder Do You Think Of Me"],"prices":{"Honkey Tonk Heart":"E","No Stranger To The Rain":"E","Don't Close Your Eyes":"E","I Wonder Do You Think Of Me":"E"}},"Lance":{"songs":["Custom Happy Birthday Tribute Song"],"prices":{"Custom Happy Birthday Tribute Song":"B"}},"Lance Woolie":{"songs":["Too Drunk","Worst Enemy","Uber","How It Feels To Be a Cowboy","Road To Texas","Crazy Arms","Back Home","TRUST","One of Us is Wrong"],"prices":{"Too Drunk":"E","Worst Enemy":"E","Uber":"E","How It Feels To Be a Cowboy":"E","Road To Texas":"E","Crazy Arms":"E","Back Home":"E","TRUST":"E","One of Us is Wrong":"E"}},"Lee Greenwood":{"songs":["God Bless The USA"],"prices":{"God Bless The USA":"A"}},"Lynyrd Skynyrd":{"songs":["Simple Man","Free Bird","Sweet Home Alabama"],"prices":{"Simple Man":"E","Free Bird":"A","Sweet Home Alabama":"E"}},"Merle Haggard":{"songs":["That's The Way Love Goes","Big City","Working Man Blues","I Just Stay Here and Drink"],"prices":{"That's The Way Love Goes":"E","Big City":"E","Working Man Blues":"E","I Just Stay Here and Drink":"E"}},"Michael Jackson":{"songs":["I Want You Back"],"prices":{"I Want You Back":"E"}},"Midland":{"songs":["Drinking Problem"],"prices":{"Drinking Problem":"E"}},"Nirvana":{"songs":["Man Who Sold The World","All Apologies"],"prices":{"Man Who Sold The World":"E","All Apologies":"E"}},"Parker McCollum":{"songs":["Pretty Heart"],"prices":{"Pretty Heart":"E"}},"Post Malone":{"songs":["Circles"],"prices":{"Circles":"E"}},"REM":{"songs":["Losing My Religion"],"prices":{"Losing My Religion":"E"}},"Randy Travis":{"songs":["Forever & Ever Amen","Digging Up Bones","I Told You So"],"prices":{"Forever & Ever Amen":"E","Digging Up Bones":"E","I Told You So":"E"}},"Ricky Skaggs":{"songs":["Heartbroke","Country Boy","Highway 40 Blues"],"prices":{"Heartbroke":"E","Country Boy":"E","Highway 40 Blues":"E"}},"Rolling Stones":{"songs":["Wild Horses","Angel"],"prices":{"Wild Horses":"E","Angel":"E"}},"Ronnie Milsap":{"songs":["Stranger In My House","Smokey Mountain Rain","The Freeze"],"prices":{"Stranger In My House":"E","Smokey Mountain Rain":"E","The Freeze":"E"}},"Stevie Wonder":{"songs":["I Just Called To Say I Love You","Superstition"],"prices":{"I Just Called To Say I Love You":"E","Superstition":"E"}},"The Civil Wars":{"songs":["20 Years","Dance Me To The End Of Love"],"prices":{"20 Years":"E","Dance Me To The End Of Love":"E"}},"The Eagles":{"songs":["Tequila Sunrise","Witchy Woman","Hotel California"],"prices":{"Tequila Sunrise":"E","Witchy Woman":"E","Hotel California":"E"}},"The Highwaymen":{"songs":["Highwayman"],"prices":{"Highwayman":"E"}},"Tom Petty":{"songs":["Won't Back Down","You Got Lucky"],"prices":{"Won't Back Down":"E","You Got Lucky":"E"}},"Tracy Lawrence":{"songs":["Time Marches On"],"prices":{"Time Marches On":"E"}},"Travis Tritt":{"songs":["Help Me Hold On"],"prices":{"Help Me Hold On":"E"}},"Vince Gill":{"songs":["Tryin To Get Over You"],"prices":{"Tryin To Get Over You":"E"}},"Waylon Jennings":{"songs":["Mamas Don't Let Your Babies","Luckenbach Texas"],"prices":{"Mamas Don't Let Your Babies":"E","Luckenbach Texas":"E"}},"Willie Nelson":{"songs":["Blue Eyes Crying","On The Road Again","City OF New Orleans"],"prices":{"Blue Eyes Crying":"E","On The Road Again":"E","City OF New Orleans":"E"}},"Zach Top":{"songs":["Bad Luck","I Never Lie","Dirt To Gold","When You See Me"],"prices":{"Bad Luck":"E","I Never Lie":"E","Dirt To Gold":"E","When You See Me":"E"}}};
 
         // Price map (hidden)
         const prices = {'A':50, 'B':25, 'C':15, 'D':10, 'E':5};
@@ -98,17 +97,21 @@
         // Cart (localStorage)
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-        // Build artist accordion (alpha sorted)
-        const sortedArtists = Object.keys(songsData).sort();
-        let html = '';
-        sortedArtists.forEach(artist => {
-            html += `<details><summary>${artist}</summary><ul>`;
-            songsData[artist].songs.forEach(song => {
-                html += `<li onclick="addSong('${artist}', '${song.replace(/'/g, "\\'")}')">${song}</li>`;
+        // Build artist accordion (alpha sorted) - moved to top to ensure DOM ready
+        function buildArtists() {
+            const sortedArtists = Object.keys(songsData).sort();
+            let html = '';
+            sortedArtists.forEach(artist => {
+                html += `<details><summary>${artist}</summary><ul>`;
+                songsData[artist].songs.forEach(song => {
+                    const escapedSong = song.replace(/'/g, "\\'");
+                    html += `<li onclick="addSong('${artist.replace(/'/g, "\\'")}', '${escapedSong}')">${song}</li>`;
+                });
+                html += '</ul></details>';
             });
-            html += '</ul></details>';
-        });
-        document.getElementById('artists-section').innerHTML = html;
+            document.getElementById('artists-section').innerHTML = html;
+            console.log('Artists built:', sortedArtists.length); // Debug log
+        }
 
         // Update cart display
         function updateCart() {
@@ -117,10 +120,10 @@
             let itemsHtml = '';
             let total = 0;
             cart.forEach(item => {
-                let price = item.amount || prices[item.tier] || 15; // Custom/tip fallback
+                let price = item.amount || prices[item.tier] || 50; // Custom/tip fallback to 50
                 total += price;
                 let display = item.type === 'tip' ? `Tip: $${price}` : `${item.artist ? item.artist + ' - ' : ''}${item.song}`;
-                itemsHtml += `<li>${display}</li>`;
+                itemsHtml += `<li>${display} ($${price})</li>`; // Show price per item for clarity
             });
             document.getElementById('cart-items').innerHTML = itemsHtml;
             document.getElementById('total').textContent = total.toFixed(2);
@@ -131,12 +134,14 @@
             const tier = songsData[artist].prices[song];
             cart.push({artist, song, tier});
             updateCart();
+            alert(`${song} added to cue!`); // Feedback for drunk-friendly
         }
 
         // Add tip
         function addTip(amount) {
             cart.push({type: 'tip', amount});
             updateCart();
+            alert(`${amount > 0 ? '$' + amount + ' tip' : 'Free suggestion'} added!`);
         }
 
         // Add custom tip
@@ -146,6 +151,7 @@
                 cart.push({type: 'tip', amount: amt});
                 document.getElementById('custom-tip').value = '';
                 updateCart();
+                alert('Custom tip added!');
             }
         }
 
@@ -153,9 +159,12 @@
         function addCustomSong() {
             const song = document.getElementById('custom-song').value.trim();
             if (song) {
-                cart.push({song, tier: 'C', custom: true});
+                cart.push({song, tier: 'A', custom: true});
                 document.getElementById('custom-song').value = '';
                 updateCart();
+                alert(`${song} ($50) added to cue!`);
+            } else {
+                alert('Enter a song name!');
             }
         }
 
@@ -163,6 +172,25 @@
         function showCart() {
             document.getElementById('cart-section').style.display = 'block';
             document.getElementById('cart-section').scrollIntoView({behavior: 'smooth'});
+        }
+
+        // Init Firebase after DOM
+        function initFirebase() {
+            if (firebaseConfig.apiKey) { // Only if config provided
+                firebase.initializeApp(firebaseConfig);
+                window.db = firebase.database().ref('signups');
+            } else {
+                console.warn('Firebase config missing - emails/signups will fail');
+            }
+        }
+
+        // Init EmailJS
+        function initEmailJS() {
+            if (EMAILJS_USER_ID !== 'YOUR_EMAILJS_USER_ID') {
+                emailjs.init(EMAILJS_USER_ID);
+            } else {
+                console.warn('EmailJS not configured - emails will fail');
+            }
         }
 
         // Checkout
@@ -173,12 +201,14 @@
             const email = formData.get('email');
             const message = formData.get('message') || '';
 
-            // Store to Firebase (name/email only)
-            db.push({
-                name,
-                email,
-                timestamp: firebase.database.ServerValue.TIMESTAMP
-            });
+            // Store to Firebase (name/email only) if available
+            if (window.db) {
+                window.db.push({
+                    name,
+                    email,
+                    timestamp: firebase.database.ServerValue.TIMESTAMP
+                });
+            }
 
             // Calc total
             const total = parseFloat(document.getElementById('total').textContent) || 0;
@@ -187,9 +217,9 @@
             let body = `Tips & Requests from ${name} (${email})\n\nRequested Songs:\n`;
             cart.forEach(item => {
                 if (item.type === 'tip') {
-                    body += `Tip: $${item.amount}\n`;
+                    body += `- Tip: $${item.amount}\n`;
                 } else {
-                    body += `${item.artist ? item.artist + ' - ' : ''}${item.song}\n`;
+                    body += `- ${item.artist ? item.artist + ' - ' : ''}${item.song} ($${prices[item.tier] || item.amount || 50})\n`;
                 }
             });
             body += `\nMessage: ${message}\n\nTotal: $${total.toFixed(2)}`;
@@ -201,38 +231,57 @@
                 return;
             }
 
-            // PayPal
-            paypal.Buttons({
-                createOrder: (data, actions) => actions.order.create({
-                    purchase_units: [{ amount: { value: total.toFixed(2) } }]
-                }),
-                onApprove: async (data, actions) => {
-                    await actions.order.capture();
-                    sendEmail(body);
-                    showThankyou();
-                }
-            }).render('#paypal-button-container');
+            // PayPal - only render if not already
+            if (!document.querySelector('#paypal-button-container script')) {
+                paypal.Buttons({
+                    createOrder: (data, actions) => actions.order.create({
+                        purchase_units: [{ amount: { value: total.toFixed(2) } }]
+                    }),
+                    onApprove: async (data, actions) => {
+                        await actions.order.capture();
+                        sendEmail(body);
+                        showThankyou();
+                    },
+                    onError: (err) => {
+                        console.error('PayPal error:', err);
+                        alert('Payment failed - try again or contact support');
+                    }
+                }).render('#paypal-button-container');
+            }
         });
 
         // Send email
         function sendEmail(body) {
-            emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-                to_email: EMAIL_TO,
-                message: body
-            }).then(() => console.log('Email sent!'), (err) => console.error('Email failed:', err));
+            if (EMAILJS_SERVICE_ID !== 'YOUR_EMAILJS_SERVICE_ID') {
+                emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+                    to_email: EMAIL_TO,
+                    message: body
+                }).then(() => console.log('Email sent!'), (err) => {
+                    console.error('Email failed:', err);
+                    alert('Request queued, but email notification failed - thanks anyway!');
+                });
+            } else {
+                console.warn('Email not sent - config missing');
+            }
         }
 
         // Show thanks
         function showThankyou() {
             document.getElementById('cart-section').style.display = 'none';
             document.getElementById('thankyou').style.display = 'block';
+            document.getElementById('thankyou').scrollIntoView({behavior: 'smooth'});
             cart = [];
             localStorage.removeItem('cart');
             updateCart();
         }
 
-        // Init
-        updateCart();
+        // Init on load
+        window.addEventListener('DOMContentLoaded', () => {
+            buildArtists();
+            initFirebase();
+            initEmailJS();
+            updateCart();
+        });
     </script>
 </body>
 </html>
