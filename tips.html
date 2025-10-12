@@ -13,7 +13,7 @@
         #tip-section button { background: #28a745; }
         #tip-section button:hover { background: #218838; }
         input, textarea { width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
-        #cart-icon { position: fixed; top: 10px; right: 10px; background: #ffc107; padding: 10px; border-radius: 50px; font-weight: bold; }
+        #cart-icon { position: fixed; top: 10px; right: 10px; background: #ffc107; padding: 10px; border-radius: 50px; font-weight: bold; cursor: pointer; }
         details { margin: 10px 0; }
         details summary { padding: 10px; background: #007bff; color: white; cursor: pointer; border-radius: 5px; font-weight: bold; }
         details ul { list-style: none; padding: 0; margin: 0; }
@@ -21,7 +21,8 @@
         details li:hover { background: #e9ecef; }
         #artists-section { margin: 20px 0; }
         #cart-section { display: none; background: white; padding: 20px; margin: 20px 0; border-radius: 5px; }
-        #cart-items li { padding: 10px; border-bottom: 1px solid #ddd; }
+        #cart-items li { padding: 10px; border-bottom: 1px solid #ddd; position: relative; }
+        .remove-btn { color: red; cursor: pointer; font-size: 18px; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); }
         #thankyou { display: none; text-align: center; background: #d4edda; padding: 20px; border-radius: 5px; color: #155724; }
         #paypal-button-container { margin: 20px 0; }
     </style>
@@ -35,7 +36,7 @@
 </head>
 <body>
     <h1>Tipping & Requests</h1>
-    <div id="cart-icon">🛒 (<span id="cart-count">0</span>)</div>
+    <div id="cart-icon" onclick="showCart()">🛒 (<span id="cart-count">0</span>)</div>
     
     <div id="tip-section">
         <h2>Quick Tip or Suggestion</h2>
@@ -58,7 +59,7 @@
     <div id="custom-section">
         <h2>Custom Request (Not Listed?)</h2>
         <input id="custom-song" placeholder='e.g. "Star Spangled Banner"'>
-        <button onclick="addCustomSong()">Add $50 Custom Request</button>
+        <button onclick="addCustomSong()">Add $20 Custom Request</button>
     </div>
 
     <div id="cart-section">
@@ -113,17 +114,23 @@
             console.log('Artists built:', sortedArtists.length); // Debug log
         }
 
+        // Remove item from cart
+        function removeItem(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+
         // Update cart display
         function updateCart() {
             localStorage.setItem('cart', JSON.stringify(cart));
             document.getElementById('cart-count').textContent = cart.length;
             let itemsHtml = '';
             let total = 0;
-            cart.forEach(item => {
-                let price = item.amount || prices[item.tier] || 50; // Custom/tip fallback to 50
+            cart.forEach((item, index) => {
+                let price = item.amount || prices[item.tier] || 0;
                 total += price;
                 let display = item.type === 'tip' ? `Tip: $${price}` : `${item.artist ? item.artist + ' - ' : ''}${item.song}`;
-                itemsHtml += `<li>${display} ($${price})</li>`; // Show price per item for clarity
+                itemsHtml += `<li>${display} ($${price}) <span class="remove-btn" onclick="removeItem(${index})">❌</span></li>`;
             });
             document.getElementById('cart-items').innerHTML = itemsHtml;
             document.getElementById('total').textContent = total.toFixed(2);
@@ -134,7 +141,7 @@
             const tier = songsData[artist].prices[song];
             cart.push({artist, song, tier});
             updateCart();
-            alert(`${song} added to cue!`); // Feedback for drunk-friendly
+            alert(`${song} added to cue!`);
         }
 
         // Add tip
@@ -142,6 +149,7 @@
             cart.push({type: 'tip', amount});
             updateCart();
             alert(`${amount > 0 ? '$' + amount + ' tip' : 'Free suggestion'} added!`);
+            showCart();
         }
 
         // Add custom tip
@@ -152,6 +160,7 @@
                 document.getElementById('custom-tip').value = '';
                 updateCart();
                 alert('Custom tip added!');
+                showCart();
             }
         }
 
@@ -159,10 +168,11 @@
         function addCustomSong() {
             const song = document.getElementById('custom-song').value.trim();
             if (song) {
-                cart.push({song, tier: 'A', custom: true});
+                cart.push({song, amount: 20, custom: true});
                 document.getElementById('custom-song').value = '';
                 updateCart();
-                alert(`${song} ($50) added to cue!`);
+                alert(`${song} ($20) added to cue!`);
+                showCart();
             } else {
                 alert('Enter a song name!');
             }
@@ -219,7 +229,7 @@
                 if (item.type === 'tip') {
                     body += `- Tip: $${item.amount}\n`;
                 } else {
-                    body += `- ${item.artist ? item.artist + ' - ' : ''}${item.song} ($${prices[item.tier] || item.amount || 50})\n`;
+                    body += `- ${item.artist ? item.artist + ' - ' : ''}${item.song} ($${item.amount || prices[item.tier] || 0})\n`;
                 }
             });
             body += `\nMessage: ${message}\n\nTotal: $${total.toFixed(2)}`;
