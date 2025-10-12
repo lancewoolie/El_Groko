@@ -156,16 +156,21 @@
         #artists-section { 
             margin: 20px 0; 
         }
+        #alpha-nav { 
+            text-align: center; 
+            margin: 20px 0; 
+            font-size: 18px; 
+        }
         #alpha-nav a {
             color: #FFD700;
             text-decoration: none;
-            margin: 0 5px;
-            padding: 5px 8px;
+            margin: 0 1px;
+            padding: 4px 6px;
             border-radius: 50%;
             background: rgba(0, 116, 217, 0.2);
             transition: all 0.3s ease;
             font-weight: bold;
-            font-size: 16px;
+            font-size: 14px;
         }
         #alpha-nav a:hover {
             background: #FFD700;
@@ -299,16 +304,24 @@
         let baseTotal = 0;
         let roundedTotal = 0;
 
+        // Title case function
+        function toTitleCase(str) {
+            return str.replace(/\w\S*/g, function(txt) {
+                return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+            });
+        }
+
         // Build artist accordion (alpha sorted)
         function buildArtists() {
             const sortedArtists = Object.keys(songsData).sort();
             let html = '';
-            let navHtml = '<div id="alpha-nav" style="text-align: center; margin: 20px 0; font-size: 18px;">';
+            let navHtml = '<div id="alpha-nav"><div style="text-align: center; margin: 20px 0; font-size: 18px;">';
             for (let i = 65; i <= 90; i++) {
                 const letter = String.fromCharCode(i);
-                navHtml += `<a href="#letter-${letter}" style="color: #FFD700; text-decoration: none; margin: 0 5px; padding: 5px 8px; border-radius: 50%; background: rgba(0, 116, 217, 0.2); transition: all 0.3s ease; font-weight: bold; font-size: 16px;">${letter}</a>`;
+                navHtml += `<a href="#letter-${letter}" style="color: #FFD700; text-decoration: none; margin: 0 1px; padding: 4px 6px; border-radius: 50%; background: rgba(0, 116, 217, 0.2); transition: all 0.3s ease; font-weight: bold; font-size: 14px;">${letter}</a>`;
             }
-            navHtml += '</div>';
+            navHtml += '</div></div>';
+
             html += navHtml;
 
             let prevLetter = '';
@@ -325,12 +338,20 @@
                     const tier = songsData[artist].prices[song];
                     const price = prices[tier];
                     const icon = songsData[artist].icons[song] || '';
-                    const isFifteen = tier === 'C';
-                    const songColor = isFifteen ? '#FF8C00' : '#E0E0E0';
-                    html += `<li onclick="addSong('${escapedArtist}', '${escapedSong}')"><span style="color: ${songColor};">${song}</span> (<span style="color: #32CD32">$${price}</span>) <span class="song-icon">${icon}</span></li>`;
+                    const displaySong = toTitleCase(song);
+                    let songColor = '#E0E0E0';
+                    if (tier === 'A') {
+                        songColor = '#DAA520'; // off-bright gold
+                    } else if (tier === 'D') {
+                        songColor = '#40E0D0'; // off-bright cyan
+                    } else if (tier === 'C') {
+                        songColor = '#FF8C00'; // off-bright orange
+                    }
+                    html += `<li onclick="addSong('${escapedArtist}', '${escapedSong}')"><span style="color: ${songColor};">${displaySong}</span> (<span style="color: #32CD32">$${price}</span>) <span class="song-icon">${icon}</span></li>`;
                 });
                 html += '</ul></details>';
             });
+            html += navHtml;
             document.getElementById('artists-section').innerHTML = html;
             console.log('Artists built:', sortedArtists.length); // Debug log
         }
