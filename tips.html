@@ -4,32 +4,195 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tipping & Requests - Lance Woolie</title>
+    <link href="https://fonts.googleapis.com/css2?family=Georgia&display=swap" rel="stylesheet">
     <style>
-        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 10px; background: #f9f9f9; }
-        h1, h2 { text-align: center; color: #333; }
-        button { padding: 10px 20px; margin: 5px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
-        button:hover { background: #0056b3; }
-        #tip-section, #custom-section { background: #e9ecef; padding: 15px; margin: 10px 0; border-radius: 5px; }
-        #tip-section button { background: #28a745; }
-        #tip-section button:hover { background: #218838; }
-        .custom-tip-row { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
-        .custom-tip-row input { flex: 1; min-width: 100px; }
-        input, textarea { width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
-        #cart-icon { position: fixed; top: 10px; right: 10px; background: #ffc107; padding: 10px; border-radius: 50px; font-weight: bold; cursor: pointer; }
-        details { margin: 10px 0; }
-        details summary { padding: 10px; background: #007bff; color: white; cursor: pointer; border-radius: 5px; font-weight: bold; }
-        details ul { list-style: none; padding: 0; margin: 0; }
-        details li { padding: 10px; background: white; margin: 5px 0; cursor: pointer; border-radius: 5px; border: 1px solid #ddd; display: flex; align-items: center; }
-        details li:hover { background: #e9ecef; }
-        .song-icon { margin-right: 8px; font-size: 20px; }
-        #artists-section { margin: 20px 0; }
-        #cart-section { display: none; background: white; padding: 20px; margin: 20px 0; border-radius: 5px; }
-        #cart-items li { padding: 10px; border-bottom: 1px solid #ddd; position: relative; }
-        .remove-btn { color: red; cursor: pointer; font-size: 18px; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); }
-        .roundup-section { margin: 10px 0; }
-        .roundup-section input[type="checkbox"] { margin-right: 10px; }
-        #thankyou { display: none; text-align: center; background: #d4edda; padding: 20px; border-radius: 5px; color: #155724; }
-        #paypal-button-container { margin: 20px 0; }
+        body { 
+            font-family: 'Georgia', serif; 
+            max-width: 800px; 
+            margin: 0 auto; 
+            padding: 10px; 
+            background-color: #1e3a8a; /* Dark royal blue */
+            color: #E0E0E0; /* Light grey text */
+        }
+        h1, h2 { 
+            text-align: center; 
+            color: #FFD700; /* Gold */
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        button { 
+            padding: 10px 20px; 
+            margin: 5px; 
+            background: #0074D9; /* Blue */
+            color: #E0E0E0; /* Light grey */
+            border: 2px solid #0074D9; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            font-size: 16px; 
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        button:hover { 
+            background: #FFD700; /* Gold on hover */
+            color: #001f3f; /* Dark blue text */
+            border-color: #FFD700;
+            transform: scale(1.05);
+        }
+        #tip-section, #custom-section { 
+            background: linear-gradient(rgba(0, 31, 63, 0.8), rgba(30, 58, 138, 0.8)); 
+            padding: 15px; 
+            margin: 10px 0; 
+            border: 2px solid #0074D9; 
+            border-radius: 15px; 
+            box-shadow: 0 4px 15px rgba(0, 116, 217, 0.3);
+        }
+        #tip-section button { 
+            background: #FFD700; /* Gold for quick tips */
+            color: #001f3f; /* Dark blue text */
+            border: 2px solid #FFD700;
+        }
+        #tip-section button:hover { 
+            background: #e6c200; 
+            border-color: #e6c200; 
+            color: #001f3f;
+        }
+        #tip-section .free-suggestion {
+            background: #FFD700; /* Yellow for suggestion */
+            color: #001f3f;
+            border: 2px solid #FFD700;
+        }
+        #tip-section .free-suggestion:hover {
+            background: #e6c200;
+            border-color: #e6c200;
+        }
+        .custom-tip-row { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            margin-top: 10px; 
+        }
+        .custom-tip-row input { 
+            flex: 1; 
+            min-width: 100px; 
+            background: #001f3f; 
+            color: #E0E0E0; 
+            border: 1px solid #0074D9; 
+        }
+        input, textarea { 
+            width: 100%; 
+            padding: 10px; 
+            margin: 5px 0; 
+            border: 2px solid #0074D9; 
+            border-radius: 5px; 
+            box-sizing: border-box; 
+            background: #001f3f; 
+            color: #E0E0E0;
+        }
+        input::placeholder, textarea::placeholder {
+            color: #808080; /* Grey placeholder */
+        }
+        #cart-icon { 
+            position: fixed; 
+            top: 10px; 
+            right: 10px; 
+            background: linear-gradient(45deg, #FFD700, #e6c200); 
+            color: #001f3f; 
+            padding: 10px; 
+            border-radius: 50px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            border: 2px solid #FFD700;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+        details { 
+            margin: 10px 0; 
+            border: 2px solid #0074D9; 
+            border-radius: 15px; 
+            overflow: hidden;
+        }
+        details summary { 
+            padding: 10px; 
+            background: #0074D9; /* Blue */
+            color: #E0E0E0; 
+            cursor: pointer; 
+            border-radius: 5px; 
+            font-weight: bold; 
+        }
+        details ul { 
+            list-style: none; 
+            padding: 0; 
+            margin: 0; 
+            background: #1e3a8a;
+        }
+        details li { 
+            padding: 10px; 
+            background: #001f3f; 
+            margin: 5px 0; 
+            cursor: pointer; 
+            border-radius: 5px; 
+            border: 1px solid #0074D9; 
+            display: flex; 
+            align-items: center; 
+            color: #E0E0E0;
+        }
+        details li:hover { 
+            background: #FFD700; 
+            color: #001f3f; 
+            border-color: #FFD700;
+        }
+        .song-icon { 
+            margin-right: 8px; 
+            font-size: 20px; 
+        }
+        #artists-section { 
+            margin: 20px 0; 
+        }
+        #cart-section { 
+            display: none; 
+            background: linear-gradient(rgba(0, 31, 63, 0.8), rgba(30, 58, 138, 0.8)); 
+            padding: 20px; 
+            margin: 20px 0; 
+            border: 2px solid #0074D9; 
+            border-radius: 15px; 
+            box-shadow: 0 4px 15px rgba(0, 116, 217, 0.3);
+            color: #E0E0E0;
+        }
+        #cart-items li { 
+            padding: 10px; 
+            border-bottom: 1px solid #0074D9; 
+            position: relative; 
+            background: #001f3f; 
+            border-radius: 5px;
+            color: #E0E0E0;
+        }
+        .remove-btn { 
+            color: #FF4500; /* Red-orange */
+            cursor: pointer; 
+            font-size: 18px; 
+            position: absolute; 
+            right: 10px; 
+            top: 50%; 
+            transform: translateY(-50%); 
+        }
+        .roundup-section { 
+            margin: 10px 0; 
+            color: #E0E0E0;
+        }
+        .roundup-section input[type="checkbox"] { 
+            margin-right: 10px; 
+        }
+        #thankyou { 
+            display: none; 
+            text-align: center; 
+            background: linear-gradient(rgba(0, 31, 63, 0.8), rgba(30, 58, 138, 0.8)); 
+            padding: 20px; 
+            border: 2px solid #0074D9; 
+            border-radius: 15px; 
+            color: #E0E0E0; 
+            box-shadow: 0 4px 15px rgba(0, 116, 217, 0.3);
+        }
+        #paypal-button-container { 
+            margin: 20px 0; 
+        }
     </style>
     <!-- PayPal SDK -->
     <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD"></script>
@@ -49,7 +212,7 @@
         <button onclick="addTip(5)">$5 Tip</button>
         <button onclick="addTip(15)">$15 Tip</button>
         <button onclick="addTip(20)">$20 Tip</button>
-        <button onclick="freeSuggestion()">Free Suggestion</button>
+        <button class="free-suggestion" onclick="freeSuggestion()">Free Suggestion</button>
         <div class="custom-tip-row">
             <input id="custom-tip" type="number" min="0" step="1" placeholder="Custom Tip Amount">
             <button onclick="addCustomTip()">Add Custom Tip</button>
