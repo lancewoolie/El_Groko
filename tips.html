@@ -12,6 +12,8 @@
         #tip-section, #custom-section { background: #e9ecef; padding: 15px; margin: 10px 0; border-radius: 5px; }
         #tip-section button { background: #28a745; }
         #tip-section button:hover { background: #218838; }
+        .custom-tip-row { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+        .custom-tip-row input { flex: 1; min-width: 100px; }
         input, textarea { width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
         #cart-icon { position: fixed; top: 10px; right: 10px; background: #ffc107; padding: 10px; border-radius: 50px; font-weight: bold; cursor: pointer; }
         details { margin: 10px 0; }
@@ -23,6 +25,8 @@
         #cart-section { display: none; background: white; padding: 20px; margin: 20px 0; border-radius: 5px; }
         #cart-items li { padding: 10px; border-bottom: 1px solid #ddd; position: relative; }
         .remove-btn { color: red; cursor: pointer; font-size: 18px; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); }
+        .roundup-section { margin: 10px 0; }
+        .roundup-section input[type="checkbox"] { margin-right: 10px; }
         #thankyou { display: none; text-align: center; background: #d4edda; padding: 20px; border-radius: 5px; color: #155724; }
         #paypal-button-container { margin: 20px 0; }
     </style>
@@ -44,9 +48,11 @@
         <button onclick="addTip(5)">$5 Tip</button>
         <button onclick="addTip(15)">$15 Tip</button>
         <button onclick="addTip(20)">$20 Tip</button>
-        <button onclick="addTip(0)">Free Suggestion</button>
-        <input id="custom-tip" type="number" min="0" step="1" placeholder="Custom Tip Amount">
-        <button onclick="addCustomTip()">Add Custom Tip</button>
+        <button onclick="freeSuggestion()">Free Suggestion</button>
+        <div class="custom-tip-row">
+            <input id="custom-tip" type="number" min="0" step="1" placeholder="Custom Tip Amount">
+            <button onclick="addCustomTip()">Add Custom Tip</button>
+        </div>
     </div>
 
     <button onclick="showCart()">View Song Cue (Cart)</button>
@@ -66,12 +72,15 @@
         <h2>Your Song Cue</h2>
         <ul id="cart-items"></ul>
         <p><strong>Total: $<span id="total">0</span></p>
+        <div class="roundup-section">
+            <label><input type="checkbox" id="roundup" onchange="toggleRoundup()"> Round up to next $10 (pay more!)</label>
+        </div>
         <form id="checkout-form">
-            <input name="name" placeholder="Chosen Name (e.g. Drunk Fan)" required>
+            <input name="Fan Name" placeholder="(audience member name, IE Tex Hooper)" required>
+            <textarea name="message" placeholder="Custom Message to the Band (optional, e.g. 'Epstein didn't kill himself!')"></textarea>
             <input name="email" type="email" placeholder="Email Address" required>
-            <textarea name="message" placeholder="Custom Message to the Band (optional, e.g. 'Tiffany turns 25 today!')"></textarea>
             <div id="paypal-button-container"></div>
-            <button type="submit">Checkout & Pay</button>
+            <button type="submit">Submit to Live Cue</button>
         </form>
     </div>
 
@@ -97,6 +106,8 @@
 
         // Cart (localStorage)
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let baseTotal = 0;
+        let roundedTotal = 0;
 
         // Build artist accordion (alpha sorted) - moved to top to ensure DOM ready
         function buildArtists() {
@@ -120,20 +131,27 @@
             updateCart();
         }
 
+        // Toggle roundup
+        function toggleRoundup() {
+            updateCart();
+        }
+
         // Update cart display
         function updateCart() {
             localStorage.setItem('cart', JSON.stringify(cart));
             document.getElementById('cart-count').textContent = cart.length;
             let itemsHtml = '';
-            let total = 0;
+            baseTotal = 0;
             cart.forEach((item, index) => {
                 let price = item.amount || prices[item.tier] || 0;
-                total += price;
+                baseTotal += price;
                 let display = item.type === 'tip' ? `Tip: $${price}` : `${item.artist ? item.artist + ' - ' : ''}${item.song}`;
                 itemsHtml += `<li>${display} ($${price}) <span class="remove-btn" onclick="removeItem(${index})">❌</span></li>`;
             });
             document.getElementById('cart-items').innerHTML = itemsHtml;
-            document.getElementById('total').textContent = total.toFixed(2);
+            roundedTotal = Math.ceil(baseTotal / 10) * 10;
+            const roundupChecked = document.getElementById('roundup').checked;
+            document.getElementById('total').textContent = (roundupChecked ? roundedTotal : baseTotal).toFixed(2);
         }
 
         // Add song
@@ -148,20 +166,27 @@
         function addTip(amount) {
             cart.push({type: 'tip', amount});
             updateCart();
-            alert(`${amount > 0 ? '$' + amount + ' tip' : 'Free suggestion'} added!`);
+            alert('THANK YOU, tip added to cart');
             showCart();
+        }
+
+        // Free suggestion
+        function freeSuggestion() {
+            showCart();
+            setTimeout(() => {
+                document.querySelector('textarea[name="message"]').scrollIntoView({behavior: 'smooth'});
+                document.querySelector('textarea[name="message"]').focus();
+            }, 500);
         }
 
         // Add custom tip
         function addCustomTip() {
             const amt = parseFloat(document.getElementById('custom-tip').value) || 0;
-            if (amt > 0 || confirm('Is this a free suggestion?')) {
-                cart.push({type: 'tip', amount: amt});
-                document.getElementById('custom-tip').value = '';
-                updateCart();
-                alert('Custom tip added!');
-                showCart();
-            }
+            cart.push({type: 'tip', amount: amt});
+            document.getElementById('custom-tip').value = '';
+            updateCart();
+            alert('THANK YOU, tip added to cart');
+            showCart();
         }
 
         // Add custom song
@@ -207,24 +232,25 @@
         document.getElementById('checkout-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const formData = new FormData(e.target);
-            const name = formData.get('name');
+            const fanName = formData.get('Fan Name');
             const email = formData.get('email');
             const message = formData.get('message') || '';
 
-            // Store to Firebase (name/email only) if available
+            // Store to Firebase (Fan Name/email only) if available
             if (window.db) {
                 window.db.push({
-                    name,
+                    'Fan Name': fanName,
                     email,
                     timestamp: firebase.database.ServerValue.TIMESTAMP
                 });
             }
 
             // Calc total
-            const total = parseFloat(document.getElementById('total').textContent) || 0;
+            const roundupChecked = document.getElementById('roundup').checked;
+            const total = roundupChecked ? roundedTotal : baseTotal;
 
             // Build email body
-            let body = `Tips & Requests from ${name} (${email})\n\nRequested Songs:\n`;
+            let body = `Tips & Requests from ${fanName} (${email})\n\nRequested Songs:\n`;
             cart.forEach(item => {
                 if (item.type === 'tip') {
                     body += `- Tip: $${item.amount}\n`;
