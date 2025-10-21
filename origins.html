@@ -79,57 +79,40 @@
       font-size: 1.3rem;
       color: #FFD700;
       font-weight: bold;
-      text-align: center;
+      text-align: left;
       margin: 2rem 0 1rem 0;
       text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-      display: block;
+      display: inline-block;
     }
-    .bio-image {
-      max-width: 30%; /* Reduced for more text wrap space */
-      height: auto;
-      border-radius: 12px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 215, 0, 0.2);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    .year-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .thumb-carousel {
+      display: flex;
+      overflow-x: auto;
+      gap: 0.5rem;
+      padding: 0.5rem 0;
+      flex-shrink: 0;
+      scrollbar-width: thin;
+      -ms-overflow-style: none;
+    }
+    .thumb-carousel::-webkit-scrollbar {
+      height: 4px;
+    }
+    .thumb-img {
+      width: 80px;
+      height: 80px;
       object-fit: cover;
-      float: left;
-      margin: 0 1rem 0.5rem 0; /* Tightened vertical margin */
-      clear: both;
+      border-radius: 8px;
       cursor: pointer;
+      flex-shrink: 0;
+      transition: transform 0.2s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
-    .bio-image:nth-child(even) {
-      float: right;
-      margin: 0 0 0.5rem 1rem;
-    }
-    .bio-image:hover {
-      transform: scale(1.05);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 215, 0, 0.4);
-    }
-    .bio-image.album-link {
-      cursor: pointer;
-    }
-    .clearfix::after {
-      content: "";
-      display: table;
-      clear: both;
-    }
-    .video-embed {
-      max-width: 30%; /* Match image width */
-      height: auto;
-      border-radius: 12px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 215, 0, 0.2);
-      margin: 0.5rem 0;
-      float: left;
-      clear: both;
-    }
-    .video-embed:nth-child(even) {
-      float: right;
-      margin: 0.5rem 0;
-    }
-    .video-embed iframe {
-      width: 100%;
-      height: 0;
-      padding-bottom: 56.25%; /* 16:9 aspect ratio */
-      border: none;
+    .thumb-img:hover {
+      transform: scale(1.1);
     }
     /* Modal for band images */
     .modal {
@@ -302,6 +285,20 @@
       transform: translate(-50%, -50%);
       transition: transform 0.1s ease;
     }
+
+    .video-embed {
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 215, 0, 0.2);
+      margin: 1rem auto;
+      display: block;
+      max-width: 100%;
+    }
+    .video-embed iframe {
+      width: 100%;
+      height: 0;
+      padding-bottom: 56.25%; /* 16:9 aspect ratio */
+      border: none;
+    }
   </style>
 </head>
 <body>
@@ -322,55 +319,70 @@
         <div class="bio-container">
           <p>I was born in the Baton Rouge Police Department Headquarters (aka Woman's Hospital), on July 3, 1979 at 3:33 am, and forged my path through shadows of loss, shades of truth, and FAFO grit. I grew up in Baton Rouge, attended 17 different middle schools due to my undiagnosed ADHD and my parents separate financial struggles. In 1995, my teenage years unraveled amid turmoil, culminating in the tragic loss of my brother, Leigh Michael.</p>
 
-          <img src="img/WHITETRASH3.jpg" alt="Lance Woolie Early Years" class="bio-image" onclick="openModal('img/WHITETRASH3.jpg')">
-
           <p>Addiction and depression followed in 1996, living in the outskirts New Orleans running with the wrong people, leading to my juvenile nonviolent arrest and a pivotal 2 year, 3 week and 4 day stint in juvenile detention at JCCY. While serving time there, during what the wardens called "Fun Day", Warden Lawrence Gorham had heard about my guitar skills and grabbed me and I was thwarted onstage to perform with the <a href="https://wgno.com/news-with-a-twist/angolas-guts-and-glory-band-the-sound-of-the-louisiana-state-penitentiary/" target="_blank">Angola Travelin’ Band</a>.</p>
 
-          <div class="clearfix"></div>
-
-          <p class="timeline-year">1999</p>
+          <div class="year-row">
+            <div class="timeline-year me-3">1999</div>
+            <div class="thumb-carousel">
+              <img class="thumb-img" src="img/Vert4Sad.jpg" alt="Lance Woolie Pondering" onclick="openModal('img/Vert4Sad.jpg')">
+            </div>
+          </div>
 
           <p>Who I have never met. Stage fright quickly ensued. I hadn't touched a guitar in over a year. The drummer of ATB (Sexual Chocolate) had been locked up for longer than I had been alive. Would he even know any songs I know? No time to think about it, so we jammed "Basket Case" by Green Day, and the inmates went wild. Re-Igniting my lifelong passion for music. Behind bars, I led worship sessions that honed my voice, gave me access to geetar and built spiritual depth.</p>
 
-          <img src="img/Vert4Sad.jpg" alt="Lance Woolie Pondering" class="bio-image" onclick="openModal('img/Vert4Sad.jpg')">
-
           <p>While working in the K-9 unit, I fostered a quiet resolve with my prison boss Captain Leo Brown (2 verse of <a href="#" target="_blank">How It Feels To Be A Cowboy</a>); I also took correspondence courses from <a href="https://www.subr.edu/" target="_blank">Southern University</a>, laying groundwork for my future. Released from Jetson Correctional Facility, I channeled that fire into higher education, beginning at Southern University.</p>
 
-          <div class="clearfix"></div>
-
-          <p class="timeline-year">2000</p>
+          <div class="timeline-year mb-3">2000</div>
 
           <p>In 2000, I transferred to <a href="https://www.lsu.edu/" target="_blank">Louisiana State University</a>, initially majoring in Veterinary Medicine but switching to Information Systems & Decision Sciences due to ethical conflicts with Al Stevens leadership style; a self-taught web developer, I've built every band website I've been in, including the current <a href="https://lancewoolie.com/">https://lancewoolie.com/</a>.</p>
 
-          <p class="timeline-year">2001</p>
+          <div class="timeline-year mb-3">2001</div>
 
           <p>I was invited to visit Colombia, a journey that would reshape my life and sound. By 2004, I released a Christian crossover record No Important One “<a href="https://orcd.co/v8kk12j" target="_blank">Let It Ride</a>” (produced at Healing Place). I moved to Bogotá, settling into an apartment at Calle 49, Carrera Séptima #2, immersing myself in the vibrant local rhythms.</p>
 
-          <img src="img/COUCHLance.jpg" alt="Lance Woolie Artist Image" class="bio-image" onclick="openModal('img/COUCHLance.jpg')">
-
-          <p class="timeline-year">2005</p>
+          <div class="year-row">
+            <div class="timeline-year me-3">2005</div>
+          </div>
 
           <p>Hurricane Katrina devastated New Orleans, displacing my mother and influencing my long-term stay in Bogotá; that year, I acted as "El Gringo" in the feature film <a href="https://www.imdb.com/title/tt0485618/" target="_blank">El Colombian Dream</a>. Filmed in Colombia and directed by Felipe Aljure. Amid personal milestones, then-Congressman Bobby Jindal wrote a letter to the State Department on my behalf to expedite my fiancée's visa so our child could be born on American soil—but the request was declined. Cause nobody like Bobby apparently.</p>
 
-          <div class="clearfix"></div>
-
-          <p class="timeline-year">2006</p>
+          <div class="year-row">
+            <div class="timeline-year me-3">2006</div>
+            <div class="thumb-carousel">
+              <img class="thumb-img" src="img/Lancetexasclub.jpg" alt="Lance Woolie Live at Texas Club" onclick="openModal('img/Lancetexasclub.jpg')">
+            </div>
+          </div>
 
           <p>My daughter, Emma, was born in Ibagué, Colombia, as an American citizen born abroad—a profound anchor in my evolving world. From 2006 to 2023, returning stateside, I worked as a stone mason, machinist, blending technical precision with my creative drive; my path twisted through cultures and sounds.</p>
 
-          <img src="img/Lancetexasclub.jpg" alt="Lance Woolie Live at Texas Club" class="bio-image" onclick="openModal('img/Lancetexasclub.jpg')">
+          <p>I co-produced the album <a href="https://lancewoolie.bandcamp.com/album/country-paradise" target="_blank">Hogleg Band - Country Paradise</a> with local Legends Brian Brignac, Corban Barnes, Chris Roberts—a labor of love weaving scars and triumphs into raw, reflective songs.</p>
 
-          <p>I co-produced the album <a href="https://lancewoolie.bandcamp.com/album/country-paradise" target="_blank">Hogleg Band - Country Paradise</a> with local Legends <img src="img/bandmembers/BrianBrignac_TabBenoit.png" alt="Brian Brignac" class="bio-image" onclick="openModal('img/bandmembers/BrianBrignac_TabBenoit.png')"> Brian Brignac, <img src="img/bandmembers/CORBANGEETAR&Keys.png" alt="Corban Barnes" class="bio-image" onclick="openModal('img/bandmembers/CORBANGEETAR&Keys.png')"> Corban Barnes, <img src="img/bandmembers/chrisroberts_atbrians.png" alt="Chris Roberts" class="bio-image" onclick="openModal('img/bandmembers/chrisroberts_atbrians.png')"> Chris Roberts—a labor of love weaving scars and triumphs into raw, reflective songs.</p>
-
-          <img src="img/COUNTRY-PARADISE-scaled.jpg" alt="Country Paradise Album" class="bio-image album-link" onclick="window.open('https://orcd.co/o4qa0ba', '_blank')">
-
-          <div class="clearfix"></div>
+          <div class="thumb-carousel mb-3">
+            <img class="thumb-img" src="img/bandmembers/BrianBrignac_TabBenoit.png" alt="Brian Brignac" onclick="openModal('img/bandmembers/BrianBrignac_TabBenoit.png')">
+            <img class="thumb-img" src="img/bandmembers/CORBANGEETAR&Keys.png" alt="Corban Barnes" onclick="openModal('img/bandmembers/CORBANGEETAR&Keys.png')">
+            <img class="thumb-img" src="img/bandmembers/chrisroberts_atbrians.png" alt="Chris Roberts" onclick="openModal('img/bandmembers/chrisroberts_atbrians.png')">
+          </div>
 
           <p>Between this record and the follow up record, I rebranded to my name given at birth, Lance Woolie. I have retained my dedication to excellence in production quality, strong songs, and the best players to deliver an album that rings true to today's listener while remaining timeless for generations to come.</p>
 
-          <p>We're almost 2 years in on production of this record "The Whole Two Dollars". We have released a couple singles from this album "Too Drunk" (with help of lyricist Jefferey Allen Imler) <div class="video-embed"><iframe src="https://www.youtube.com/embed/K6c5kCqZHOc" title="Lance Woolie - Too Drunk (Official Music Video)" allowfullscreen></iframe></div> and <div class="video-embed"><iframe src="https://www.youtube.com/embed/0nTop80SCvs" title="Lance Woolie - Uber (Official Music Video)" allowfullscreen></iframe></div> Uber, both featuring <img src="img/bandmembers/Brent Mason LIVE.png" alt="Brent Mason" class="bio-image" onclick="openModal('img/bandmembers/Brent Mason LIVE.png')"> Brent Mason.</p>
+          <p>We're almost 2 years in on production of this record "The Whole Two Dollars". We have released a couple singles from this album "Too Drunk" (with help of lyricist Jefferey Allen Imler) and Uber, both featuring Brent Mason.</p>
 
-          <div class="clearfix"></div>
+          <div class="row justify-content-center">
+            <div class="col-md-5">
+              <div class="video-embed">
+                <iframe src="https://www.youtube.com/embed/K6c5kCqZHOc" title="Lance Woolie - Too Drunk (Official Music Video)" allowfullscreen></iframe>
+              </div>
+            </div>
+            <div class="col-md-5">
+              <div class="video-embed">
+                <iframe src="https://www.youtube.com/embed/0nTop80SCvs" title="Lance Woolie - Uber (Official Music Video)" allowfullscreen></iframe>
+              </div>
+            </div>
+          </div>
+
+          <div class="thumb-carousel mb-3">
+            <img class="thumb-img" src="img/bandmembers/Brent Mason LIVE.png" alt="Brent Mason" onclick="openModal('img/bandmembers/Brent Mason LIVE.png')">
+          </div>
 
           <p>Brent has been a Godsend and a great friend and colleague on this album. His encouragement and enthusiasm to work on songs I wrote is a gift I never knew I wanted. Listening to records with Brent playing guitar for Zach Top, Post Malone, Alan Jackson, Garth Brooks, Toby Keith, George Strait, Shania Twain, and 1000's more re-confirms the decision to bring him on this project.</p>
 
@@ -380,21 +392,27 @@
 
           <p>TBH, Corban has more publishing credits on the Country Paradise album than anyone else, even me. I ain't mad at all. Each musician that tracks on a record lays down a piece of themselves on tape, and they should share in the spoils, should the song become a hit. Corban Barnes is a musical monster, a freakin phenom. He performs regularly with my good buddy Kendal Schaffer and he tears up the stage every night. We're all just a big coonass family of artists that love to make great music.</p>
 
-          <p>I also must give an honorable mention to my lead guitarist <img src="img/bandmembers/lance_shane_fatcats.png" alt="Shane Reid" class="bio-image" onclick="openModal('img/bandmembers/lance_shane_fatcats.png')"> Shane Reid who started playing live with Hogleg Band early on at the age of 17 and has continuously grown into the dynamic lead guitarist and most recently, a song writer for himself and a couple the heavy hitting rock songs on my new album.</p>
+          <p>I also must give an honorable mention to my lead guitarist Shane Reid who started playing live with Hogleg Band early on at the age of 17 and has continuously grown into the dynamic lead guitarist and most recently, a song writer for himself and a couple the heavy hitting rock songs on my new album.</p>
 
-          <div class="video-embed"><iframe src="https://www.youtube.com/embed/MXyIZonwOEk" title="Lance Woolie - Little Wing- Live at The Texas Club 6/21/2025" allowfullscreen></iframe></div>
+          <div class="thumb-carousel mb-3">
+            <img class="thumb-img" src="img/bandmembers/lance_shane_fatcats.png" alt="Shane Reid" onclick="openModal('img/bandmembers/lance_shane_fatcats.png')">
+          </div>
 
-          <div class="clearfix"></div>
+          <div class="video-embed mx-auto" style="max-width: 560px;">
+            <iframe src="https://www.youtube.com/embed/MXyIZonwOEk" title="Lance Woolie - Little Wing- Live at The Texas Club 6/21/2025" allowfullscreen></iframe>
+          </div>
 
           <p>Keep an eye on Shane, he's 22 now and what a great friend he is. Another great friend of mine on this album is the Legendary Jonathon Boogie Long. We tracked a masterpiece edition of Jimi Hendrix little wing with Boogie, Brian Brignac and Chris Roberts. I won't be released until 2026 after Boogies new album has had a chance to shine like it deserves. Don't miss it!!</p>
-
-          <img src="img/Vert2websitesidebar.jpg" alt="Lance Woolie Stoic" class="bio-image" onclick="openModal('img/Vert2websitesidebar.jpg')">
-
-          <div class="clearfix"></div>
 
           <p>Today I am the Director of the <a href="https://www.facebook.com/texascountrynetwork" target="_blank">Texas Country Music Network</a>—a subsidiary of the <a href="https://www.texascountrymusicassociation.org/" target="_blank">Texas Country Music Association</a>—I curate music videos for country artists for the TXCN Roku and Firestick apps, having reengineered the workflow to boost load speeds and overall audio/video quality. I do this at no cost to the TXCN or the TCMA.</p>
 
           <p>I am firm believer that rising water rases all ships. Support your fellow musicians. Encourage and enable them to grow and become what you know they are capable of. My best advice to all artists. "Groove is king".</p>
+
+          <div class="thumb-carousel mb-3">
+            <img class="thumb-img" src="img/WHITETRASH3.jpg" alt="Lance Woolie Early Years" onclick="openModal('img/WHITETRASH3.jpg')">
+            <img class="thumb-img" src="img/COUNTRY-PARADISE-scaled.jpg" alt="Country Paradise Album" onclick="window.open('https://orcd.co/o4qa0ba', '_blank')">
+            <img class="thumb-img" src="img/Vert2websitesidebar.jpg" alt="Lance Woolie Stoic" onclick="openModal('img/Vert2websitesidebar.jpg')">
+          </div>
         </div>
 
         <!-- Subscribe GIF Button - Added at end of content, centered, with hover behavior -->
