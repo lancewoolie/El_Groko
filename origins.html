@@ -94,6 +94,7 @@
       float: left;
       margin: 0 1rem 1rem 0;
       clear: both;
+      cursor: pointer;
     }
     .bio-image:nth-child(even) {
       float: right;
@@ -103,10 +104,59 @@
       transform: scale(1.05);
       box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 215, 0, 0.4);
     }
+    .bio-image.album-link {
+      cursor: pointer;
+    }
     .clearfix::after {
       content: "";
       display: table;
       clear: both;
+    }
+    .video-embed {
+      max-width: 40%;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 215, 0, 0.2);
+      margin: 1rem 0;
+      float: left;
+      clear: both;
+    }
+    .video-embed:nth-child(even) {
+      float: right;
+    }
+    .video-embed iframe {
+      width: 100%;
+      height: 0;
+      padding-bottom: 56.25%; /* 16:9 aspect ratio */
+      border: none;
+    }
+    /* Modal for band images */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 10002;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.9);
+    }
+    .modal-content {
+      margin: auto;
+      display: block;
+      width: 80%;
+      max-width: 700px;
+      max-height: 80%;
+      cursor: pointer;
+    }
+    .close {
+      position: absolute;
+      top: 15px;
+      right: 35px;
+      color: #f1f1f1;
+      font-size: 40px;
+      font-weight: bold;
+      cursor: pointer;
     }
     .subscribe-btn {
       cursor: pointer;
@@ -271,7 +321,7 @@
         <div class="bio-container">
           <p>I was born in the Baton Rouge Police Department Headquarters (aka Woman's Hospital), on July 3, 1979 at 3:33 am, and forged my path through shadows of loss, shades of truth, and FAFO grit. I grew up in Baton Rouge, attended 17 different middle schools due to my undiagnosed ADHD and my parents separate financial struggles.</p>
 
-          <img src="img/WHITETRASH3.jpg" alt="Lance Woolie Early Years" class="bio-image">
+          <img src="img/WHITETRASH3.jpg" alt="Lance Woolie Early Years" class="bio-image" onclick="openModal('img/WHITETRASH3.jpg')">
 
           <div class="clearfix"></div>
 
@@ -280,7 +330,7 @@
 
           <p>While serving time there, during what the wardens called "Fun Day", Warden Lawrence Gorham had heard about my guitar skills and grabbed me and I was thwarted onstage to perform with the <a href="https://wgno.com/news-with-a-twist/angolas-guts-and-glory-band-the-sound-of-the-louisiana-state-penitentiary/" target="_blank">Angola Travelin’ Band</a>. Who I have never met. Stage fright quickly ensued. I hadn't touched a guitar in over a year. The drummer of ATB (Sexual Chocolate) had been locked up for longer than I had been alive. Would he even know any songs I know? No time to think about it, so we jammed "Basket Case" by Green Day, and the inmates went wild. Re-Igniting my lifelong passion for music. Behind bars, I led worship sessions that honed my voice, gave me access to geetar and built spiritual depth. While working in the K-9 unit, I fostered a quiet resolve with my prison boss Captain Leo Brown (2 verse of <a href="#" target="_blank">How It Feels To Be A Cowboy</a>); I also took correspondence courses from <a href="https://www.subr.edu/" target="_blank">Southern University</a>, laying groundwork for my future.</p>
 
-          <img src="img/Vert4Sad.jpg" alt="Lance Woolie Pondering" class="bio-image">
+          <img src="img/Vert4Sad.jpg" alt="Lance Woolie Pondering" class="bio-image" onclick="openModal('img/Vert4Sad.jpg')">
 
           <div class="clearfix"></div>
 
@@ -290,7 +340,7 @@
           <p class="timeline-year">2001</p>
           <p>I was invited to visit Colombia, a journey that would reshape my life and sound. By 2004, I released a Christian crossover record No Important One “<a href="https://orcd.co/v8kk12j" target="_blank">Let It Ride</a>” (produced at Healing Place). I moved to Bogotá, settling into an apartment at Calle 49, Carrera Séptima #2, immersing myself in the vibrant local rhythms.</p>
 
-          <img src="img/COUCHLance.jpg" alt="Lance Woolie Artist Image" class="bio-image">
+          <img src="img/COUCHLance.jpg" alt="Lance Woolie Artist Image" class="bio-image" onclick="openModal('img/COUCHLance.jpg')">
 
           <div class="clearfix"></div>
 
@@ -300,17 +350,23 @@
           <p class="timeline-year">2006</p>
           <p>My daughter, Emma, was born in Ibagué, Colombia, as an American citizen born abroad—a profound anchor in my evolving world. From 2006 to 2023, returning stateside, I worked as a stone mason, machinist, blending technical precision with my creative drive; my path twisted through cultures and sounds.</p>
 
-          <img src="img/Lancetexasclub.jpg" alt="Lance Woolie Live at Texas Club" class="bio-image">
+          <img src="img/Lancetexasclub.jpg" alt="Lance Woolie Live at Texas Club" class="bio-image" onclick="openModal('img/Lancetexasclub.jpg')">
 
           <div class="clearfix"></div>
 
-          <p>I co-produced the album <a href="https://lancewoolie.bandcamp.com/album/country-paradise" target="_blank">Hogleg Band - Country Paradise</a> with local Legends Brian Brignac, Corban Barnes, Chris Roberts—a labor of love weaving scars and triumphs into raw, reflective songs. Between this record and the follow up record, I rebranded to my name given at birth, Lance Woolie. I have retained my dedication to excellence in production quality, strong songs, and the best players to deliver an album that rings true to today's listener while remaining timeless for generations to come.</p>
+          <p>I co-produced the album <a href="https://lancewoolie.bandcamp.com/album/country-paradise" target="_blank">Hogleg Band - Country Paradise</a> with local Legends <img src="img/bandmembers/BrianBrignac_TabBenoit.png" alt="Brian Brignac" class="bio-image" onclick="openModal('img/bandmembers/BrianBrignac_TabBenoit.png')"> Brian Brignac, <img src="img/bandmembers/CORBANGEETAR&Keys.png" alt="Corban Barnes" class="bio-image" onclick="openModal('img/bandmembers/CORBANGEETAR&Keys.png')"> Corban Barnes, <img src="img/bandmembers/chrisroberts_atbrians.png" alt="Chris Roberts" class="bio-image" onclick="openModal('img/bandmembers/chrisroberts_atbrians.png')"> Chris Roberts—a labor of love weaving scars and triumphs into raw, reflective songs. <img src="img/COUNTRY-PARADISE-scaled.jpg" alt="Country Paradise Album" class="bio-image album-link" onclick="window.open('https://orcd.co/o4qa0ba', '_blank')"> Between this record and the follow up record, I rebranded to my name given at birth, Lance Woolie. I have retained my dedication to excellence in production quality, strong songs, and the best players to deliver an album that rings true to today's listener while remaining timeless for generations to come.</p>
 
-          <p>We're almost 2 years in on production of this record "The Whole Two Dollars". We have released a couple singles from this album "Too Drunk" (with help of lyricist Jefferey Allen Imler)<a href="https://www.youtube.com/watch?v=K6c5kCqZHOc" target="_blank"> Lance Woolie - Too Drunk (Official Music Video)</a> and <a href="https://www.youtube.com/watch?v=0nTop80SCvs" target="_blank">Lance Woolie - Uber (Official Music Video)</a>, both featuring Brent Mason. Brent has been a Godsend and a great friend and colleague on this album. His encouragement and enthusiasm to work on songs I wrote is a gift I never knew I wanted. Listening to records with Brent playing guitar for Zach Top, Post Malone, Alan Jackson, Garth Brooks, Toby Keith, George Strait, Shania Twain, and 1000's more re-confirms the decision to bring him on this project. Brent listens to the lyrics, then tracks guitar licks that support those lyrics. This is what I like to call "groove glue". Where each player on a record effect what the next player is tracking. Making a Nashville level authentic country or americana record is a long process and it takes a village of individuals dedicated to their craft. In the past, many of these session musicians received only hourly pay for the hit songs they performed on and zero after the songs became hits. Not on my records. Every player that makes it to the final mix gets 4% of the publishing royalties of that song. For example, on the song Country Paradise, Corban Barnes owns 50% of the writing for the co-write, an additional 8% for producer credit, 4% for guitars, and 4% for keys, for a total of 16% publishing + 50% writing. TBH, Corban has more publishing credits on the Country Paradise album than anyone else, even me. I ain't mad at all. Each musician that tracks on a record lays down a piece of themselves on tape, and they should share in the spoils, should the song become a hit. Corban Barnes is a musical monster, a freakin phenom. He performs regularly with my good buddy Kendal Schaffer and he tears up the stage every night. We're all just a big coonass family of artists that love to make great music.</p>
+          <div class="clearfix"></div>
 
-          <p>I also must give an honorable mention to my lead guitarist Shane Reid who started playing live with Hogleg Band early on at the age of 17 and has continuously grown into the dynamic lead guitarist and most recently, a song writer for himself and a couple the heavy hitting rock songs on my new album. <a href="https://www.youtube.com/@LanceWoolie" target="_blank">Lance Woolie - Little Wing- Live at The Texas Club 6/21/2025</a> Keep an eye on Shane, he's 22 now and what a great friend he is. Another great friend of mine on this album is the Legendary Jonathon Boogie Long. We tracked a masterpiece edition of Jimi Hendrix little wing with Boogie, Brian Brignac and Chris Roberts. I won't be released until 2026 after Boogies new album has had a chance to shine like it deserves. Don't miss it!!</p>
+          <p>We're almost 2 years in on production of this record "The Whole Two Dollars". We have released a couple singles from this album "Too Drunk" (with help of lyricist Jefferey Allen Imler) <div class="video-embed"><iframe src="https://www.youtube.com/embed/K6c5kCqZHOc" title="Lance Woolie - Too Drunk (Official Music Video)" allowfullscreen></iframe></div> and <div class="video-embed"><iframe src="https://www.youtube.com/embed/0nTop80SCvs" title="Lance Woolie - Uber (Official Music Video)" allowfullscreen></iframe></div> Uber, both featuring <img src="img/bandmembers/Brent Mason LIVE.png" alt="Brent Mason" class="bio-image" onclick="openModal('img/bandmembers/Brent Mason LIVE.png')"> Brent Mason. Brent has been a Godsend and a great friend and colleague on this album. His encouragement and enthusiasm to work on songs I wrote is a gift I never knew I wanted. Listening to records with Brent playing guitar for Zach Top, Post Malone, Alan Jackson, Garth Brooks, Toby Keith, George Strait, Shania Twain, and 1000's more re-confirms the decision to bring him on this project. Brent listens to the lyrics, then tracks guitar licks that support those lyrics. This is what I like to call "groove glue". Where each player on a record effect what the next player is tracking. Making a Nashville level authentic country or americana record is a long process and it takes a village of individuals dedicated to their craft. In the past, many of these session musicians received only hourly pay for the hit songs they performed on and zero after the songs became hits. Not on my records. Every player that makes it to the final mix gets 4% of the publishing royalties of that song. For example, on the song Country Paradise, Corban Barnes owns 50% of the writing for the co-write, an additional 8% for producer credit, 4% for guitars, and 4% for keys, for a total of 16% publishing + 50% writing. TBH, Corban has more publishing credits on the Country Paradise album than anyone else, even me. I ain't mad at all. Each musician that tracks on a record lays down a piece of themselves on tape, and they should share in the spoils, should the song become a hit. Corban Barnes is a musical monster, a freakin phenom. He performs regularly with my good buddy Kendal Schaffer and he tears up the stage every night. We're all just a big coonass family of artists that love to make great music.</p>
 
-          <img src="img/Vert2websitesidebar.jpg" alt="Lance Woolie Stoic" class="bio-image">
+          <div class="clearfix"></div>
+
+          <p>I also must give an honorable mention to my lead guitarist <img src="img/bandmembers/lance_shane_fatcats.png" alt="Shane Reid" class="bio-image" onclick="openModal('img/bandmembers/lance_shane_fatcats.png')"> Shane Reid who started playing live with Hogleg Band early on at the age of 17 and has continuously grown into the dynamic lead guitarist and most recently, a song writer for himself and a couple the heavy hitting rock songs on my new album. <div class="video-embed"><iframe src="https://www.youtube.com/embed/MXyIZonwOEk" title="Lance Woolie - Little Wing- Live at The Texas Club 6/21/2025" allowfullscreen></iframe></div> Keep an eye on Shane, he's 22 now and what a great friend he is. Another great friend of mine on this album is the Legendary Jonathon Boogie Long. We tracked a masterpiece edition of Jimi Hendrix little wing with Boogie, Brian Brignac and Chris Roberts. I won't be released until 2026 after Boogies new album has had a chance to shine like it deserves. Don't miss it!!</p>
+
+          <div class="clearfix"></div>
+
+          <img src="img/Vert2websitesidebar.jpg" alt="Lance Woolie Stoic" class="bio-image" onclick="openModal('img/Vert2websitesidebar.jpg')">
 
           <div class="clearfix"></div>
 
@@ -333,6 +389,12 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- Modal for band images -->
+  <div id="imageModal" class="modal">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <img class="modal-content" id="modalImg">
   </div>
 
   <div id="footer-placeholder"></div> <!-- Dynamic Footer Insert Here - Fixed Floating -->
@@ -391,6 +453,25 @@
       mouseY = window.innerHeight / 2;
       requestTick();
     });
+
+    // Modal functionality
+    function openModal(src) {
+      const modal = document.getElementById('imageModal');
+      const modalImg = document.getElementById('modalImg');
+      modal.style.display = 'block';
+      modalImg.src = src;
+    }
+
+    function closeModal() {
+      document.getElementById('imageModal').style.display = 'none';
+    }
+
+    // Close modal when clicking on image
+    document.getElementById('imageModal').onclick = function(e) {
+      if (e.target.classList.contains('modal')) {
+        closeModal();
+      }
+    };
   </script>
 </body>
 </html>
