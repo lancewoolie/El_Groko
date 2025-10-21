@@ -40,56 +40,56 @@
     .hero-origins {
       background: linear-gradient(rgba(0, 31, 63, 0.8), rgba(30, 58, 138, 0.8)), url('img/ai-bayou-swamp.jpg') center/cover;
       color: white;
-      padding: 80px 0;
+      padding: 60px 0;
       text-align: center;
       margin-top: 80px;
     }
     .hero-origins h1 {
-      font-size: 3rem;
+      font-size: 2.5rem;
       font-weight: bold;
       color: #FFD700; /* Gold hero title */
       text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
     }
     .hero-origins .lead {
-      font-size: 1.25rem;
+      font-size: 1.1rem;
       color: #E0E0E0;
     }
     .text-content {
       background-color: #1e3a8a;
-      border: 2px solid #0074D9;
-      border-radius: 15px;
-      padding: 20px; /* Tightened padding from 30px */
-      margin-bottom: 1.5rem; /* Reduced from 2rem */
+      border: 1px solid #0074D9;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 1rem;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       overflow: hidden;
     }
     .text-content:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 10px 25px rgba(0, 116, 217, 0.3);
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 116, 217, 0.3);
       border-color: #FFD700;
     }
     .text-content p {
-      font-size: 1.1rem;
-      line-height: 1.6;
-      margin-bottom: 1rem; /* Tightened from 2rem */
+      font-size: 1rem;
+      line-height: 1.5;
+      margin-bottom: 0.8rem;
       color: #E0E0E0;
     }
     .text-content img {
       width: 100%;
       height: auto;
-      max-width: 400px; /* Reduced from 500px for tighter fit */
+      max-width: 300px;
       display: block;
-      margin: 1rem auto 1rem auto; /* Tightened from 2rem */
-      border-radius: 10px;
+      margin: 0.8rem auto;
+      border-radius: 8px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
       object-fit: contain;
     }
     .timeline-year {
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       color: #FFD700;
       font-weight: bold;
       text-align: center;
-      margin: 1.5rem 0 0.5rem 0;
+      margin: 1rem 0 0.5rem 0;
       text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
     }
     h1 {
@@ -133,102 +133,115 @@
       overflow: hidden;
     }
 
-.score-header::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.05), transparent);
-  animation: shimmer 3s infinite;
-  z-index: 0;
-}
+    .score-header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.05), transparent);
+      animation: shimmer 3s infinite;
+      z-index: 0;
+    }
 
-@keyframes shimmer {
-  0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-  100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-}
+    @keyframes shimmer {
+      0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+      100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+    }
 
-.health-display, .score-display {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(0, 0, 0, 0.2);
-  padding: 4px 8px;
-  border-radius: 15px;
-  border: 1px solid rgba(255, 215, 0, 0.3);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s ease;
-}
+    .health-display, .score-display {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 4px 8px;
+      border-radius: 15px;
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
 
-.health-display:hover, .score-display:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(255, 215, 0, 0.4);
-  border-color: #FFD700;
-}
+    .health-display:hover, .score-display:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(255, 215, 0, 0.4);
+      border-color: #FFD700;
+    }
 
-.score-label {
-  font-size: 0.85rem;
-  color: #E0E0E0;
-  font-weight: bold;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-}
+    .score-label {
+      font-size: 0.85rem;
+      color: #E0E0E0;
+      font-weight: bold;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    }
 
-#score-value {
-  font-family: 'Courier New', monospace;
-  font-size: 1.1rem;
-  font-weight: bold;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-  min-width: 80px;
-  text-align: right;
-}
+    #score-value {
+      font-family: 'Courier New', monospace;
+      font-size: 1.1rem;
+      font-weight: bold;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+      min-width: 80px;
+      text-align: right;
+    }
 
-.score-zero { color: #808080; }
-.score-low { color: #FFA500; }
-.score-mid { color: #FFD700; }
-.score-high { color: #FF4500; }
-.score-max { color: #00FFFF; }
+    .score-zero { color: #808080; }
+    .score-low { color: #FFA500; }
+    .score-mid { color: #FFD700; }
+    .score-high { color: #FF4500; }
+    .score-max { color: #00FFFF; }
 
-.score-display.updated, .health-display.updated {
-  animation: pulse 0.5s ease;
-}
+    .score-display.updated, .health-display.updated {
+      animation: pulse 0.5s ease;
+    }
 
-@keyframes pulse {
-  0% { transform: scale(1); box-shadow: 0 0 0 rgba(255, 215, 0, 0); }
-  50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(255, 215, 0, 0.6); }
-  100% { transform: scale(1); box-shadow: 0 0 0 rgba(255, 215, 0, 0); }
-}
+    @keyframes pulse {
+      0% { transform: scale(1); box-shadow: 0 0 0 rgba(255, 215, 0, 0); }
+      50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(255, 215, 0, 0.6); }
+      100% { transform: scale(1); box-shadow: 0 0 0 rgba(255, 215, 0, 0); }
+    }
 
-/* Standard Health Bar Styles */
-#health-bar {
-  width: 100px;
-  height: 18px;
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 4px;
-  overflow: hidden;
-  border: 1px solid #0074D9;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(255, 215, 0, 0.3);
-}
+    /* Standard Health Bar Styles */
+    #health-bar {
+      width: 100px;
+      height: 18px;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid #0074D9;
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(255, 215, 0, 0.3);
+    }
 
-#health-progress {
-  height: 100%;
-  transition: width 0.8s ease, background-color 0.3s ease;
-  border-radius: 3px;
-}
+    #health-progress {
+      height: 100%;
+      transition: width 0.8s ease, background-color 0.3s ease;
+      border-radius: 3px;
+    }
 
-/* Blink Animation for Low Health */
-.health-display.low-health {
-  animation: rapid-blink 0.2s infinite;
-}
+    /* Blink Animation for Low Health */
+    .health-display.low-health {
+      animation: rapid-blink 0.2s infinite;
+    }
 
-@keyframes rapid-blink {
-  0%, 50% { opacity: 1; }
-  51%, 100% { opacity: 0.3; }
-}
-  </style></head>
+    @keyframes rapid-blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0.3; }
+    }
+
+    #custom-cursor {
+      position: fixed !important;
+      pointer-events: none !important;
+      z-index: 10001 !important;
+      width: 8px;
+      height: 8px;
+      background: radial-gradient(circle, #00ff00 0%, transparent 70%);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s ease;
+    }
+  </style>
+</head>
 <body>
   <div id="nav-placeholder"></div> <!-- Dynamic Nav Insert Here -->
 
@@ -241,55 +254,77 @@
     </div>
   </section>
 
-  <div class="container py-5" id="origins-content">
+  <div class="container py-4" id="origins-content">
     <div class="row justify-content-center">
       <div class="col-lg-10">
         <div class="text-content">
-          <p>Born in the humid heart of Baton Rouge, Louisiana, on July 3, 1979, Lance Woolie forged his path through shadows of loss and grit. Familial storms and personal demons defined his early years, but they also lit the fire that drives his raw, soul-stirring country sound—a testament to redemption amid the bayou's unyielding pull.</p>
+          <p>I was born in the Baton Rouge Police Headquarters building (AKA Woman's Hospital), Louisiana, on July 3, 1979, and forged my path through shadows of the loss of my brother and FAFO grit. Familial storms and personal demons defined my early years, but they also lit the fire that drives my raw, soul-stirring country sound—a testament to redemption amid the bayou's unyielding pull.</p>
+        </div>
 
-          <img src="img/WHITETRASH3.jpg" alt="Lance Woolie Early Years" class="img-fluid">
+        <img src="img/WHITETRASH3.jpg" alt="Lance Woolie Early Years" class="img-fluid mx-auto d-block" style="max-width: 300px; margin-bottom: 1rem;">
 
+        <div class="text-content">
           <p class="timeline-year">1995</p>
-          <p>Lance's childhood unraveled amid turmoil, culminating in the tragic loss of his brother, Leigh Michael.</p>
+          <p>My childhood unraveled amid turmoil, culminating in the tragic loss of my brother, Leigh Michael.</p>
+        </div>
 
+        <div class="text-content">
           <p class="timeline-year">1996</p>
-          <p>Addiction and depression followed, leading to his arrest and a pivotal stint in juvenile detention at JCCY. There, during a "Fun Day" performance, Warden Gorham spotted Lance's guitar skills and pushed him onstage with the <a href="https://wgno.com/news-with-a-twist/angolas-guts-and-glory-band-the-sound-of-the-louisiana-state-penitentiary/" target="_blank">Angola Travelin’ Band</a>. They jammed "Basket Case" by Green Day, igniting his lifelong passion for music. Behind bars, Lance led worship sessions that honed his voice and built spiritual depth, while working in the canine unit fostered quiet resolve. He also took correspondence courses from <a href="https://www.subr.edu/" target="_blank">Southern University</a>, laying groundwork for his future.</p>
+          <p>Addiction and depression followed, leading to my juvenile non violent arrest and a pivotal stint in juvenile detention at JCCY. There, during a "Fun Day" performance, Warden Lawrence Gorham heard about my guitar skills and pushed me onstage to perform with the <a href="https://wgno.com/news-with-a-twist/angolas-guts-and-glory-band-the-sound-of-the-louisiana-state-penitentiary/" target="_blank">Angola Travelin’ Band</a>. I hadn't touched a guitar in over a year. We jammed "Basket Case" by Green Day, igniting my lifelong passion for music. Behind bars, I led worship sessions that honed my voice, gave me access to geetar and built spiritual depth, while working in the canine unit fostered quiet resolve; I also took correspondence courses from <a href="https://www.subr.edu/" target="_blank">Southern University</a>, laying groundwork for my future.</p>
+        </div>
 
-          <img src="img/Vert4Sad.jpg" alt="Lance Woolie Pondering" class="img-fluid">
+        <img src="img/Vert4Sad.jpg" alt="Lance Woolie Pondering" class="img-fluid mx-auto d-block" style="max-width: 300px; margin-bottom: 1rem;">
 
+        <div class="text-content">
           <p class="timeline-year">1999</p>
-          <p>Released from Jetson Correctional Facility, Lance channeled that fire into higher education, beginning at Southern University.</p>
+          <p>Released from Jetson Correctional Facility, I channeled that fire into higher education, beginning at Southern University.</p>
+        </div>
 
+        <div class="text-content">
           <p class="timeline-year">2000</p>
-          <p>Lance transferred to <a href="https://www.lsu.edu/" target="_blank">Louisiana State University</a>, initially majoring in Veterinary Medicine but switching to Information Systems & Decision Sciences due to ethical conflicts. A self-taught web developer, he built every band website he's been in, including this one you're reading now.</p>
+          <p>I transferred to <a href="https://www.lsu.edu/" target="_blank">Louisiana State University</a>, initially majoring in Veterinary Medicine but switching to Information Systems & Decision Sciences due to ethical conflicts with Al Stevens leadership style; a self-taught web developer, I've built every band website I've been in, including <a href="https://lancewoolie.com">lancewoolie.com</a>.</p>
+        </div>
 
+        <div class="text-content">
           <p class="timeline-year">2001</p>
-          <p>Lance took his first trip to Colombia, a journey that would reshape his life and sound.</p>
+          <p>I was invited to visit Colombia, a journey that would reshape my life and sound.</p>
+        </div>
 
-          <img src="img/COUCHLance.jpg" alt="Lance Woolie Artist Image" class="img-fluid">
+        <img src="img/COUCHLance.jpg" alt="Lance Woolie Artist Image" class="img-fluid mx-auto d-block" style="max-width: 300px; margin-bottom: 1rem;">
 
+        <div class="text-content">
           <p class="timeline-year">2004</p>
-          <p>Lance moved to Bogotá, Colombia, settling into an apartment at Calle 49, Carrera Séptima #2, immersing himself in the vibrant local rhythms.</p>
+          <p>I released a Christian crossover record No Important One “<a href="https://orcd.co/v8kk12j" target="_blank">Let It Ride</a>” (produced at Healing Place). I moved to Bogotá, settling into an apartment at Calle 49, Carrera Séptima #2, immersing myself in the vibrant local rhythms.</p>
+        </div>
 
+        <div class="text-content">
           <p class="timeline-year">2005</p>
-          <p>Hurricane Katrina devastated New Orleans, displacing Lance's mother and influencing his long-term stay in Bogotá. That year, he acted as "El Gringo" in the feature film <a href="https://www.imdb.com/title/tt0485618/" target="_blank">El Colombian Dream</a>. Amid personal milestones, then-Congressman Bobby Jindal wrote a letter to the State Department on Lance's behalf to expedite his fiancée's visa so their child could be born on American soil—but the request was declined.</p>
+          <p>Hurricane Katrina devastated New Orleans, displacing my mother and influencing my long-term stay in Bogotá; that year, I acted as "El Gringo" in the feature film <a href="https://www.imdb.com/title/tt0485618/" target="_blank">El Colombian Dream</a>. Filmed in Colombia and directed by Felipe Aljure. Amid personal milestones, then-Congressman Bobby Jindal wrote a letter to the State Department on my behalf to expedite my fiancée's visa so our child could be born on American soil—but the request was declined. Cause nobody like Bobby apparently.</p>
+        </div>
 
+        <div class="text-content">
           <p class="timeline-year">2006</p>
-          <p>Lance's daughter, Emma, was born in Ibagué, Colombia, as an American citizen born abroad—a profound anchor in his evolving world.</p>
+          <p>My daughter, Emma, was born in Ibagué, Colombia, as an American citizen born abroad—a profound anchor in my evolving world.</p>
+        </div>
 
-          <img src="img/Lancetexasclub.jpg" alt="Lance Woolie Live at Texas Club" class="img-fluid">
+        <img src="img/Lancetexasclub.jpg" alt="Lance Woolie Live at Texas Club" class="img-fluid mx-auto d-block" style="max-width: 300px; margin-bottom: 1rem;">
 
+        <div class="text-content">
           <p class="timeline-year">2006–2023</p>
-          <p>Returning stateside, Lance worked as a machinist (see <a href="resume.html" target="_blank">resume</a> for details), blending technical precision with his creative drive. His path twisted through cultures and sounds, yielding the Christian crossover record <a href="https://orcd.co/v8kk12j" target="_blank">“Let It Ride.”</a> Collaborations across genres sharpened his craft, blending global beats with Louisiana roots.</p>
+          <p>Returning stateside, I worked as a stone mason, machinist, blending technical precision with my creative drive; my path twisted through cultures and sounds. I co-produced the album <a href="https://lancewoolie.bandcamp.com/album/country-paradise" target="_blank">Hogleg Band - Country Paradise</a> with local Legends Brian Brignac, Corban Barnes, Chris Roberts—a labor of love weaving scars and triumphs into raw, reflective songs.</p>
+          <p>Between this record and the follow up record, I rebranded to my name given at birth, Lance Woolie. I have retained my dedication to excellence in production quality, strong songs, and the best players to deliver an album that rings true to today's listener while remaining timeless for generation to come.</p>
+          <p>We're almost 2 years in on production of this record. Brent Mason has been a Godsend and a great friend and colleague along the way. His encouragement and enthusiasm to work on songs I wrote was a gift I never knew I wanted. Listening to records with Brent playing guitar for Zach Top, Post Malone, Alan Jackson, Garth Brooks, Toby Keith confirms the decision to bring him in to this project. He listens to the lyrics, then tracks guitar licks that support it. This is what I call Groove glue. Making a Nashville level record is a long process that takes a village of individuals dedicated to their craft. In the past many of these session musicians received only hourly pay for the hit songs they performed on. Not on my records. Every player that makes it to the final mix gets 4% of the publishing royalties of that song. For example, on the song Country Paradise Corban Barnes owns 50% of the writing for the co-write, and an additional 8% for producer credit, 4% for guitars, and 4% for keys, for a total of 16% publishing. Corban has more publishing credits on the Country Paradise album than anyone else, even me.</p>
+        </div>
 
-          <p>Today, as Director of the <a href="https://www.facebook.com/texascountrynetwork" target="_blank">Texas Country Music Network</a>—a subsidiary of the <a href="https://www.texascountrymusicassociation.org/" target="_blank">Texas Country Music Association</a>—Lance curates music videos for country artists via the TXCN Roku and Firestick apps. He reengineered the workflow, boosting load speeds and overall audio/video quality. Turning homeward, he co-produced the album <a href="https://lancewoolie.bandcamp.com/album/country-paradise" target="_blank"><em>Country Paradise</em></a> with local talents—a labor of love weaving scars and triumphs into raw, reflective songs. Lance Woolie stands as a storyteller of resilience, his authentic twang bridging bayou lore with modern heartaches. In every chord, the swamp sings back.</p>
+        <div class="text-content">
+          <p>Today I am the Director of the <a href="https://www.facebook.com/texascountrynetwork" target="_blank">Texas Country Music Network</a>—a subsidiary of the <a href="https://www.texascountrymusicassociation.org/" target="_blank">Texas Country Music Association</a>—I curate music videos for country artists for the TXCN Roku and Firestick apps, having reengineered the workflow to boost load speeds and overall audio/video quality. I do this at no cost to the TXCN or the TCMA. I am firm believer that rising water rases all ships. Support your fellow musicians. Encourage and enable them to grow and become what you know they are capable of. My best advice to all artists. "Groove is king".</p>
+        </div>
 
-          <img src="img/Vert2websitesidebar.jpg" alt="Lance Woolie Stoic" class="img-fluid">
+        <img src="img/Vert2websitesidebar.jpg" alt="Lance Woolie Stoic" class="img-fluid mx-auto d-block" style="max-width: 300px; margin-bottom: 1rem;">
 
-          <!-- Subscribe GIF Button - Added at end of content, centered, with hover behavior -->
-          <div class="text-center mt-5">
-            <img src="img/subscribe.gif" alt="Subscribe to Newsletter" class="subscribe-btn img-fluid rounded" style="max-width: 250px; cursor: pointer;" onclick="window.location.href='contact.html#email-subscribe';">
-          </div>
+        <!-- Subscribe GIF Button - Added at end of content, centered, with hover behavior -->
+        <div class="text-center mt-4">
+          <img src="img/subscribe.gif" alt="Subscribe to Newsletter" class="subscribe-btn img-fluid rounded" style="max-width: 250px; cursor: pointer;" onclick="window.location.href='contact.html#email-subscribe';">
         </div>
       </div>
     </div>
@@ -305,6 +340,51 @@
     document.querySelector('.subscribe-btn').addEventListener('click', function() {
       // Add any animation or modal behavior here
       console.log('Subscribe clicked');
+    });
+
+    // Green laser pointer cursor
+    const cursor = document.createElement('div');
+    cursor.id = 'custom-cursor';
+    document.body.appendChild(cursor);
+
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let ticking = false;
+
+    function updatePosition() {
+      cursor.style.left = mouseX + 'px';
+      cursor.style.top = mouseY + 'px';
+      ticking = false;
+    }
+
+    function requestTick() {
+      if (!ticking) {
+        requestAnimationFrame(updatePosition);
+        ticking = true;
+      }
+    }
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      requestTick();
+    });
+
+    // Initial position set
+    setTimeout(() => {
+      updatePosition();
+    }, 100);
+
+    // Hide on touch devices
+    if ('ontouchstart' in window) {
+      cursor.style.display = 'none';
+    }
+
+    // Re-center on resize
+    window.addEventListener('resize', () => {
+      mouseX = window.innerWidth / 2;
+      mouseY = window.innerHeight / 2;
+      requestTick();
     });
   </script>
 </body>
