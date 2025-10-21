@@ -85,19 +85,28 @@
       display: block;
     }
     .bio-image {
-      width: 100%;
-      max-width: 400px;
+      max-width: 40%;
       height: auto;
-      display: block;
-      margin: 1.5rem auto;
       border-radius: 12px;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 215, 0, 0.2);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       object-fit: cover;
+      float: left;
+      margin: 0 1rem 1rem 0;
+      clear: both;
+    }
+    .bio-image:nth-child(even) {
+      float: right;
+      margin: 0 0 1rem 1rem;
     }
     .bio-image:hover {
       transform: scale(1.05);
       box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 215, 0, 0.4);
+    }
+    .clearfix::after {
+      content: "";
+      display: table;
+      clear: both;
     }
     .subscribe-btn {
       cursor: pointer;
@@ -260,9 +269,11 @@
     <div class="row justify-content-center">
       <div class="col-lg-10">
         <div class="bio-container">
-          <p>I was born in the Baton Rouge Police Department Headquarters (AKA Woman's Hospital), on July 3, 1979 at 3:33 am, and forged my path through shadows of loss, shades of truth, and FAFO grit. I grew up in Baton Rouge, attended 17 different middle schools due to my undiagnosed ADHD and my parents separate financial struggles.</p>
+          <p>I was born in the Baton Rouge Police Department Headquarters (aka Woman's Hospital), on July 3, 1979 at 3:33 am, and forged my path through shadows of loss, shades of truth, and FAFO grit. I grew up in Baton Rouge, attended 17 different middle schools due to my undiagnosed ADHD and my parents separate financial struggles.</p>
 
           <img src="img/WHITETRASH3.jpg" alt="Lance Woolie Early Years" class="bio-image">
+
+          <div class="clearfix"></div>
 
           <p class="timeline-year">1995</p>
           <p>My teenage years unraveled amid turmoil, culminating in the tragic loss of my brother, Leigh Michael. Addiction and depression followed in 1996, living in the outskirts New Orleans running with the wrong people, leading to my juvenile nonviolent arrest and a pivotal 2 year, 3 week and 4 day stint in juvenile detention at JCCY.</p>
@@ -271,13 +282,17 @@
 
           <img src="img/Vert4Sad.jpg" alt="Lance Woolie Pondering" class="bio-image">
 
+          <div class="clearfix"></div>
+
           <p class="timeline-year">1999</p>
-          <p>Released from Jetson Correctional Facility, I channeled that fire into higher education, beginning at Southern University. In 2000, I transferred to <a href="https://www.lsu.edu/" target="_blank">Louisiana State University</a>, initially majoring in Veterinary Medicine but switching to Information Systems & Decision Sciences due to ethical conflicts with Al Stevens leadership style; a self-taught web developer, I've built every band website I've been in, including <a href="https://lancewoolie.com">lancewoolie.com</a>.</p>
+          <p>Released from Jetson Correctional Facility, I channeled that fire into higher education, beginning at Southern University. In 2000, I transferred to <a href="https://www.lsu.edu/" target="_blank">Louisiana State University</a>, initially majoring in Veterinary Medicine but switching to Information Systems & Decision Sciences due to ethical conflicts with Al Stevens leadership style; a self-taught web developer, I've built every band website I've been in, including the current <a href="https://lancewoolie.com/">https://lancewoolie.com/</a>.</p>
 
           <p class="timeline-year">2001</p>
           <p>I was invited to visit Colombia, a journey that would reshape my life and sound. By 2004, I released a Christian crossover record No Important One “<a href="https://orcd.co/v8kk12j" target="_blank">Let It Ride</a>” (produced at Healing Place). I moved to Bogotá, settling into an apartment at Calle 49, Carrera Séptima #2, immersing myself in the vibrant local rhythms.</p>
 
           <img src="img/COUCHLance.jpg" alt="Lance Woolie Artist Image" class="bio-image">
+
+          <div class="clearfix"></div>
 
           <p class="timeline-year">2005</p>
           <p>Hurricane Katrina devastated New Orleans, displacing my mother and influencing my long-term stay in Bogotá; that year, I acted as "El Gringo" in the feature film <a href="https://www.imdb.com/title/tt0485618/" target="_blank">El Colombian Dream</a>. Filmed in Colombia and directed by Felipe Aljure. Amid personal milestones, then-Congressman Bobby Jindal wrote a letter to the State Department on my behalf to expedite my fiancée's visa so our child could be born on American soil—but the request was declined. Cause nobody like Bobby apparently.</p>
@@ -287,15 +302,29 @@
 
           <img src="img/Lancetexasclub.jpg" alt="Lance Woolie Live at Texas Club" class="bio-image">
 
+          <div class="clearfix"></div>
+
           <p>I co-produced the album <a href="https://lancewoolie.bandcamp.com/album/country-paradise" target="_blank">Hogleg Band - Country Paradise</a> with local Legends Brian Brignac, Corban Barnes, Chris Roberts—a labor of love weaving scars and triumphs into raw, reflective songs. Between this record and the follow up record, I rebranded to my name given at birth, Lance Woolie. I have retained my dedication to excellence in production quality, strong songs, and the best players to deliver an album that rings true to today's listener while remaining timeless for generations to come.</p>
 
-          <p>We're almost 2 years in on production of this record "The Whole Two Dollars". We have released a couple singles from this album "Too Drunk" (with help of lyricist Jefferey Allen Imler) and Uber, both featuring Brent Mason. Brent has been a Godsend and a great friend and colleague on this album. His encouragement and enthusiasm to work on songs I wrote is a gift I never knew I wanted. Listening to records with Brent playing guitar for Zach Top, Post Malone, Alan Jackson, Garth Brooks, Toby Keith, George Strait, Shania Twain, and 1000's more re-confirms the decision to bring him on this project. Brent listens to the lyrics, then tracks guitar licks that support those lyrics. This is what I like to call "groove glue". Where each player on a record effect what the next player is tracking. Making a Nashville level authentic country or americana record is a long process and it takes a village of individuals dedicated to their craft. In the past, many of these session musicians received only hourly pay for the hit songs they performed on and zero after the songs became hits. Not on my records. Every player that makes it to the final mix gets 4% of the publishing royalties of that song. For example, on the song Country Paradise, Corban Barnes owns 50% of the writing for the co-write, an additional 8% for producer credit, 4% for guitars, and 4% for keys, for a total of 16% publishing + 50% writing. TBH, Corban has more publishing credits on the Country Paradise album than anyone else, even me. I ain't mad at all. Each musician that tracks on a record lays down a piece of themselves on tape, and they should share in the spoils, should the song become a hit. Corban Barnes is a musical monster, a freakin phenom. He performs regularly with my good buddy Kendal Schaffer and he tears up the stage every night. We're all just a big coonass family of artists that love to make great music.</p>
+          <p>We're almost 2 years in on production of this record "The Whole Two Dollars". We have released a couple singles from this album "Too Drunk" (with help of lyricist Jefferey Allen Imler)<a href="https://www.youtube.com/watch?v=K6c5kCqZHOc" target="_blank"> Lance Woolie - Too Drunk (Official Music Video)</a> and <a href="https://www.youtube.com/watch?v=0nTop80SCvs" target="_blank">Lance Woolie - Uber (Official Music Video)</a>, both featuring Brent Mason. Brent has been a Godsend and a great friend and colleague on this album. His encouragement and enthusiasm to work on songs I wrote is a gift I never knew I wanted. Listening to records with Brent playing guitar for Zach Top, Post Malone, Alan Jackson, Garth Brooks, Toby Keith, George Strait, Shania Twain, and 1000's more re-confirms the decision to bring him on this project. Brent listens to the lyrics, then tracks guitar licks that support those lyrics. This is what I like to call "groove glue". Where each player on a record effect what the next player is tracking. Making a Nashville level authentic country or americana record is a long process and it takes a village of individuals dedicated to their craft. In the past, many of these session musicians received only hourly pay for the hit songs they performed on and zero after the songs became hits. Not on my records. Every player that makes it to the final mix gets 4% of the publishing royalties of that song. For example, on the song Country Paradise, Corban Barnes owns 50% of the writing for the co-write, an additional 8% for producer credit, 4% for guitars, and 4% for keys, for a total of 16% publishing + 50% writing. TBH, Corban has more publishing credits on the Country Paradise album than anyone else, even me. I ain't mad at all. Each musician that tracks on a record lays down a piece of themselves on tape, and they should share in the spoils, should the song become a hit. Corban Barnes is a musical monster, a freakin phenom. He performs regularly with my good buddy Kendal Schaffer and he tears up the stage every night. We're all just a big coonass family of artists that love to make great music.</p>
 
-          <p>I also must give an honorable mention to my lead guitarist Shane Reid who started playing live with Hogleg Band early on at the age of 17 and has continuously grown into the dynamic lead guitarist and most recently, a song writer for himself and a couple the heavy hitting rock songs on my new album. Keep an eye on Shane, he's 22 now and what a great friend he is. Another great friend of mine on this album is the Legendary Jonathon Boogie Long. We tracked a masterpiece edition of Jimi Hendrix little wing with Boogie, Brian Brignac and Chris Roberts. I won't be released until 2026 after Boogies new album has had a chance to shine like it deserves. Don't miss it!!</p>
+          <p>I also must give an honorable mention to my lead guitarist Shane Reid who started playing live with Hogleg Band early on at the age of 17 and has continuously grown into the dynamic lead guitarist and most recently, a song writer for himself and a couple the heavy hitting rock songs on my new album. <a href="https://www.youtube.com/@LanceWoolie" target="_blank">Lance Woolie - Little Wing- Live at The Texas Club 6/21/2025</a> Keep an eye on Shane, he's 22 now and what a great friend he is. Another great friend of mine on this album is the Legendary Jonathon Boogie Long. We tracked a masterpiece edition of Jimi Hendrix little wing with Boogie, Brian Brignac and Chris Roberts. I won't be released until 2026 after Boogies new album has had a chance to shine like it deserves. Don't miss it!!</p>
 
           <img src="img/Vert2websitesidebar.jpg" alt="Lance Woolie Stoic" class="bio-image">
 
+          <div class="clearfix"></div>
+
           <p>Today I am the Director of the <a href="https://www.facebook.com/texascountrynetwork" target="_blank">Texas Country Music Network</a>—a subsidiary of the <a href="https://www.texascountrymusicassociation.org/" target="_blank">Texas Country Music Association</a>—I curate music videos for country artists for the TXCN Roku and Firestick apps, having reengineered the workflow to boost load speeds and overall audio/video quality. I do this at no cost to the TXCN or the TCMA. I am firm believer that rising water rases all ships. Support your fellow musicians. Encourage and enable them to grow and become what you know they are capable of. My best advice to all artists. "Groove is king".</p>
+
+          <h2 style="color: #FFD700; text-align: center; margin-top: 2rem;">2.) What first drew you to country music specifically, and what’s your approach to writing music?</h2>
+
+          <p>I grew up on country gold, which was on my daddy's radio. I got a pawn shop guitar at 12 years old. I wasn't a good player, but it's kind of an addiction. My road to Damascus movement came in 2019 when I was working as a radio DJ & Host on the late John Walton’s terrestrial radio station 105.3 FREE FM in Beaumont, Texas. Many of the new-aged country songs of the day made me sick to my stomach, Florida Georgia Line , Machine Gun Jellyroll types . Eww. To quote Ray Wylie Hubbard “That just sounds nasty.” I said to myself, surely , we (with our superior country influences) could do better than this crap being sent to the radio station. Previously, I wrote, sang, and produced 546 comedy songs for the syndicated Walton & Johnson show. Out of those 500+ songs, I felt that country was by far, my strongest genre and my favorite overall of styles. I began learning every country gold song I could find and with each song I received a little piece of each artist's style and groove.</p>
+
+          <p>While I was driving across the country with the radio off, I learned a new song writing trick from Wilie Nelson. This was a technique used by Willie Nelson in the 50's to write classics like Crazy by Patsy Cline and many other early country bangers. Long Drives with no distractions = new songs. I drove to Colorado and back, when I got home, I had 16 new original songs)</p>
+
+          <p>I met some great players including Chris Roberts who introduced me to drummer and record producer, local legend Brian Brignac (Eric Clapton Live , Joel Sonier , Wayne Toupes ) we began tracking under the name Hogleg Band during Covid , our first single “How It Feels to Be a Cowboy “ hit #57 in Texas Country Music Charts. We made a record called Country Paradise. Most of the songs written by me and there’s a couple of cowrites. I rebranded as a solo artist in 2023 due to conflicts in the hog leg band name. We still use most of the same Players on our records . Corban Barnes played guitar and Keyboard’s on the first album. His guitars were in the style of the legendary Brent Mason, and miraculously between the last Hogleg record and my new album we have connected with Brent Mason himself to fill his own role as lead guitarist . He’s already tracked nine songs on my Solo debut album.</p>
+
+          <p>The more I work with these juggernauts of music, the more my writing attempts to utilize their strengths. This creates what I call "groove glue".</p>
         </div>
 
         <!-- Subscribe GIF Button - Added at end of content, centered, with hover behavior -->
