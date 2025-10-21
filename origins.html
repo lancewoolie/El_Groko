@@ -24,7 +24,6 @@
       color: #E0E0E0; /* Light grey text */
       padding-bottom: 60px; /* Space for fixed footer */
       font-family: 'Georgia', serif;
-      cursor: none !important;
       touch-action: pan-y;
       overflow-x: hidden;
     }
@@ -228,30 +227,6 @@
 @keyframes rapid-blink {
   0%, 50% { opacity: 1; }
   51%, 100% { opacity: 0.3; }
-}canvas {
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100vw !important;
-  height: 100vh !important;
-  z-index: 10000 !important;
-  pointer-events: none !important;
-  mix-blend-mode: screen !important;
-  filter: brightness(0.4) contrast(1.1) hue-rotate(210deg) !important; /* Dims brightness, boosts contrast slightly, shifts to blue-violet for bayou vibe */
-  opacity: 0.7 !important; /* Further softens intensity without losing glow */
-}
-#custom-cursor {
-  position: fixed !important;
-  pointer-events: none !important;
-  z-index: 10001 !important; /* Above neon canvas & footer */
-  user-select: none !important;
-  font-size: 1.5rem !important; /* ~24px; tweak for size */
-  transform: translate(-50%, -50%) scale(1); /* Centers emoji on the exact mouse pos */
-  transition: transform 0.1s ease; /* Smooth follow; keeps it snappy */
-  mix-blend-mode: screen !important; /* Blends with neon glow */
-}
-#custom-cursor:hover {
-  transform: translate(-50%, -50%) scale(1.1); /* Optional subtle pulse */
 }
   </style></head>
 <body>
@@ -324,23 +299,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
-  <!-- Neon Cursor Toy Script -->
-  <script type="module">
-    import { neonCursor } from 'https://unpkg.com/threejs-toys@0.0.8/build/threejs-toys.module.cdn.min.js?module';
-    neonCursor({
-      el: document.body,
-      shaderPoints: 16,
-      curvePoints: 80,
-      curveLerp: 0.5,
-      radius1: 5,
-      radius2: 30,
-      velocityTreshold: 10,
-      sleepRadiusX: 100,
-      sleepRadiusY: 100,
-      sleepTimeCoefX: 0.0025,
-      sleepTimeCoefY: 0.0025
-    });
-  </script>
   <!-- Additional script for email signup functionality if needed -->
   <script>
     // Example behavior for subscribe button (redirect to signup page)
@@ -349,54 +307,5 @@
       console.log('Subscribe clicked');
     });
   </script>
-<script>
-  // Create and position cowboy hat emoji cursor
-  const cursor = document.createElement('div');
-  cursor.id = 'custom-cursor';
-  cursor.innerHTML = '';
-  document.body.appendChild(cursor);
-
-  let mouseX = window.innerWidth / 2; // Initial center X
-  let mouseY = window.innerHeight / 2; // Initial center Y
-  let ticking = false;
-
-  function updatePosition() {
-    cursor.style.left = mouseX + 'px';
-    cursor.style.top = mouseY + 'px';
-    ticking = false;
-  }
-
-  // Smooth RAF-based update
-  function requestTick() {
-    if (!ticking) {
-      requestAnimationFrame(updatePosition);
-      ticking = true;
-    }
-  }
-
-  document.addEventListener('mousemove', (e) => {
-    console.log('Mouse moved:', e.clientX, e.clientY); // Debug: Remove after testing
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-    requestTick();
-  });
-
-  // Initial position set
-  setTimeout(() => {
-    updatePosition();
-  }, 100); // Slight delay for DOM settle
-
-  // Hide on touch devices (neon handles mobile better)
-  if ('ontouchstart' in window) {
-    cursor.style.display = 'none';
-  }
-
-  // Re-center on resize (e.g., window drag)
-  window.addEventListener('resize', () => {
-    mouseX = window.innerWidth / 2;
-    mouseY = window.innerHeight / 2;
-    requestTick();
-  });
-</script>
 </body>
 </html>
