@@ -464,7 +464,7 @@ function generateFooter() {
         </div>
       </div>
       <!-- Subscribe Raccoon Behind Footer -->
-      <img id="subscribe-raccoon" class="floating-subscribe" src="img/racoon.png" alt="Subscribe Raccoon">
+     <img id="subscribe-raccoon" class="floating-subscribe" src="/img/racoon.png" alt="Subscribe Raccoon"> <!-- Absolute -->
     </footer>
   `;
 
@@ -781,32 +781,7 @@ if (currentPage === 'origins') {
     });
   });
 
-  // Contact Form Handler (Firebase - If on contact page, fixed references)
-  const contactForm = document.getElementById('contact-form');
-  if (contactForm && window.db) {
-    contactForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const name = document.getElementById('name').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const message = document.getElementById('message').value.trim();
-      if (!name || !email || !message || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        alert('Whoa, partner—fill it right.');
-        return;
-      }
-      try {
-        await window.addDoc(window.collection(window.db, 'contacts'), {
-          name, email, message, type: 'general', timestamp: window.serverTimestamp()
-        });
-        alert('Message sent—bayou reply incoming.');
-        contactForm.reset();
-        // Add extra points after successful submit (total 10420 with the 100 from click)
-        updateScore(10320);
-      } catch (error) {
-        alert('Send failed—try again.');
-        console.error(error);
-      }
-    });
-  }
+
 
   // Index Page Specific: Ricochet Load Animation (post content load, post site shaking, on load of bullet hole dots)
   if (currentPage === 'index') {
