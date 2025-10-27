@@ -3,7 +3,8 @@
   display: flex;
   align-items: center;
 }
-
+/* Quick Add: Ensure dark theme overrides */
+body { background-color: #1e3a8a !important; }
 #health-container {
   position: relative;
 }
