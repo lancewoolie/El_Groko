@@ -561,27 +561,56 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     document.head.appendChild(style);
 
-    // Load neon cursor module
-    const neonScript = document.createElement('script');
-    neonScript.type = 'module';
-    neonScript.textContent = `
-      import { neonCursor } from 'https://unpkg.com/threejs-toys@0.0.8/build/threejs-toys.module.cdn.min.js'
-      neonCursor({
-        el: document.body,
-        shaderPoints: 16,
-        curvePoints: 80,
-        curveLerp: 0.5,
-        radius1: 5,
-        radius2: 30,
-        velocityTreshold: 10,
-        sleepRadiusX: 100,
-        sleepRadiusY: 100,
-        sleepTimeCoefX: 0.0025,
-        sleepTimeCoefY: 0.0025
-      })
-    `;
-    document.head.appendChild(neonScript);
-  }
+  // Add Neon Cursor Toy effect to ORIGINS ONLY (avoids bloat/CSP elsewhere)
+if (currentPage === 'origins') {
+  // Add Montserrat font
+  const fontLink = document.createElement('link');
+  fontLink.href = 'https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap';
+  fontLink.rel = 'stylesheet';
+  document.head.appendChild(fontLink);
+
+  // Add neon cursor styles
+  const style = document.createElement('style');
+  style.textContent = `
+    body {
+      cursor: none !important;
+      touch-action: pan-y;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+    }
+  `;
+  document.head.appendChild(style);
+
+  // Load neon cursor module
+  const neonScript = document.createElement('script');
+  neonScript.type = 'module';
+  neonScript.textContent = `
+    import { neonCursor } from 'https://unpkg.com/threejs-toys@0.0.8/build/threejs-toys.module.cdn.min.js'
+    neonCursor({
+      el: document.body,
+      shaderPoints: 16,
+      curvePoints: 80,
+      curveLerp: 0.5,
+      radius1: 5,
+      radius2: 30,
+      velocityTreshold: 10,
+      sleepRadiusX: 100,
+      sleepRadiusY: 100,
+      sleepTimeCoefX: 0.0025,
+      sleepTimeCoefY: 0.0025
+    })
+  `;
+  document.head.appendChild(neonScript);
+}
 
   // Global sub-dot click handlers (works on index, empty on other pages)
   document.querySelectorAll('.sub-dot').forEach(sub => {
