@@ -463,8 +463,7 @@ function generateFooter() {
           </div>
         </div>
       </div>
-      <!-- Subscribe Raccoon Behind Footer -->
-      <img id="subscribe-raccoon" class="floating-subscribe" src="/img/racoon.png" alt="Subscribe Raccoon"> <!-- Absolute path -->
+    
     </footer>
   `;
 
