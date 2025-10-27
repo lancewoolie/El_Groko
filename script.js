@@ -334,7 +334,7 @@ function generateNav() {
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="position: fixed !important; top: 0; left: 0; right: 0; z-index: 1000 !important;">
       <div class="container">
         <a class="navbar-brand" href="index.html">
-          <img src="img/BEARDsmall.png" alt="Lance Woolie" style="height: 20px;"> Lance Woolie
+          <img src="/img/BEARDsmall.png" alt="Lance Woolie" style="height: 20px;"> Lance Woolie <!-- Absolute path -->
         </a>
         <div class="score-header mx-auto d-flex justify-content-center align-items-center gap-3">
           <div class="health-display">
@@ -358,19 +358,19 @@ function generateNav() {
               <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Music</a>
               <ul class="dropdown-menu horizontal-dropdown">
                 <li><a class="dropdown-item d-flex align-items-center" href="https://orcd.co/a4glqme" target="_blank">
-                  <img src="img/Ubermenu.jpg" alt="Uber" class="dropdown-img me-2" style="width: 150px; height: 150px; object-fit: cover;">
+                  <img src="/img/Ubermenu.jpg" alt="Uber" class="dropdown-img me-2" style="width: 150px; height: 150px; object-fit: cover;"> <!-- Absolute -->
                   Uber
                 </a></li>
                 <li><a class="dropdown-item d-flex align-items-center" href="https://orcd.co/lancewoolietoodrunk" target="_blank">
-                  <img src="img/TooDrunkmenu.jpg" alt="Too Drunk" class="dropdown-img me-2" style="width: 150px; height: 150px; object-fit: cover;">
+                  <img src="/img/TooDrunkmenu.jpg" alt="Too Drunk" class="dropdown-img me-2" style="width: 150px; height: 150px; object-fit: cover;"> <!-- Absolute -->
                   Too Drunk
                 </a></li>
                 <li><a class="dropdown-item d-flex align-items-center" href="https://orcd.co/lancewoolieworstenemy" target="_blank">
-                  <img src="img/WorstEnemymenu.jpg" alt="Worst Enemy" class="dropdown-img me-2" style="width: 150px; height: 150px; object-fit: cover;">
+                  <img src="/img/WorstEnemymenu.jpg" alt="Worst Enemy" class="dropdown-img me-2" style="width: 150px; height: 150px; object-fit: cover;"> <!-- Absolute -->
                   Worst Enemy
                 </a></li>
                 <li><a class="dropdown-item d-flex align-items-center" href="music.html">
-                  <img src="img/Fullcatalogmenu.jpg" alt="Full Catalog" class="dropdown-img me-2" style="width: 150px; height: 150px; object-fit: cover;">
+                  <img src="/img/Fullcatalogmenu.jpg" alt="Full Catalog" class="dropdown-img me-2" style="width: 150px; height: 150px; object-fit: cover;"> <!-- Absolute -->
                   Full Catalog
                 </a></li>
               </ul>
@@ -445,26 +445,26 @@ function generateFooter() {
             <p class="mb-0 small">&copy; 2025 Lance Woolie. All rights reserved.</p>
           </div>
           <div class="col-md-4 text-end">
-            <a href="https://x.com/LanceWoolie" target="_blank" class="me-3" title="X (Twitter)" style="display: inline-block; width: 24px; height: 24px; margin-right: 8px;">
+            <a href="https://x.com/LanceWoolie" target="_blank" class="me-3" title="X (Twitter)" style="display: inline-block; width: 24px; height: 24px; margin-right: 8px;" rel="noopener">
               <img src="https://cdn.simpleicons.org/x/ffffff/24.svg" alt="X" style="width: 24px; height: 24px;">
             </a>
-            <a href="https://www.facebook.com/lancewooliemusic/" target="_blank" class="me-3" title="Facebook" style="display: inline-block; width: 24px; height: 24px; margin-right: 8px;">
+            <a href="https://www.facebook.com/lancewooliemusic/" target="_blank" class="me-3" title="Facebook" style="display: inline-block; width: 24px; height: 24px; margin-right: 8px;" rel="noopener">
               <img src="https://cdn.simpleicons.org/facebook/ffffff/24.svg" alt="Facebook" style="width: 24px; height: 24px;">
             </a>
-            <a href="https://www.tiktok.com/@lancewoolie" target="_blank" class="me-3" title="TikTok" style="display: inline-block; width: 24px; height: 24px; margin-right: 8px;">
+            <a href="https://www.tiktok.com/@lancewoolie" target="_blank" class="me-3" title="TikTok" style="display: inline-block; width: 24px; height: 24px; margin-right: 8px;" rel="noopener">
               <img src="https://cdn.simpleicons.org/tiktok/ffffff/24.svg" alt="TikTok" style="width: 24px; height: 24px;">
             </a>
-            <a href="https://www.youtube.com/channel/UC9NUm7_BejCwctJ9u6dps7g" target="_blank" class="me-3" title="YouTube" style="display: inline-block; width: 24px; height: 24px; margin-right: 8px;">
+            <a href="https://www.youtube.com/channel/UC9NUm7_BejCwctJ9u6dps7g" target="_blank" class="me-3" title="YouTube" style="display: inline-block; width: 24px; height: 24px; margin-right: 8px;" rel="noopener">
               <img src="https://cdn.simpleicons.org/youtube/ffffff/24.svg" alt="YouTube" style="width: 24px; height: 24px;">
             </a>
-            <a href="https://www.instagram.com/lancewoolie/" target="_blank" title="Instagram" style="display: inline-block; width: 24px; height: 24px;">
+            <a href="https://www.instagram.com/lancewoolie/" target="_blank" title="Instagram" style="display: inline-block; width: 24px; height: 24px;" rel="noopener">
               <img src="https://cdn.simpleicons.org/instagram/ffffff/24.svg" alt="Instagram" style="width: 24px; height: 24px;">
             </a>
           </div>
         </div>
       </div>
       <!-- Subscribe Raccoon Behind Footer -->
-     <img id="subscribe-raccoon" class="floating-subscribe" src="/img/racoon.png" alt="Subscribe Raccoon"> <!-- Absolute -->
+      <img id="subscribe-raccoon" class="floating-subscribe" src="/img/racoon.png" alt="Subscribe Raccoon"> <!-- Absolute path -->
     </footer>
   `;
 
@@ -527,13 +527,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Init health bar after nav
-  setTimeout(initHealthBar, 100); // Delay for render
+  // Init health bar after nav (beefier delay + force init)
+  setTimeout(() => {
+    initHealthBar();
+    updateScore(0); // Reset display without adding points
+  }, 200);
 
   const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
 
-  // Add Neon Cursor Toy effect to all pages except index
-  if (currentPage !== 'index') {
+  // Add Neon Cursor Toy effect to ORIGINS ONLY (avoids bloat/CSP elsewhere)
+  if (currentPage === 'origins') {
     // Add Montserrat font
     const fontLink = document.createElement('link');
     fontLink.href = 'https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap';
@@ -561,56 +564,27 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     document.head.appendChild(style);
 
-  // Add Neon Cursor Toy effect to ORIGINS ONLY (avoids bloat/CSP elsewhere)
-if (currentPage === 'origins') {
-  // Add Montserrat font
-  const fontLink = document.createElement('link');
-  fontLink.href = 'https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap';
-  fontLink.rel = 'stylesheet';
-  document.head.appendChild(fontLink);
-
-  // Add neon cursor styles
-  const style = document.createElement('style');
-  style.textContent = `
-    body {
-      cursor: none !important;
-      touch-action: pan-y;
-      overflow-x: hidden;
-    }
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      pointer-events: none;
-    }
-  `;
-  document.head.appendChild(style);
-
-  // Load neon cursor module
-  const neonScript = document.createElement('script');
-  neonScript.type = 'module';
-  neonScript.textContent = `
-    import { neonCursor } from 'https://unpkg.com/threejs-toys@0.0.8/build/threejs-toys.module.cdn.min.js'
-    neonCursor({
-      el: document.body,
-      shaderPoints: 16,
-      curvePoints: 80,
-      curveLerp: 0.5,
-      radius1: 5,
-      radius2: 30,
-      velocityTreshold: 10,
-      sleepRadiusX: 100,
-      sleepRadiusY: 100,
-      sleepTimeCoefX: 0.0025,
-      sleepTimeCoefY: 0.0025
-    })
-  `;
-  document.head.appendChild(neonScript);
-}
+    // Load neon cursor module
+    const neonScript = document.createElement('script');
+    neonScript.type = 'module';
+    neonScript.textContent = `
+      import { neonCursor } from 'https://unpkg.com/threejs-toys@0.0.8/build/threejs-toys.module.cdn.min.js'
+      neonCursor({
+        el: document.body,
+        shaderPoints: 16,
+        curvePoints: 80,
+        curveLerp: 0.5,
+        radius1: 5,
+        radius2: 30,
+        velocityTreshold: 10,
+        sleepRadiusX: 100,
+        sleepRadiusY: 100,
+        sleepTimeCoefX: 0.0025,
+        sleepTimeCoefY: 0.0025
+      })
+    `;
+    document.head.appendChild(neonScript);
+  }
 
   // Global sub-dot click handlers (works on index, empty on other pages)
   document.querySelectorAll('.sub-dot').forEach(sub => {
@@ -780,8 +754,6 @@ if (currentPage === 'origins') {
       }
     });
   });
-
-
 
   // Index Page Specific: Ricochet Load Animation (post content load, post site shaking, on load of bullet hole dots)
   if (currentPage === 'index') {
