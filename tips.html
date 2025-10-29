@@ -224,8 +224,31 @@
         #paypal-button-container { 
             margin: 20px 0; 
         }
+        #notification { 
+            position: fixed; 
+            top: 20px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            background: #28a745; 
+            color: #001f3f; 
+            padding: 15px 25px; 
+            border-radius: 5px; 
+            font-weight: bold; 
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3); 
+            z-index: 1000; 
+            display: none; 
+            transition: opacity 0.3s ease; 
+        }
+        #notification.show { 
+            display: block; 
+            animation: flash 3s ease-in-out; 
+        }
+        @keyframes flash { 
+            0%, 100% { opacity: 1; } 
+            50% { opacity: 0.7; } 
+        }
     </style>
-    <!-- PayPal SDK -->
+    <!-- PayPal SDK - Replace YOUR_PAYPAL_CLIENT_ID with your actual client ID -->
     <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD"></script>
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app-compat.js"></script>
@@ -234,6 +257,8 @@
 <body>
     <h1>Tipping & Requests</h1>
     <div id="cart-icon" onclick="showCart()"> (<span id="cart-count">0</span>)</div>
+    
+    <div id="notification"></div>
     
 <div id="tip-section">
     <h2>Quick Tip or Suggestion</h2>
@@ -272,7 +297,7 @@
         <input name="Fan Name" placeholder="(audience member name, IE Tex Hooper)" required>
         <textarea name="message" placeholder="Custom Message to the Band (optional, e.g. 'Epstein didn't kill himself!')"></textarea>
         <div id="paypal-button-container"></div>
-        <button type="submit">Submit to Live Cue</button>
+        <button type="submit">Check Out & Cue Songs!</button>
     </form>
 </div>
 
@@ -310,6 +335,16 @@
         return str.replace(/\w\S*/g, function(txt) {
             return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
         });
+    }
+
+    // Show temporary notification
+    function showNotification(message) {
+        const notification = document.getElementById('notification');
+        notification.textContent = message;
+        notification.classList.add('show');
+        setTimeout(() => {
+            notification.classList.remove('show');
+        }, 3000);
     }
 
     // Build artist accordion (alpha sorted)
@@ -379,7 +414,7 @@
             let price = item.amount || prices[item.tier] || 0;
             baseTotal += price;
             let display = item.type === 'tip' ? `Tip: $${price}` : `${item.artist ? item.artist + ' - ' : ''}${item.song}`;
-            itemsHtml += `<li>${display} ($${price}) <span class="remove-btn" onclick="removeItem(${index})"></span></li>`;
+            itemsHtml += `<li>${display} ($${price}) <span class="remove-btn" onclick="removeItem(${index})">×</span></li>`;
         });
         document.getElementById('cart-items').innerHTML = itemsHtml;
         roundedTotal = Math.ceil(baseTotal / 10) * 10;
@@ -392,7 +427,7 @@
         const tier = songsData[artist].prices[song];
         cart.push({artist, song, tier});
         updateCart();
-        alert('song added to cart! Check out now, or request multiple songs.');
+        showNotification('Song added to cart! Check out now, or request multiple songs.');
         showCart();
     }
 
@@ -400,7 +435,7 @@
     function addTip(amount) {
         cart.push({type: 'tip', amount});
         updateCart();
-        alert('THANK YOU, tip added to cart');
+        showNotification('THANK YOU, tip added to cart');
         showCart();
     }
 
@@ -419,7 +454,7 @@
         cart.push({type: 'tip', amount: amt});
         document.getElementById('custom-tip').value = '';
         updateCart();
-        alert('THANK YOU, tip added to cart');
+        showNotification('THANK YOU, tip added to cart');
         showCart();
     }
 
@@ -430,10 +465,10 @@
             cart.push({song, amount: 20, custom: true});
             document.getElementById('custom-song').value = '';
             updateCart();
-            alert(`${song} ($20) added to cue!`);
+            showNotification(`${song} ($20) added to cue!`);
             showCart();
         } else {
-            alert('Enter a song name!');
+            showNotification('Enter a song name!');
         }
     }
 
@@ -458,7 +493,7 @@
         if (!window.db) return;
 
         const timestamp = firebase.firestore.FieldValue.serverTimestamp();
-        const analyticsDocRef = window.db.collection('visitorsanalytics').doc('analytics');
+        const analyticsDocRef = window.db.collection('analytics').doc('visitorsanalytics');
         const extra = paidTotal - baseTotal;
 
         // Log full order
@@ -587,7 +622,7 @@
         initFirebase();
         // Log visitor
         if (window.db) {
-            const analyticsDocRef = window.db.collection('visitorsanalytics').doc('analytics');
+            const analyticsDocRef = window.db.collection('analytics').doc('visitorsanalytics');
             analyticsDocRef.update({
                 visitors: firebase.firestore.FieldValue.increment(1)
             }).catch(console.error);
