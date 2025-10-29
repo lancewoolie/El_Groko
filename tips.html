@@ -296,7 +296,7 @@
     <form id="checkout-form">
         <input name="Fan Name" placeholder="(audience member name, IE Tex Hooper)" required>
         <textarea name="message" placeholder="Custom Message to the Band (optional, e.g. 'Epstein didn't kill himself!')"></textarea>
-        <div id="paypal-button-container"></div>
+        <div id="paypal-button-container" style="display: none;"></div>
         <button type="submit">Check Out & Cue Songs!</button>
     </form>
 </div>
@@ -420,6 +420,55 @@
         roundedTotal = Math.ceil(baseTotal / 10) * 10;
         const roundupChecked = document.getElementById('roundup').checked;
         document.getElementById('total').textContent = (roundupChecked ? roundedTotal : baseTotal).toFixed(2);
+
+        // Show/hide PayPal container based on baseTotal
+        const paypalContainer = document.getElementById('paypal-button-container');
+        if (baseTotal > 0) {
+            paypalContainer.style.display = 'block';
+        } else {
+            paypalContainer.style.display = 'none';
+        }
+    }
+
+    // Render PayPal buttons (once on load)
+    function renderPayPal() {
+        const container = document.getElementById('paypal-button-container');
+        container.innerHTML = ''; // Clear any existing content
+
+        paypal.Buttons({
+            createOrder: (data, actions) => {
+                const roundupChecked = document.getElementById('roundup').checked;
+                const total = roundupChecked ? roundedTotal : baseTotal;
+                if (total <= 0) {
+                    throw new Error('Cart is empty. Add items to proceed with payment.');
+                }
+                return actions.order.create({
+                    purchase_units: [{ amount: { value: total.toFixed(2) } }]
+                });
+            },
+            onApprove: async (data, actions) => {
+                const form = document.getElementById('checkout-form');
+                const fanName = form.querySelector('input[name="Fan Name"]').value;
+                const message = form.querySelector('textarea[name="message"]').value || '';
+                const roundupChecked = document.getElementById('roundup').checked;
+                const total = roundupChecked ? roundedTotal : baseTotal;
+
+                try {
+                    console.log('onApprove data:', data);
+                    const details = await actions.order.capture();
+                    console.log('Capture details:', details);
+                    await logToFirebase(fanName, message, total);
+                    showThankyou();
+                } catch (err) {
+                    console.error('Full capture error:', err);
+                    alert(`Payment failed: ${err.message || 'Capture error'} - try again or contact support`);
+                }
+            },
+            onError: (err) => {
+                console.error('PayPal error:', err);
+                showNotification('Payment error. Please try again.');
+            }
+        }).render('#paypal-button-container');
     }
 
     // Add song
@@ -483,6 +532,7 @@
         document.getElementById('cart-section').style.display = 'none';
         document.getElementById('thankyou').style.display = 'block';
         document.getElementById('thankyou').scrollIntoView({behavior: 'smooth'});
+        // Explicitly clear cart and localStorage to reset state
         cart = [];
         localStorage.removeItem('cart');
         updateCart();
@@ -584,50 +634,30 @@
 
     // Checkout
     document.addEventListener('DOMContentLoaded', () => {
-        document.getElementById('checkout-form').addEventListener('submit', async (e) => {
+        document.getElementById('checkout-form').addEventListener('submit', (e) => {
             e.preventDefault();
+            const roundupChecked = document.getElementById('roundup').checked;
+            const total = roundupChecked ? roundedTotal : baseTotal;
+
+            if (total > 0) {
+                showNotification('Please use the PayPal button to complete your purchase.');
+                return;
+            }
+
+            // Free suggestion flow
             const formData = new FormData(e.target);
             const fanName = formData.get('Fan Name');
             const message = formData.get('message') || '';
 
-            // Calc total
-            const roundupChecked = document.getElementById('roundup').checked;
-            const total = roundupChecked ? roundedTotal : baseTotal;
-
-            if (total === 0) {
-                // Free suggestion: log to Firebase
-                if (window.db) {
-                    const timestamp = firebase.firestore.FieldValue.serverTimestamp();
-                    window.db.collection('suggestions').add({
-                        fanName,
-                        message,
-                        timestamp
-                    }).catch(console.warn); // Non-blocking
-                }
-                showThankyou();
-                return;
+            if (window.db) {
+                const timestamp = firebase.firestore.FieldValue.serverTimestamp();
+                window.db.collection('suggestions').add({
+                    fanName,
+                    message,
+                    timestamp
+                }).catch(console.warn); // Non-blocking
             }
-
-            // PayPal - render if not already
-            if (!document.querySelector('#paypal-button-container script')) {
-                paypal.Buttons({
-                    createOrder: (data, actions) => actions.order.create({
-                        purchase_units: [{ amount: { value: total.toFixed(2) } }]
-                    }),
-                    onApprove: async (data, actions) => {
-                        try {
-                            console.log('onApprove data:', data);  // Log order ID
-                            const details = await actions.order.capture();
-                            console.log('Capture details:', details);  // Log full response
-                            await logToFirebase(fanName, message, total);  // Your Firebase call
-                            showThankyou();
-                        } catch (err) {
-                            console.error('Full capture error:', err);  // This reveals the issue
-                            alert(`Payment failed: ${err.message || 'Capture error'} - try again or contact support`);
-                        }
-                    }
-                }).render('#paypal-button-container');
-            }
+            showThankyou();
         });
 
         buildArtists();
@@ -640,6 +670,10 @@
             }, { merge: true }).catch(console.warn); // Non-blocking
         }
         updateCart();
+        // Render PayPal buttons once after initial setup
+        if (typeof paypal !== 'undefined') {
+            renderPayPal();
+        }
     });
 </script></body>
 </html>
