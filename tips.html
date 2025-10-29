@@ -593,18 +593,18 @@
                 createOrder: (data, actions) => actions.order.create({
                     purchase_units: [{ amount: { value: total.toFixed(2) } }]
                 }),
-                onApprove: async (data, actions) => {
-                    await actions.order.capture();
-                    await logToFirebase(fanName, message, total);
-                    showThankyou();
-                },
-                onError: (err) => {
-                    console.error('PayPal error:', err);
-                    alert('Payment failed - try again or contact support');
-                }
-            }).render('#paypal-button-container');
-        }
-    });
+onApprove: async (data, actions) => {
+    try {
+        console.log('onApprove fired with data:', data);  // Log order ID
+        const details = await actions.order.capture();
+        console.log('Capture success:', details);  // Log full response
+        await logToFirebase(fanName, message, total);  // Your Firebase call
+        showThankyou();
+    } catch (err) {
+        console.error('Capture failed:', err);  // This reveals the issue
+        alert(`Payment failed: ${err.message || 'Capture error'} - try again or contact support`);
+    }
+}
 
     // Show thanks
     function showThankyou() {
