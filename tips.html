@@ -229,7 +229,7 @@
     <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD"></script>
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore-compat.js"></script>
 </head>
 <body>
     <h1>Tipping & Requests</h1>
@@ -283,8 +283,16 @@
 </div>
 
 <script>
-    // REPLACE THESE WITH YOUR VALUES
-    const firebaseConfig = { /* Paste your config from contact.html here, e.g. { apiKey: "...", ... } */ };
+    // Firebase config from contacts.html
+    const firebaseConfig = {
+      apiKey: "AIzaSyAJQMdogiDwB0oLf2I_Jp-6NSLTDcXvVcQ",
+      authDomain: "lance-woolie-webfarm.firebaseapp.com",
+      projectId: "lance-woolie-webfarm",
+      storageBucket: "lance-woolie-webfarm.firebasestorage.app",
+      messagingSenderId: "278461194969",
+      appId: "1:278461194969:web:a2a03c9d27ccbb670814c8",
+      measurementId: "G-D734JL7BFR"
+    };
 
     // Songs Data (prices hidden: A=50, B=25, C=15, D=10, E=5; icons per song)
     const songsData = {"Aaron Watson":{"songs":["July In Cheyenne"],"prices":{"July In Cheyenne":"E"},"icons":{"July In Cheyenne":""}},"Alabama":{"songs":["Dixieland Delight","My Homes In Alabama"],"prices":{"Dixieland Delight":"E","My Homes In Alabama":"E"},"icons":{"Dixieland Delight":"","My Homes In Alabama":""}},"Alan Jackson":{"songs":["Midnight in Montgomery","Dont Rock The Jukebox","Chatahooche"],"prices":{"Midnight in Montgomery":"E","Dont Rock The Jukebox":"E","Chatahooche":"C"},"icons":{"Midnight in Montgomery":"","Dont Rock The Jukebox":"","Chatahooche":""}},"Alice in Chains":{"songs":["Nutshell","Man in The Box"],"prices":{"Nutshell":"E","Man in The Box":"E"},"icons":{"Nutshell":"","Man in The Box":""}},"Andrea Bocelli":{"songs":["Canciones Desinfindada","Bésame"],"prices":{"Canciones Desinfindada":"E","Bésame":"E"},"icons":{"Canciones Desinfindada":"","Bésame":""}},"Anybody You Choose":{"songs":["Happy Birthday Song","Improv song about an audience member"],"prices":{"Happy Birthday Song":"B","Improv song about an audience member":"A"},"icons":{"Happy Birthday Song":"","Improv song about an audience member":""}},"Bad Religion":{"songs":["Whispers In Time","Man With a Mission","To Another Abyss"],"prices":{"Whispers In Time":"E","Man With a Mission":"E","To Another Abyss":"E"},"icons":{"Whispers In Time":"","Man With a Mission":"","To Another Abyss":""}},"Blackberry Smoke":{"songs":["1 Horse Town","Up The Road","I've Got This Song"],"prices":{"1 Horse Town":"C","Up The Road":"E","I've Got This Song":"E"},"icons":{"1 Horse Town":"","Up The Road":"","I've Got This Song":""}},"Brooks & Dunn":{"songs":["Brand New Man","Neon Moon"],"prices":{"Brand New Man":"E","Neon Moon":"C"},"icons":{"Brand New Man":"","Neon Moon":""}},"Charley Pride":{"songs":["Kiss An Angel Good Mornin","Is anybody Going to San Antone"],"prices":{"Kiss An Angel Good Mornin":"E","Is anybody Going to San Antone":"E"},"icons":{"Kiss An Angel Good Mornin":"","Is anybody Going to San Antone":""}},"Charlie Crockett":{"songs":["Just Like Honey","just a Clown"],"prices":{"Just Like Honey":"E","just a Clown":"E"},"icons":{"Just Like Honey":"","just a Clown":""}},"Chris Isaak":{"songs":["Wicked Game"],"prices":{"Wicked Game":"E"},"icons":{"Wicked Game":""}},"Conway Twitty":{"songs":["I Don't Know A Thing About Love","Tight Fitting Jeans"],"prices":{"I Don't Know A Thing About Love":"E","Tight Fitting Jeans":"E"},"icons":{"I Don't Know A Thing About Love":"","Tight Fitting Jeans":""}},"David Allan Coe":{"songs":["The Ride","Never Called Me By My Name"],"prices":{"The Ride":"E","Never Called Me By My Name":"C"},"icons":{"The Ride":"","Never Called Me By My Name":""}},"Dixie Chicks":{"songs":["Wide Open Spaces","You Were Mine"],"prices":{"Wide Open Spaces":"E","You Were Mine":"E"},"icons":{"Wide Open Spaces":"","You Were Mine":""}},"Dwight Yoakam":{"songs":["Honkey Tonk Man","Guitars Cadillac's"],"prices":{"Honkey Tonk Man":"E","Guitars Cadillac's":"C"},"icons":{"Honkey Tonk Man":"","Guitars Cadillac's":""}},"Elvis Presley":{"songs":["I Can't Help Falling In Love with You","That's Alright Mama"],"prices":{"I Can't Help Falling In Love with You":"C","That's Alright Mama":"E"},"icons":{"I Can't Help Falling In Love with You":"","That's Alright Mama":""}},"Garth Brooks":{"songs":["Thunder Rolls","The Dance","Low Places"],"prices":{"Thunder Rolls":"E","The Dance":"E","Low Places":"C"},"icons":{"Thunder Rolls":"","The Dance":"","Low Places":""}},"George Jones":{"songs":["The Good Times Ain't Over","Who's Gonna Fill Those Shoes"],"prices":{"The Good Times Ain't Over":"E","Who's Gonna Fill Those Shoes":"C"},"icons":{"The Good Times Ain't Over":"","Who's Gonna Fill Those Shoes":""}},"George Strait":{"songs":["Marina Del Rey","All My Ex's Live In Texas","Amarillo By Morning","The Chair","Unwound","Nobody In His Right Mind"],"prices":{"Marina Del Rey":"E","All My Ex's Live In Texas":"C","Amarillo By Morning":"E","The Chair":"E","Unwound":"E","Nobody In His Right Mind":"E"},"icons":{"Marina Del Rey":"","All My Ex's Live In Texas":"","Amarillo By Morning":"","The Chair":"","Unwound":"","Nobody In His Right Mind":""}},"Green Day":{"songs":["Good Riddance"],"prices":{"Good Riddance":"E"},"icons":{"Good Riddance":""}},"Hank Williams Jr.":{"songs":["Family Tradition","Dinosaur","Whiskey Bent","Women I Never Had"],"prices":{"Family Tradition":"E","Dinosaur":"C","Whiskey Bent":"E","Women I Never Had":"E"},"icons":{"Family Tradition":"","Dinosaur":"","Whiskey Bent":"","Women I Never Had":""}},"Hank Williams Sr.":{"songs":["Jambalaya","Buckets Got A Hole In It","Your Cheatin Heart"],"prices":{"Jambalaya":"E","Buckets Got A Hole In It":"E","Your Cheatin Heart":"E"},"icons":{"Jambalaya":"","Buckets Got A Hole In It":"","Your Cheatin Heart":""}},"Hogleg Band":{"songs":["How It Feels To Be Cowboy","Road To Texas","My Dog Still Loves Me","1 of Us Is Wrong"],"prices":{"How It Feels To Be Cowboy":"C","Road To Texas":"D","My Dog Still Loves Me":"D","1 of Us Is Wrong":"D"},"icons":{"How It Feels To Be Cowboy":"","Road To Texas":"","My Dog Still Loves Me":"","1 of Us Is Wrong":""}},"James Taylor":{"songs":["Sweet Baby James"],"prices":{"Sweet Baby James":"E"},"icons":{"Sweet Baby James":""}},"Jamey Johnson":{"songs":["In Color"],"prices":{"In Color":"C"},"icons":{"In Color":""}},"Jimi Hendrix":{"songs":["Wind Cries Mary","Red House","Little Wing"],"prices":{"Wind Cries Mary":"E","Red House":"C","Little Wing":"E"},"icons":{"Wind Cries Mary":"","Red House":"","Little Wing":""}},"Jimmy Buffett":{"songs":["Margaritaville"],"prices":{"Margaritaville":"E"},"icons":{"Margaritaville":""}},"John Anderson":{"songs":["Black Sheep","Chuck Of Coal"],"prices":{"Black Sheep":"E","Chuck Of Coal":"E"},"icons":{"Black Sheep":"","Chuck Of Coal":""}},"John Denver":{"songs":["Country Roads"],"prices":{"Country Roads":"E"},"icons":{"Country Roads":""}},"Johnny Cash":{"songs":["Ring Of Fire","Folsom Prison Blues","Hurt"],"prices":{"Ring Of Fire":"E","Folsom Prison Blues":"E","Hurt":"C"},"icons":{"Ring Of Fire":"","Folsom Prison Blues":"","Hurt":""}},"Kenny Rogers":{"songs":["Lady","Islands in the Stream (duet)"],"prices":{"Lady":"C","Islands in the Stream (duet)":"C"},"icons":{"Lady":"","Islands in the Stream (duet)":""}},"Keith Whitley":{"songs":["Honkey Tonk Heart","No Stranger To The Rain","Don't Close Your Eyes","I Wonder Do You Think Of Me"],"prices":{"Honkey Tonk Heart":"E","No Stranger To The Rain":"E","Don't Close Your Eyes":"E","I Wonder Do You Think Of Me":"C"},"icons":{"Honkey Tonk Heart":"","No Stranger To The Rain":"","Don't Close Your Eyes":"","I Wonder Do You Think Of Me":""}},"Lance":{"songs":["Custom Happy Birthday Tribute Song"],"prices":{"Custom Happy Birthday Tribute Song":"B"},"icons":{"Custom Happy Birthday Tribute Song":""}},"Lance Woolie":{"songs":["Too Drunk","Worst Enemy","Uber","How It Feels To Be a Cowboy","Road To Texas","Crazy Arms","Back Home","TRUST","One of Us is Wrong","Little Wing"],"prices":{"Too Drunk":"E","Worst Enemy":"C","Uber":"E","How It Feels To Be a Cowboy":"C","Road To Texas":"E","Crazy Arms":"E","Back Home":"E","TRUST":"E","One of Us is Wrong":"E","Little Wing":"E"},"icons":{"Too Drunk":"","Worst Enemy":"","Uber":"","How It Feels To Be a Cowboy":"","Road To Texas":"","Crazy Arms":"","Back Home":"","TRUST":"","One of Us is Wrong":"","Little Wing":""}},"Lee Greenwood":{"songs":["God Bless The USA"],"prices":{"God Bless The USA":"A"},"icons":{"God Bless The USA":""}},"Little Feat":{"songs":["Willin"],"prices":{"Willin":"E"},"icons":{"Willin":""}},"Lynn Anderson":{"songs":["Rose Garden"],"prices":{"Rose Garden":"C"},"icons":{"Rose Garden":""}},"Lynyrd Skynyrd":{"songs":["Simple Man","Free Bird","Sweet Home Alabama"],"prices":{"Simple Man":"E","Free Bird":"A","Sweet Home Alabama":"E"},"icons":{"Simple Man":"","Free Bird":"","Sweet Home Alabama":""}},"Merle Haggard":{"songs":["That's The Way Love Goes","Big City","Working Man Blues","I Just Stay Here and Drink"],"prices":{"That's The Way Love Goes":"E","Big City":"E","Working Man Blues":"C","I Just Stay Here and Drink":"E"},"icons":{"That's The Way Love Goes":"","Big City":"","Working Man Blues":"","I Just Stay Here and Drink":""}},"Michael Jackson":{"songs":["I Want You Back"],"prices":{"I Want You Back":"E"},"icons":{"I Want You Back":""}},"Midland":{"songs":["Drinking Problem"],"prices":{"Drinking Problem":"E"},"icons":{"Drinking Problem":""}},"Nirvana":{"songs":["Man Who Sold The World","All Apologies"],"prices":{"Man Who Sold The World":"E","All Apologies":"E"},"icons":{"Man Who Sold The World":"","All Apologies":""}},"Parker McCollum":{"songs":["Pretty Heart"],"prices":{"Pretty Heart":"E"},"icons":{"Pretty Heart":""}},"Post Malone":{"songs":["Circles"],"prices":{"Circles":"E"},"icons":{"Circles":""}},"Ray Wylie Hubbard":{"songs":["Snake Farm","Red Neck Mother"],"prices":{"Snake Farm":"E","Red Neck Mother":"B"},"icons":{"Snake Farm":"","Red Neck Mother":""}},"REM":{"songs":["Losing My Religion"],"prices":{"Losing My Religion":"E"},"icons":{"Losing My Religion":""}},"Randy Travis":{"songs":["Forever & Ever Amen","Digging Up Bones","I Told You So"],"prices":{"Forever & Ever Amen":"E","Digging Up Bones":"C","I Told You So":"E"},"icons":{"Forever & Ever Amen":"","Digging Up Bones":"","I Told You So":""}},"Rodney Carrington":{"songs":["Dear Penis"],"prices":{"Dear Penis":"B"},"icons":{"Dear Penis":""}},"Ricky Skaggs":{"songs":["Heartbroke","Country Boy","Highway 40 Blues"],"prices":{"Heartbroke":"E","Country Boy":"E","Highway 40 Blues":"C"},"icons":{"Heartbroke":"","Country Boy":"","Highway 40 Blues":""}},"Rolling Stones":{"songs":["Wild Horses","Angel"],"prices":{"Wild Horses":"E","Angel":"E"},"icons":{"Wild Horses":"","Angel":""}},"Ronnie Milsap":{"songs":["Stranger In My House","Smokey Mountain Rain","The Freeze"],"prices":{"Stranger In My House":"E","Smokey Mountain Rain":"E","The Freeze":"C"},"icons":{"Stranger In My House":"","Smokey Mountain Rain":"","The Freeze":""}},"Stevie Wonder":{"songs":["I Just Called To Say I Love You","Superstition"],"prices":{"I Just Called To Say I Love You":"E","Superstition":"E"},"icons":{"I Just Called To Say I Love You":"","Superstition":""}},"Tex Hooper":{"songs":["Man Hole Inspector","Texas On A Saturday Night","Empty Bed"],"prices":{"Man Hole Inspector":"B","Texas On A Saturday Night":"B","Empty Bed":"B"},"icons":{"Man Hole Inspector":"","Texas On A Saturday Night":"","Empty Bed":""}},"The Civil Wars":{"songs":["20 Years","Dance Me To The End Of Love"],"prices":{"20 Years":"E","Dance Me To The End Of Love":"E"},"icons":{"20 Years":"","Dance Me To The End Of Love":""}},"The Eagles":{"songs":["Tequila Sunrise","Witchy Woman","Hotel California"],"prices":{"Tequila Sunrise":"E","Witchy Woman":"E","Hotel California":"C"},"icons":{"Tequila Sunrise":"","Witchy Woman":"","Hotel California":""}},"The Highwaymen":{"songs":["Highwayman"],"prices":{"Highwayman":"C"},"icons":{"Highwayman":""}},"Tom Petty":{"songs":["Won't Back Down","You Got Lucky"],"prices":{"Won't Back Down":"E","You Got Lucky":"E"},"icons":{"Won't Back Down":"","You Got Lucky":""}},"Tracy Lawrence":{"songs":["Time Marches On","Sticks And Stones"],"prices":{"Time Marches On":"E","Sticks And Stones":"E"},"icons":{"Time Marches On":"","Sticks And Stones":""}},"Travis Tritt":{"songs":["Help Me Hold On"],"prices":{"Help Me Hold On":"E"},"icons":{"Help Me Hold On":""}},"Van Morrison":{"songs":["Moondance"],"prices":{"Moondance":"C"},"icons":{"Moondance":""}},"Vince Gill":{"songs":["Tryin To Get Over You"],"prices":{"Tryin To Get Over You":"E"},"icons":{"Tryin To Get Over You":""}},"Waylon Jennings":{"songs":["Mamas Don't Let Your Babies","Luckenbach Texas"],"prices":{"Mamas Don't Let Your Babies":"C","Luckenbach Texas":"E"},"icons":{"Mamas Don't Let Your Babies":"","Luckenbach Texas":""}},"Wheeler Walker Jr.":{"songs":["Fuck You Bitch","Drop Em Out"],"prices":{"Fuck You Bitch":"B","Drop Em Out":"B"},"icons":{"Fuck You Bitch":"","Drop Em Out":""}},"Willie Nelson":{"songs":["Blue Eyes Crying","On The Road Again","City OF New Orleans"],"prices":{"Blue Eyes Crying":"E","On The Road Again":"E","City OF New Orleans":"C"},"icons":{"Blue Eyes Crying":"","On The Road Again":"","City OF New Orleans":""}},"Zach Top":{"songs":["Bad Luck","I Never Lie","Dirt To Gold","When You See Me","South of Sanity"],"prices":{"Bad Luck":"E","I Never Lie":"C","Dirt To Gold":"E","When You See Me":"E","South of Sanity":"E"},"icons":{"Bad Luck":"","I Never Lie":"","Dirt To Gold":"","When You See Me":"","South of Sanity":""}}};
@@ -439,21 +447,22 @@
     function initFirebase() {
         if (firebaseConfig.apiKey) { // Only if config provided
             firebase.initializeApp(firebaseConfig);
-            window.db = firebase.database();
+            window.db = firebase.firestore();
         } else {
             console.warn('Firebase config missing - logging will fail');
         }
     }
 
     // Log to Firebase on successful checkout
-    function logToFirebase(fanName, message, paidTotal) {
+    async function logToFirebase(fanName, message, paidTotal) {
         if (!window.db) return;
 
+        const timestamp = firebase.firestore.FieldValue.serverTimestamp();
+        const analyticsDocRef = window.db.collection('visitorsanalytics').doc('analytics');
         const extra = paidTotal - baseTotal;
-        const timestamp = firebase.database.ServerValue.TIMESTAMP;
 
         // Log full order
-        window.db.ref('orders').push({
+        await window.db.collection('orders').add({
             fanName,
             message,
             baseTotal,
@@ -472,18 +481,18 @@
         });
 
         // Log individual items separately
-        cart.forEach(item => {
-            let ref, data;
+        for (const item of cart) {
             if (item.type === 'tip') {
                 // Log tips separately
-                window.db.ref('tips').push({
+                await window.db.collection('tips').add({
                     amount: item.amount,
                     fanName,
                     timestamp
                 });
-                return;
-            } else if (item.custom) {
-                ref = window.db.ref('custom_requests');
+                continue;
+            }
+            let data;
+            if (item.custom) {
                 data = {
                     song: item.song,
                     price: item.amount,
@@ -492,8 +501,8 @@
                     paidTotal,
                     timestamp
                 };
+                await window.db.collection('custom_requests').add(data);
             } else {
-                ref = window.db.ref('song_requests');
                 data = {
                     artist: item.artist,
                     song: item.song,
@@ -503,23 +512,23 @@
                     paidTotal,
                     timestamp
                 };
+                await window.db.collection('song_requests').add(data);
             }
-            if (data) {
-                ref.push(data);
-            }
-        });
+        }
 
         // Analytics for confirmed sales
         const songsCount = cart.filter(item => item.type !== 'tip').length;
         const explicitTipsSum = cart.filter(item => item.type === 'tip').reduce((sum, item) => sum + (item.amount || 0), 0);
         const tipsForAnalytics = explicitTipsSum + extra;
 
-        window.db.ref('analytics/songs_sold').transaction(current => (current || 0) + songsCount);
-        window.db.ref('analytics/tips_total').transaction(current => (current || 0) + tipsForAnalytics);
+        await analyticsDocRef.update({
+            songs_sold: firebase.firestore.FieldValue.increment(songsCount),
+            tips_total: firebase.firestore.FieldValue.increment(tipsForAnalytics)
+        });
     }
 
     // Checkout
-    document.getElementById('checkout-form').addEventListener('submit', (e) => {
+    document.getElementById('checkout-form').addEventListener('submit', async (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
         const fanName = formData.get('Fan Name');
@@ -532,10 +541,11 @@
         if (total === 0) {
             // Free suggestion: log to Firebase
             if (window.db) {
-                window.db.ref('suggestions').push({
+                const timestamp = firebase.firestore.FieldValue.serverTimestamp();
+                await window.db.collection('suggestions').add({
                     fanName,
                     message,
-                    timestamp: firebase.database.ServerValue.TIMESTAMP
+                    timestamp
                 });
             }
             showThankyou();
@@ -550,7 +560,7 @@
                 }),
                 onApprove: async (data, actions) => {
                     await actions.order.capture();
-                    logToFirebase(fanName, message, total);
+                    await logToFirebase(fanName, message, total);
                     showThankyou();
                 },
                 onError: (err) => {
@@ -577,7 +587,10 @@
         initFirebase();
         // Log visitor
         if (window.db) {
-            window.db.ref('analytics/visitors').transaction(current => (current || 0) + 1);
+            const analyticsDocRef = window.db.collection('visitorsanalytics').doc('analytics');
+            analyticsDocRef.update({
+                visitors: firebase.firestore.FieldValue.increment(1)
+            }).catch(console.error);
         }
         updateCart();
     });
