@@ -19,6 +19,12 @@
             color: #FFD700; /* Gold */
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
+        .header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 20px; 
+        }
         button { 
             padding: 10px 20px; 
             margin: 5px; 
@@ -106,9 +112,6 @@
             color: #808080; /* Grey placeholder */
         }
         #cart-icon { 
-            position: fixed; 
-            top: 10px; 
-            right: 10px; 
             background: linear-gradient(45deg, #FFD700, #e6c200); 
             color: #001f3f; 
             padding: 10px; 
@@ -117,6 +120,7 @@
             cursor: pointer; 
             border: 2px solid #FFD700;
             box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            margin-left: 20px; /* Nudge closer if needed */
         }
         details { 
             margin: 10px 0; 
@@ -274,8 +278,10 @@
     <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore-compat.js"></script>
 </head>
 <body>
-    <h1>Tipping & Requests</h1>
-    <div id="cart-icon" onclick="showCart()"> (<span id="cart-count">0</span>)</div>
+    <div class="header">
+        <h1>Tipping & Requests</h1>
+        <div id="cart-icon" onclick="showCart()"> (<span id="cart-count">0</span>)</div>
+    </div>
     
     <div id="notification"></div>
     
@@ -323,7 +329,6 @@
 <div id="thankyou">
     <h2>Thank You!</h2>
     <p id="thankyou-message">Your request is queued. Rock on! </p>
-    <p>Your request is queued. Rock on! </p>
     <div class="signature">Many tacos,<br>Lance</div>
     <button onclick="location.reload()">Start Over</button>
 </div>
@@ -346,7 +351,7 @@
         "Holy Moley! You are doing the Lord's work! Thank you so much for your contribution.",
         "Rootin Tootin! you are my jam! Thank you!",
         "Yeehaw! Your support hits harder than a double bass drum. Grateful beyond words!",
-        "Whoa there, partner— you just made this cowboy's night! Thanks a million.",
+        "Whoa there, partner—you just made this cowboy's night! Thanks a million.",
         "Dang, you're the real MVP of this hoedown. Heartfelt thanks!",
         "Hot diggity, that's the kind of generosity that fuels the fire! You're a legend."
     ];
@@ -516,7 +521,12 @@
             },
             onError: (err) => {
                 console.error('PayPal error:', err);
-                showNotification('Payment error. Please try again.');
+                // Check for restricted account specifically
+                if (err.message && err.message.includes('PAYEE_ACCOUNT_RESTRICTED')) {
+                    showNotification('Payment issue: Your PayPal account appears restricted. Please check your PayPal dashboard or contact PayPal support to resolve.');
+                } else {
+                    showNotification('Payment error. Please try again.');
+                }
             }
         }).render('#paypal-button-container');
     }
@@ -745,7 +755,6 @@
             // For free, shorter reinforcement (3s)
             showThankyou(fanName, message, 0);
             // Adjust interval for free: maxChecks = 3
-            const originalMax = 10;
             // Note: For free, we can override or just let it run short
         });
 
