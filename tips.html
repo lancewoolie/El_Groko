@@ -478,6 +478,16 @@
         document.getElementById('cart-section').scrollIntoView({behavior: 'smooth'});
     }
 
+    // Show thanks
+    function showThankyou() {
+        document.getElementById('cart-section').style.display = 'none';
+        document.getElementById('thankyou').style.display = 'block';
+        document.getElementById('thankyou').scrollIntoView({behavior: 'smooth'});
+        cart = [];
+        localStorage.removeItem('cart');
+        updateCart();
+    }
+
     // Init Firebase after DOM
     function initFirebase() {
         if (firebaseConfig.apiKey) { // Only if config provided
@@ -563,61 +573,53 @@
     }
 
     // Checkout
-    document.getElementById('checkout-form').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const formData = new FormData(e.target);
-        const fanName = formData.get('Fan Name');
-        const message = formData.get('message') || '';
+    document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('checkout-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const fanName = formData.get('Fan Name');
+            const message = formData.get('message') || '';
 
-        // Calc total
-        const roundupChecked = document.getElementById('roundup').checked;
-        const total = roundupChecked ? roundedTotal : baseTotal;
+            // Calc total
+            const roundupChecked = document.getElementById('roundup').checked;
+            const total = roundupChecked ? roundedTotal : baseTotal;
 
-        if (total === 0) {
-            // Free suggestion: log to Firebase
-            if (window.db) {
-                const timestamp = firebase.firestore.FieldValue.serverTimestamp();
-                await window.db.collection('suggestions').add({
-                    fanName,
-                    message,
-                    timestamp
-                });
+            if (total === 0) {
+                // Free suggestion: log to Firebase
+                if (window.db) {
+                    const timestamp = firebase.firestore.FieldValue.serverTimestamp();
+                    await window.db.collection('suggestions').add({
+                        fanName,
+                        message,
+                        timestamp
+                    });
+                }
+                showThankyou();
+                return;
             }
-            showThankyou();
-            return;
-        }
 
-        // PayPal - render if not already
-        if (!document.querySelector('#paypal-button-container script')) {
-            paypal.Buttons({
-                createOrder: (data, actions) => actions.order.create({
-                    purchase_units: [{ amount: { value: total.toFixed(2) } }]
-                }),
-onApprove: async (data, actions) => {
-    try {
-        console.log('onApprove fired with data:', data);  // Log order ID
-        const details = await actions.order.capture();
-        console.log('Capture success:', details);  // Log full response
-        await logToFirebase(fanName, message, total);  // Your Firebase call
-        showThankyou();
-    } catch (err) {
-        console.error('Capture failed:', err);  // This reveals the issue
-        alert(`Payment failed: ${err.message || 'Capture error'} - try again or contact support`);
-    }
-}
+            // PayPal - render if not already
+            if (!document.querySelector('#paypal-button-container script')) {
+                paypal.Buttons({
+                    createOrder: (data, actions) => actions.order.create({
+                        purchase_units: [{ amount: { value: total.toFixed(2) } }]
+                    }),
+                    onApprove: async (data, actions) => {
+                        try {
+                            console.log('onApprove fired with data:', data);  // Log order ID
+                            const details = await actions.order.capture();
+                            console.log('Capture success:', details);  // Log full response
+                            await logToFirebase(fanName, message, total);  // Your Firebase call
+                            showThankyou();
+                        } catch (err) {
+                            console.error('Capture failed:', err);  // This reveals the issue
+                            alert(`Payment failed: ${err.message || 'Capture error'} - try again or contact support`);
+                        }
+                    }
+                }).render('#paypal-button-container');
+            }
+        });
 
-    // Show thanks
-    function showThankyou() {
-        document.getElementById('cart-section').style.display = 'none';
-        document.getElementById('thankyou').style.display = 'block';
-        document.getElementById('thankyou').scrollIntoView({behavior: 'smooth'});
-        cart = [];
-        localStorage.removeItem('cart');
-        updateCart();
-    }
-
-    // Init on load
-    window.addEventListener('DOMContentLoaded', () => {
         buildArtists();
         initFirebase();
         // Log visitor
