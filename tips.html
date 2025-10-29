@@ -498,78 +498,88 @@
         }
     }
 
-    // Log to Firebase on successful checkout
+    // Log to Firebase on successful checkout (now handles missing doc)
     async function logToFirebase(fanName, message, paidTotal) {
-        if (!window.db) return;
-
-        const timestamp = firebase.firestore.FieldValue.serverTimestamp();
-        const analyticsDocRef = window.db.collection('analytics').doc('visitorsanalytics');
-        const extra = paidTotal - baseTotal;
-
-        // Log full order
-        await window.db.collection('orders').add({
-            fanName,
-            message,
-            baseTotal,
-            paidTotal,
-            extra,
-            timestamp,
-            items: cart.map(item => {
-                if (item.type === 'tip') {
-                    return {type: 'tip', amount: item.amount};
-                } else if (item.custom) {
-                    return {type: 'custom_song', song: item.song, price: item.amount};
-                } else {
-                    return {type: 'song', artist: item.artist, song: item.song, price: prices[item.tier]};
-                }
-            })
-        });
-
-        // Log individual items separately
-        for (const item of cart) {
-            if (item.type === 'tip') {
-                // Log tips separately
-                await window.db.collection('tips').add({
-                    amount: item.amount,
-                    fanName,
-                    timestamp
-                });
-                continue;
-            }
-            let data;
-            if (item.custom) {
-                data = {
-                    song: item.song,
-                    price: item.amount,
-                    fanName,
-                    message,
-                    paidTotal,
-                    timestamp
-                };
-                await window.db.collection('custom_requests').add(data);
-            } else {
-                data = {
-                    artist: item.artist,
-                    song: item.song,
-                    price: prices[item.tier],
-                    fanName,
-                    message,
-                    paidTotal,
-                    timestamp
-                };
-                await window.db.collection('song_requests').add(data);
-            }
+        if (!window.db) {
+            console.warn('Firebase not initialized - skipping log');
+            return;
         }
 
-        // Analytics for confirmed sales
-        const songsCount = cart.filter(item => item.type !== 'tip').length;
-        const explicitTipsSum = cart.filter(item => item.type === 'tip').reduce((sum, item) => sum + (item.amount || 0), 0);
-        const tipsForAnalytics = explicitTipsSum + extra;
+        try {
+            const timestamp = firebase.firestore.FieldValue.serverTimestamp();
+            const analyticsDocRef = window.db.collection('analytics').doc('visitorsanalytics');
+            const extra = paidTotal - baseTotal;
 
-        await analyticsDocRef.update({
-            songs_sold: firebase.firestore.FieldValue.increment(songsCount),
-            tips_total: firebase.firestore.FieldValue.increment(tipsForAnalytics)
-        });
+            // Log full order
+            await window.db.collection('orders').add({
+                fanName,
+                message,
+                baseTotal,
+                paidTotal,
+                extra,
+                timestamp,
+                items: cart.map(item => {
+                    if (item.type === 'tip') {
+                        return {type: 'tip', amount: item.amount};
+                    } else if (item.custom) {
+                        return {type: 'custom_song', song: item.song, price: item.amount};
+                    } else {
+                        return {type: 'song', artist: item.artist, song: item.song, price: prices[item.tier]};
+                    }
+                })
+            });
+
+            // Log individual items separately
+            for (const item of cart) {
+                if (item.type === 'tip') {
+                    // Log tips separately
+                    await window.db.collection('tips').add({
+                        amount: item.amount,
+                        fanName,
+                        timestamp
+                    });
+                    continue;
+                }
+                let data;
+                if (item.custom) {
+                    data = {
+                        song: item.song,
+                        price: item.amount,
+                        fanName,
+                        message,
+                        paidTotal,
+                        timestamp
+                    };
+                    await window.db.collection('custom_requests').add(data);
+                } else {
+                    data = {
+                        artist: item.artist,
+                        song: item.song,
+                        price: prices[item.tier],
+                        fanName,
+                        message,
+                        paidTotal,
+                        timestamp
+                    };
+                    await window.db.collection('song_requests').add(data);
+                }
+            }
+
+            // Analytics for confirmed sales - use set with merge to create doc if missing
+            const songsCount = cart.filter(item => item.type !== 'tip').length;
+            const explicitTipsSum = cart.filter(item => item.type === 'tip').reduce((sum, item) => sum + (item.amount || 0), 0);
+            const tipsForAnalytics = explicitTipsSum + extra;
+
+            await analyticsDocRef.set({
+                songs_sold: firebase.firestore.FieldValue.increment(songsCount),
+                tips_total: firebase.firestore.FieldValue.increment(tipsForAnalytics)
+            }, { merge: true });
+
+            console.log('Firebase log success!'); // Debug win
+        } catch (firebaseErr) {
+            console.error('Firebase log failed (non-blocking):', firebaseErr); // Swallow without alert
+            // Optional: Add to a fallback log, e.g., localStorage or email yourself
+        }
     }
 
     // Checkout
@@ -588,11 +598,11 @@
                 // Free suggestion: log to Firebase
                 if (window.db) {
                     const timestamp = firebase.firestore.FieldValue.serverTimestamp();
-                    await window.db.collection('suggestions').add({
+                    window.db.collection('suggestions').add({
                         fanName,
                         message,
                         timestamp
-                    });
+                    }).catch(console.warn); // Non-blocking
                 }
                 showThankyou();
                 return;
@@ -612,7 +622,7 @@
                             await logToFirebase(fanName, message, total);  // Your Firebase call
                             showThankyou();
                         } catch (err) {
-                            console.error('Full capture error:', err);  // Log the entire error object
+                            console.error('Full capture error:', err);  // This reveals the issue
                             alert(`Payment failed: ${err.message || 'Capture error'} - try again or contact support`);
                         }
                     }
@@ -622,12 +632,12 @@
 
         buildArtists();
         initFirebase();
-        // Log visitor
+        // Log visitor (use set with merge to create doc if missing)
         if (window.db) {
             const analyticsDocRef = window.db.collection('analytics').doc('visitorsanalytics');
-            analyticsDocRef.update({
+            analyticsDocRef.set({
                 visitors: firebase.firestore.FieldValue.increment(1)
-            }).catch(console.error);
+            }, { merge: true }).catch(console.warn); // Non-blocking
         }
         updateCart();
     });
