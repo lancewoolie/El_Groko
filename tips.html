@@ -248,8 +248,8 @@
             50% { opacity: 0.7; } 
         }
     </style>
-    <!-- PayPal SDK - Replace YOUR_PAYPAL_CLIENT_ID with your actual client ID -->
-    <script src="https://www.paypal.com/sdk/js?client-id=AfEGatq-ecIQ_Bpcy2k0yvg_J-e54EEBtDvkizZa22oA8LwG6Clrut30ppoZm72bM-zLnOt7fxiwYQBa&currency=USD"></script>
+    <!-- PayPal SDK - Updated to Live Client ID -->
+    <script src="https://www.paypal.com/sdk/js?client-id=ASRba7-FvkDy2tHeAfQsKwfW7QBa57vol1_OsQrozTbZo0zZVz2y4c3jIR0isEQ_X3e1IsLMcaHd_jP2&currency=USD"></script>
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore-compat.js"></script>
@@ -606,13 +606,13 @@
                     }),
                     onApprove: async (data, actions) => {
                         try {
-                            console.log('onApprove fired with data:', data);  // Log order ID
+                            console.log('onApprove data:', data);  // Log order ID
                             const details = await actions.order.capture();
-                            console.log('Capture success:', details);  // Log full response
+                            console.log('Capture details:', details);  // Log full response
                             await logToFirebase(fanName, message, total);  // Your Firebase call
                             showThankyou();
                         } catch (err) {
-                            console.error('Capture failed:', err);  // This reveals the issue
+                            console.error('Full capture error:', err);  // Log the entire error object
                             alert(`Payment failed: ${err.message || 'Capture error'} - try again or contact support`);
                         }
                     }
