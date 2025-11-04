@@ -1,190 +1,64 @@
-/* RideSafe CSS: Futuristic, Minimal, Tesla-Inspired */
+/* RideSafe CSS: Soft Off-White, Tesla-Red Edges, Max Legibility (WCAG AA+) */
 :root {
-    --primary-glow: #00d4ff;
-    --secondary-glow: #ff6b35;
-    --dark-bg: #0a0a0a;
-    --card-bg: rgba(20, 20, 20, 0.8);
-    --text-primary: #ffffff;
-    --text-secondary: #a0a0a0;
-    --border-glow: 0 0 20px var(--primary-glow);
+    --bg-primary: #fdf9f7;
+    --bg-fade: #f9e9e8;
+    --text-charcoal: #1f1f1f;
+    --red-brand: #E31937;
+    --red-glow: rgba(227, 25, 55, 0.2);
+    --border-thin: 1px solid var(--red-brand);
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, var(--dark-bg) 0%, #1a1a2e 50%, #16213e 100%);
-    color: var(--text-primary);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg-primary);
+    background-image: radial-gradient(circle at top left, var(--bg-fade) 0%, transparent 70%), radial-gradient(circle at bottom right, var(--bg-fade) 0%, transparent 70%);
+    color: var(--text-charcoal);
+    line-height: 1.7;
+    padding: 1rem;
     min-height: 100vh;
-    overflow: hidden;
-    position: relative;
+    opacity: 1;
+    transition: opacity 0.3s ease;
 }
 
-body::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at 20% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 107, 53, 0.1) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: -1;
+.app { max-width: 600px; margin: 0 auto; }
+
+header {
+    display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding: 1rem 0;
+    animation: fadeIn 0.5s ease-out;
 }
 
-.container {
-    text-align: center;
-    max-width: 400px;
-    padding: 2rem;
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: var(--border-glow), inset 0 0 20px rgba(0, 0, 0, 0.5);
-    transition: all 0.3s ease;
-}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
-.container:hover {
-    box-shadow: 0 0 30px var(--primary-glow), inset 0 0 20px rgba(0, 0, 0, 0.5);
-}
+.tesla-icon { font-size: 2rem; cursor: pointer; transition: transform 0.2s ease; color: var(--red-brand); }
+.tesla-icon:hover { transform: scale(1.1); }
+.driver-btn { background: none; border: none; color: var(--red-brand); font-size: 0.9rem; cursor: pointer; opacity: 0; transition: opacity 0.3s ease; }
+.driver-btn.show { opacity: 1; }
 
-h1 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    background: linear-gradient(45deg, var(--primary-glow), var(--secondary-glow));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: pulse-glow 2s infinite alternate;
-}
+form { display: flex; flex-direction: column; gap: 1.5rem; animation: slideUp 0.5s ease-out 0.2s both; }
+@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-@keyframes pulse-glow {
-    from { filter: drop-shadow(0 0 5px var(--primary-glow)); }
-    to { filter: drop-shadow(0 0 20px var(--primary-glow)); }
-}
+label { font-weight: bold; font-size: 16px; display: block; margin-bottom: 0.5rem; }
+input, select { font-size: 14px; padding: 0.75rem; border: var(--border-thin); border-radius: 8px; transition: box-shadow 0.2s ease; background: white; width: 100%; }
+input:focus, select:focus { outline: none; box-shadow: 0 0 0 3px var(--red-glow); }
 
-.status {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
-    color: var(--text-secondary);
-    transition: color 0.3s ease;
-}
+.autocomplete { position: relative; }
+.suggestions { position: absolute; top: 100%; left: 0; right: 0; background: white; border: var(--border-thin); border-top: none; border-radius: 0 0 8px 8px; max-height: 150px; overflow-y: auto; z-index: 10; opacity: 0; transition: opacity 0.2s ease; }
+.suggestions.show { opacity: 1; }
+.suggestion { padding: 0.75rem; cursor: pointer; border-bottom: var(--border-thin); transition: background 0.2s ease; }
+.suggestion:hover { background: var(--red-glow); }
+.suggestion:last-child { border-bottom: none; }
 
-.status.active {
-    color: var(--primary-glow);
-    animation: status-blink 1.5s infinite;
-}
+.price-display { text-align: center; font-size: 18px; font-weight: bold; margin: 1rem 0; padding: 1rem; border: var(--border-thin); border-radius: 8px; background: white; animation: pulse 0.5s ease-out; }
+@keyframes pulse { 0% { transform: scale(1.05); } 100% { transform: scale(1); } }
 
-@keyframes status-blink {
-    0%, 50% { opacity: 1; }
-    51%, 100% { opacity: 0.5; }
-}
+.book-btn { background: var(--red-brand); color: white; font-weight: bold; font-size: 16px; padding: 1rem; border: none; border-radius: 8px; cursor: pointer; transition: transform 0.2s ease; }
+.book-btn:hover:not(:disabled) { transform: translateY(-2px); }
+.book-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-.pulse-icon {
-    font-size: 4rem;
-    margin-bottom: 1rem;
-    display: inline-block;
-    animation: icon-load 1s ease-out forwards;
-    opacity: 0;
-    transform: scale(0.5) rotate(180deg);
-}
+.loading { opacity: 0.7; pointer-events: none; }
+.hidden { display: none; }
 
-@keyframes icon-load {
-    to {
-        opacity: 1;
-        transform: scale(1) rotate(0deg);
-    }
-}
-
-.controls {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem; /* Tighter for more buttons */
-}
-
-button {
-    padding: 0.8rem 1.5rem; /* Slightly smaller for auth buttons */
-    border: none;
-    border-radius: 50px;
-    background: linear-gradient(45deg, var(--primary-glow), var(--secondary-glow));
-    color: var(--dark-bg);
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 5px 15px rgba(0, 212, 255, 0.3);
-}
-
-button:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(0, 212, 255, 0.5);
-}
-
-button:active {
-    transform: translateY(0);
-}
-
-button:disabled {
-    background: var(--text-secondary);
-    cursor: not-allowed;
-    box-shadow: none;
-}
-
-.toggle-group {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 1rem;
-}
-
-.toggle {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-}
-
-.toggle input[type="checkbox"] {
-    accent-color: var(--primary-glow);
-    transform: scale(1.2);
-}
-
-/* Haptic Feedback Selector - Mobile Optimized */
-@media (hover: none) and (pointer: coarse) {
-    button:active:not(:disabled) {
-        animation: haptic-pulse 0.1s ease;
-    }
-}
-
-@keyframes haptic-pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(0.95); }
-}
-
-.info {
-    margin-top: 2rem;
-    font-size: 0.8rem;
-    color: var(--text-secondary);
-    line-height: 1.4;
-}
-
-.tesla-teaser {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    font-size: 2rem;
-    opacity: 0.1;
-    animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
-}
+/* Mobile-First */
+@media (max-width: 480px) { body { padding: 0.5rem; } header { flex-direction: column; gap: 1rem; } .suggestions { position: fixed; left: 1rem; right: 1rem; } }
