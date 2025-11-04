@@ -11,9 +11,11 @@
     <div class="container">
         <h1>RideSafe</h1>
         <div class="pulse-icon" id="pulseIcon">🚀</div>
-        <div class="status" id="status">Ready to Pulse</div>
+        <div class="status" id="status">Ready to Pulse - Login Required</div>
         <div class="controls">
-            <button id="startBtn">Start Safety Pulse</button>
+            <button id="loginBtn">Login with Google</button>
+            <button id="logoutBtn" disabled>Logout</button>
+            <button id="startBtn" disabled>Start Safety Pulse</button>
             <button id="stopBtn" disabled>Stop Pulse</button>
         </div>
         <div class="toggle-group">
@@ -35,6 +37,34 @@
     <audio id="beepAudio" preload="auto">
         <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSJ3x/DdkUAKFF60+etpVRQKRp/g8r5sIQUiR1x/DdkEA" type="audio/wav">
     </audio>
+
+    <!-- Firebase SDKs (v10.12.2 - update if newer) -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+        import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js';
+        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+        import { getFirestore, collection, addDoc } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+        
+        // Your Firebase config
+        const firebaseConfig = {
+            apiKey: "AIzaSyDC22Z2fuGTc7j9Gm7JKO5dB2NJTiHGIB0",
+            authDomain: "ridesafe-app-2faa9.firebaseapp.com",
+            projectId: "ridesafe-app-2faa9",
+            storageBucket: "ridesafe-app-2faa9.firebasestorage.app",
+            messagingSenderId: "516451873273",
+            appId: "1:516451873273:web:0bd8e6027b72c1e0580d28",
+            measurementId: "G-H6J0E2P28H"
+        };
+        
+        // Initialize
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        
+        // Expose globally for script.js
+        window.firebase = { auth, db, GoogleAuthProvider, signInWithPopup, signOut, collection, addDoc };
+    </script>
 
     <script src="script.js"></script>
 </body>
