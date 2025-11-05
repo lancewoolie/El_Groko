@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.google.com https://*.gstatic.com https://*.googleapis.com https://unpkg.com blob: data:;">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.google.com https://*.gstatic.com https://*.googleapis.com https://unpkg.com https://cdn.jsdelivr.net blob: data:;">
     <title>RideSafe - Book Your Ride</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
@@ -15,7 +15,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
     <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFOS8a0W3jNKcRpFIyJSEwblcj-KQr9pc&libraries=places&loading=async"></script>
     <script async defer src="https://apis.google.com/js/api.js"
-        onload="this.onload=function(){};gapi.load('auth2', function(){ gapi.auth2.init({client_id: 'YOUR_GOOGLE_CLIENT_ID'}); });"></script>
+        onload="this.onload=function(){};gapi.load('auth2', function(){ gapi.auth2.init({client_id: 'YOUR_ACTUAL_CLIENT_ID.apps.googleusercontent.com'}); });"></script>
 </head>
 <body>
     <div id="root"></div>
