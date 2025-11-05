@@ -103,4 +103,10 @@ input:focus, select:focus { outline: none; box-shadow: 0 0 0 4px var(--red-glow)
 
 .book-btn { background: var(--red-brand); color: var(--text-light); font-weight: bold; font-size: 16px; padding: 1rem; border: none; border-radius: 8px; cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s; box-shadow: 0 0 10px var(--red-glow); margin-top: 0.5rem; }
 .book-btn:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 0 20px var(--red-glow); }
-.book-btn:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none;
+.book-btn:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
+
+.loading { opacity: 0.7; pointer-events: none; }
+.hidden { display: none; }
+
+/* Mobile-First Enhancements */
+@media (max-width: 480px) { body { padding: 0.3rem; } header { flex-direction: column; gap: 0.5rem; } .suggestions { position: fixed; left: 0.5rem; right: 0.5rem; } .title { font-size: 2rem; } .container { padding: 1rem; } }
