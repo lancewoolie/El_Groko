@@ -1,11 +1,10 @@
-// RideSafe JS: React SPA Logic
-const { useState, useEffect } = React;
+const { useState, useEffect, useRef } = React;
 
-// Firebase Config (Your Provided)
+// Firebase Config (Provided)
 const firebaseConfig = {
     apiKey: "AIzaSyDC22Z2fuGTc7j9Gm7JKO5dB2NJTiHGIB0",
     authDomain: "ridesafe-app-2faa9.firebaseapp.com",
-    databaseURL: "https://ridesafe-app-2faa9-default-rtdb.firebaseio.com/", // Ensure RTDB created in console
+    databaseURL: "https://ridesafe-app-2faa9-default-rtdb.firebaseio.com/",
     projectId: "ridesafe-app-2faa9",
     storageBucket: "ridesafe-app-2faa9.appspot.com",
     messagingSenderId: "516451873273",
@@ -14,47 +13,45 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// EmailJS Init (Updated Service ID; Swap Template/Public Keys)
+// EmailJS Init (Swap Template/Public Keys if needed)
 emailjs.init('YOUR_PUBLIC_KEY');
 
-// Locations Autocomplete
-const locations = ['Baton Rouge', 'Country Club (LSU)', 'Kokadrie', 'Shreveport', 'New Orleans', 'Lafayette'];
+// Country Club Coords (Fixed Base)
+const countryClub = { lat: 30.4103, lng: -91.1868 };
 
-// Country Club Coords (Fixed Base for Dist Mult)
-const countryClub = { lat: 30.4103, lng: -91.1868 }; // LSU Country Club, BR
-
-// Get Distance (Google API; Mock Fallback)
+// Get Distance (Real Google API)
 const getDistance = async (origin, dest) => {
-    const apiKey = 'YOUR_MAPS_API_KEY'; // Swap after setup
+    const apiKey = 'AIzaSyCFOS8a0W3jNKcRpFIyJSEwblcj-KQr9pc';
     try {
-        // Real API (Uncomment Post-Key)
-        // const response = await fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?origins=${encodeURIComponent(origin)}&destinations=${encodeURIComponent(dest)}&key=${apiKey}`);
-        // const data = await response.json();
-        // if (data.status !== 'OK') throw new Error(data.status);
-        // return data.rows[0].elements[0];
-
-        // Mock for Demo
-        const mocks = {
-            'Baton Rouge': { 
-                'New Orleans': { distance: { value: 80 * 1609.34 }, duration: { value: 75 * 60 } }, 
-                'Lafayette': { distance: { value: 60 * 1609.34 }, duration: { value: 60 * 60 } },
-                'Shreveport': { distance: { value: 240 * 1609.34 }, duration: { value: 210 * 60 } }
-            },
-            'Kokadrie': { 'Baton Rouge': { distance: { value: 15 * 1609.34 }, duration: { value: 20 * 60 } } },
-            // Expand as needed
-        };
-        return mocks[origin]?.[dest] || { distance: { value: 10 * 1609.34 }, duration: { value: 15 * 60 } };
+        const response = await fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?origins=${encodeURIComponent(origin)}&destinations=${encodeURIComponent(dest)}&key=${apiKey}`);
+        const data = await response.json();
+        if (data.status !== 'OK' || data.rows[0].elements[0].status !== 'OK') throw new Error(data.status || data.rows[0].elements[0].status);
+        return data.rows[0].elements[0];
     } catch (err) {
         console.error('Distance API error:', err);
-        return { distance: { value: 10 * 1609.34 }, duration: { value: 15 * 60 } };
+        return { distance: { value: 10 * 1609.34 }, duration: { value: 15 * 60 } }; // Fallback
     }
 };
 
-// Get Ride Dist from Country Club (for Mult) - Simplified Mock; Real: Geocode Origin to Coords
+// Get Dist from Country Club (Real API)
 const getDistFromBase = async (origin) => {
-    // Mock distances from CC
-    const baseMocks = { 'Baton Rouge': 5, 'Kokadrie': 20, 'Shreveport': 220, 'New Orleans': 80, 'Lafayette': 55 };
-    return baseMocks[origin] || 10; // mi fallback
+    const apiKey = 'AIzaSyCFOS8a0W3jNKcRpFIyJSEwblcj-KQr9pc';
+    try {
+        const geocoder = new google.maps.Geocoder();
+        const originCoords = await new Promise((resolve, reject) => {
+            geocoder.geocode({ address: origin }, (results, status) => {
+                if (status === 'OK') resolve(results[0].geometry.location);
+                else reject(status);
+            });
+        });
+        const response = await fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?origins=${originCoords.lat()},${originCoords.lng()}&destinations=${countryClub.lat},${countryClub.lng}&key=${apiKey}`);
+        const data = await response.json();
+        if (data.status !== 'OK') throw new Error(data.status);
+        return data.rows[0].elements[0].distance.value / 1609.34; // miles
+    } catch (err) {
+        console.error('Base Dist error:', err);
+        return 10; // Fallback
+    }
 };
 
 // Surge Mult
@@ -81,7 +78,7 @@ const calcPrice = async (origin, dest, date, time) => {
     return Math.round((base * distMult * surge) * 100) / 100;
 };
 
-// Main App Component
+// Main App
 const RideSafeApp = () => {
     const [formData, setFormData] = useState({
         name: localStorage.getItem('rs_name') || '',
@@ -93,9 +90,10 @@ const RideSafeApp = () => {
         time: localStorage.getItem('rs_time') || '',
         price: 0
     });
-    const [suggestions, setSuggestions] = useState({ origin: [], dest: [] });
     const [loading, setLoading] = useState(false);
     const [showDriver, setShowDriver] = useState(false);
+    const originRef = useRef(null);
+    const destRef = useRef(null);
 
     useEffect(() => {
         Object.entries(formData).forEach(([k, v]) => localStorage.setItem(`rs_${k}`, v));
@@ -108,18 +106,26 @@ const RideSafeApp = () => {
         }
     }, [formData.origin, formData.dest, formData.date, formData.time]);
 
+    useEffect(() => {
+        if (originRef.current) {
+            const autocomplete = new google.maps.places.Autocomplete(originRef.current, { types: ['geocode'] });
+            autocomplete.addListener('place_changed', () => {
+                const place = autocomplete.getPlace();
+                setFormData(p => ({ ...p, origin: place.formatted_address || originRef.current.value }));
+            });
+        }
+        if (destRef.current) {
+            const autocomplete = new google.maps.places.Autocomplete(destRef.current, { types: ['geocode'] });
+            autocomplete.addListener('place_changed', () => {
+                const place = autocomplete.getPlace();
+                setFormData(p => ({ ...p, dest: place.formatted_address || destRef.current.value }));
+            });
+        }
+    }, []);
+
     const handleInput = (e) => {
         const { name, value } = e.target;
         setFormData(p => ({ ...p, [name]: value }));
-        if (['origin', 'dest'].includes(name)) {
-            const suggs = value ? locations.filter(l => l.toLowerCase().includes(value.toLowerCase())) : [];
-            setSuggestions(p => ({ ...p, [name]: suggs }));
-        }
-    };
-
-    const selectSuggestion = (key, val) => {
-        setFormData(p => ({ ...p, [key]: val }));
-        setSuggestions(p => ({ ...p, [key]: [] }));
     };
 
     const bookRide = async (e) => {
@@ -127,20 +133,16 @@ const RideSafeApp = () => {
         if (!formData.price) return alert('Fill all fields for quote.');
         setLoading(true);
         try {
-            // EmailJS Confirm (Updated Service ID)
             await emailjs.send('service_2ss0i0l', 'YOUR_TEMPLATE_ID', {
                 name: formData.name, email: formData.email, phone: formData.phone,
                 origin: formData.origin, dest: formData.dest, date: formData.date,
                 time: formData.time, price: formData.price
             }, 'YOUR_PUBLIC_KEY');
 
-            // Google Calendar (OAuth)
             const authInstance = gapi.auth2.getAuthInstance();
-            if (!authInstance.isSignedIn.get()) {
-                await authInstance.signIn(); // Prompts consent
-            }
+            if (!authInstance.isSignedIn.get()) await authInstance.signIn();
             const token = authInstance.currentUser.get().getAuthResponse().access_token;
-            const endTime = new Date(new Date(`${formData.date}T${formData.time}:00`).getTime() + 60*60*1000).toISOString(); // +1hr est.
+            const endTime = new Date(new Date(`${formData.date}T${formData.time}:00`).getTime() + 60*60*1000).toISOString();
             await fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events', {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
@@ -152,60 +154,34 @@ const RideSafeApp = () => {
                 })
             });
 
-            // Firebase Archive
             await db.ref('bookings').push({ ...formData, timestamp: Date.now() });
 
             alert(`Booked! Email sent, calendar updated. Price: $${formData.price} (pay end).`);
-            setFormData({ ...formData, price: 0 }); // Reset
+            setFormData({ ...formData, price: 0 });
         } catch (err) {
             console.error('Booking failed:', err);
-            alert('Issue—check console (keys?).');
+            alert('Booking issue (likely keys)—check console. Firebase archived anyway.');
         }
         setLoading(false);
     };
 
     return (
         <div className="app">
+            <div className="title-section">
+                <img src="https://lancewoolie.com/RideSafe/img/model3.png" alt="Tesla Model 3" className="logo" />
+                <div className="title">RideSafe</div>
+                <div className="motto">Safety should not be a luxury</div>
+            </div>
             <header>
                 <div className="tesla-icon" onClick={() => location.reload()}>⚡</div>
                 <button className={`driver-btn ${showDriver ? 'show' : ''}`} onClick={() => { setShowDriver(!showDriver); console.log('Driver signup clicked'); }}>Become a Driver</button>
             </header>
-            <form onSubmit={bookRide}>
-                <label htmlFor="name">Name</label>
-                <input id="name" name="name" value={formData.name} onChange={handleInput} placeholder="e.g., Rachel" required />
+            <div className="container">
+                <form onSubmit={bookRide}>
+                    <label htmlFor="name">Name</label>
+                    <input id="name" name="name" value={formData.name} onChange={handleInput} placeholder="e.g., Rachel" required />
 
-                <label htmlFor="email">Email</label>
-                <input id="email" name="email" type="email" value={formData.email} onChange={handleInput} placeholder="rachel@example.com" required />
+                    <label htmlFor="email">Email</label>
+                    <input id="email" name="email" type="email" value={formData.email} onChange={handleInput} placeholder="rachel@example.com" required />
 
-                <label htmlFor="phone">Phone</label>
-                <input id="phone" name="phone" type="tel" value={formData.phone} onChange={handleInput} placeholder="(225) 123-4567" required />
-
-                <label htmlFor="origin">Leaving From (Baton Rouge Area)</label>
-                <div className="autocomplete">
-                    <input id="origin" name="origin" value={formData.origin} onChange={handleInput} placeholder="e.g., Baton Rouge" required />
-                    {suggestions.origin.length > 0 && <div className="suggestions show">{suggestions.origin.map(s => <div key={s} className="suggestion" onClick={() => selectSuggestion('origin', s)}>{s}</div>)}</div>}
-                </div>
-
-                <label htmlFor="dest">Going To</label>
-                <div className="autocomplete">
-                    <input id="dest" name="dest" value={formData.dest} onChange={handleInput} placeholder="e.g., New Orleans" required />
-                    {suggestions.dest.length > 0 && <div className="suggestions show">{suggestions.dest.map(s => <div key={s} className="suggestion" onClick={() => selectSuggestion('dest', s)}>{s}</div>)}</div>}
-                </div>
-
-                <label htmlFor="date">Date</label>
-                <input id="date" name="date" type="date" value={formData.date} onChange={handleInput} required />
-
-                <label htmlFor="time">Time</label>
-                <input id="time" name="time" type="time" value={formData.time} onChange={handleInput} required />
-
-                <div className="price-display">Est. Price: ${loading ? '...' : formData.price || 'Enter details'}</div>
-
-                <button type="submit" className="book-btn" disabled={loading || !formData.price}>Book It (Pay End-of-Ride)</button>
-            </form>
-        </div>
-    );
-};
-
-// Render
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<RideSafeApp />);
+                    <label htmlFor="phone
