@@ -1,5 +1,17 @@
 const { useState, useEffect, useRef } = React;
 
+// Error Boundary to prevent blank page on errors
+class ErrorBoundary extends React.Component {
+    constructor(props) { super(props); this.state = { hasError: false }; }
+    static getDerivedStateFromError(error) { return { hasError: true, error }; }
+    render() {
+        if (this.state.hasError) {
+            return <h1 style={{color: 'white'}}>Error: {this.state.error.message}. Check console for details.</h1>;
+        }
+        return this.props.children;
+    }
+}
+
 // Firebase Config (Provided)
 const firebaseConfig = {
     apiKey: "AIzaSyDC22Z2fuGTc7j9Gm7JKO5dB2NJTiHGIB0",
@@ -13,8 +25,12 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// EmailJS Init (Swap Template/Public Keys if needed)
-emailjs.init('YOUR_PUBLIC_KEY');
+// EmailJS Init (with try-catch)
+try {
+    emailjs.init('YOUR_PUBLIC_KEY');
+} catch (err) {
+    console.error('EmailJS init failed:', err);
+}
 
 // Country Club Coords (Fixed Base)
 const countryClub = { lat: 30.4103, lng: -91.1868 };
@@ -227,6 +243,6 @@ const RideSafeApp = () => {
     );
 };
 
-// Render
+// Render with Error Boundary
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<RideSafeApp />);
+root.render(<ErrorBoundary><RideSafeApp /></ErrorBoundary>);
