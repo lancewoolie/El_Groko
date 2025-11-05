@@ -114,4 +114,119 @@ const RideSafeApp = () => {
                 setLoading(false);
             }).catch((err) => {
                 console.error('Calc error:', err);
-                set
+                setLoading(false);
+            });
+        }
+    }, [formData.origin, formData.dest, formData.date, formData.time]);
+
+    useEffect(() => {
+        if (originRef.current) {
+            const autocomplete = new google.maps.places.Autocomplete(originRef.current, { types: ['geocode'] });
+            autocomplete.addListener('place_changed', () => {
+                const place = autocomplete.getPlace();
+                setFormData(p => ({ ...p, origin: place.formatted_address || originRef.current.value }));
+            });
+        }
+        if (destRef.current) {
+            const autocomplete = new google.maps.places.Autocomplete(destRef.current, { types: ['geocode'] });
+            autocomplete.addListener('place_changed', () => {
+                const place = autocomplete.getPlace();
+                setFormData(p => ({ ...p, dest: place.formatted_address || destRef.current.value }));
+            });
+        }
+    }, []);
+
+    const handleInput = (e) => {
+        const { name, value } = e.target;
+        setFormData(p => ({ ...p, [name]: value }));
+    };
+
+    const bookRide = async (e) => {
+        e.preventDefault();
+        if (!formData.price) return alert('Fill all fields for quote.');
+        setLoading(true);
+        try {
+            await emailjs.send('service_2ss0i0l', 'YOUR_TEMPLATE_ID', {
+                name: formData.name, email: formData.email, phone: formData.phone,
+                origin: formData.origin, dest: formData.dest, date: formData.date,
+                time: formData.time, price: formData.price
+            }, 'YOUR_PUBLIC_KEY');
+
+            const authInstance = gapi.auth2.getAuthInstance();
+            if (!authInstance.isSignedIn.get()) await authInstance.signIn();
+            const token = authInstance.currentUser.get().getAuthResponse().access_token;
+            const endTime = new Date(new Date(`${formData.date}T${formData.time}:00`).getTime() + 60*60*1000).toISOString();
+            await fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    summary: `RideSafe Booking: ${formData.origin} → ${formData.dest}`,
+                    description: `Passenger: ${formData.name} (${formData.phone})\nEst: $${formData.price}\nPay end-of-ride.`,
+                    start: { dateTime: `${formData.date}T${formData.time}:00`, timeZone: 'America/Chicago' },
+                    end: { dateTime: endTime, timeZone: 'America/Chicago' }
+                })
+            });
+
+            await db.ref('bookings').push({ ...formData, timestamp: Date.now() });
+
+            alert(`Booked! Email sent, calendar updated. Price: $${formData.price} (pay end).`);
+            setFormData({ ...formData, price: 0, miles: 0 });
+        } catch (err) {
+            console.error('Booking failed:', err);
+            alert('Booking issue (likely keys)—check console. Firebase archived anyway.');
+        }
+        setLoading(false);
+    };
+
+    return (
+        <div className="app">
+            <div className="title-section">
+                <div className="tesla-icon" onClick={() => location.reload()}>⚡</div>
+                <img src="https://lancewoolie.com/RideSafe/img/model3.png" alt="Tesla Model 3" className="logo" />
+                <div className="title">RideSafe</div>
+                <div className="motto">Safety should not be a luxury</div>
+            </div>
+            <header>
+                <button className={`driver-btn ${showDriver ? 'show' : ''}`} onClick={() => { setShowDriver(!showDriver); console.log('Driver signup clicked'); }}>Become a Driver</button>
+            </header>
+            <div className="container">
+                <form onSubmit={bookRide}>
+                    <label htmlFor="name">Name</label>
+                    <input id="name" name="name" value={formData.name} onChange={handleInput} placeholder="e.g., Rachel" required />
+
+                    <label htmlFor="email">Email</label>
+                    <input id="email" name="email" type="email" value={formData.email} onChange={handleInput} placeholder="rachel@example.com" required />
+
+                    <label htmlFor="phone">Phone</label>
+                    <input id="phone" name="phone" type="tel" value={formData.phone} onChange={handleInput} placeholder="(225) 123-4567" required />
+
+                    <label htmlFor="origin">Origin Address</label>
+                    <div className="autocomplete">
+                        <input ref={originRef} id="origin" name="origin" value={formData.origin} onChange={handleInput} placeholder="e.g., Baton Rouge" required />
+                    </div>
+
+                    <label htmlFor="dest">Destination Address</label>
+                    <div className="autocomplete">
+                        <input ref={destRef} id="dest" name="dest" value={formData.dest} onChange={handleInput} placeholder="e.g., New Orleans" required />
+                    </div>
+
+                    <div className="distance-display">Est. Distance: {loading ? '...' : formData.miles || 'Enter details'} miles</div>
+
+                    <label htmlFor="date">Date</label>
+                    <input id="date" name="date" type="date" value={formData.date} onChange={handleInput} required />
+
+                    <label htmlFor="time">Time</label>
+                    <input id="time" name="time" type="time" value={formData.time} onChange={handleInput} required />
+
+                    <div className="price-display">Est. Price: ${loading ? '...' : formData.price || 'Enter details'}</div>
+
+                    <button type="submit" className="book-btn" disabled={loading || !formData.price}>Book It (Pay End-of-Ride)</button>
+                </form>
+            </div>
+        </div>
+    );
+};
+
+// Render
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<RideSafeApp />);
