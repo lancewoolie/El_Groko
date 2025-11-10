@@ -39,7 +39,7 @@
   // Coords
   var countryClub = { lat: 30.4103, lng: -91.1868 };
 
-  // Utilities (With Your Guarded formatTime12)
+  // Utilities
   function timeToMins(timeStr) {
     var parts = timeStr.split(':').map(Number);
     return parts[0] * 60 + parts[1];
@@ -452,7 +452,7 @@
         durationSecs: distance.durationSecs
       })
     ];
-    if (price.price > 0) {
+    if (distance.miles > 0) {
       formElements.push(React.createElement('div', { key: 'estimate', className: 'estimate' },
         React.createElement('p', null, 'Total Distance: ', distance.miles, ' miles | RideSafe Fee: $', price.price, ' (Pickup ~', pickupDisplay, ')')
       ));
