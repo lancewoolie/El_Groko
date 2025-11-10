@@ -39,7 +39,7 @@
   // Coords
   var countryClub = { lat: 30.4103, lng: -91.1868 };
 
-  // Utilities
+  // Utilities (With Your Guarded formatTime12)
   function timeToMins(timeStr) {
     var parts = timeStr.split(':').map(Number);
     return parts[0] * 60 + parts[1];
@@ -259,7 +259,7 @@
     var placeholder = props.placeholder;
     var inputRef = React.useRef(null);
     React.useEffect(function() {
-      if (window.google && window.google.maps && window.google.maps.places && inputRef.current) {
+      if (window.google && window.google.maps.places && inputRef.current) {
         var autocomplete = new window.google.maps.places.Autocomplete(inputRef.current, { types: ['address'] });
         autocomplete.addListener('place_changed', function() {
           var place = autocomplete.getPlace();
