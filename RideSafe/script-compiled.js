@@ -39,17 +39,15 @@
   // Coords
   var countryClub = { lat: 30.4103, lng: -91.1868 };
 
-  // Utilities (With Guard for Undefined)
+  // Utilities
   function timeToMins(timeStr) {
-    if (!timeStr) return 0;
     var parts = timeStr.split(':').map(Number);
-    return parts[0] * 60 + (parts[1] || 0);
+    return parts[0] * 60 + parts[1];
   }
   function formatTime12(timeStr) {
-    if (!timeStr) return ''; // Guard for undefined on initial render
     var parts = timeStr.split(':').map(Number);
-    var h = parts[0] || 0;
-    var m = parts[1] || 0;
+    var h = parts[0];
+    var m = parts[1];
     var ampm = h >= 12 ? 'PM' : 'AM';
     h = h % 12 || 12;
     return h + ':' + m.toString().padStart(2, '0') + ' ' + ampm;
@@ -297,7 +295,7 @@
         var dResults = results[1];
         if (pResults[0] && dResults[0]) {
           var request = {
-            origin: pResults[0].geometry.location,
+            origin: pResults[0].geometry.position,
             destination: dResults[0].geometry.location,
             travelMode: 'DRIVING'
           };
@@ -484,3 +482,8 @@
   // Render App
   ReactDOM.render(React.createElement(App), document.getElementById('root'));
 })();
+
+// Global Google Callback
+window.initRideSafe = function() {
+  console.log('Google Maps API loaded - Autocomplete ready');
+};
