@@ -74,30 +74,20 @@ const getDistance = (origin, dest) => new Promise((resolve, reject) => {
     document.body.appendChild(script);
 });
 
-// Get Dist from Country Club (JSONP)
-const getDistFromBase = (origin) => new Promise((resolve, reject) => {
-    const geocoder = new google.maps.Geocoder();
-    geocoder.geocode({ address: origin }, (results, status) => {
-        if (status !== 'OK') return reject(status);
-        const originCoords = results[0].geometry.location;
-        const apiKey = 'AIzaSyCFOS8a0W3jNKcRpFIyJSEwblcj-KQr9pc';
-        const callbackName = 'baseDistCallback' + Date.now();
-        window[callbackName] = (data) => {
-            if (data.status !== 'OK') {
-                console.error('Base Dist API failed:', data);
-                reject(new Error(data.error_message || data.status));
-            } else {
-                console.log('Base Dist API success:', data);
-                resolve(data.rows[0].elements[0].distance.value / 1609.34);
-            }
-            delete window[callbackName];
-        };
-        const script = document.createElement('script');
-        script.src = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${originCoords.lat()},${originCoords.lng()}&destinations=${countryClub.lat},${countryClub.lng}&key=${apiKey}&callback=${callbackName}`;
-        script.onerror = () => reject(new Error('Script load error'));
-        document.body.appendChild(script);
-    });
-});
+// Calc Distance (independent of date/time)
+const calcDistance = async (origin, dest) => {
+    if (!origin || !dest) return { miles: 0, durationSecs: 0 };
+    try {
+        const { distance, duration } = await getDistance(origin, dest);
+        const miles = Math.round(distance.value / 1609.34);
+        const durationSecs = duration.value;
+        console.log('Distance Calc Details:', { miles, durationSecs });
+        return { miles, durationSecs };
+    } catch (err) {
+        console.error('Distance calc error:', err);
+        return { miles: 0, durationSecs: 0 };
+    }
+};
 
 // Surge Mult (includes early/after hours based on pickup time)
 const getSurge = (dateStr, timeStr, pickupTimeStr) => {
@@ -115,26 +105,22 @@ const getSurge = (dateStr, timeStr, pickupTimeStr) => {
     return surge;
 };
 
-// Price Calc
-const calcPrice = async (origin, dest, date, time) => {
-    if (!origin || !dest || !date || !time) return { price: 0, miles: 0, pickupTime: '', durationSecs: 0 };
+// Price Calc (triggered by arrival time; simplified to distance + (distance x surge % increase) = distance * surge)
+const calcPrice = (miles, durationSecs, date, time) => {
+    if (!miles || !date || !time || miles === 0) return { price: 0, pickupTime: '' };
     try {
-        const { distance, duration } = await getDistance(origin, dest);
-        const miles = Math.round(distance.value / 1609.34);
-        const mins = duration.value / 60;
-        const base = 1.05 + (1.05 * miles) + (0.15 * mins);
-        const baseDist = await getDistFromBase(origin);
-        const distMult = baseDist <= 10 ? 1 : baseDist <= 20 ? 1.25 : baseDist <= 35 ? 1.42 : 2;
         const arrivalDt = new Date(`${date}T${time}:00`);
-        const pickupDt = new Date(arrivalDt.getTime() - (duration.value * 1000 + 300000)); // Subtract duration + 5 min buffer
+        const pickupDt = new Date(arrivalDt.getTime() - (durationSecs * 1000 + 300000)); // Subtract duration + 5 min buffer
         const pickupTimeStr = pickupDt.toTimeString().split(' ')[0].substring(0,5); // HH:MM
         const surge = getSurge(date, time, pickupTimeStr);
-        const price = Math.round((base * distMult * surge) * 100) / 100;
-        console.log('Price Calc Details:', { miles, mins, base, baseDist, distMult, surge, pickupTime: pickupTimeStr, price });
-        return { price, miles, pickupTime: pickupTimeStr, durationSecs: duration.value };
+        const surgeIncrease = surge - 1;
+        const price = miles + (miles * surgeIncrease); // Equivalent to miles * surge
+        const roundedPrice = Math.round(price * 100) / 100;
+        console.log('Price Calc Details:', { miles, durationSecs, surge, pickupTime: pickupTimeStr, price: roundedPrice });
+        return { price: roundedPrice, pickupTime: pickupTimeStr };
     } catch (err) {
-        console.error('Calc error:', err);
-        return { price: 0, miles: 0, pickupTime: '', durationSecs: 0 };
+        console.error('Price calc error:', err);
+        return { price: 0, pickupTime: '' };
     }
 };
 
@@ -183,9 +169,10 @@ const WeekDatePicker = ({ value, onChange, bookings, currentWeekStart, setCurren
                     const isSelected = value === dayStr;
                     const dayClass = getDayClass(day);
                     const dayOfWeek = day.getDay();
+                    const hasSurge = dayOfWeek >= 4 && dayOfWeek <= 6;
                     return (
                         <div key={idx} className="day-wrapper">
-                            {dayOfWeek >= 4 && dayOfWeek <= 6 && <span className="surge-label">Surge Pricing</span>}
+                            {dayOfWeek !== 0 && (hasSurge ? <span className="surge-label">Surge Pricing</span> : <span className="surge-placeholder"></span>)}
                             <div className={`day-button ${isSelected ? 'selected' : ''} ${dayClass}`} onClick={() => dayClass !== 'sunday' && selectDay(day)}>
                                 {day.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
                                 {dayClass !== 'green' && <span> ({bookings[dayStr]?.length || 0} bookings)</span>}
@@ -286,14 +273,35 @@ const RideSafeApp = () => {
 
     useEffect(() => {
         Object.entries(formData).forEach(([k, v]) => localStorage.setItem(`rs_${k}`, v));
-        if (formData.pickup && formData.dropoff && formData.date && formData.time) {
+    });
+
+    // Calculate distance when pickup/dropoff change (no date/time needed)
+    useEffect(() => {
+        if (formData.pickup && formData.dropoff) {
             setLoading(true);
-            calcPrice(formData.pickup, formData.dropoff, formData.date, formData.time).then(({ price, miles, pickupTime, durationSecs }) => {
-                setFormData(p => ({ ...p, price, miles, pickupTime, durationSecs }));
+            calcDistance(formData.pickup, formData.dropoff).then(({ miles, durationSecs }) => {
+                setFormData(p => ({ ...p, miles, durationSecs, price: 0, pickupTime: '' }));
+                setLoading(false);
+            }).catch(err => {
+                console.error('Distance calc failed:', err);
                 setLoading(false);
             });
+        } else {
+            setFormData(p => ({ ...p, miles: 0, durationSecs: 0, price: 0, pickupTime: '' }));
         }
-    }, [formData.pickup, formData.dropoff, formData.date, formData.time]);
+    }, [formData.pickup, formData.dropoff]);
+
+    // Calculate price and pickup time when date/time change (requires prior distance)
+    useEffect(() => {
+        if (formData.miles > 0 && formData.date && formData.time) {
+            setLoading(true);
+            const { price, pickupTime } = calcPrice(formData.miles, formData.durationSecs, formData.date, formData.time);
+            setFormData(p => ({ ...p, price, pickupTime }));
+            setLoading(false);
+        } else {
+            setFormData(p => ({ ...p, price: 0, pickupTime: '' }));
+        }
+    }, [formData.date, formData.time, formData.miles, formData.durationSecs]);
 
     useEffect(() => {
         // Fetch bookings for current week
@@ -314,15 +322,19 @@ const RideSafeApp = () => {
     }, [currentWeekStart]);
 
     useEffect(() => {
-        if (pickupRef.current) {
-            const autocomplete = new google.maps.places.Autocomplete(pickupRef.current, { types: ['geocode'] });
+        const autocompleteOptions = {
+            types: ['geocode'],
+            componentRestrictions: { country: 'us' }
+        };
+        if (pickupRef.current && window.google) {
+            const autocomplete = new google.maps.places.Autocomplete(pickupRef.current, autocompleteOptions);
             autocomplete.addListener('place_changed', () => {
                 const place = autocomplete.getPlace();
                 setFormData(p => ({ ...p, pickup: place.formatted_address || pickupRef.current.value }));
             });
         }
-        if (dropoffRef.current) {
-            const autocomplete = new google.maps.places.Autocomplete(dropoffRef.current, { types: ['geocode'] });
+        if (dropoffRef.current && window.google) {
+            const autocomplete = new google.maps.places.Autocomplete(dropoffRef.current, autocompleteOptions);
             autocomplete.addListener('place_changed', () => {
                 const place = autocomplete.getPlace();
                 setFormData(p => ({ ...p, dropoff: place.formatted_address || dropoffRef.current.value }));
@@ -337,7 +349,9 @@ const RideSafeApp = () => {
 
     const bookRide = async (e) => {
         e.preventDefault();
-        if (!formData.price) return alert('Fill all fields for quote.');
+        if (!formData.name || !formData.email || !formData.phone || !formData.pickup || !formData.dropoff || !formData.date || !formData.time) {
+            return alert('Fill all fields for quote.');
+        }
         setLoading(true);
         try {
             await emailjs.send('service_2ss0i0l', 'YOUR_TEMPLATE_ID', {
@@ -346,6 +360,7 @@ const RideSafeApp = () => {
                 time: formData.time, pickupTime: formData.pickupTime, price: formData.price
             }, 'YOUR_PUBLIC_KEY');
 
+            // TODO: Replace 'YOUR_ACTUAL_CLIENT_ID.apps.googleusercontent.com' with real Google Client ID
             const authInstance = gapi.auth2.getAuthInstance();
             if (!authInstance.isSignedIn.get()) await authInstance.signIn();
             const token = authInstance.currentUser.get().getAuthResponse().access_token;
@@ -415,7 +430,7 @@ const RideSafeApp = () => {
                     <WeekDatePicker value={formData.date} onChange={(date) => handleInput({ target: { name: 'date', value: date } })} bookings={bookings} currentWeekStart={currentWeekStart} setCurrentWeekStart={setCurrentWeekStart} />
 
                     <div className="time-row">
-                        <span className="time-label">Arrival Time (CST):</span>
+                        <span className="time-label"><span style={{textDecoration: 'underline'}}>Arrival</span> Time (CST):</span>
                         <TimePicker value={formData.time} onChange={(time) => handleInput({ target: { name: 'time', value: time } })} date={formData.date} bookings={bookings} durationSecs={formData.durationSecs} />
                     </div>
 
