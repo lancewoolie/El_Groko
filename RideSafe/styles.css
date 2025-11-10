@@ -1,4 +1,5 @@
 /* RideSafe CSS: Blue Scheme (Inspired by Trustworthy Blue Palettes - #007BFF Base for Calm and Reliability, WCAG AA+ Legibility) */
+
 :root {
     --bg-primary: #e6f2ff;
     --bg-fade: #cce5ff;
@@ -115,7 +116,7 @@ label {
     color: var(--text-dark); 
 }
 
-input { 
+input, select { 
     font-size: 14px; 
     padding: 0.5rem; 
     border: var(--border-thin); 
@@ -126,10 +127,40 @@ input {
     width: 100%; 
 }
 
-input:focus { 
+input:focus, select:focus { 
     outline: none; 
     box-shadow: 0 0 0 4px var(--blue-glow); 
     border-color: #0056b3; 
+}
+
+.autocomplete { position: relative; }
+
+.suggestions { 
+    position: absolute; 
+    top: 100%; 
+    left: 0; 
+    right: 0; 
+    background: var(--container-bg); 
+    border: var(--border-thin); 
+    border-top: none; 
+    border-radius: 0 0 8px 8px; 
+    max-height: 150px; 
+    overflow-y: auto; 
+    z-index: 10; 
+    opacity: 0; 
+    transition: opacity 0.3s ease; 
+}
+
+.suggestions.show { opacity: 1; }
+
+.suggestion-item { 
+    padding: 0.5rem; 
+    cursor: pointer; 
+    border-bottom: var(--border-thin); 
+}
+
+.suggestion-item:hover { 
+    background: var(--blue-glow); 
 }
 
 .week-picker { 
@@ -155,12 +186,7 @@ input:focus {
     cursor: pointer; 
     min-width: 60px; 
     border-radius: 8px; 
-    transition: background 0.3s, box-shadow 0.3s; 
-    background: white;
-}
-
-.day-button:hover:not(.sunday):not(.selected) { 
-    box-shadow: 0 0 0 2px var(--blue-glow); 
+    transition: background 0.3s; 
 }
 
 .day-button.green { background: #d4edda; color: #155724; }
@@ -173,6 +199,10 @@ input:focus {
     background: #6c757d; 
     color: white; 
     cursor: not-allowed; 
+}
+
+.day-button:hover:not(.sunday):not(.selected) { 
+    box-shadow: 0 0 0 2px var(--blue-glow); 
 }
 
 .surge-label { 
@@ -216,7 +246,6 @@ input:focus {
     border: none; 
     border-radius: 8px; 
     cursor: pointer; 
-    transition: background 0.3s; 
 }
 
 .nav-buttons button:hover { background: #0056b3; }
@@ -241,7 +270,6 @@ input:focus {
     transition: background 0.3s; 
     min-width: 80px; 
     text-align: center; 
-    background: white;
 }
 
 .time-option:hover:not(.booked), .time-option.selected { 
@@ -316,4 +344,3 @@ input:focus {
     .book-section { flex-direction: column; gap: 0.5rem; }
     .book-btn { flex: none; }
 }
-
