@@ -39,7 +39,7 @@
   // Coords
   var countryClub = { lat: 30.4103, lng: -91.1868 };
 
-  // Utilities (With Your Guarded formatTime12)
+  // Utilities
   function timeToMins(timeStr) {
     var parts = timeStr.split(':').map(Number);
     return parts[0] * 60 + parts[1];
