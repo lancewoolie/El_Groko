@@ -64,6 +64,7 @@
             reject(new Error(data.error_message || data.status || data.rows[0].elements[0].status));
             return;
           }
+          console.log('Distance API success:', data);
           resolve(data.rows[0].elements[0]);
         })
         .catch(reject);
@@ -79,9 +80,11 @@
         .then(function(result) {
           var miles = Math.round(result.distance.value / 1609.34);
           var durationSecs = result.duration.value;
+          console.log('Distance Calc Details:', { miles: miles, durationSecs: durationSecs });
           resolve({ miles: miles, durationSecs: durationSecs });
         })
         .catch(function(err) {
+          console.error('Distance calc error:', err);
           resolve({ miles: 0, durationSecs: 0 });
         });
     });
@@ -109,15 +112,18 @@
       var pickupDt = new Date(arrivalDt.getTime() - (durationSecs * 1000 + 300000));
       var pickupTimeStr = pickupDt.toTimeString().split(' ')[0].substring(0, 5);
       var surge = getSurge(date, time, pickupTimeStr);
-      var price = miles * surge;
+      var surgeIncrease = surge - 1;
+      var price = miles + miles * surgeIncrease;
       var roundedPrice = Math.round(price * 100) / 100;
+      console.log('Price Calc Details:', { miles: miles, durationSecs: durationSecs, surge: surge, pickupTime: pickupTimeStr, price: roundedPrice });
       return { price: roundedPrice, pickupTime: pickupTimeStr };
     } catch (err) {
+      console.error('Price calc error:', err);
       return { price: 0, pickupTime: '' };
     }
   }
 
-  // WeekDatePicker
+  // WeekDatePicker Component
   function WeekDatePicker(props) {
     var value = props.value;
     var onChange = props.onChange;
@@ -199,7 +205,7 @@
     );
   }
 
-  // TimePicker
+  // TimePicker Component
   function TimePicker(props) {
     var value = props.value;
     var onChange = props.onChange;
@@ -246,14 +252,14 @@
     return React.createElement('div', { className: 'time-picker' }, timeElements);
   }
 
-  // PlaceAutocomplete
+  // PlaceAutocomplete Component
   function PlaceAutocomplete(props) {
     var value = props.value;
     var onChange = props.onChange;
     var placeholder = props.placeholder;
     var inputRef = React.useRef(null);
     React.useEffect(function() {
-      if (window.google && window.google.maps.places && inputRef.current) {
+      if (window.google && window.google.maps && window.google.maps.places && inputRef.current) {
         var autocomplete = new window.google.maps.places.Autocomplete(inputRef.current, { types: ['address'] });
         autocomplete.addListener('place_changed', function() {
           var place = autocomplete.getPlace();
@@ -270,7 +276,7 @@
     });
   }
 
-  // Map
+  // Map Component
   function Map(props) {
     var pickup = props.pickup;
     var dropoff = props.dropoff;
@@ -302,7 +308,7 @@
     return React.createElement('div', { ref: mapRef, className: 'map-container' });
   }
 
-  // App
+  // Main App Component
   function App() {
     var pickupRef = React.useState('');
     var pickup = pickupRef[0];
@@ -473,11 +479,11 @@
     return React.createElement(ErrorBoundary, null, header, appDiv);
   }
 
-  // Render
+  // Render App
   ReactDOM.render(React.createElement(App), document.getElementById('root'));
 })();
 
-// Global Google Callback
+// Global Google Callback (For Autocomplete/Map Init)
 window.initRideSafe = function() {
-  console.log('Google Maps loaded');
+  console.log('Google Maps API loaded - Autocomplete ready');
 };
