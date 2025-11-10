@@ -41,13 +41,15 @@
 
   // Utilities
   function timeToMins(timeStr) {
+    if (!timeStr) return 0;
     var parts = timeStr.split(':').map(Number);
-    return parts[0] * 60 + parts[1];
+    return parts[0] * 60 + (parts[1] || 0);
   }
   function formatTime12(timeStr) {
+    if (!timeStr) return ''; // Guard for undefined on initial render
     var parts = timeStr.split(':').map(Number);
-    var h = parts[0];
-    var m = parts[1];
+    var h = parts[0] || 0;
+    var m = parts[1] || 0;
     var ampm = h >= 12 ? 'PM' : 'AM';
     h = h % 12 || 12;
     return h + ':' + m.toString().padStart(2, '0') + ' ' + ampm;
@@ -369,7 +371,7 @@
     function handleBook() {
       if (!pickup || !dropoff || !date || !time || price.price === 0) return;
       setLoading(true);
-      var durationMins = Math.round(durationSecs / 60);
+      var durationMins = Math.round(distance.durationSecs / 60);
       var booking = {
         pickup: pickup,
         dropoff: dropoff,
@@ -449,7 +451,7 @@
         onChange: setTime,
         date: date,
         bookings: bookings,
-        durationSecs: durationSecs
+        durationSecs: distance.durationSecs
       })
     ];
     if (price.price > 0) {
@@ -482,8 +484,3 @@
   // Render App
   ReactDOM.render(React.createElement(App), document.getElementById('root'));
 })();
-
-// Global Google Callback (For Autocomplete/Map Init)
-window.initRideSafe = function() {
-  console.log('Google Maps API loaded - Autocomplete ready');
-};
