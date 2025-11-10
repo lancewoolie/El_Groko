@@ -54,25 +54,19 @@ const formatTime12 = (timeStr) => {
     return `${h}:${m.toString().padStart(2, '0')} ${ampm}`;
 };
 
-// Get Distance (JSONP)
-const getDistance = (origin, dest) => new Promise((resolve, reject) => {
-    const apiKey = 'AIzaSyCFOS8a0W3jNKcRpFIyJSEwblcj-KQr9pc';
-    const callbackName = 'distanceCallback' + Date.now();
-    window[callbackName] = (data) => {
-        if (data.status !== 'OK' || data.rows[0].elements[0].status !== 'OK') {
-            console.error('Distance API failed:', data);
-            reject(new Error(data.error_message || data.status || data.rows[0].elements[0].status));
-        } else {
-            console.log('Distance API success:', data);
-            resolve(data.rows[0].elements[0]);
-        }
-        delete window[callbackName];
-    };
-    const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${encodeURIComponent(origin)}&destinations=${encodeURIComponent(dest)}&key=${apiKey}&callback=${callbackName}`;
-    script.onerror = () => reject(new Error('Script load error'));
-    document.body.appendChild(script);
-});
+// Get Distance (Switched to fetch to avoid JSONP/CSP issues; see steps above for full enablement)
+const getDistance = async (origin, dest) => {
+    const apiKey = 'AIzaSyDCtBJCtWAp1vUMEWfj9qX-gb1IMqiln6w';
+    const response = await fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?origins=${encodeURIComponent(origin)}&destinations=${encodeURIComponent(dest)}&key=${apiKey}`);
+    if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    const data = await response.json();
+    if (data.status !== 'OK' || data.rows[0].elements[0].status !== 'OK') {
+        console.error('Distance API failed:', data);
+        throw new Error(data.error_message || data.status || data.rows[0].elements[0].status);
+    }
+    console.log('Distance API success:', data);
+    return data.rows[0].elements[0];
+};
 
 // Calc Distance (independent of date/time)
 const calcDistance = async (origin, dest) => {
@@ -124,7 +118,7 @@ const calcPrice = (miles, durationSecs, date, time) => {
     }
 };
 
-// Week Date Picker (Monday start, color coding)
+// Week Date Picker (Monday start, color coding, Trips label with matching color)
 const WeekDatePicker = ({ value, onChange, bookings, currentWeekStart, setCurrentWeekStart }) => {
     const nextWeek = () => {
         const newStart = new Date(currentWeekStart);
@@ -161,6 +155,15 @@ const WeekDatePicker = ({ value, onChange, bookings, currentWeekStart, setCurren
         return 'green';
     };
 
+    const getTripsLabelColor = (dayClass) => {
+        switch (dayClass) {
+            case 'green': return 'green';
+            case 'orange': return 'orange';
+            case 'red': return 'red';
+            default: return 'inherit';
+        }
+    };
+
     return (
         <div className="week-picker">
             <div className="week-days">
@@ -170,12 +173,14 @@ const WeekDatePicker = ({ value, onChange, bookings, currentWeekStart, setCurren
                     const dayClass = getDayClass(day);
                     const dayOfWeek = day.getDay();
                     const hasSurge = dayOfWeek >= 4 && dayOfWeek <= 6;
+                    const tripCount = bookings[dayStr]?.length || 0;
+                    const showTrips = dayClass !== 'green' && dayClass !== 'sunday' && tripCount > 0;
                     return (
                         <div key={idx} className="day-wrapper">
                             {dayOfWeek !== 0 && (hasSurge ? <span className="surge-label">Surge Pricing</span> : <span className="surge-placeholder"></span>)}
                             <div className={`day-button ${isSelected ? 'selected' : ''} ${dayClass}`} onClick={() => dayClass !== 'sunday' && selectDay(day)}>
                                 {day.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
-                                {dayClass !== 'green' && <span> ({bookings[dayStr]?.length || 0} bookings)</span>}
+                                {showTrips && <span className="trips-label" style={{color: getTripsLabelColor(dayClass)}}>{tripCount} Trips</span>}
                             </div>
                         </div>
                     );
@@ -327,24 +332,39 @@ const RideSafeApp = () => {
             componentRestrictions: { country: 'us' }
         };
         if (pickupRef.current && window.google) {
-            const autocomplete = new google.maps.places.Autocomplete(pickupRef.current, autocompleteOptions);
-            autocomplete.addListener('place_changed', () => {
-                const place = autocomplete.getPlace();
-                setFormData(p => ({ ...p, pickup: place.formatted_address || pickupRef.current.value }));
-            });
+            try {
+                const autocomplete = new google.maps.places.Autocomplete(pickupRef.current, autocompleteOptions);
+                autocomplete.addListener('place_changed', () => {
+                    const place = autocomplete.getPlace();
+                    setFormData(p => ({ ...p, pickup: place.formatted_address || pickupRef.current.value }));
+                });
+            } catch (err) {
+                console.warn('Autocomplete init failed (deprecation):', err);
+            }
         }
         if (dropoffRef.current && window.google) {
-            const autocomplete = new google.maps.places.Autocomplete(dropoffRef.current, autocompleteOptions);
-            autocomplete.addListener('place_changed', () => {
-                const place = autocomplete.getPlace();
-                setFormData(p => ({ ...p, dropoff: place.formatted_address || dropoffRef.current.value }));
-            });
+            try {
+                const autocomplete = new google.maps.places.Autocomplete(dropoffRef.current, autocompleteOptions);
+                autocomplete.addListener('place_changed', () => {
+                    const place = autocomplete.getPlace();
+                    setFormData(p => ({ ...p, dropoff: place.formatted_address || dropoffRef.current.value }));
+                });
+            } catch (err) {
+                console.warn('Autocomplete init failed (deprecation):', err);
+            }
         }
     }, []);
 
     const handleInput = (e) => {
         const { name, value } = e.target;
         setFormData(p => ({ ...p, [name]: value }));
+    };
+
+    // Generate Static Map URL for route
+    const getRouteMapUrl = () => {
+        if (!formData.pickup || !formData.dropoff) return null;
+        const apiKey = 'AIzaSyDCtBJCtWAp1vUMEWfj9qX-gb1IMqiln6w';
+        return `https://maps.googleapis.com/maps/api/staticmap?key=${apiKey}&size=600x300&maptype=roadmap&origin=${encodeURIComponent(formData.pickup)}&destination=${encodeURIComponent(formData.dropoff)}&mode=driving&scale=2`;
     };
 
     const bookRide = async (e) => {
@@ -388,6 +408,8 @@ const RideSafeApp = () => {
         }
         setLoading(false);
     };
+
+    const mapUrl = getRouteMapUrl();
 
     return (
         <div className="app">
@@ -440,8 +462,12 @@ const RideSafeApp = () => {
                         </div>
                     )}
 
+                    {mapUrl && (
+                        <img src={mapUrl} alt="Route Map" className="route-map" />
+                    )}
+
                     <button type="submit" className="book-btn" disabled={loading}>
-                        <img src="https://lancewoolie.com/RideSafe/img/RIDESAFE TELSA BLUE CHECKsm.png" alt="RideSafe Verified" style={{ width: '20px', marginRight: '5px' }} />
+                        <img src="https://lancewoolie.com/RideSafe/img/RIDESAFE TELSA BLUE CHECKsm.png" alt="RideSafe Verified" style={{ width: '40px', marginRight: '5px' }} />
                         {loading ? 'BOOKING...' : 'BOOK IT'}
                     </button>
                 </form>
