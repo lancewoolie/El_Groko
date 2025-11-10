@@ -110,8 +110,10 @@ input:focus, select:focus { outline: none; box-shadow: 0 0 0 4px var(--blue-glow
 
 .week-picker { display: flex; flex-direction: column; gap: 0.5rem; }
 .week-days { display: flex; gap: 0.5rem; justify-content: space-between; }
-.day-button { padding: 0.5rem; border: var(--border-thin); border-radius: 8px; background: var(--input-bg); cursor: pointer; text-align: center; flex: 1; transition: all 0.3s ease; }
-.day-button:hover { background: var(--blue-glow); }
+.day-wrapper { text-align: center; flex: 1; }
+.surge-label { font-size: 0.7rem; color: orange; font-weight: bold; display: block; margin-bottom: 0.2rem; }
+.day-button { padding: 0.5rem; border: var(--border-thin); border-radius: 8px; background: var(--input-bg); cursor: pointer; text-align: center; transition: all 0.3s ease; }
+.day-button:hover:not(.sunday):not(.booked) { background: var(--blue-glow); }
 .day-button.selected { background: var(--blue-brand); color: #fff; }
 .day-button.sunday { background: #f0f0f0; color: #999; cursor: not-allowed; }
 .day-button.sunday:hover { background: #f0f0f0; }
@@ -119,12 +121,29 @@ input:focus, select:focus { outline: none; box-shadow: 0 0 0 4px var(--blue-glow
 .day-button.orange { border: 2px solid orange; }
 .day-button.red { border: 2px solid red; }
 .nav-buttons { display: flex; justify-content: space-between; }
-.nav-buttons button { padding: 0.5rem; background: var(--blue-brand); color: #fff; border: none; border-radius: 8px; cursor: pointer; }
+.nav-buttons button { padding: 0.5rem; background: var(--blue-brand); color: #fff; border: none; border-radius: 8px; cursor: pointer; flex: 1; margin: 0 0.25rem; }
 
-.time-picker { position: relative; }
-.time-picker select { padding: 0.5rem; border: var(--border-thin); border-radius: 8px; background: var(--input-bg); color: var(--text-dark); width: 100%; font-size: 14px; }
-.time-picker option { padding: 0.5rem; background: white; }
-.pickup-time-display { font-size: 14px; color: var(--blue-brand); margin-top: 0.5rem; font-style: italic; }
+.time-row { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+.time-label { font-weight: bold; font-size: 14px; color: var(--text-dark); min-width: fit-content; }
+
+.time-picker { flex: 1; min-width: 200px; }
+.time-options { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 0.5rem; margin-top: 0.5rem; }
+.time-btn { padding: 0.5rem; border: var(--border-thin); border-radius: 8px; background: var(--input-bg); cursor: pointer; transition: all 0.3s ease; font-size: 12px; position: relative; }
+.time-btn:hover:not(:disabled) { background: var(--blue-glow); }
+.time-btn.selected { background: var(--blue-brand); color: #fff; }
+.time-btn.booked { background: #ffebee; color: #d32f2f; border-color: #d32f2f; cursor: not-allowed; opacity: 0.7; }
+.booked-label { display: block; font-size: 8px; color: #d32f2f; font-weight: bold; margin-top: 2px; }
+
+.pickup-time-display { font-size: 16px; color: var(--blue-brand); margin-top: 0.5rem; font-style: italic; text-align: center; }
 
 /* Mobile-First Enhancements */
-@media (max-width: 480px) { body { padding: 0.3rem; } header { flex-direction: column; gap: 0.5rem; } .suggestions { position: fixed; left: 0.5rem; right: 0.5rem; } .title { font-size: 2rem; } .container { padding: 1rem; } .estimates { flex-direction: column; } }
+@media (max-width: 480px) { 
+    body { padding: 0.3rem; } 
+    header { flex-direction: column; gap: 0.5rem; } 
+    .suggestions { position: fixed; left: 0.5rem; right: 0.5rem; } 
+    .title { font-size: 2rem; } 
+    .container { padding: 1rem; } 
+    .estimates { flex-direction: column; } 
+    .time-options { grid-template-columns: repeat(4, 1fr); }
+    .pickup-time-display strong { font-size: 1.5em; }
+}
