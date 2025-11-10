@@ -10,34 +10,40 @@
     <link rel="stylesheet" href="styles.css">
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <!-- No Babel—loads pre-compiled JS -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCtBJCtWAp1vUMEWfj9qX-gb1IMqiln6w&libraries=places&loading=async&callback=initRideSafe"></script>
 </head>
 <body>
     <div id="root"></div>
-    <!-- Error Capture + Fallback: Overrides console.error, shows after 5s if broken -->
+    <!-- Google Callback Early (For Autocomplete) -->
     <script>
-        // Capture console errors for on-screen display
+      window.initRideSafe = function() {
+        console.log('Google Maps API loaded - Autocomplete ready');
+      };
+    </script>
+    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCtBJCtWAp1vUMEWfj9qX-gb1IMqiln6w&libraries=places&loading=async&callback=initRideSafe"></script>
+    <!-- Error Capture + Fallback (Enhanced for Full Stack Traces) -->
+    <script>
         var capturedErrors = [];
         var originalConsoleError = console.error;
         console.error = function(...args) {
             var timestamp = new Date().toLocaleTimeString();
-            var errorMsg = args.map(arg => typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)).join(' ');
+            var errorMsg = args.map(arg => {
+              if (arg && arg.stack) return arg.stack; // Capture full stack
+              return typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg);
+            }).join(' ');
             capturedErrors.push({ timestamp: timestamp, message: errorMsg });
-            originalConsoleError.apply(console, args); // Still log to console
+            originalConsoleError.apply(console, args);
         };
 
-        // Timeout fallback: If #root empty after 5s, blast the error box with captured errors
         setTimeout(() => {
             const root = document.getElementById('root');
             if (root && root.innerHTML.trim() === '') {
                 let errorListHtml = '';
                 if (capturedErrors.length > 0) {
-                    errorListHtml = '<h3 style="color: #ff4757; margin-bottom: 10px;">Captured Console Errors:</h3><ul style="text-align: left; max-height: 200px; overflow-y: auto; background: rgba(255,255,255,0.1); padding: 10px; border-radius: 8px;">' +
-                        capturedErrors.map(err => `<li><strong>${err.timestamp}:</strong> ${err.message}</li>`).join('') +
+                    errorListHtml = '<h3 style="color: #ff4757; margin-bottom: 10px;">Captured Console Errors (Full Stack):</h3><ul style="text-align: left; max-height: 200px; overflow-y: auto; background: rgba(255,255,255,0.1); padding: 10px; border-radius: 8px; white-space: pre-wrap; font-family: monospace;">' +
+                        capturedErrors.map(err => `<li><strong>${err.timestamp}:</strong><br>${err.message}</li>`).join('') +
                         '</ul>';
                 } else {
                     errorListHtml = '<p style="color: #ff6348;">No errors captured yet—might be silent fail or CDN delay.</p>';
@@ -62,6 +68,6 @@
             }
         }, 5000);
     </script>
-    <script src="script-compiled.js"></script>  <!-- Your fixed compiled file -->
+    <script src="script-compiled.js"></script>
 </body>
 </html>
