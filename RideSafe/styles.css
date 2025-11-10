@@ -1,21 +1,20 @@
 /* RideSafe CSS: Blue Scheme (Inspired by Trustworthy Blue Palettes - #007BFF Base for Calm and Reliability, WCAG AA+ Legibility) */
 :root {
-    --bg-primary: #e6f2ff; /* Light blue bg for fresh feel */
-    --bg-fade: #cce5ff; /* Faded blue gradient accents */
-    --text-dark: #001f3f; /* Dark navy text for high contrast */
-    --blue-brand: #007BFF; /* Primary blue - researched for trust and usability in web design */
-    --blue-glow: rgba(0, 123, 255, 0.3); /* Subtle glow for hover/focus */
+    --bg-primary: #e6f2ff;
+    --bg-fade: #cce5ff;
+    --text-dark: #001f3f;
+    --blue-brand: #007BFF;
+    --blue-glow: rgba(0, 123, 255, 0.3);
     --border-thin: 1px solid var(--blue-brand);
-    --container-bg: #f8fbff; /* Light blue-white for containers */
-    --input-bg: #e6f2ff; /* Light blue input bg */
-    --dark-maroon: #400000; /* Kept for specific elements if needed, but pivoted to blue */
+    --container-bg: #f8fbff;
+    --input-bg: #e6f2ff;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
     font-family: 'Roboto', sans-serif;
-    background: linear-gradient(to bottom, #007BFF, #001f3f); /* Blue to dark blue gradient */
+    background: linear-gradient(to bottom, #007BFF, #001f3f);
     color: var(--text-dark);
     line-height: 1.4;
     padding: 0.5rem;
@@ -37,7 +36,7 @@ body {
 .title {
     font-size: 2.5rem;
     font-weight: bold;
-    color: var(--text-dark); /* Dark for legibility on blue */
+    color: var(--text-dark);
     margin: 0 0.5rem 0 0;
     letter-spacing: 2px;
     text-shadow: 0 0 10px var(--blue-glow);
@@ -111,9 +110,21 @@ input:focus, select:focus { outline: none; box-shadow: 0 0 0 4px var(--blue-glow
 
 .week-picker { display: flex; flex-direction: column; gap: 0.5rem; }
 .week-days { display: flex; gap: 0.5rem; justify-content: space-between; }
-.day-button { padding: 0.5rem; border: var(--border-thin); border-radius: 8px; background: var(--input-bg); cursor: pointer; text-align: center; flex: 1; }
+.day-button { padding: 0.5rem; border: var(--border-thin); border-radius: 8px; background: var(--input-bg); cursor: pointer; text-align: center; flex: 1; transition: all 0.3s ease; }
+.day-button:hover { background: var(--blue-glow); }
 .day-button.selected { background: var(--blue-brand); color: #fff; }
+.day-button.sunday { background: #f0f0f0; color: #999; cursor: not-allowed; }
+.day-button.sunday:hover { background: #f0f0f0; }
+.day-button.green { border: 2px solid green; }
+.day-button.orange { border: 2px solid orange; }
+.day-button.red { border: 2px solid red; }
 .nav-buttons { display: flex; justify-content: space-between; }
+.nav-buttons button { padding: 0.5rem; background: var(--blue-brand); color: #fff; border: none; border-radius: 8px; cursor: pointer; }
+
+.time-picker { position: relative; }
+.time-picker select { padding: 0.5rem; border: var(--border-thin); border-radius: 8px; background: var(--input-bg); color: var(--text-dark); width: 100%; font-size: 14px; }
+.time-picker option { padding: 0.5rem; background: white; }
+.pickup-time-display { font-size: 14px; color: var(--blue-brand); margin-top: 0.5rem; font-style: italic; }
 
 /* Mobile-First Enhancements */
 @media (max-width: 480px) { body { padding: 0.3rem; } header { flex-direction: column; gap: 0.5rem; } .suggestions { position: fixed; left: 0.5rem; right: 0.5rem; } .title { font-size: 2rem; } .container { padding: 1rem; } .estimates { flex-direction: column; } }
