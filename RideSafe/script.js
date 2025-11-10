@@ -260,4 +260,52 @@ const RideSafeApp = () => {
         <div className="app">
             <div className="title-section">
                 <div className="tesla-icon" onClick={() => location.reload()}>⚡</div>
-                <img src="https://lancewoolie.com/RideSafe/img/r
+                <img src="https://lancewoolie.com/RideSafe/img/ridesafelogoLG.jpg" alt="RideSafe Logo" className="logo" />
+                <div className="title">RideSafe</div>
+                <div className="motto">Safety should not be a luxury</div>
+            </div>
+            <header>
+                <button className={`driver-btn ${showDriver ? 'show' : ''}`} onClick={() => { setShowDriver(!showDriver); console.log('Driver signup clicked'); }}>Become a Driver</button>
+            </header>
+            <div className="container">
+                <form onSubmit={bookRide}>
+                    <label htmlFor="name">Name</label>
+                    <input id="name" name="name" value={formData.name} onChange={handleInput} placeholder="e.g., Rachel" required />
+
+                    <label htmlFor="email">Email</label>
+                    <input id="email" name="email" type="email" value={formData.email} onChange={handleInput} placeholder="rachel@example.com" required />
+
+                    <label htmlFor="phone">Phone</label>
+                    <input id="phone" name="phone" type="tel" value={formData.phone} onChange={handleInput} placeholder="(225) 123-4567" required />
+
+                    <label htmlFor="pickup">Pick up Address</label>
+                    <div className="autocomplete">
+                        <input ref={pickupRef} id="pickup" name="pickup" value={formData.pickup} onChange={handleInput} placeholder="e.g., Baton Rouge" required />
+                    </div>
+
+                    <label htmlFor="dropoff">Drop off Address</label>
+                    <div className="autocomplete">
+                        <input ref={dropoffRef} id="dropoff" name="dropoff" value={formData.dropoff} onChange={handleInput} placeholder="e.g., New Orleans" required />
+                    </div>
+
+                    <div className="estimates">
+                        <div className="distance-display">Trip Distance: {loading ? '...' : formData.miles || 'Enter details'} miles</div>
+                        <div className="price-display">Est. Price: ${loading ? '...' : formData.price || 'Enter details'}</div>
+                    </div>
+
+                    <label>Date</label>
+                    <WeekDatePicker value={formData.date} onChange={(date) => handleInput({ target: { name: 'date', value: date } })} />
+
+                    <label htmlFor="time">Time</label>
+                    <input id="time" name="time" type="time" value={formData.time} onChange={handleInput} required />
+
+                    <button type="submit" className="book-btn" disabled={loading || !formData.price}>Book It (Pay End-of-Ride)</button>
+                </form>
+            </div>
+        </div>
+    );
+};
+
+// Render with Error Boundary
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<ErrorBoundary><RideSafeApp /></ErrorBoundary>);
