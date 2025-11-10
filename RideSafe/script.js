@@ -35,50 +35,58 @@ try {
 // Country Club Coords (Fixed Base)
 const countryClub = { lat: 30.4103, lng: -91.1868 };
 
-// Get Distance (Real Google API with CORS proxy for testing - remove after billing/referrers fixed)
-const getDistance = async (origin, dest) => {
-    const apiKey = 'AIzaSyCFOS8a0W3jNKcRpFIyJSEwblcj-KQr9pc';
-    const proxyUrl = 'https://cors-anywhere.herokuapp.com/'; // Temp proxy - visit https://cors-anywhere.herokuapp.com/corsdemo to enable
-    try {
-        const response = await fetch(proxyUrl + `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${encodeURIComponent(origin)}&destinations=${encodeURIComponent(dest)}&key=${apiKey}`);
-        const data = await response.json();
-        if (data.status !== 'OK' || data.rows[0].elements[0].status !== 'OK') {
-            console.error('Distance API failed:', data);
-            throw new Error(data.error_message || data.status || data.rows[0].elements[0].status);
-        }
-        console.log('Distance API success:', data); // Debug log
-        return data.rows[0].elements[0];
-    } catch (err) {
-        console.error('Distance API error:', err.message, ' - Check API key restrictions (e.g., referrer, billing) or address validity. Using fallback.');
-        return { distance: { value: 10 * 1609.34 }, duration: { value: 15 * 60 } }; // Fallback
-    }
+// Airport addresses
+const airports = {
+    MSY: '1 Terminal Dr, Kenner, LA 70062',
+    BTR: '9430 Jackie Cochran Dr, Baton Rouge, LA 70807' // Main Terminal address for BTR
 };
 
-// Get Dist from Country Club (with proxy)
-const getDistFromBase = async (origin) => {
+// Get Distance (Using JSONP to bypass CORS)
+const getDistance = (origin, dest) => new Promise((resolve, reject) => {
     const apiKey = 'AIzaSyCFOS8a0W3jNKcRpFIyJSEwblcj-KQr9pc';
-    const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-    try {
-        const geocoder = new google.maps.Geocoder();
-        const originCoords = await new Promise((resolve, reject) => {
-            geocoder.geocode({ address: origin }, (results, status) => {
-                if (status === 'OK') resolve(results[0].geometry.location);
-                else reject(status);
-            });
-        });
-        const response = await fetch(proxyUrl + `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${originCoords.lat()},${originCoords.lng()}&destinations=${countryClub.lat},${countryClub.lng}&key=${apiKey}`);
-        const data = await response.json();
-        if (data.status !== 'OK') {
-            console.error('Base Dist API failed:', data);
-            throw new Error(data.error_message || data.status);
+    const callbackName = 'distanceCallback' + Date.now();
+    window[callbackName] = (data) => {
+        if (data.status !== 'OK' || data.rows[0].elements[0].status !== 'OK') {
+            console.error('Distance API failed:', data);
+            reject(new Error(data.error_message || data.status || data.rows[0].elements[0].status));
+        } else {
+            console.log('Distance API success:', data);
+            resolve(data.rows[0].elements[0]);
         }
-        console.log('Base Dist API success:', data); // Debug log
-        return data.rows[0].elements[0].distance.value / 1609.34; // miles
-    } catch (err) {
-        console.error('Base Dist error:', err.message, ' - Check API key restrictions (e.g., referrer, billing) or address validity. Using fallback.');
-        return 10; // Fallback
-    }
-};
+        delete window[callbackName];
+    };
+    const script = document.createElement('script');
+    script.src = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${encodeURIComponent(origin)}&destinations=${encodeURIComponent(dest)}&key=${apiKey}&callback=${callbackName}`;
+    script.onerror = () => reject(new Error('Script load error'));
+    document.body.appendChild(script);
+    script.remove();
+});
+
+// Get Dist from Country Club (JSONP)
+const getDistFromBase = (origin) => new Promise((resolve, reject) => {
+    const geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ address: origin }, (results, status) => {
+        if (status !== 'OK') return reject(status);
+        const originCoords = results[0].geometry.location;
+        const apiKey = 'AIzaSyCFOS8a0W3jNKcRpFIyJSEwblcj-KQr9pc';
+        const callbackName = 'baseDistCallback' + Date.now();
+        window[callbackName] = (data) => {
+            if (data.status !== 'OK') {
+                console.error('Base Dist API failed:', data);
+                reject(new Error(data.error_message || data.status));
+            } else {
+                console.log('Base Dist API success:', data);
+                resolve(data.rows[0].elements[0].distance.value / 1609.34);
+            }
+            delete window[callbackName];
+        };
+        const script = document.createElement('script');
+        script.src = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${originCoords.lat()},${originCoords.lng()}&destinations=${countryClub.lat},${countryClub.lng}&key=${apiKey}&callback=${callbackName}`;
+        script.onerror = () => reject(new Error('Script load error'));
+        document.body.appendChild(script);
+        script.remove();
+    });
+});
 
 // Surge Mult
 const getSurge = (dateStr, timeStr) => {
@@ -163,8 +171,8 @@ const RideSafeApp = () => {
         name: localStorage.getItem('rs_name') || '',
         email: localStorage.getItem('rs_email') || '',
         phone: localStorage.getItem('rs_phone') || '',
-        origin: localStorage.getItem('rs_origin') || '',
-        dest: localStorage.getItem('rs_dest') || '',
+        pickup: localStorage.getItem('rs_pickup') || '',
+        dropoff: localStorage.getItem('rs_dropoff') || '',
         date: localStorage.getItem('rs_date') || '',
         time: localStorage.getItem('rs_time') || '',
         price: 0,
@@ -172,14 +180,14 @@ const RideSafeApp = () => {
     });
     const [loading, setLoading] = useState(false);
     const [showDriver, setShowDriver] = useState(false);
-    const originRef = useRef(null);
-    const destRef = useRef(null);
+    const pickupRef = useRef(null);
+    const dropoffRef = useRef(null);
 
     useEffect(() => {
         Object.entries(formData).forEach(([k, v]) => localStorage.setItem(`rs_${k}`, v));
-        if (formData.origin && formData.dest && formData.date && formData.time) {
+        if (formData.pickup && formData.dropoff && formData.date && formData.time) {
             setLoading(true);
-            calcPrice(formData.origin, formData.dest, formData.date, formData.time).then(({ price, miles }) => {
+            calcPrice(formData.pickup, formData.dropoff, formData.date, formData.time).then(({ price, miles }) => {
                 setFormData(p => ({ ...p, price, miles }));
                 setLoading(false);
             }).catch((err) => {
@@ -187,21 +195,21 @@ const RideSafeApp = () => {
                 setLoading(false);
             });
         }
-    }, [formData.origin, formData.dest, formData.date, formData.time]);
+    }, [formData.pickup, formData.dropoff, formData.date, formData.time]);
 
     useEffect(() => {
-        if (originRef.current) {
-            const autocomplete = new google.maps.places.Autocomplete(originRef.current, { types: ['geocode'] });
+        if (pickupRef.current) {
+            const autocomplete = new google.maps.places.Autocomplete(pickupRef.current, { types: ['geocode'] });
             autocomplete.addListener('place_changed', () => {
                 const place = autocomplete.getPlace();
-                setFormData(p => ({ ...p, origin: place.formatted_address || originRef.current.value }));
+                setFormData(p => ({ ...p, pickup: place.formatted_address || pickupRef.current.value }));
             });
         }
-        if (destRef.current) {
-            const autocomplete = new google.maps.places.Autocomplete(destRef.current, { types: ['geocode'] });
+        if (dropoffRef.current) {
+            const autocomplete = new google.maps.places.Autocomplete(dropoffRef.current, { types: ['geocode'] });
             autocomplete.addListener('place_changed', () => {
                 const place = autocomplete.getPlace();
-                setFormData(p => ({ ...p, dest: place.formatted_address || destRef.current.value }));
+                setFormData(p => ({ ...p, dropoff: place.formatted_address || dropoffRef.current.value }));
             });
         }
     }, []);
@@ -218,7 +226,7 @@ const RideSafeApp = () => {
         try {
             await emailjs.send('service_2ss0i0l', 'YOUR_TEMPLATE_ID', {
                 name: formData.name, email: formData.email, phone: formData.phone,
-                origin: formData.origin, dest: formData.dest, date: formData.date,
+                origin: formData.pickup, dest: formData.dropoff, date: formData.date,
                 time: formData.time, price: formData.price
             }, 'YOUR_PUBLIC_KEY');
 
@@ -230,7 +238,7 @@ const RideSafeApp = () => {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    summary: `RideSafe Booking: ${formData.origin} → ${formData.dest}`,
+                    summary: `RideSafe Booking: ${formData.pickup} → ${formData.dropoff}`,
                     description: `Passenger: ${formData.name} (${formData.phone})\nEst: $${formData.price}\nPay end-of-ride.`,
                     start: { dateTime: `${formData.date}T${formData.time}:00`, timeZone: 'America/Chicago' },
                     end: { dateTime: endTime, timeZone: 'America/Chicago' }
@@ -252,51 +260,4 @@ const RideSafeApp = () => {
         <div className="app">
             <div className="title-section">
                 <div className="tesla-icon" onClick={() => location.reload()}>⚡</div>
-                <img src="RideSafe/img/ridesafelogoSm.jpg" alt="RideSafe Logo" className="logo" />
-                <div className="title">RideSafe</div>
-                <div className="motto">Safety should not be a luxury</div>
-            </div>
-            <header>
-                <button className={`driver-btn ${showDriver ? 'show' : ''}`} onClick={() => { setShowDriver(!showDriver); console.log('Driver signup clicked'); }}>Become a Driver</button>
-            </header>
-            <div className="container">
-                <form onSubmit={bookRide}>
-                    <label htmlFor="name">Name</label>
-                    <input id="name" name="name" value={formData.name} onChange={handleInput} placeholder="e.g., Rachel" required />
-
-                    <label htmlFor="email">Email</label>
-                    <input id="email" name="email" type="email" value={formData.email} onChange={handleInput} placeholder="rachel@example.com" required />
-
-                    <label htmlFor="phone">Phone</label>
-                    <input id="phone" name="phone" type="tel" value={formData.phone} onChange={handleInput} placeholder="(225) 123-4567" required />
-
-                    <label htmlFor="origin">Origin Address</label>
-                    <div className="autocomplete">
-                        <input ref={originRef} id="origin" name="origin" value={formData.origin} onChange={handleInput} placeholder="e.g., Baton Rouge" required />
-                    </div>
-
-                    <label htmlFor="dest">Destination Address</label>
-                    <div className="autocomplete">
-                        <input ref={destRef} id="dest" name="dest" value={formData.dest} onChange={handleInput} placeholder="e.g., New Orleans" required />
-                    </div>
-
-                    <div className="distance-display">Est. Distance: {loading ? '...' : formData.miles || 'Enter details'} miles</div>
-
-                    <label>Date</label>
-                    <WeekDatePicker value={formData.date} onChange={(date) => handleInput({ target: { name: 'date', value: date } })} />
-
-                    <label htmlFor="time">Time</label>
-                    <input id="time" name="time" type="time" value={formData.time} onChange={handleInput} required />
-
-                    <div className="price-display">Est. Price: ${loading ? '...' : formData.price || 'Enter details'}</div>
-
-                    <button type="submit" className="book-btn" disabled={loading || !formData.price}>Book It (Pay End-of-Ride)</button>
-                </form>
-            </div>
-        </div>
-    );
-};
-
-// Render with Error Boundary
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<ErrorBoundary><RideSafeApp /></ErrorBoundary>);
+                <img src="https://lancewoolie.com/RideSafe/img/r
