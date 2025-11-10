@@ -35,11 +35,12 @@ try {
 // Country Club Coords (Fixed Base)
 const countryClub = { lat: 30.4103, lng: -91.1868 };
 
-// Get Distance (Real Google API with added logging)
+// Get Distance (Real Google API with CORS proxy for testing - remove after billing/referrers fixed)
 const getDistance = async (origin, dest) => {
     const apiKey = 'AIzaSyCFOS8a0W3jNKcRpFIyJSEwblcj-KQr9pc';
+    const proxyUrl = 'https://cors-anywhere.herokuapp.com/'; // Temp proxy - visit https://cors-anywhere.herokuapp.com/corsdemo to enable
     try {
-        const response = await fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?origins=${encodeURIComponent(origin)}&destinations=${encodeURIComponent(dest)}&key=${apiKey}`);
+        const response = await fetch(proxyUrl + `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${encodeURIComponent(origin)}&destinations=${encodeURIComponent(dest)}&key=${apiKey}`);
         const data = await response.json();
         if (data.status !== 'OK' || data.rows[0].elements[0].status !== 'OK') {
             console.error('Distance API failed:', data);
@@ -48,14 +49,15 @@ const getDistance = async (origin, dest) => {
         console.log('Distance API success:', data); // Debug log
         return data.rows[0].elements[0];
     } catch (err) {
-        console.error('Distance API error:', err.message, ' - Check API key restrictions (e.g., referrer, billing) or address validity.');
+        console.error('Distance API error:', err.message, ' - Check API key restrictions (e.g., referrer, billing) or address validity. Using fallback.');
         return { distance: { value: 10 * 1609.34 }, duration: { value: 15 * 60 } }; // Fallback
     }
 };
 
-// Get Dist from Country Club (Real API with added logging)
+// Get Dist from Country Club (with proxy)
 const getDistFromBase = async (origin) => {
     const apiKey = 'AIzaSyCFOS8a0W3jNKcRpFIyJSEwblcj-KQr9pc';
+    const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
     try {
         const geocoder = new google.maps.Geocoder();
         const originCoords = await new Promise((resolve, reject) => {
@@ -64,7 +66,7 @@ const getDistFromBase = async (origin) => {
                 else reject(status);
             });
         });
-        const response = await fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?origins=${originCoords.lat()},${originCoords.lng()}&destinations=${countryClub.lat},${countryClub.lng}&key=${apiKey}`);
+        const response = await fetch(proxyUrl + `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${originCoords.lat()},${originCoords.lng()}&destinations=${countryClub.lat},${countryClub.lng}&key=${apiKey}`);
         const data = await response.json();
         if (data.status !== 'OK') {
             console.error('Base Dist API failed:', data);
@@ -73,7 +75,7 @@ const getDistFromBase = async (origin) => {
         console.log('Base Dist API success:', data); // Debug log
         return data.rows[0].elements[0].distance.value / 1609.34; // miles
     } catch (err) {
-        console.error('Base Dist error:', err.message, ' - Check API key restrictions (e.g., referrer, billing) or address validity.');
+        console.error('Base Dist error:', err.message, ' - Check API key restrictions (e.g., referrer, billing) or address validity. Using fallback.');
         return 10; // Fallback
     }
 };
@@ -100,7 +102,59 @@ const calcPrice = async (origin, dest, date, time) => {
     const distMult = baseDist <= 10 ? 1 : baseDist <= 20 ? 1.25 : baseDist <= 35 ? 1.42 : 2;
     const surge = getSurge(date, time);
     const price = Math.round((base * distMult * surge) * 100) / 100;
+    console.log('Price Calc Details:', { miles, mins, base, baseDist, distMult, surge, price }); // Debug
     return { price, miles };
+};
+
+// Week Date Picker Component
+const WeekDatePicker = ({ value, onChange }) => {
+    const [currentWeekStart, setCurrentWeekStart] = useState(new Date());
+    useEffect(() => {
+        const today = new Date();
+        const dayOfWeek = today.getDay();
+        const start = new Date(today);
+        start.setDate(today.getDate() - dayOfWeek); // Start from Sunday
+        setCurrentWeekStart(start);
+    }, []);
+
+    const nextWeek = () => {
+        const newStart = new Date(currentWeekStart);
+        newStart.setDate(newStart.getDate() + 7);
+        setCurrentWeekStart(newStart);
+    };
+
+    const prevWeek = () => {
+        const newStart = new Date(currentWeekStart);
+        newStart.setDate(newStart.getDate() - 7);
+        setCurrentWeekStart(newStart);
+    };
+
+    const days = [];
+    for (let i = 0; i < 7; i++) {
+        const day = new Date(currentWeekStart);
+        day.setDate(day.getDate() + i);
+        days.push(day);
+    }
+
+    const selectDay = (day) => {
+        onChange(day.toISOString().split('T')[0]);
+    };
+
+    return (
+        <div className="week-picker">
+            <div className="nav-buttons">
+                <button onClick={prevWeek}>Prev Week</button>
+                <button onClick={nextWeek}>Next Week</button>
+            </div>
+            <div className="week-days">
+                {days.map((day, idx) => (
+                    <div key={idx} className={`day-button ${value === day.toISOString().split('T')[0] ? 'selected' : ''}`} onClick={() => selectDay(day)}>
+                        {day.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
 };
 
 // Main App
@@ -198,7 +252,7 @@ const RideSafeApp = () => {
         <div className="app">
             <div className="title-section">
                 <div className="tesla-icon" onClick={() => location.reload()}>⚡</div>
-                <img src="https://lancewoolie.com/RideSafe/img/model3.png" alt="Tesla Model 3" className="logo" />
+                <img src="RideSafe/img/ridesafelogoSm.jpg" alt="RideSafe Logo" className="logo" />
                 <div className="title">RideSafe</div>
                 <div className="motto">Safety should not be a luxury</div>
             </div>
@@ -228,8 +282,8 @@ const RideSafeApp = () => {
 
                     <div className="distance-display">Est. Distance: {loading ? '...' : formData.miles || 'Enter details'} miles</div>
 
-                    <label htmlFor="date">Date</label>
-                    <input id="date" name="date" type="date" value={formData.date} onChange={handleInput} required />
+                    <label>Date</label>
+                    <WeekDatePicker value={formData.date} onChange={(date) => handleInput({ target: { name: 'date', value: date } })} />
 
                     <label htmlFor="time">Time</label>
                     <input id="time" name="time" type="time" value={formData.time} onChange={handleInput} required />
