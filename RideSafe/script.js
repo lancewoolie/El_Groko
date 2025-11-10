@@ -41,6 +41,19 @@ const airports = {
     BTR: '9430 Jackie Cochran Dr, Baton Rouge, LA 70807'
 };
 
+// Utility functions
+const timeToMins = (timeStr) => {
+    const [h, m] = timeStr.split(':').map(Number);
+    return h * 60 + m;
+};
+
+const formatTime12 = (timeStr) => {
+    let [h, m] = timeStr.split(':').map(Number);
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    h = h % 12 || 12;
+    return `${h}:${m.toString().padStart(2, '0')} ${ampm}`;
+};
+
 // Get Distance (JSONP)
 const getDistance = (origin, dest) => new Promise((resolve, reject) => {
     const apiKey = 'AIzaSyCFOS8a0W3jNKcRpFIyJSEwblcj-KQr9pc';
@@ -104,33 +117,29 @@ const getSurge = (dateStr, timeStr, pickupTimeStr) => {
 
 // Price Calc
 const calcPrice = async (origin, dest, date, time) => {
-    if (!origin || !dest || !date || !time) return { price: 0, miles: 0, pickupTime: '' };
-    const { distance, duration } = await getDistance(origin, dest).catch(() => ({ distance: { value: 1609.34 * 10 }, duration: { value: 60 * 15 } }));
-    const miles = Math.round(distance.value / 1609.34);
-    const mins = duration.value / 60;
-    const base = 1.05 + (1.05 * miles) + (0.15 * mins);
-    const baseDist = await getDistFromBase(origin).catch(() => 10);
-    const distMult = baseDist <= 10 ? 1 : baseDist <= 20 ? 1.25 : baseDist <= 35 ? 1.42 : 2;
-    const arrivalDt = new Date(`${date}T${time}:00`);
-    const pickupDt = new Date(arrivalDt.getTime() - (duration.value * 1000 + 300000)); // Subtract duration + 5 min buffer
-    const pickupTimeStr = pickupDt.toTimeString().split(' ')[0].substring(0,5); // HH:MM
-    const surge = getSurge(date, time, pickupTimeStr);
-    const price = Math.round((base * distMult * surge) * 100) / 100;
-    console.log('Price Calc Details:', { miles, mins, base, baseDist, distMult, surge, pickupTime: pickupTimeStr, price });
-    return { price, miles, pickupTime: pickupTimeStr };
+    if (!origin || !dest || !date || !time) return { price: 0, miles: 0, pickupTime: '', durationSecs: 0 };
+    try {
+        const { distance, duration } = await getDistance(origin, dest);
+        const miles = Math.round(distance.value / 1609.34);
+        const mins = duration.value / 60;
+        const base = 1.05 + (1.05 * miles) + (0.15 * mins);
+        const baseDist = await getDistFromBase(origin);
+        const distMult = baseDist <= 10 ? 1 : baseDist <= 20 ? 1.25 : baseDist <= 35 ? 1.42 : 2;
+        const arrivalDt = new Date(`${date}T${time}:00`);
+        const pickupDt = new Date(arrivalDt.getTime() - (duration.value * 1000 + 300000)); // Subtract duration + 5 min buffer
+        const pickupTimeStr = pickupDt.toTimeString().split(' ')[0].substring(0,5); // HH:MM
+        const surge = getSurge(date, time, pickupTimeStr);
+        const price = Math.round((base * distMult * surge) * 100) / 100;
+        console.log('Price Calc Details:', { miles, mins, base, baseDist, distMult, surge, pickupTime: pickupTimeStr, price });
+        return { price, miles, pickupTime: pickupTimeStr, durationSecs: duration.value };
+    } catch (err) {
+        console.error('Calc error:', err);
+        return { price: 0, miles: 0, pickupTime: '', durationSecs: 0 };
+    }
 };
 
 // Week Date Picker (Monday start, color coding)
-const WeekDatePicker = ({ value, onChange, bookings }) => {
-    const [currentWeekStart, setCurrentWeekStart] = useState(new Date());
-    useEffect(() => {
-        const today = new Date();
-        const dayOfWeek = today.getDay();
-        const start = new Date(today);
-        start.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1)); // Monday start
-        setCurrentWeekStart(start);
-    }, []);
-
+const WeekDatePicker = ({ value, onChange, bookings, currentWeekStart, setCurrentWeekStart }) => {
     const nextWeek = () => {
         const newStart = new Date(currentWeekStart);
         newStart.setDate(newStart.getDate() + 7);
@@ -159,7 +168,7 @@ const WeekDatePicker = ({ value, onChange, bookings }) => {
         const dayBookings = bookings[dayStr] || [];
         const dayOfWeek = day.getDay();
         if (dayOfWeek === 0) return 'sunday'; // Grey out Sundays
-        const bookedHours = dayBookings.reduce((total, b) => total + (b.duration / 60), 0);
+        const bookedHours = dayBookings.reduce((total, b) => total + ((b.durationMins || 60) / 60), 0);
         if (bookedHours > 4) return 'red';
         if (bookedHours > 2) return 'orange';
         if (dayOfWeek >= 4 && dayOfWeek <= 6) return 'orange'; // Thu/Fri/Sat min orange
@@ -168,38 +177,80 @@ const WeekDatePicker = ({ value, onChange, bookings }) => {
 
     return (
         <div className="week-picker">
-            <div className="nav-buttons">
-                <button onClick={prevWeek}>Prev Week</button>
-                <button onClick={nextWeek}>Next Week</button>
-            </div>
             <div className="week-days">
                 {days.map((day, idx) => {
                     const dayStr = day.toISOString().split('T')[0];
                     const isSelected = value === dayStr;
                     const dayClass = getDayClass(day);
+                    const dayOfWeek = day.getDay();
                     return (
-                        <div key={idx} className={`day-button ${isSelected ? 'selected' : ''} ${dayClass}`} onClick={() => !dayClass.includes('sunday') && selectDay(day)}>
-                            {day.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
-                            {dayClass !== 'green' && <span> ({bookings[dayStr]?.length || 0} bookings)</span>}
+                        <div key={idx} className="day-wrapper">
+                            {dayOfWeek >= 4 && dayOfWeek <= 6 && <span className="surge-label">Surge Pricing</span>}
+                            <div className={`day-button ${isSelected ? 'selected' : ''} ${dayClass}`} onClick={() => dayClass !== 'sunday' && selectDay(day)}>
+                                {day.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
+                                {dayClass !== 'green' && <span> ({bookings[dayStr]?.length || 0} bookings)</span>}
+                            </div>
                         </div>
                     );
                 })}
+            </div>
+            <div className="nav-buttons">
+                <button onClick={prevWeek}>Prev Week</button>
+                <button onClick={nextWeek}>Next Week</button>
             </div>
         </div>
     );
 };
 
-// Time Picker (15-min intervals)
-const TimePicker = ({ value, onChange }) => {
-    const hours = [];
-    const minutes = [0, 15, 30, 45];
-    for (let h = 0; h < 24; h++) hours.push(h.toString().padStart(2, '0'));
-    const options = hours.flatMap(h => minutes.map(m => `${h}:${m.toString().padStart(2, '0')}`));
+// Time Picker (30-min increments, 12h display, booked check)
+const TimePicker = ({ value, onChange, date, bookings, durationSecs }) => {
+    const generateTimes = () => {
+        const times = [];
+        for (let h = 6; h <= 22; h++) {
+            times.push(`${h.toString().padStart(2, '0')}:00`);
+            if (h < 22) times.push(`${h.toString().padStart(2, '0')}:30`);
+        }
+        return times;
+    };
+
+    const times = generateTimes();
+
+    const isSlotBooked = (proposedArrival) => {
+        if (!date || !bookings || !bookings[date] || !durationSecs) return false;
+        const arrivalMins = timeToMins(proposedArrival);
+        const bufferMins = 5;
+        const pickupMins = arrivalMins - (durationSecs / 60) - bufferMins;
+        if (pickupMins < 0) return true; // Invalid slot
+        return bookings[date].some(b => {
+            if (!b.pickupTime || b.durationMins === undefined) return false;
+            const bStart = timeToMins(b.pickupTime);
+            const bEnd = bStart + b.durationMins;
+            const pEnd = arrivalMins;
+            return Math.max(pickupMins, bStart) < Math.min(pEnd, bEnd);
+        });
+    };
+
     return (
-        <select value={value} onChange={(e) => onChange(e.target.value)} className="time-picker">
-            <option value="">Select Time</option>
-            {options.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-        </select>
+        <div className="time-picker">
+            <div className="time-options">
+                {times.map(t => {
+                    const display = formatTime12(t);
+                    const isSelected = value === t;
+                    const isBooked = isSlotBooked(t);
+                    return (
+                        <button
+                            key={t}
+                            className={`time-btn ${isSelected ? 'selected' : ''} ${isBooked ? 'booked' : ''}`}
+                            onClick={() => !isBooked && onChange(t)}
+                            disabled={isBooked}
+                        >
+                            {display}
+                            {isBooked && <span className="booked-label">BOOKED</span>}
+                        </button>
+                    );
+                })}
+            </div>
+        </div>
     );
 };
 
@@ -215,23 +266,30 @@ const RideSafeApp = () => {
         time: localStorage.getItem('rs_time') || '',
         pickupTime: '',
         price: 0,
-        miles: 0
+        miles: 0,
+        durationSecs: 0
     });
     const [bookings, setBookings] = useState({});
     const [loading, setLoading] = useState(false);
     const [showDriver, setShowDriver] = useState(false);
+    const [currentWeekStart, setCurrentWeekStart] = useState(new Date());
     const pickupRef = useRef(null);
     const dropoffRef = useRef(null);
+
+    useEffect(() => {
+        const today = new Date();
+        const dayOfWeek = today.getDay();
+        const start = new Date(today);
+        start.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1)); // Monday start
+        setCurrentWeekStart(start);
+    }, []);
 
     useEffect(() => {
         Object.entries(formData).forEach(([k, v]) => localStorage.setItem(`rs_${k}`, v));
         if (formData.pickup && formData.dropoff && formData.date && formData.time) {
             setLoading(true);
-            calcPrice(formData.pickup, formData.dropoff, formData.date, formData.time).then(({ price, miles, pickupTime }) => {
-                setFormData(p => ({ ...p, price, miles, pickupTime }));
-                setLoading(false);
-            }).catch((err) => {
-                console.error('Calc error:', err);
+            calcPrice(formData.pickup, formData.dropoff, formData.date, formData.time).then(({ price, miles, pickupTime, durationSecs }) => {
+                setFormData(p => ({ ...p, price, miles, pickupTime, durationSecs }));
                 setLoading(false);
             });
         }
@@ -239,10 +297,11 @@ const RideSafeApp = () => {
 
     useEffect(() => {
         // Fetch bookings for current week
-        const currentWeekStart = new Date();
-        const currentWeekEnd = new Date(currentWeekStart);
-        currentWeekEnd.setDate(currentWeekEnd.getDate() + 6);
-        db.ref('bookings').orderByChild('date').startAt(currentWeekStart.toISOString().split('T')[0]).endAt(currentWeekEnd.toISOString().split('T')[0]).once('value').then(snapshot => {
+        const weekEnd = new Date(currentWeekStart);
+        weekEnd.setDate(weekEnd.getDate() + 6);
+        const startDate = currentWeekStart.toISOString().split('T')[0];
+        const endDate = weekEnd.toISOString().split('T')[0];
+        db.ref('bookings').orderByChild('date').startAt(startDate).endAt(endDate).once('value').then(snapshot => {
             const bookingData = snapshot.val() || {};
             const processedBookings = {};
             Object.values(bookingData).forEach(b => {
@@ -252,7 +311,7 @@ const RideSafeApp = () => {
             });
             setBookings(processedBookings);
         });
-    }, []);
+    }, [currentWeekStart]);
 
     useEffect(() => {
         if (pickupRef.current) {
@@ -290,22 +349,24 @@ const RideSafeApp = () => {
             const authInstance = gapi.auth2.getAuthInstance();
             if (!authInstance.isSignedIn.get()) await authInstance.signIn();
             const token = authInstance.currentUser.get().getAuthResponse().access_token;
-            const endTime = new Date(new Date(`${formData.date}T${formData.time}:00`).getTime() + 60*60*1000).toISOString();
+            const arrivalDt = new Date(`${formData.date}T${formData.time}:00`);
+            const pickupDtStr = `${formData.date}T${formData.pickupTime}:00`;
             await fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events', {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     summary: `RideSafe Booking: ${formData.pickup} → ${formData.dropoff}`,
                     description: `Passenger: ${formData.name} (${formData.phone})\nEst: $${formData.price}\nPickup: ${formData.pickupTime}\nPay end-of-ride.`,
-                    start: { dateTime: `${formData.date}T${formData.pickupTime}:00`, timeZone: 'America/Chicago' },
-                    end: { dateTime: endTime, timeZone: 'America/Chicago' }
+                    start: { dateTime: pickupDtStr, timeZone: 'America/Chicago' },
+                    end: { dateTime: arrivalDt.toISOString(), timeZone: 'America/Chicago' }
                 })
             });
 
-            await db.ref('bookings').push({ ...formData, timestamp: Date.now(), duration: 60 });
+            const durationMins = Math.round(formData.durationSecs / 60) || 60;
+            await db.ref('bookings').push({ ...formData, timestamp: Date.now(), durationMins });
 
-            alert(`Booked! Email sent, calendar updated. Pickup: ${formData.pickupTime}. Price: $${formData.price} (pay end).`);
-            setFormData({ ...formData, price: 0, miles: 0, pickupTime: '' });
+            alert(`Booked! Email sent, calendar updated. Pickup: ${formatTime12(formData.pickupTime)} CST. Price: $${formData.price} (pay end).`);
+            setFormData({ ...formData, price: 0, miles: 0, pickupTime: '', durationSecs: 0, time: '' });
         } catch (err) {
             console.error('Booking failed:', err);
             alert('Booking issue (likely keys)—check console. Firebase archived anyway.');
@@ -351,16 +412,22 @@ const RideSafeApp = () => {
                     </div>
 
                     <label>Arrival Time at location</label>
-                    <WeekDatePicker value={formData.date} onChange={(date) => handleInput({ target: { name: 'date', value: date } })} bookings={bookings} />
+                    <WeekDatePicker value={formData.date} onChange={(date) => handleInput({ target: { name: 'date', value: date } })} bookings={bookings} currentWeekStart={currentWeekStart} setCurrentWeekStart={setCurrentWeekStart} />
 
-                    <label htmlFor="time">Arrival Time</label>
-                    <TimePicker value={formData.time} onChange={(time) => handleInput({ target: { name: 'time', value: time } })} />
+                    <div className="time-row">
+                        <span className="time-label">Arrival Time (CST):</span>
+                        <TimePicker value={formData.time} onChange={(time) => handleInput({ target: { name: 'time', value: time } })} date={formData.date} bookings={bookings} durationSecs={formData.durationSecs} />
+                    </div>
 
-                    {formData.pickupTime && <div className="pickup-time-display">Est. Pickup Time: {formData.pickupTime}</div>}
+                    {formData.pickupTime && (
+                        <div className="pickup-time-display">
+                            Est. Pickup Time: <strong style={{fontSize: '2em'}}>{formatTime12(formData.pickupTime)}</strong> (CST)
+                        </div>
+                    )}
 
-                    <button type="submit" className="book-btn">
+                    <button type="submit" className="book-btn" disabled={loading}>
                         <img src="https://lancewoolie.com/RideSafe/img/RIDESAFE TELSA BLUE CHECKsm.png" alt="RideSafe Verified" style={{ width: '20px', marginRight: '5px' }} />
-                        BOOK IT
+                        {loading ? 'BOOKING...' : 'BOOK IT'}
                     </button>
                 </form>
             </div>
