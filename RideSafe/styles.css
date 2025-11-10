@@ -71,7 +71,7 @@ header {
 
 @keyframes glowFadeIn { from { opacity: 0; transform: translateY(-20px); text-shadow: none; } to { opacity: 1; transform: translateY(0); text-shadow: 0 0 10px var(--blue-glow); } }
 
-.driver-btn { background: var(--blue-brand); border: none; color: var(--text-light); font-size: 0.9rem; padding: 0.3rem 0.8rem; border-radius: 8px; cursor: pointer; opacity: 0; transition: opacity 0.5s ease, transform 0.3s; }
+.driver-btn { background: var(--blue-brand); border: none; color: #fff; font-size: 0.9rem; padding: 0.3rem 0.8rem; border-radius: 8px; cursor: pointer; opacity: 0; transition: opacity 0.5s ease, transform 0.3s; }
 .driver-btn.show { opacity: 1; }
 .driver-btn:hover { transform: scale(1.05); }
 
@@ -98,10 +98,11 @@ input:focus, select:focus { outline: none; box-shadow: 0 0 0 4px var(--blue-glow
 .suggestion:hover { background: var(--blue-glow); }
 .suggestion:last-child { border-bottom: none; }
 
-.price-display, .distance-display { text-align: center; font-size: 16px; font-weight: bold; margin: 0.5rem 0; padding: 0.8rem; border: var(--border-thin); border-radius: 8px; background: var(--input-bg); animation: pulseGlow 1s ease-out; color: var(--text-dark); }
+.estimates { display: flex; gap: 1rem; }
+.distance-display, .price-display { text-align: center; font-size: 16px; font-weight: bold; margin: 0.5rem 0; padding: 0.8rem; border: var(--border-thin); border-radius: 8px; background: var(--input-bg); animation: pulseGlow 1s ease-out; color: var(--text-dark); flex: 1; }
 @keyframes pulseGlow { 0% { transform: scale(1.1); box-shadow: 0 0 20px var(--blue-glow); } 100% { transform: scale(1); box-shadow: none; } }
 
-.book-btn { background: var(--blue-brand); color: var(--text-light); font-weight: bold; font-size: 16px; padding: 1rem; border: none; border-radius: 8px; cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s; box-shadow: 0 0 10px var(--blue-glow); margin-top: 0.5rem; }
+.book-btn { background: var(--blue-brand); color: #fff; font-weight: bold; font-size: 16px; padding: 1rem; border: none; border-radius: 8px; cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s; box-shadow: 0 0 10px var(--blue-glow); margin-top: 0.5rem; }
 .book-btn:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 0 20px var(--blue-glow); }
 .book-btn:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
 
@@ -111,8 +112,8 @@ input:focus, select:focus { outline: none; box-shadow: 0 0 0 4px var(--blue-glow
 .week-picker { display: flex; flex-direction: column; gap: 0.5rem; }
 .week-days { display: flex; gap: 0.5rem; justify-content: space-between; }
 .day-button { padding: 0.5rem; border: var(--border-thin); border-radius: 8px; background: var(--input-bg); cursor: pointer; text-align: center; flex: 1; }
-.day-button.selected { background: var(--blue-brand); color: var(--text-light); }
+.day-button.selected { background: var(--blue-brand); color: #fff; }
 .nav-buttons { display: flex; justify-content: space-between; }
 
 /* Mobile-First Enhancements */
-@media (max-width: 480px) { body { padding: 0.3rem; } header { flex-direction: column; gap: 0.5rem; } .suggestions { position: fixed; left: 0.5rem; right: 0.5rem; } .title { font-size: 2rem; } .container { padding: 1rem; } }
+@media (max-width: 480px) { body { padding: 0.3rem; } header { flex-direction: column; gap: 0.5rem; } .suggestions { position: fixed; left: 0.5rem; right: 0.5rem; } .title { font-size: 2rem; } .container { padding: 1rem; } .estimates { flex-direction: column; } }
