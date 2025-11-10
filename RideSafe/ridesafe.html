@@ -18,6 +18,26 @@
 </head>
 <body>
     <div id="root"></div>
-    <script src="script-compiled.js"></script>  <!-- Your new compiled file -->
+    <!-- Hardcoded Error Fallback: Shows after 5s if app doesn't load -->
+    <script>
+        setTimeout(() => {
+            const root = document.getElementById('root');
+            if (root && root.innerHTML.trim() === '') {
+                root.innerHTML = `
+                    <div style="color: white; padding: 20px; background: rgba(0,0,0,0.5); border-radius: 12px; text-align: center; max-width: 600px; margin: 20px auto;">
+                        <h2 style="color: #ff6b6b;">🚨 RideSafe App Failed to Load</h2>
+                        <p>This isn't loading time—it's a real error (likely JS/CDN hiccup).</p>
+                        <ul style="text-align: left; display: inline-block;">
+                            <li>Check console (F12 &gt; Console tab) and paste errors here.</li>
+                            <li>Hard-refresh (Ctrl+F5) or try incognito.</li>
+                            <li>If persists, server/CDN issue—reply with screenshot/console.</li>
+                        </ul>
+                        <p><em>We're fixing this—stand by!</em></p>
+                    </div>
+                `;
+            }
+        }, 5000);
+    </script>
+    <script src="script-compiled.js"></script>  <!-- Your fixed compiled file -->
 </body>
 </html>
