@@ -101,6 +101,8 @@ input:focus, select:focus { outline: none; box-shadow: 0 0 0 4px var(--blue-glow
 .distance-display, .price-display { text-align: center; font-size: 16px; font-weight: bold; margin: 0.5rem 0; padding: 0.8rem; border: var(--border-thin); border-radius: 8px; background: var(--input-bg); animation: pulseGlow 1s ease-out; color: var(--text-dark); flex: 1; }
 @keyframes pulseGlow { 0% { transform: scale(1.1); box-shadow: 0 0 20px var(--blue-glow); } 100% { transform: scale(1); box-shadow: none; } }
 
+.route-map { max-width: 100%; height: auto; border-radius: 8px; margin: 1rem 0; box-shadow: 0 2px 10px rgba(0, 123, 255, 0.2); }
+
 .book-btn { background: var(--blue-brand); color: #fff; font-weight: bold; font-size: 16px; padding: 1rem; border: none; border-radius: 8px; cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s; box-shadow: 0 0 10px var(--blue-glow); margin-top: 0.5rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
 .book-btn:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 0 20px var(--blue-glow); }
 .book-btn:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
@@ -114,14 +116,14 @@ input:focus, select:focus { outline: none; box-shadow: 0 0 0 4px var(--blue-glow
 .surge-label { font-size: 0.7rem; color: orange; font-weight: bold; display: block; margin-bottom: 0.2rem; }
 .surge-placeholder { height: 1em; display: block; }
 .day-button { min-height: 60px; padding: 0.5rem; border: var(--border-thin); border-radius: 8px; background: var(--input-bg); cursor: pointer; text-align: center; transition: all 0.3s ease; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-.day-button.sunday { min-height: 40px; }
+.day-button.sunday { min-height: 40px; border: 2px solid #ccc; color: #999; background: #f0f0f0; }
 .day-button:hover:not(.sunday):not(.booked) { background: var(--blue-glow); }
 .day-button.selected { background: var(--blue-brand); color: #fff; }
-.day-button.sunday { background: #f0f0f0; color: #999; cursor: not-allowed; }
 .day-button.sunday:hover { background: #f0f0f0; }
 .day-button.green { border: 2px solid green; }
 .day-button.orange { border: 2px solid orange; }
 .day-button.red { border: 2px solid red; }
+.trips-label { font-size: 0.8rem; margin-top: 0.2rem; font-weight: bold; }
 .nav-buttons { display: flex; justify-content: space-between; }
 .nav-buttons button { padding: 0.5rem; background: var(--blue-brand); color: #fff; border: none; border-radius: 8px; cursor: pointer; flex: 1; margin: 0 0.25rem; }
 
@@ -148,4 +150,5 @@ input:focus, select:focus { outline: none; box-shadow: 0 0 0 4px var(--blue-glow
     .estimates { flex-direction: column; } 
     .time-options { grid-template-columns: repeat(4, 1fr); }
     .pickup-time-display strong { font-size: 1.5em; }
+    .route-map { height: 200px; }
 }
