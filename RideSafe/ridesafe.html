@@ -3,65 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.google.com https://*.gstatic.com https://*.googleapis.com https://apis.google.com https://unpkg.com https://cdn.jsdelivr.net blob: data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src https://fonts.gstatic.com; frame-src https://accounts.google.com; connect-src 'self' https://accounts.google.com https://*.googleapis.com https://*.gstatic.com https://unpkg.com https://cdn.jsdelivr.net https://*.google.com;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.google.com https://*.gstatic.com https://*.googleapis.com https://apis.google.com https://unpkg.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src https://fonts.gstatic.com; frame-src https://accounts.google.com; connect-src 'self' https://accounts.google.com https://*.googleapis.com https://*.gstatic.com https://unpkg.com https://cdn.jsdelivr.net https://*.google.com;">
     <title>RideSafe - Book Your Ride</title>
     <link rel="icon" href="https://lancewoolie.com/RideSafe/img/RIDESAFE TELSA BLUE CHECKsm.png">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <!-- No Babel—loads pre-compiled JS -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCtBJCtWAp1vUMEWfj9qX-gb1IMqiln6w&libraries=places&loading=async"></script>
+    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCtBJCtWAp1vUMEWfj9qX-gb1IMqiln6w&libraries=places&loading=async&callback=initRideSafe"></script>
 </head>
 <body>
-    <div id="root"></div>
-    <!-- Error Capture + Fallback: Overrides console.error, shows after 5s if broken -->
-    <script>
-        // Capture console errors for on-screen display
-        var capturedErrors = [];
-        var originalConsoleError = console.error;
-        console.error = function(...args) {
-            var timestamp = new Date().toLocaleTimeString();
-            var errorMsg = args.map(arg => typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)).join(' ');
-            capturedErrors.push({ timestamp: timestamp, message: errorMsg });
-            originalConsoleError.apply(console, args); // Still log to console
-        };
-
-        // Timeout fallback: If #root empty after 5s, blast the error box with captured errors
-        setTimeout(() => {
-            const root = document.getElementById('root');
-            if (root && root.innerHTML.trim() === '') {
-                let errorListHtml = '';
-                if (capturedErrors.length > 0) {
-                    errorListHtml = '<h3 style="color: #ff4757; margin-bottom: 10px;">Captured Console Errors:</h3><ul style="text-align: left; max-height: 200px; overflow-y: auto; background: rgba(255,255,255,0.1); padding: 10px; border-radius: 8px;">' +
-                        capturedErrors.map(err => `<li><strong>${err.timestamp}:</strong> ${err.message}</li>`).join('') +
-                        '</ul>';
-                } else {
-                    errorListHtml = '<p style="color: #ff6348;">No errors captured yet—might be silent fail or CDN delay.</p>';
-                }
-
-                root.innerHTML = `
-                    <div style="color: white; padding: 20px; background: rgba(0,0,0,0.7); border-radius: 12px; text-align: center; max-width: 800px; margin: 20px auto; font-family: 'Roboto', sans-serif;">
-                        <h1 style="font-size: 4rem; font-weight: bold; color: #ff4757; margin: 0 0 20px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">LAST GROK CODE SUCKED</h1>
-                        <p style="font-size: 1.2rem; margin-bottom: 20px;">Real error, not loading—app's borked (CSP/CDN/JS hiccup likely).</p>
-                        ${errorListHtml}
-                        <div style="margin-top: 20px; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 8px;">
-                            <p><strong>Quick Fixes:</strong></p>
-                            <ul style="text-align: left; display: inline-block; font-size: 1rem;">
-                                <li>Hard-refresh (Ctrl+F5) or incognito mode.</li>
-                                <li>Screenshot this whole box & reply—I'll nuke the issue server-side if needed.</li>
-                                <li>Check network tab (F12) for blocked resources.</li>
-                            </ul>
-                        </div>
-                        <p style="margin-top: 20px; font-style: italic; color: #ffd700;">Fixing ASAP—hang tight! 🚀</p>
+    <div class="app">
+        <header>
+            <div class="title-section">
+                <img src="https://lancewoolie.com/RideSafe/img/RIDESAFE TELSA BLUE CHECKsm.png" alt="RideSafe" class="logo">
+                <div>
+                    <h1 class="title">RideSafe</h1>
+                    <p class="motto">Safe, Reliable Airport Transfers</p>
+                </div>
+            </div>
+            <div class="tesla-icon">🚀</div>
+        </header>
+        <div class="container">
+            <form>
+                <label for="pickup">Pickup Location</label>
+                <input id="pickup" type="text" placeholder="e.g., Baton Rouge Metropolitan Airport">
+                <label for="dropoff">Dropoff Location</label>
+                <input id="dropoff" type="text" placeholder="e.g., Louis Armstrong New Orleans International Airport">
+                <div class="week-picker">
+                    <div class="week-days"></div>
+                    <div class="nav-buttons">
+                        <button type="button" onclick="prevWeek()">Prev Week</button>
+                        <button type="button" onclick="nextWeek()">Next Week</button>
                     </div>
-                `;
-            }
-        }, 5000);
-    </script>
-    <script src="script-compiled.js"></script>  <!-- Your fixed compiled file -->
+                </div>
+                <label for="time-picker">Arrival Time</label>
+                <div class="time-picker" id="time-picker"></div>
+                <div class="estimate" id="estimate"></div>
+                <div id="map"></div>
+                <button type="button" class="book-btn" id="book-btn" onclick="handleBook()" disabled>Book Ride</button>
+            </form>
+        </div>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>
