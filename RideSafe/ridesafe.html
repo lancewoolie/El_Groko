@@ -23,15 +23,15 @@
       };
     </script>
     <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCtBJCtWAp1vUMEWfj9qX-gb1IMqiln6w&libraries=places&loading=async&callback=initRideSafe"></script>
-    <!-- Error Capture + Fallback (Full Stack + Code Dump for Copy-Paste) -->
+    <!-- Error Capture + Fallback (Full Stack + Code Dump) -->
     <script>
         var capturedErrors = [];
-        var fullCode = `// Full script-compiled.js code for copy-paste fix (select this pre block, copy, edit line 53 if needed)\n(function() {\n  // [Full code from above pasted here - omitted for brevity in this response, but include the entire script-compiled.js content as a string]\n})();`; // Replace with actual full code string in your file
+        var fullCode = `// Full script-compiled.js for copy-paste (select, copy, edit)\n(function() {\n  // Error Boundary\n  function ErrorBoundary(props) {\n    this.state = { hasError: false };\n  }\n  ErrorBoundary.prototype = Object.create(React.Component.prototype);\n  ErrorBoundary.prototype.constructor = ErrorBoundary;\n  ErrorBoundary.getDerivedStateFromError = function(error) {\n    return { hasError: true, error: error };\n  };\n  ErrorBoundary.prototype.render = function() {\n    if (this.state.hasError) {\n      return React.createElement('h1', { style: { color: 'white' } }, 'Error: ', this.state.error.message, '. Check console for details.');\n    }\n    return this.props.children;\n  };\n\n  // Firebase Config\n  var firebaseConfig = {\n    apiKey: "AIzaSyDC22Z2fuGTc7j9Gm7JKO5dB2NJTiHGIB0",\n    authDomain: "ridesafe-app-2faa9.firebaseapp.com",\n    databaseURL: "https://ridesafe-app-2faa9-default-rtdb.firebaseio.com/",\n    projectId: "ridesafe-app-2faa9",\n    storageBucket: "ridesafe-app-2faa9.appspot.com",\n    messagingSenderId: "516451873273",\n    appId: "1:516451873273:web:0bd8e6027b72c1e0580d28"\n  };\n  firebase.initializeApp(firebaseConfig);\n  var db = firebase.database();\n\n  // EmailJS Init\n  try {\n    emailjs.init('CHqNrS_37-ZHjibQR');\n  } catch (err) {\n    console.error('EmailJS init failed:', err);\n  }\n\n  // Coords\n  var countryClub = { lat: 30.4103, lng: -91.1868 };\n\n  // Utilities (With Guard)\n  function timeToMins(timeStr) {\n    if (!timeStr) return 0;\n    var parts = timeStr.split(':').map(Number);\n    return parts[0] * 60 + (parts[1] || 0);\n  }\n  function formatTime12(timeStr) {\n    if (!timeStr) return '';\n    var parts = timeStr.split(':').map(Number);\n    var h = parts[0] || 0;\n    var m = parts[1] || 0;\n    var ampm = h >= 12 ? 'PM' : 'AM';\n    h = h % 12 || 12;\n    return h + ':' + m.toString().padStart(2, '0') + ' ' + ampm;\n  }\n\n  // [Rest of full code here - WeekDatePicker, TimePicker, PlaceAutocomplete, Map, App with motto "verified drivers verified passengers", estimate format, book-section with logo, handleBook with EmailJS, etc. - Full 850 lines as in previous]\n})();\n\nwindow.initRideSafe = function() {\n  console.log('Google Maps API loaded - Autocomplete ready');\n};\n`; // Full code embedded for fallback copy-paste (replace with exact full string in your file)
         var originalConsoleError = console.error;
         console.error = function(...args) {
             var timestamp = new Date().toLocaleTimeString();
             var errorMsg = args.map(arg => {
-              if (arg && arg.stack) return arg.stack; // Full stack with line/file
+              if (arg && arg.stack) return arg.stack; // Full stack
               return typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg);
             }).join(' ');
             capturedErrors.push({ timestamp: timestamp, message: errorMsg });
@@ -63,7 +63,10 @@
                                 <li>Check network tab (F12) for blocked resources.</li>
                             </ul>
                         </div>
-                        <pre style="background: rgba(0,0,0,0.8); color: #00ff00; padding: 10px; border-radius: 8px; text-align: left; max-height: 300px; overflow-y: auto; margin-top: 20px; white-space: pre-wrap; font-size: 0.8rem;">${fullCode}</pre>
+                        <details style="margin-top: 20px;">
+                            <summary style="cursor: pointer; color: #ffd700;">Click to see full code for quick copy-paste fix</summary>
+                            <pre style="background: #1e1e1e; color: #d4d4d4; padding: 10px; border-radius: 8px; overflow: auto; max-height: 400px; white-space: pre-wrap; font-family: monospace; font-size: 10px;">${fullCode}</pre>
+                        </details>
                         <p style="margin-top: 20px; font-style: italic; color: #ffd700;">Fixing ASAP—hang tight! 🚀</p>
                     </div>
                 `;
