@@ -39,7 +39,7 @@
   // Coords
   var countryClub = { lat: 30.4103, lng: -91.1868 };
 
-  // Utilities
+  // Utilities (With Guard for Undefined)
   function timeToMins(timeStr) {
     if (!timeStr) return 0;
     var parts = timeStr.split(':').map(Number);
@@ -362,7 +362,7 @@
 
     React.useEffect(function() {
       if (distance.miles > 0 && date && time) {
-        setPrice(calcPrice(distance.miles, durationSecs, date, time));
+        setPrice(calcPrice(distance.miles, distance.durationSecs, date, time));
       } else {
         setPrice({ price: 0, pickupTime: '' });
       }
