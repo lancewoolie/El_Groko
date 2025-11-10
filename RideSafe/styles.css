@@ -1,27 +1,27 @@
-/* RideSafe CSS: Dark Red Scheme (Inspired by Deep Red Palettes - #8B0000 Base for Intensity, WCAG AA+ Legibility) */
+/* RideSafe CSS: Blue Scheme (Inspired by Trustworthy Blue Palettes - #007BFF Base for Calm and Reliability, WCAG AA+ Legibility) */
 :root {
-    --bg-primary: #2a0000; /* Deep maroon bg for immersive feel */
-    --bg-fade: #500000; /* Faded dark red gradient accents */
-    --text-light: #fdf9f7; /* Soft off-white text for high contrast */
-    --red-brand: #8B0000; /* Dark red (maroon) - researched for psychological intensity and web usability */
-    --red-glow: rgba(139, 0, 0, 0.3); /* Subtle glow for hover/focus, enhances "boner worthy" visual pop */
-    --border-thin: 1px solid var(--red-brand);
-    --container-bg: #400000; /* Slightly lighter dark red for containers */
-    --input-bg: #500000; /* Dark input bg for cohesion */
-    --dark-maroon: #400000; /* Almost black maroon for RideSafe text */
+    --bg-primary: #e6f2ff; /* Light blue bg for fresh feel */
+    --bg-fade: #cce5ff; /* Faded blue gradient accents */
+    --text-dark: #001f3f; /* Dark navy text for high contrast */
+    --blue-brand: #007BFF; /* Primary blue - researched for trust and usability in web design */
+    --blue-glow: rgba(0, 123, 255, 0.3); /* Subtle glow for hover/focus */
+    --border-thin: 1px solid var(--blue-brand);
+    --container-bg: #f8fbff; /* Light blue-white for containers */
+    --input-bg: #e6f2ff; /* Light blue input bg */
+    --dark-maroon: #400000; /* Kept for specific elements if needed, but pivoted to blue */
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
     font-family: 'Roboto', sans-serif;
-    background: linear-gradient(to bottom, #8B0000, #000000);
-    color: var(--text-light);
+    background: linear-gradient(to bottom, #007BFF, #001f3f); /* Blue to dark blue gradient */
+    color: var(--text-dark);
     line-height: 1.4;
     padding: 0.5rem;
     min-height: 100vh;
     opacity: 1;
-    transition: opacity 0.5s ease-in-out; /* Smoother fade for sexy entrance */
+    transition: opacity 0.5s ease-in-out;
 }
 
 .app { max-width: 600px; margin: 0 auto; }
@@ -31,47 +31,47 @@ body {
     align-items: center;
     justify-content: center;
     margin-bottom: 1rem;
-    animation: glowFadeIn 1s ease-out; /* Enhanced animation for title */
+    animation: glowFadeIn 1s ease-out;
 }
 
 .title {
-    font-size: 2.5rem; /* Adjusted for condensation */
+    font-size: 2.5rem;
     font-weight: bold;
-    color: var(--dark-maroon);
+    color: var(--text-dark); /* Dark for legibility on blue */
     margin: 0 0.5rem 0 0;
     letter-spacing: 2px;
-    text-shadow: 0 0 10px var(--red-glow); /* Glow effect for "boner worthy" vibe */
+    text-shadow: 0 0 10px var(--blue-glow);
 }
 
 .motto {
     font-size: 1rem;
-    color: var(--text-light);
+    color: var(--text-dark);
     font-style: italic;
     opacity: 0.9;
-    text-shadow: 0 0 5px var(--red-glow);
+    text-shadow: 0 0 5px var(--blue-glow);
     margin: 0;
 }
 
 .logo {
-    width: 60px; /* Smaller for condensation */
+    width: 60px;
     height: auto;
     margin: 0 0.5rem;
-    filter: drop-shadow(0 0 10px var(--red-glow)) brightness(0.6) saturate(1.2); /* Maroon tint + sexy shadow */
+    filter: drop-shadow(0 0 10px var(--blue-glow));
     transition: transform 0.3s ease;
 }
 
-.logo:hover { transform: rotate(5deg) scale(1.1); } /* Interactive hover */
+.logo:hover { transform: rotate(5deg) scale(1.1); }
 
-.tesla-icon { font-size: 2rem; cursor: pointer; transition: transform 0.3s ease, color 0.3s; color: var(--red-brand); margin: 0 0.5rem 0 0; }
-.tesla-icon:hover { transform: scale(1.2) rotate(10deg); color: #FF0000; } /* Dynamic hover */
+.tesla-icon { font-size: 2rem; cursor: pointer; transition: transform 0.3s ease, color 0.3s; color: var(--blue-brand); margin: 0 0.5rem 0 0; }
+.tesla-icon:hover { transform: scale(1.2) rotate(10deg); color: #0056b3; }
 
 header {
     display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; padding: 0.5rem 0;
 }
 
-@keyframes glowFadeIn { from { opacity: 0; transform: translateY(-20px); text-shadow: none; } to { opacity: 1; transform: translateY(0); text-shadow: 0 0 10px var(--red-glow); } }
+@keyframes glowFadeIn { from { opacity: 0; transform: translateY(-20px); text-shadow: none; } to { opacity: 1; transform: translateY(0); text-shadow: 0 0 10px var(--blue-glow); } }
 
-.driver-btn { background: var(--red-brand); border: none; color: var(--text-light); font-size: 0.9rem; padding: 0.3rem 0.8rem; border-radius: 8px; cursor: pointer; opacity: 0; transition: opacity 0.5s ease, transform 0.3s; }
+.driver-btn { background: var(--blue-brand); border: none; color: var(--text-light); font-size: 0.9rem; padding: 0.3rem 0.8rem; border-radius: 8px; cursor: pointer; opacity: 0; transition: opacity 0.5s ease, transform 0.3s; }
 .driver-btn.show { opacity: 1; }
 .driver-btn:hover { transform: scale(1.05); }
 
@@ -80,33 +80,39 @@ header {
     border-radius: 12px;
     padding: 1.5rem;
     border: var(--border-thin);
-    box-shadow: 0 4px 30px rgba(139, 0, 0, 0.4); /* Deeper shadow for depth */
+    box-shadow: 0 4px 30px rgba(0, 123, 255, 0.4);
     animation: slideUpGlow 0.8s ease-out 0.2s both;
 }
 
-form { display: flex; flex-direction: column; gap: 1rem; } /* Reduced gap for condensation */
-@keyframes slideUpGlow { from { opacity: 0; transform: translateY(30px); box-shadow: none; } to { opacity: 1; transform: translateY(0); box-shadow: 0 4px 30px rgba(139, 0, 0, 0.4); } }
+form { display: flex; flex-direction: column; gap: 1rem; }
+@keyframes slideUpGlow { from { opacity: 0; transform: translateY(30px); box-shadow: none; } to { opacity: 1; transform: translateY(0); box-shadow: 0 4px 30px rgba(0, 123, 255, 0.4); } }
 
-label { font-weight: bold; font-size: 14px; display: block; margin-bottom: 0.3rem; color: var(--text-light); } /* Condensed margins */
-input, select { font-size: 14px; padding: 0.5rem; border: var(--border-thin); border-radius: 8px; transition: box-shadow 0.3s ease, border-color 0.3s; background: var(--input-bg); color: var(--text-light); width: 100%; }
-input:focus, select:focus { outline: none; box-shadow: 0 0 0 4px var(--red-glow); border-color: #FF0000; } /* Brighter focus */
+label { font-weight: bold; font-size: 14px; display: block; margin-bottom: 0.3rem; color: var(--text-dark); }
+input, select { font-size: 14px; padding: 0.5rem; border: var(--border-thin); border-radius: 8px; transition: box-shadow 0.3s ease, border-color 0.3s; background: var(--input-bg); color: var(--text-dark); width: 100%; }
+input:focus, select:focus { outline: none; box-shadow: 0 0 0 4px var(--blue-glow); border-color: #0056b3; }
 
 .autocomplete { position: relative; }
-.suggestions { position: absolute; top: 100%; left: 0; right: 0; background: var(--container-bg); border: var(--border-thin); border-top: none; border-radius: 0 0 8px 8px; max-height: 150px; overflow-y: auto; z-index: 10; opacity: 0; transition: opacity 0.3s ease; color: var(--text-light); }
+.suggestions { position: absolute; top: 100%; left: 0; right: 0; background: var(--container-bg); border: var(--border-thin); border-top: none; border-radius: 0 0 8px 8px; max-height: 150px; overflow-y: auto; z-index: 10; opacity: 0; transition: opacity 0.3s ease; color: var(--text-dark); }
 .suggestions.show { opacity: 1; }
 .suggestion { padding: 0.5rem; cursor: pointer; border-bottom: var(--border-thin); transition: background 0.3s ease; }
-.suggestion:hover { background: var(--red-glow); }
+.suggestion:hover { background: var(--blue-glow); }
 .suggestion:last-child { border-bottom: none; }
 
-.price-display, .distance-display { text-align: center; font-size: 16px; font-weight: bold; margin: 0.5rem 0; padding: 0.8rem; border: var(--border-thin); border-radius: 8px; background: var(--input-bg); animation: pulseGlow 1s ease-out; color: var(--text-light); }
-@keyframes pulseGlow { 0% { transform: scale(1.1); box-shadow: 0 0 20px var(--red-glow); } 100% { transform: scale(1); box-shadow: none; } }
+.price-display, .distance-display { text-align: center; font-size: 16px; font-weight: bold; margin: 0.5rem 0; padding: 0.8rem; border: var(--border-thin); border-radius: 8px; background: var(--input-bg); animation: pulseGlow 1s ease-out; color: var(--text-dark); }
+@keyframes pulseGlow { 0% { transform: scale(1.1); box-shadow: 0 0 20px var(--blue-glow); } 100% { transform: scale(1); box-shadow: none; } }
 
-.book-btn { background: var(--red-brand); color: var(--text-light); font-weight: bold; font-size: 16px; padding: 1rem; border: none; border-radius: 8px; cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s; box-shadow: 0 0 10px var(--red-glow); margin-top: 0.5rem; }
-.book-btn:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 0 20px var(--red-glow); }
+.book-btn { background: var(--blue-brand); color: var(--text-light); font-weight: bold; font-size: 16px; padding: 1rem; border: none; border-radius: 8px; cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s; box-shadow: 0 0 10px var(--blue-glow); margin-top: 0.5rem; }
+.book-btn:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 0 20px var(--blue-glow); }
 .book-btn:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
 
 .loading { opacity: 0.7; pointer-events: none; }
 .hidden { display: none; }
+
+.week-picker { display: flex; flex-direction: column; gap: 0.5rem; }
+.week-days { display: flex; gap: 0.5rem; justify-content: space-between; }
+.day-button { padding: 0.5rem; border: var(--border-thin); border-radius: 8px; background: var(--input-bg); cursor: pointer; text-align: center; flex: 1; }
+.day-button.selected { background: var(--blue-brand); color: var(--text-light); }
+.nav-buttons { display: flex; justify-content: space-between; }
 
 /* Mobile-First Enhancements */
 @media (max-width: 480px) { body { padding: 0.3rem; } header { flex-direction: column; gap: 0.5rem; } .suggestions { position: fixed; left: 0.5rem; right: 0.5rem; } .title { font-size: 2rem; } .container { padding: 1rem; } }
