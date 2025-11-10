@@ -7,6 +7,7 @@
     --border-thin: 1px solid var(--blue-brand);
     --container-bg: #f8fbff;
     --input-bg: #e6f2ff;
+    --gold-border: 2px solid gold;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -169,11 +170,14 @@ input:focus, select:focus {
 
 .week-days { 
     display: flex; 
-    justify-content: space-around; 
+    justify-content: space-evenly; 
     flex-wrap: wrap; 
+    gap: 4px; 
 }
 
 .day-wrapper { 
+    flex: 1 1 70px; 
+    margin: 2px; 
     text-align: center; 
     position: relative; 
 }
@@ -184,7 +188,11 @@ input:focus, select:focus {
     cursor: pointer; 
     min-width: 60px; 
     border-radius: 8px; 
-    transition: background 0.3s; 
+    transition: background 0.3s, border 0.3s; 
+}
+
+.day-button:hover:not(.sunday):not(.selected) { 
+    box-shadow: 0 0 0 2px var(--blue-glow); 
 }
 
 .day-button.green { background: #d4edda; color: #155724; }
@@ -193,14 +201,17 @@ input:focus, select:focus {
 
 .day-button.red { background: #f8d7da; color: #721c24; }
 
-.day-button.sunday, .day-button.selected { 
+.day-button.sunday { 
     background: #6c757d; 
     color: white; 
     cursor: not-allowed; 
+    min-width: 40px; 
+    opacity: 0.5; 
+    padding: 0.5rem; 
 }
 
-.day-button:hover:not(.sunday):not(.selected) { 
-    box-shadow: 0 0 0 2px var(--blue-glow); 
+.day-button.selected { 
+    border: var(--gold-border); 
 }
 
 .surge-label { 
@@ -332,7 +343,8 @@ input:focus, select:focus {
     body { padding: 0.25rem; }
     .title { font-size: 2rem; }
     .logo { width: 40px; }
-    .week-days { flex-direction: column; align-items: center; }
+    .week-days { flex-direction: column; align-items: center; gap: 0; }
+    .day-wrapper { flex: none; margin: 1px; }
     .day-button { min-width: 100px; margin-bottom: 0.5rem; }
     .time-picker { justify-content: center; }
     .time-option { min-width: 70px; font-size: 0.9rem; }
