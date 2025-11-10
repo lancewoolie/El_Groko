@@ -39,20 +39,18 @@
   // Coords
   var countryClub = { lat: 30.4103, lng: -91.1868 };
 
-  // Utilities (With Guard for Undefined)
+  // Utilities (With Your Guarded formatTime12)
   function timeToMins(timeStr) {
-    if (!timeStr) return 0;
     var parts = timeStr.split(':').map(Number);
-    return parts[0] * 60 + (parts[1] || 0);
+    return parts[0] * 60 + parts[1];
   }
   function formatTime12(timeStr) {
-    if (!timeStr) return ''; // Guard for undefined on initial render
-    var parts = timeStr.split(':').map(Number);
-    var h = parts[0] || 0;
-    var m = parts[1] || 0;
-    var ampm = h >= 12 ? 'PM' : 'AM';
+    if (!timeStr || timeStr.trim() === '') return '';  // Guard: Skip if empty/undefined
+    let [h, m] = timeStr.split(':').map(Number);
+    if (isNaN(h) || isNaN(m)) return '';  // Guard: Skip invalid numbers
+    const ampm = h >= 12 ? 'PM' : 'AM';
     h = h % 12 || 12;
-    return h + ':' + m.toString().padStart(2, '0') + ' ' + ampm;
+    return `${h}:${m.toString().padStart(2, '0')} ${ampm}`;
   }
 
   // Distance
@@ -125,7 +123,7 @@
     }
   }
 
-  // WeekDatePicker
+  // WeekDatePicker Component
   function WeekDatePicker(props) {
     var value = props.value;
     var onChange = props.onChange;
@@ -207,7 +205,7 @@
     );
   }
 
-  // TimePicker
+  // TimePicker Component
   function TimePicker(props) {
     var value = props.value;
     var onChange = props.onChange;
@@ -254,14 +252,14 @@
     return React.createElement('div', { className: 'time-picker' }, timeElements);
   }
 
-  // PlaceAutocomplete
+  // PlaceAutocomplete Component
   function PlaceAutocomplete(props) {
     var value = props.value;
     var onChange = props.onChange;
     var placeholder = props.placeholder;
     var inputRef = React.useRef(null);
     React.useEffect(function() {
-      if (window.google && window.google.maps.places && inputRef.current) {
+      if (window.google && window.google.maps && window.google.maps.places && inputRef.current) {
         var autocomplete = new window.google.maps.places.Autocomplete(inputRef.current, { types: ['address'] });
         autocomplete.addListener('place_changed', function() {
           var place = autocomplete.getPlace();
@@ -278,7 +276,7 @@
     });
   }
 
-  // Map
+  // Map Component
   function Map(props) {
     var pickup = props.pickup;
     var dropoff = props.dropoff;
@@ -310,7 +308,7 @@
     return React.createElement('div', { ref: mapRef, className: 'map-container' });
   }
 
-  // App
+  // Main App Component
   function App() {
     var pickupRef = React.useState('');
     var pickup = pickupRef[0];
