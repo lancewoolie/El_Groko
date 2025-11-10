@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="styles.css">
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- No Babel—loads pre-compiled JS -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
@@ -20,6 +20,6 @@
 </head>
 <body>
     <div id="root"></div>
-    <script type="text/babel" src="script.js"></script>
+    <script src="script-compiled.js"></script>  <!-- Your new compiled file -->
 </body>
 </html>
