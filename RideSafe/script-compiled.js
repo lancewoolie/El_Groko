@@ -39,15 +39,17 @@
   // Coords
   var countryClub = { lat: 30.4103, lng: -91.1868 };
 
-  // Utilities
+  // Utilities (With Guard for Undefined)
   function timeToMins(timeStr) {
+    if (!timeStr) return 0;
     var parts = timeStr.split(':').map(Number);
-    return parts[0] * 60 + parts[1];
+    return parts[0] * 60 + (parts[1] || 0);
   }
   function formatTime12(timeStr) {
+    if (!timeStr) return ''; // Guard for undefined on initial render
     var parts = timeStr.split(':').map(Number);
-    var h = parts[0];
-    var m = parts[1];
+    var h = parts[0] || 0;
+    var m = parts[1] || 0;
     var ampm = h >= 12 ? 'PM' : 'AM';
     h = h % 12 || 12;
     return h + ':' + m.toString().padStart(2, '0') + ' ' + ampm;
@@ -95,7 +97,7 @@
     var dt = new Date(dateStr + 'T' + timeStr + ':00');
     var pickupDt = new Date(dateStr + 'T' + pickupTimeStr + ':00');
     var hour = dt.getHours() + dt.getMinutes() / 60;
-    var pickupHour = pickupDt.getHours() + pickupDt.getMinutes() / 60;
+    var pickupHour = pickupDt.getHours() + dt.getMinutes() / 60;
     var day = dt.getDay();
     var surge = 1;
     if (hour >= 16.5 && hour <= 18.5 && day >= 1 && day <= 5) surge = 1.4;
@@ -123,7 +125,7 @@
     }
   }
 
-  // WeekDatePicker Component
+  // WeekDatePicker
   function WeekDatePicker(props) {
     var value = props.value;
     var onChange = props.onChange;
@@ -205,7 +207,7 @@
     );
   }
 
-  // TimePicker Component
+  // TimePicker
   function TimePicker(props) {
     var value = props.value;
     var onChange = props.onChange;
@@ -252,14 +254,14 @@
     return React.createElement('div', { className: 'time-picker' }, timeElements);
   }
 
-  // PlaceAutocomplete Component
+  // PlaceAutocomplete
   function PlaceAutocomplete(props) {
     var value = props.value;
     var onChange = props.onChange;
     var placeholder = props.placeholder;
     var inputRef = React.useRef(null);
     React.useEffect(function() {
-      if (window.google && window.google.maps && window.google.maps.places && inputRef.current) {
+      if (window.google && window.google.maps.places && inputRef.current) {
         var autocomplete = new window.google.maps.places.Autocomplete(inputRef.current, { types: ['address'] });
         autocomplete.addListener('place_changed', function() {
           var place = autocomplete.getPlace();
@@ -276,7 +278,7 @@
     });
   }
 
-  // Map Component
+  // Map
   function Map(props) {
     var pickup = props.pickup;
     var dropoff = props.dropoff;
@@ -295,7 +297,7 @@
         var dResults = results[1];
         if (pResults[0] && dResults[0]) {
           var request = {
-            origin: pResults[0].geometry.position,
+            origin: pResults[0].geometry.location,
             destination: dResults[0].geometry.location,
             travelMode: 'DRIVING'
           };
@@ -308,7 +310,7 @@
     return React.createElement('div', { ref: mapRef, className: 'map-container' });
   }
 
-  // Main App Component
+  // App
   function App() {
     var pickupRef = React.useState('');
     var pickup = pickupRef[0];
