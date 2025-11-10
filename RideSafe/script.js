@@ -41,7 +41,7 @@ const airports = {
     BTR: '9430 Jackie Cochran Dr, Baton Rouge, LA 70807'
 };
 
-// Get Distance (JSONP to bypass CORS)
+// Get Distance (JSONP)
 const getDistance = (origin, dest) => new Promise((resolve, reject) => {
     const apiKey = 'AIzaSyCFOS8a0W3jNKcRpFIyJSEwblcj-KQr9pc';
     const callbackName = 'distanceCallback' + Date.now();
@@ -86,7 +86,7 @@ const getDistFromBase = (origin) => new Promise((resolve, reject) => {
     });
 });
 
-// Surge Mult (now includes early/after hours based on pickup time)
+// Surge Mult (includes early/after hours based on pickup time)
 const getSurge = (dateStr, timeStr, pickupTimeStr) => {
     const dt = new Date(`${dateStr}T${timeStr}:00`);
     const pickupDt = new Date(`${dateStr}T${pickupTimeStr}:00`);
@@ -98,21 +98,21 @@ const getSurge = (dateStr, timeStr, pickupTimeStr) => {
     if (day === 5 && hour >= 17) surge = 1.6;
     if ((day === 0 || day === 6) && hour >= 20) surge = 1.8;
     if (pickupHour >= 3 && pickupHour < 7) surge *= 1.15;
-    if ((pickupHour >= 22 || pickupHour < 3)) surge *= 1.3;
+    if (pickupHour >= 22 || pickupHour < 3) surge *= 1.3;
     return surge;
 };
 
 // Price Calc
 const calcPrice = async (origin, dest, date, time) => {
-    if (!origin || !dest || !date || !time) return { price: 0, miles: 0 };
-    const { distance, duration } = await getDistance(origin, dest).catch(() => ({ distance: { value: 1609.34 * 10 }, duration: { value: 60 * 15 } })); // Fallback
+    if (!origin || !dest || !date || !time) return { price: 0, miles: 0, pickupTime: '' };
+    const { distance, duration } = await getDistance(origin, dest).catch(() => ({ distance: { value: 1609.34 * 10 }, duration: { value: 60 * 15 } }));
     const miles = Math.round(distance.value / 1609.34);
     const mins = duration.value / 60;
     const base = 1.05 + (1.05 * miles) + (0.15 * mins);
     const baseDist = await getDistFromBase(origin).catch(() => 10);
     const distMult = baseDist <= 10 ? 1 : baseDist <= 20 ? 1.25 : baseDist <= 35 ? 1.42 : 2;
     const arrivalDt = new Date(`${date}T${time}:00`);
-    const pickupDt = new Date(arrivalDt.getTime() - (duration.value + 300000)); // Subtract duration + 5 min buffer
+    const pickupDt = new Date(arrivalDt.getTime() - (duration.value * 1000 + 300000)); // Subtract duration + 5 min buffer
     const pickupTimeStr = pickupDt.toTimeString().split(' ')[0].substring(0,5); // HH:MM
     const surge = getSurge(date, time, pickupTimeStr);
     const price = Math.round((base * distMult * surge) * 100) / 100;
@@ -121,7 +121,7 @@ const calcPrice = async (origin, dest, date, time) => {
 };
 
 // Week Date Picker (Monday start, color coding)
-const WeekDatePicker = ({ value, onChange, bookings, onBookingCheck }) => {
+const WeekDatePicker = ({ value, onChange, bookings }) => {
     const [currentWeekStart, setCurrentWeekStart] = useState(new Date());
     useEffect(() => {
         const today = new Date();
@@ -159,7 +159,7 @@ const WeekDatePicker = ({ value, onChange, bookings, onBookingCheck }) => {
         const dayBookings = bookings[dayStr] || [];
         const dayOfWeek = day.getDay();
         if (dayOfWeek === 0) return 'sunday'; // Grey out Sundays
-        const bookedHours = dayBookings.reduce((total, b) => total + (b.duration / 60), 0); // Assume duration in mins
+        const bookedHours = dayBookings.reduce((total, b) => total + (b.duration / 60), 0);
         if (bookedHours > 4) return 'red';
         if (bookedHours > 2) return 'orange';
         if (dayOfWeek >= 4 && dayOfWeek <= 6) return 'orange'; // Thu/Fri/Sat min orange
@@ -302,7 +302,7 @@ const RideSafeApp = () => {
                 })
             });
 
-            await db.ref('bookings').push({ ...formData, timestamp: Date.now(), duration: 60 }); // Assume 1hr slot
+            await db.ref('bookings').push({ ...formData, timestamp: Date.now(), duration: 60 });
 
             alert(`Booked! Email sent, calendar updated. Pickup: ${formData.pickupTime}. Price: $${formData.price} (pay end).`);
             setFormData({ ...formData, price: 0, miles: 0, pickupTime: '' });
@@ -359,7 +359,7 @@ const RideSafeApp = () => {
                     {formData.pickupTime && <div className="pickup-time-display">Est. Pickup Time: {formData.pickupTime}</div>}
 
                     <button type="submit" className="book-btn">
-                        <img src="https://lancewoolie.com/RideSafe/img/RIDESAFE TELSA BLUE CHECKsm.png" alt="RideSafe Verified" style={{ width: 20px, margin-right: 5px; }} />
+                        <img src="https://lancewoolie.com/RideSafe/img/RIDESAFE TELSA BLUE CHECKsm.png" alt="RideSafe Verified" style={{ width: '20px', marginRight: '5px' }} />
                         BOOK IT
                     </button>
                 </form>
