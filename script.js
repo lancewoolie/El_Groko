@@ -533,7 +533,50 @@ document.addEventListener('DOMContentLoaded', () => {
   }, 200);
 
   const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
+// Beard Shoot Mechanic
+let beardProp = document.getElementById('beard-prop');
+if (beardProp && currentPage === 'index') {
+  // Check session for beard state
+  if (sessionStorage.getItem('beardShot') === 'true') {
+    document.body.style.backgroundImage = "url('img/NO BEARD COVER.jpg')";
+    beardProp.style.opacity = '0';
+    beardProp.style.pointerEvents = 'none';
+  }
 
+  // Click handler for beard
+  beardProp.addEventListener('click', async (e) => {
+    e.preventDefault();
+    e.stopPropagation(); // Prevent global click handlers
+
+    const rect = beardProp.getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
+
+    // Ricochet sound
+    const sound = clickSounds[Math.floor(Math.random() * clickSounds.length)];
+    sound.currentTime = 0;
+    await waitForAudio(sound);
+
+    // EPIC beard score + particles
+    updateScore(6969, x, y); // Massive points!
+    await explode(x, y, '#FFD700');
+
+    // Animate: hang/shake then fall
+    beardProp.classList.add('beard-hang');
+    await waitForAnimation(beardProp, 'hangShake');
+
+    beardProp.classList.add('beard-fall');
+    await waitForAnimation(beardProp, 'cartoonFall');
+
+    // Switch to no-beard background
+    document.body.style.backgroundImage = "url('img/NO BEARD COVER.jpg')";
+    sessionStorage.setItem('beardShot', 'true');
+
+    // Hide permanently until reset
+    beardProp.style.opacity = '0';
+    beardProp.style.pointerEvents = 'none';
+  });
+}
   // Add Neon Cursor Toy effect to ORIGINS ONLY (avoids bloat/CSP elsewhere)
   if (currentPage === 'origins') {
     // Add Montserrat font
