@@ -52,18 +52,13 @@ body {
   box-shadow: 0 0 60px rgba(255, 215, 0, 0.8);
   color: #E0E0E0;
 }
-#crazyArmsModal .modal-header {
-  border-bottom: 2px solid #FFD700;
-}
 #crazyArmsModal .modal-title {
   color: #FFD700;
-  font-weight: bold;
   text-shadow: 0 0 15px #FFD700;
 }
 #crazyArmsModal .btn-buy {
   background-color: #FFD700;
   color: #001f3f;
-  border: none;
   font-weight: bold;
   padding: 14px 55px;
   font-size: 1.35rem;
