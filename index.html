@@ -108,10 +108,6 @@
       transform-origin: center;
       z-index: 1;
     }
-<!-- ADD THIS RIGHT AFTER the closing </div> of .solar-system, but BEFORE the closing </div> of .hero-overlay -->
-<div class="beard-target">
-  <img id="beard-prop" src="img/JUSTBEARD.gif" alt="Shoot the Beard Off!" class="beard-prop" />
-</div>
     /* Shake Animation */
     .shake {
       animation: shake 1s cubic-bezier(.36,.07,.19,.97) both;
@@ -759,104 +755,111 @@
       }
     }
     /* Beard Prop Target */
-.beard-target {
-  position: absolute;
-  left: 50%;
-  bottom: 28%; /* Tune this (25-32%) to perfectly overlay your chin beard on desktop */
-  transform: translateX(-50%);
-  z-index: 1.5; /* Behind interactive dots (z=3), above solar orbits (z=1-2) */
-  pointer-events: none;
-}
-.beard-prop {
-  display: block;
-  max-width: 280px; /* Adjust size to match beard */
-  height: auto;
-  opacity: 0.92;
-  transition: opacity 0.3s ease, transform 0.2s ease;
-  pointer-events: auto; /* Only on the img */
-  cursor: crosshair;
-}
-.beard-prop:hover {
-  opacity: 1;
-  transform: translateX(-50%) scale(1.05);
-}
-/* Hang/Shake Animation */
-@keyframes hangShake {
-  0%, 100% { transform: translateX(-50%) rotate(0deg) scale(1); }
-  20% { transform: translateX(-50%) rotate(8deg) scale(1.08); }
-  40% { transform: translateX(-50%) rotate(-6deg) scale(0.98); }
-  60% { transform: translateX(-50%) rotate(12deg) scale(1.12); }
-  80% { transform: translateX(-50%) rotate(-3deg) scale(1.02); }
-}
-.beard-hang {
-  animation: hangShake 0.9s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards;
-}
-/* Cartoon Fall Animation */
-@keyframes cartoonFall {
-  0% {
-    transform: translateX(-50%) rotate(10deg) scale(1);
-    opacity: 1;
-  }
-  15% {
-    transform: translateX(-55%) rotate(25deg) translateY(30px) scale(1.02);
-    opacity: 0.95;
-  }
-  35% {
-    transform: translateX(-45%) rotate(-45deg) translateY(200px) scale(0.95);
-    opacity: 0.85;
-  }
-  65% {
-    transform: translateX(-70%) rotate(360deg) translateY(600px) scale(0.85);
-    opacity: 0.6;
-  }
-  100% {
-    transform: translateX(calc(60vw - 140px)) rotate(1080deg) translateY(150vh) scale(0.2);
-    opacity: 0;
-  }
-}
-.beard-fall {
-  animation: cartoonFall 2.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-}
-/* Mobile Adjustments */
-@media (max-width: 768px) {
-  .beard-target {
-    bottom: 24%; /* Slightly higher on mobile */
-  }
-  .beard-prop {
-    max-width: 200px;
-  }
-}
-@media (max-width: 480px) {
-  .beard-target {
-    bottom: 22%;
-  }
-  .beard-prop {
-    max-width: 160px;
-  }
-  }
-  /* NEW Crazy Arms Promo Modal Styles */
-  #crazyArmsModal .modal-content {
-    background: linear-gradient(135deg, #1e3a8a, #001f3f);
-    border: 5px solid #FFD700;
-    box-shadow: 0 0 60px rgba(255, 215, 0, 0.8);
-    color: #E0E0E0;
-  }
-  #crazyArmsModal .modal-title {
-    color: #FFD700;
-    text-shadow: 0 0 15px #FFD700;
-  }
-  #crazyArmsModal .btn-buy {
-    background-color: #FFD700;
-    color: #001f3f;
-    font-weight: bold;
-    padding: 14px 55px;
-    font-size: 1.35rem;
-    transition: all 0.3s ease;
-  }
-  #crazyArmsModal .btn-buy:hover {
-    transform: scale(1.05);
-    background-color: #e6c200;
-  }
+    .beard-target {
+      position: absolute;
+      left: 50%;
+      bottom: 28%;
+      transform: translateX(-50%);
+      z-index: 1.5;
+      pointer-events: none;
+    }
+    .beard-prop {
+      display: block;
+      max-width: 280px;
+      height: auto;
+      opacity: 0.92;
+      transition: opacity 0.3s ease, transform 0.2s ease;
+      pointer-events: auto;
+      cursor: crosshair;
+    }
+    .beard-prop:hover {
+      opacity: 1;
+      transform: translateX(-50%) scale(1.05);
+    }
+    /* Hang/Shake Animation */
+    @keyframes hangShake {
+      0%, 100% { transform: translateX(-50%) rotate(0deg) scale(1); }
+      20% { transform: translateX(-50%) rotate(8deg) scale(1.08); }
+      40% { transform: translateX(-50%) rotate(-6deg) scale(0.98); }
+      60% { transform: translateX(-50%) rotate(12deg) scale(1.12); }
+      80% { transform: translateX(-50%) rotate(-3deg) scale(1.02); }
+    }
+    .beard-hang {
+      animation: hangShake 0.9s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards;
+    }
+    /* Cartoon Fall Animation */
+    @keyframes cartoonFall {
+      0% {
+        transform: translateX(-50%) rotate(10deg) scale(1);
+        opacity: 1;
+      }
+      15% {
+        transform: translateX(-55%) rotate(25deg) translateY(30px) scale(1.02);
+        opacity: 0.95;
+      }
+      35% {
+        transform: translateX(-45%) rotate(-45deg) translateY(200px) scale(0.95);
+        opacity: 0.85;
+      }
+      65% {
+        transform: translateX(-70%) rotate(360deg) translateY(600px) scale(0.85);
+        opacity: 0.6;
+      }
+      100% {
+        transform: translateX(calc(60vw - 140px)) rotate(1080deg) translateY(150vh) scale(0.2);
+        opacity: 0;
+      }
+    }
+    .beard-fall {
+      animation: cartoonFall 2.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+    /* Mobile Adjustments */
+    @media (max-width: 768px) {
+      .beard-target {
+        bottom: 24%;
+      }
+      .beard-prop {
+        max-width: 200px;
+      }
+    }
+    @media (max-width: 480px) {
+      .beard-target {
+        bottom: 22%;
+      }
+      .beard-prop {
+        max-width: 160px;
+      }
+    }
+    /* NEW Crazy Arms Promo Modal Styles */
+    #crazyArmsModal .modal-content {
+      background: linear-gradient(135deg, #1e3a8a, #001f3f);
+      border: 5px solid #FFD700;
+      box-shadow: 0 0 60px rgba(255, 215, 0, 0.8);
+      color: #E0E0E0;
+    }
+    #crazyArmsModal .modal-title {
+      color: #FFD700;
+      text-shadow: 0 0 15px #FFD700;
+    }
+    #crazyArmsModal .btn-buy {
+      background-color: #FFD700;
+      color: #001f3f;
+      font-weight: bold;
+      padding: 14px 55px;
+      font-size: 1.35rem;
+      transition: all 0.3s ease;
+    }
+    #crazyArmsModal .btn-buy:hover {
+      transform: scale(1.05);
+      background-color: #e6c200;
+    }
+    /* MOUSE POINTER FIX - stays on top of modal */
+    .pointingjs {
+      z-index: 12000 !important;
+    }
+    .pointer {
+      z-index: 12001 !important;
+    }
   </style>
 </head>
 <body>
@@ -931,6 +934,9 @@
       <div class="sub-dots"></div>
     </div>
   </div>
+  <div class="beard-target">
+    <img id="beard-prop" src="img/JUSTBEARD.gif" alt="Shoot the Beard Off!" class="beard-prop" />
+  </div>
 </div> </section>
   <!-- Combined Latest Release & Featured Merch Section -->
   <section class="py-5 combined-section">
@@ -947,7 +953,6 @@
                     <h3>Cluck Yeah Chicken Socks</h3>
                     <p>Exclusive jet-black socks from premium Chinese cotton, one size fits all.</p>
                     <span class="price-tag">$10</span>
-                   
                     <a href="https://lancewoolie.bandcamp.com/merch/chicken-socks-cluck-yeah-step-into-the-flock" class="btn btn-buy mt-2" target="_blank">Buy Now</a>
                   </div>
                 </div>
@@ -959,7 +964,6 @@
                     <h3>Uber (Single)</h3>
                     <p>Danceable neotraditional tune evoking lost love, featuring Brent Mason.</p>
                     <span class="price-tag">$1.29</span>
-                   
                     <a href="https://lancewoolie.bandcamp.com/track/uber" class="btn btn-buy mt-2" target="_blank">Buy Now</a>
                   </div>
                 </div>
@@ -971,7 +975,6 @@
                     <h3>Too Drunk (Single)</h3>
                     <p>Debut release co-created with Legendary Guitarist Brent Mason—raw country grit.</p>
                     <span class="price-tag">$1.29</span>
-                   
                     <a href="https://lancewoolie.bandcamp.com/track/too-drunk-ft-brent-mason" class="btn btn-buy mt-2" target="_blank">Buy Now</a>
                   </div>
                 </div>
@@ -1054,7 +1057,7 @@
     </div>
   </section>
 
-  <!-- CRAZY ARMS POP-UP -->
+  <!-- CRAZY ARMS POP-UP MODAL -->
   <div class="modal fade" id="crazyArmsModal" tabindex="-1" aria-labelledby="crazyArmsModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
