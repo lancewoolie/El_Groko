@@ -139,7 +139,7 @@ function updateScore(points, x = undefined, y = undefined) {
   if (x !== undefined && y !== undefined) {
     showFloatingPoints(points, x, y);
   }
-  // Health behaviors - MISS NOW REMOVES TWICE AS MUCH HEALTH
+  // Health behaviors - MISS NOW REMOVES TWICE THE HEALTH
   if (points === 69) {
     health = Math.max(0, health - 26);
     sessionStorage.setItem('health', health.toString());
@@ -742,9 +742,6 @@ if (beardProp && currentPage === 'index') {
       // Shake the body
       body.classList.add('shake');
       setTimeout(() => {
-        // Trigger playback post-shake, synced with bullet hole dots animation
-        // ricochetSound.play().catch(e => console.log('Audio play failed:', e)); // Removed as overkill
-       
         // Fire first 3 dots quicker (100ms intervals)
         setTimeout(() => animateDot(dots[0]), 0);
         setTimeout(() => animateDot(dots[1]), 100);
@@ -796,7 +793,7 @@ if (beardProp && currentPage === 'index') {
     });
   }
 
-  // CRAZY ARMS POP-UP (once per session)
+  // CRAZY ARMS POP-UP (shows once per session on index)
   if (currentPage === 'index' && !sessionStorage.getItem('crazyArmsShown')) {
     setTimeout(() => {
       const modal = new bootstrap.Modal(document.getElementById('crazyArmsModal'));
