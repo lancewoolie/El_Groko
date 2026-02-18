@@ -7,19 +7,24 @@ clickSounds.forEach(sound => {
   sound.preload = 'auto';
   sound.volume = 0.85;
 });
+
 // Preload game over sound
 const gameOverSound = new Audio('sounds/ScottySteel.mp3');
 gameOverSound.volume = 0.85;
+
 // Global mouse position for particle reactivity
 let mousePos = { x: 0, y: 0 };
+
 // Score management
 let score = 0;
 let scoreEl = null;
+
 // Health management for bar
 let health = parseFloat(sessionStorage.getItem('health')) || 100;
 let healthBar = null;
 let healthProgress = null;
 let gameOverShown = false;
+
 // Function to wait for audio to finish playing
 function waitForAudio(sound) {
   return sound.play().then(() => {
@@ -34,6 +39,7 @@ function waitForAudio(sound) {
     return Promise.resolve(); // Proceed without waiting if play fails
   });
 }
+
 // Function to wait for animation end
 function waitForAnimation(element, animationName) {
   return new Promise((resolve) => {
@@ -48,6 +54,7 @@ function waitForAnimation(element, animationName) {
     setTimeout(resolve, 1200);
   });
 }
+
 // Explosion particle function (add this for sub-dot hits and game over reset)
 function explode(mx, my, hexColor) {
   return new Promise((resolve) => {
@@ -110,6 +117,7 @@ function explode(mx, my, hexColor) {
     animate();
   });
 }
+
 function updateScore(points, x = undefined, y = undefined) {
   score += points;
   sessionStorage.setItem('score', score.toString());
@@ -150,6 +158,7 @@ function updateScore(points, x = undefined, y = undefined) {
     updateHealthBar();
   }
 }
+
 function updateHealthBar() {
   if (!healthProgress || !healthBar) return;
   const percent = health / 100;
@@ -163,11 +172,13 @@ function updateHealthBar() {
       gameOverText.textContent = 'GAME OVER';
       gameOverText.style.cssText = 'color: #F44336; font-size: 12px; font-weight: bold; text-align: center; line-height: 12px; padding: 0 5px;'; /* Smaller font and line-height for fit */
       healthBar.appendChild(gameOverText);
+
       const onSoundEnd = async () => {
         const healthRect = healthBar.getBoundingClientRect();
         const healthX = healthRect.left + healthRect.width / 2;
         const healthY = healthRect.top + healthRect.height / 2;
         await explode(healthX, healthY, '#FF4500'); // Red-orange particles for game over reset
+
         // Reset to initial state
         healthBar.innerHTML = '<div id="health-progress"></div>';
         healthProgress = document.getElementById('health-progress');
@@ -183,6 +194,7 @@ function updateHealthBar() {
         }
         updateHealthBar();
       };
+
       gameOverSound.onended = onSoundEnd;
       // Fallback if already ended
       if (gameOverSound.ended) {
@@ -215,19 +227,23 @@ function updateHealthBar() {
     setTimeout(() => healthDisplay.classList.remove('updated'), 500);
   }
 }
+
 function initHealthBar() {
   healthBar = document.getElementById("health-bar");
   healthProgress = document.getElementById("health-progress");
   if (!healthBar || !healthProgress) return;
+
   // Initial update
   updateHealthBar();
 }
+
 function showFloatingPoints(points, mx, my) {
   let color = '#FFD700'; // Default
   if (points < 100) color = 'rgba(255, 165, 0, 0.8)'; // Faded orange
   else if (points < 1000) color = '#FFA500'; // Yellow orange
   else if (points < 2001) color = '#FF4500'; // Red yellow (orangered)
   else color = '#00FFFF'; // Cyan
+
   const canvas = document.createElement('canvas');
   const size = 200;
   const fontSize = 36; // 300% of original 12px
@@ -247,7 +263,9 @@ function showFloatingPoints(points, mx, my) {
   ctx.textBaseline = 'middle';
   ctx.fillText(`+${points}`, size / 2, size / 4);
   ctx.textShadow = `0 0 3px ${color}`;
+
   document.body.appendChild(canvas);
+
   // Delay particle effect by 300ms
   setTimeout(() => {
     // Sample pixels for particles (every 2px for performance)
@@ -270,6 +288,7 @@ function showFloatingPoints(points, mx, my) {
         }
       }
     }
+
     function animate() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const canvasRect = canvas.getBoundingClientRect();
@@ -284,18 +303,21 @@ function showFloatingPoints(points, mx, my) {
           p.vx += dx * force * 0.1;
           p.vy += dy * force * 0.1;
         }
+
         // Update position
         p.x += p.vx;
         p.y += p.vy;
         p.vx *= 0.97; // Friction
         p.vy *= 0.97;
         p.life -= p.decay;
+
         if (p.life > 0) {
           alive = true;
           ctx.fillStyle = p.color.replace(/[\d.]+(?=\))/, (m) => (parseFloat(m) * p.life).toFixed(2));
           ctx.fillRect(p.x - p.size / 2, p.y - p.size / 2, p.size, p.size); // Pixel art style
         }
       });
+
       if (alive) {
         requestAnimationFrame(animate);
       } else {
@@ -305,6 +327,7 @@ function showFloatingPoints(points, mx, my) {
     animate();
   }, 300);
 }
+
 // Reusable Nav Generator (Updated with Health Progress Bar in Header - Floating)
 function generateNav() {
   let navHTML = `
@@ -361,6 +384,7 @@ function generateNav() {
       </div>
     </nav>
   `;
+
   // Auto-Highlight Active Page (Enhanced for Dropdowns)
   const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
   const tempDiv = document.createElement('div');
@@ -374,6 +398,7 @@ function generateNav() {
     }
   });
   navHTML = tempDiv.innerHTML;
+
   const placeholder = document.getElementById('nav-placeholder');
   if (placeholder) {
     placeholder.innerHTML = navHTML;
@@ -397,6 +422,7 @@ function generateNav() {
     }
   }
 }
+
 // Reusable Footer Generator (Removed Scoreboard, Added Subscribe Raccoon - Floating)
 function generateFooter() {
   const footerHTML = `
@@ -437,9 +463,10 @@ function generateFooter() {
           </div>
         </div>
       </div>
-   
+    
     </footer>
   `;
+
   let placeholder = document.getElementById('footer-placeholder');
   if (!placeholder) {
     // Fallback: Append directly to body if placeholder missing
@@ -449,11 +476,13 @@ function generateFooter() {
     console.log('Footer placeholder missing; created and appended to body.');
   }
   placeholder.innerHTML = footerHTML;
+
   // Ensure footer is always on top
   const footer = placeholder.querySelector('.footer');
   if (footer) {
     footer.style.zIndex = '1002';
   }
+
   // Re-init cowboy hat after insert
   const cowboyHat = document.getElementById('cowboy-hat');
   if (cowboyHat) {
@@ -469,12 +498,15 @@ function generateFooter() {
     cowboyHat.addEventListener('click', () => surprises[Math.floor(Math.random() * surprises.length)]());
   }
 }
+
 // Load Nav & Footer on DOM Ready
 document.addEventListener('DOMContentLoaded', () => {
   // Initialize score
   score = parseInt(sessionStorage.getItem('score')) || 0;
+
   generateNav();
   generateFooter();
+
   // Init score display after nav generation
   scoreEl = document.getElementById('score-value');
   if (scoreEl) {
@@ -493,12 +525,15 @@ document.addEventListener('DOMContentLoaded', () => {
       scoreEl.classList.add('score-max');
     }
   }
+
   // Init health bar after nav (beefier delay + force init)
   setTimeout(() => {
     initHealthBar();
     updateScore(0); // Reset display without adding points
   }, 200);
+
   const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
+
   // Add Neon Cursor Toy effect to ORIGINS ONLY (avoids bloat/CSP elsewhere)
   if (currentPage === 'origins') {
     // Add Montserrat font
@@ -506,6 +541,7 @@ document.addEventListener('DOMContentLoaded', () => {
     fontLink.href = 'https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap';
     fontLink.rel = 'stylesheet';
     document.head.appendChild(fontLink);
+
     // Add neon cursor styles
     const style = document.createElement('style');
     style.textContent = `
@@ -526,6 +562,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     `;
     document.head.appendChild(style);
+
     // Load neon cursor module
     const neonScript = document.createElement('script');
     neonScript.type = 'module';
@@ -547,6 +584,7 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     document.head.appendChild(neonScript);
   }
+
   // Global sub-dot click handlers (works on index, empty on other pages)
   document.querySelectorAll('.sub-dot').forEach(sub => {
     sub.addEventListener('click', async (e) => {
@@ -561,11 +599,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const container = sub.closest('.dot-container');
       const subDots = sub.closest('.sub-dots');
       const mainDot = container ? container.querySelector('.main-dot') : null;
+
       const clickedSubDots = JSON.parse(sessionStorage.getItem('clickedSubDots') || '[]');
+
       let bonusPoints = 0;
       if (container && container.classList.contains('music-container')) {
         bonusPoints = 420;
       }
+
       if (clickedSubDots.includes(subId)) {
         // Direct navigation if already clicked in session
         if (target === '_blank') {
@@ -578,22 +619,29 @@ document.addEventListener('DOMContentLoaded', () => {
         const sound = clickSounds[Math.floor(Math.random() * clickSounds.length)];
         sound.currentTime = 0;
         const soundPromise = waitForAudio(sound);
+
         // Trigger hit animation and wait
         sub.classList.add('hit');
         const animPromise = waitForAnimation(sub, 'hit-shot');
+
         // Award points and show floating points immediately
         updateScore(1000 + bonusPoints, x, y);
+
         // Wait for both sound and animation to complete
         await Promise.all([soundPromise, animPromise]);
+
         // Deploy particle effects
         await explode(x, y, '#FFD700');
+
         // Reset to non-hover state
         sub.classList.remove('hit');
         if (subDots) subDots.classList.remove('active');
         if (mainDot) mainDot.classList.remove('hidden');
+
         // Mark as clicked in session
         clickedSubDots.push(subId);
         sessionStorage.setItem('clickedSubDots', JSON.stringify(clickedSubDots));
+
         // Navigate
         if (target === '_blank') {
           window.open(linkHref, '_blank');
@@ -603,6 +651,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+
   // Global main-dot click handlers (works on index, empty on other pages)
   document.querySelectorAll('.main-dot').forEach(dot => {
     dot.addEventListener('click', async (e) => {
@@ -619,6 +668,7 @@ document.addEventListener('DOMContentLoaded', () => {
       window.location.href = dot.href;
     });
   });
+
   // Delay navigation for non-dropdown-toggle nav links with sound completion
   document.addEventListener('click', async (e) => {
     const link = e.target.closest('a');
@@ -639,6 +689,7 @@ document.addEventListener('DOMContentLoaded', () => {
       window.location.href = link.href;
     }
   });
+
   // Separate handler for dropdown items
   document.addEventListener('click', async (e) => {
     const dropdownItem = e.target.closest('.dropdown-item a');
@@ -656,6 +707,7 @@ document.addEventListener('DOMContentLoaded', () => {
       window.location.href = dropdownItem.href;
     }
   });
+
   // YouTube play detection (music page only)
   if (currentPage === 'music') {
     document.querySelectorAll('iframe[src*="youtube.com"], iframe[src*="youtu.be"]').forEach(iframe => {
@@ -663,6 +715,7 @@ document.addEventListener('DOMContentLoaded', () => {
         iframe.src += (iframe.src.includes('?') ? '&' : '?') + 'enablejsapi=1';
       }
     });
+
     window.addEventListener('message', (e) => {
       if (e.origin !== 'https://www.youtube.com') return;
       const data = e.data;
@@ -671,6 +724,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
   // Site-wide click sound and scoring on all clicks (skip links/buttons handled elsewhere)
   const form = document.getElementById('contact-form');
   document.addEventListener('click', async (e) => {
@@ -688,6 +742,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     updateScore(points, e.clientX, e.clientY);
   });
+
   // Smooth Scroll for Internal Links
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
@@ -698,22 +753,25 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+
   // Index Page Specific: Ricochet Load Animation (post content load, post site shaking, on load of bullet hole dots)
   if (currentPage === 'index') {
     window.addEventListener('load', () => {
       const body = document.body;
       const dots = document.querySelectorAll('.main-dot');
+
       // Shake the body
       body.classList.add('shake');
+
       setTimeout(() => {
         // Trigger playback post-shake, synced with bullet hole dots animation
         // ricochetSound.play().catch(e => console.log('Audio play failed:', e)); // Removed as overkill
-       
+        
         // Fire first 3 dots quicker (100ms intervals)
         setTimeout(() => animateDot(dots[0]), 0);
         setTimeout(() => animateDot(dots[1]), 100);
         setTimeout(() => animateDot(dots[2]), 200);
-       
+        
         // Pause 0.3s (300ms) after the third dot
         setTimeout(() => {
           // Then fire last 2 dots quick like the first 3 (100ms interval)
@@ -722,30 +780,36 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 500); // 200 (last first-dot) + 300 pause = 500ms
       }, 1000);
     });
+
     function animateDot(dot) {
       dot.classList.add('ricochet');
       setTimeout(() => {
         dot.classList.add('visible');
       }, 250);
     }
+
     // Generic submenu logic for containers (index page only, but safe to run globally)
     document.querySelectorAll('.dot-container').forEach(container => {
       const mainDot = container.querySelector('.main-dot');
       const subDots = container.querySelector('.sub-dots');
       const hasSubs = subDots.children.length > 0;
       let hideTimeout;
+
       if (!hasSubs) return;
+
       container.addEventListener('mouseenter', () => {
         clearTimeout(hideTimeout);
         mainDot.classList.add('hidden');
         subDots.classList.add('active');
       });
+
       container.addEventListener('mouseleave', () => {
         hideTimeout = setTimeout(() => {
           subDots.classList.remove('active');
           mainDot.classList.remove('hidden');
         }, 1000); // Increased timeout for easier navigation
       });
+
       container.querySelectorAll('.sub-dot').forEach(sub => {
         sub.addEventListener('mouseenter', () => {
           clearTimeout(hideTimeout);
@@ -758,14 +822,5 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       });
     });
-  }
-
-  // CRAZY ARMS POP-UP (shows once per session on index)
-  if (currentPage === 'index' && !sessionStorage.getItem('crazyArmsShown')) {
-    setTimeout(() => {
-      const modal = new bootstrap.Modal(document.getElementById('crazyArmsModal'));
-      modal.show();
-      sessionStorage.setItem('crazyArmsShown', 'true');
-    }, 1500);
   }
 });
