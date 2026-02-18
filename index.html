@@ -108,6 +108,10 @@
       transform-origin: center;
       z-index: 1;
     }
+<!-- ADD THIS RIGHT AFTER the closing </div> of .solar-system, but BEFORE the closing </div> of .hero-overlay -->
+<div class="beard-target">
+  <img id="beard-prop" src="img/JUSTBEARD.gif" alt="Shoot the Beard Off!" class="beard-prop" />
+</div>
     /* Shake Animation */
     .shake {
       animation: shake 1s cubic-bezier(.36,.07,.19,.97) both;
@@ -755,168 +759,322 @@
       }
     }
     /* Beard Prop Target */
-    .beard-target {
-      position: absolute;
-      left: 50%;
-      bottom: 28%; /* Tune this (25-32%) to perfectly overlay your chin beard on desktop */
-      transform: translateX(-50%);
-      z-index: 1.5; /* Behind interactive dots (z=3), above solar orbits (z=1-2) */
-      pointer-events: none;
-    }
-    .beard-prop {
-      display: block;
-      max-width: 280px; /* Adjust size to match beard */
-      height: auto;
-      opacity: 0.92;
-      transition: opacity 0.3s ease, transform 0.2s ease;
-      pointer-events: auto; /* Only on the img */
-      cursor: crosshair;
-    }
-    .beard-prop:hover {
-      opacity: 1;
-      transform: translateX(-50%) scale(1.05);
-    }
-    /* Hang/Shake Animation */
-    @keyframes hangShake {
-      0%, 100% { transform: translateX(-50%) rotate(0deg) scale(1); }
-      20% { transform: translateX(-50%) rotate(8deg) scale(1.08); }
-      40% { transform: translateX(-50%) rotate(-6deg) scale(0.98); }
-      60% { transform: translateX(-50%) rotate(12deg) scale(1.12); }
-      80% { transform: translateX(-50%) rotate(-3deg) scale(1.02); }
-    }
-    .beard-hang {
-      animation: hangShake 0.9s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards;
-    }
-    /* Cartoon Fall Animation */
-    @keyframes cartoonFall {
-      0% {
-        transform: translateX(-50%) rotate(10deg) scale(1);
-        opacity: 1;
-      }
-      15% {
-        transform: translateX(-55%) rotate(25deg) translateY(30px) scale(1.02);
-        opacity: 0.95;
-      }
-      35% {
-        transform: translateX(-45%) rotate(-45deg) translateY(200px) scale(0.95);
-        opacity: 0.85;
-      }
-      65% {
-        transform: translateX(-70%) rotate(360deg) translateY(600px) scale(0.85);
-        opacity: 0.6;
-      }
-      100% {
-        transform: translateX(calc(60vw - 140px)) rotate(1080deg) translateY(150vh) scale(0.2);
-        opacity: 0;
-      }
-    }
-    .beard-fall {
-      animation: cartoonFall 2.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-    }
-    /* Mobile Adjustments */
-    @media (max-width: 768px) {
-      .beard-target {
-        bottom: 24%; /* Slightly higher on mobile */
-      }
-      .beard-prop {
-        max-width: 200px;
-      }
-    }
-    @media (max-width: 480px) {
-      .beard-target {
-        bottom: 22%;
-      }
-      .beard-prop {
-        max-width: 160px;
-      }
-    }
-
-    /* NEW Crazy Arms Promo Modal Styles */
-    #crazyArmsModal .modal-content {
-      background: linear-gradient(135deg, #1e3a8a, #001f3f);
-      border: 5px solid #FFD700;
-      box-shadow: 0 0 60px rgba(255, 215, 0, 0.8);
-      color: #E0E0E0;
-    }
-    #crazyArmsModal .modal-header {
-      border-bottom: 2px solid #FFD700;
-    }
-    #crazyArmsModal .modal-title {
-      color: #FFD700;
-      font-weight: bold;
-      text-shadow: 0 0 15px #FFD700;
-    }
-    #crazyArmsModal .btn-buy {
-      background-color: #FFD700;
-      color: #001f3f;
-      border: none;
-      font-weight: bold;
-      padding: 14px 55px;
-      font-size: 1.35rem;
-      transition: all 0.3s ease;
-    }
-    #crazyArmsModal .btn-buy:hover {
-      transform: scale(1.05);
-      background-color: #e6c200;
-    }
+.beard-target {
+  position: absolute;
+  left: 50%;
+  bottom: 28%; /* Tune this (25-32%) to perfectly overlay your chin beard on desktop */
+  transform: translateX(-50%);
+  z-index: 1.5; /* Behind interactive dots (z=3), above solar orbits (z=1-2) */
+  pointer-events: none;
+}
+.beard-prop {
+  display: block;
+  max-width: 280px; /* Adjust size to match beard */
+  height: auto;
+  opacity: 0.92;
+  transition: opacity 0.3s ease, transform 0.2s ease;
+  pointer-events: auto; /* Only on the img */
+  cursor: crosshair;
+}
+.beard-prop:hover {
+  opacity: 1;
+  transform: translateX(-50%) scale(1.05);
+}
+/* Hang/Shake Animation */
+@keyframes hangShake {
+  0%, 100% { transform: translateX(-50%) rotate(0deg) scale(1); }
+  20% { transform: translateX(-50%) rotate(8deg) scale(1.08); }
+  40% { transform: translateX(-50%) rotate(-6deg) scale(0.98); }
+  60% { transform: translateX(-50%) rotate(12deg) scale(1.12); }
+  80% { transform: translateX(-50%) rotate(-3deg) scale(1.02); }
+}
+.beard-hang {
+  animation: hangShake 0.9s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards;
+}
+/* Cartoon Fall Animation */
+@keyframes cartoonFall {
+  0% {
+    transform: translateX(-50%) rotate(10deg) scale(1);
+    opacity: 1;
+  }
+  15% {
+    transform: translateX(-55%) rotate(25deg) translateY(30px) scale(1.02);
+    opacity: 0.95;
+  }
+  35% {
+    transform: translateX(-45%) rotate(-45deg) translateY(200px) scale(0.95);
+    opacity: 0.85;
+  }
+  65% {
+    transform: translateX(-70%) rotate(360deg) translateY(600px) scale(0.85);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateX(calc(60vw - 140px)) rotate(1080deg) translateY(150vh) scale(0.2);
+    opacity: 0;
+  }
+}
+.beard-fall {
+  animation: cartoonFall 2.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+  .beard-target {
+    bottom: 24%; /* Slightly higher on mobile */
+  }
+  .beard-prop {
+    max-width: 200px;
+  }
+}
+@media (max-width: 480px) {
+  .beard-target {
+    bottom: 22%;
+  }
+  .beard-prop {
+    max-width: 160px;
+  }
+  }
+  /* NEW Crazy Arms Promo Modal Styles */
+  #crazyArmsModal .modal-content {
+    background: linear-gradient(135deg, #1e3a8a, #001f3f);
+    border: 5px solid #FFD700;
+    box-shadow: 0 0 60px rgba(255, 215, 0, 0.8);
+    color: #E0E0E0;
+  }
+  #crazyArmsModal .modal-title {
+    color: #FFD700;
+    text-shadow: 0 0 15px #FFD700;
+  }
+  #crazyArmsModal .btn-buy {
+    background-color: #FFD700;
+    color: #001f3f;
+    font-weight: bold;
+    padding: 14px 55px;
+    font-size: 1.35rem;
+    transition: all 0.3s ease;
+  }
+  #crazyArmsModal .btn-buy:hover {
+    transform: scale(1.05);
+    background-color: #e6c200;
+  }
   </style>
 </head>
 <body>
   <a href="contact.html#email-subscribe" class="floating-subscribe">
     <img src="img/subscribe.gif" alt="Subscribe">
   </a>
-  <div id="nav-placeholder"></div>
-
-  <!-- Hero Section -->
+  <div id="nav-placeholder"></div> <!-- Dynamic Nav Insert Here -->
+  <!-- Hero Section (Mimicking Crockett's Hero with Interactive Dots Only) -->
   <section class="hero">
     <div class="hero-overlay">
       <div class="solar-system">
-        <!-- ALL YOUR ORIGINAL DOT CONTAINERS (unchanged) -->
-        <div class="dot-container merch-container"> ... </div>
-        <div class="dot-container events-container"> ... </div>
-        <div class="dot-container music-container"> ... </div>
-        <div class="dot-container origins-container"> ... </div>
-        <div class="dot-container contact-container"> ... </div>
+        <div class="animated-dot"></div>
+        <div class="animated-dot"></div>
+        <div class="animated-dot"></div>
+        <div class="animated-dot"></div>
+        <div class="animated-dot"></div>
+        <div class="animated-dot"></div>
+       
+    <!-- Merch Container (Swapped with Origins) -->
+    <div class="dot-container merch-container">
+      <a href="merch.html" class="interactive-dot main-dot merch-dot"></a>
+      <span class="main-label">Merch & More</span>
+      <div class="sub-dots">
+        <!-- Cluck Yeah Chicken Socks -->
+        <a href="https://lancewoolie.bandcamp.com/merch/chicken-socks-cluck-yeah-step-into-the-flock" class="sub-dot" style="background-image: url('https://f4.bcbits.com/img/0041177986_10.jpg');" target="_blank" data-title="Chicken Socks" data-id="merch-chicken-socks"></a>
+        <!-- Uber Single -->
+        <a href="https://lancewoolie.bandcamp.com/track/uber" class="sub-dot" style="background-image: url('https://f4.bcbits.com/img/a2855470268_10.jpg');" target="_blank" data-title="Uber" data-id="merch-uber"></a>
+        <!-- Too Drunk Single -->
+        <a href="https://lancewoolie.bandcamp.com/track/too-drunk-ft-brent-mason" class="sub-dot" style="background-image: url('https://f4.bcbits.com/img/a1387979790_10.jpg');" target="_blank" data-title="Too Drunk" data-id="merch-too-drunk"></a>
+        <!-- Country Paradise Album -->
+        <a href="https://lancewoolie.bandcamp.com/album/country-paradise" class="sub-dot" style="background-image: url('img/COUNTRY-PARADISE-scaled.jpg');" target="_blank" data-title="Country Paradise" data-id="merch-country-paradise"></a>
       </div>
-
-      <!-- Beard target - UPDATED to your new GIF -->
-      <div class="beard-target">
-        <img id="beard-prop" src="img/JUSTBEARD.gif" alt="Shoot the Beard Off!" class="beard-prop" />
+    </div>
+   
+    <!-- Events Container -->
+    <div class="dot-container events-container">
+      <a href="events.html" class="interactive-dot main-dot events-dot"></a>
+      <span class="main-label">Events</span>
+      <div class="sub-dots">
+        <!-- Upcoming Event -->
+        <a href="https://www.facebook.com/events/1285222389594134" class="sub-dot" style="background-image: url('img/OCT 24.png');" target="_blank" data-title="Upcoming Event" data-id="events-oct24"></a>
+      </div>
+    </div>
+   
+    <!-- Music Dot Container with Submenu -->
+    <div class="dot-container music-container">
+      <a href="music.html" class="interactive-dot main-dot music-dot"></a>
+      <span class="main-label">Music & Videos</span>
+      <div class="sub-dots">
+        <!-- Uber -->
+        <a href="https://orcd.co/a4glqme" class="sub-dot" style="background-image: url('img/Ubermenu.jpg');" target="_blank" data-title="Uber" data-id="music-uber"></a>
+        <!-- Too Drunk -->
+        <a href="https://orcd.co/lancewoolietoodrunk" class="sub-dot" style="background-image: url('img/TooDrunkmenu.jpg');" target="_blank" data-title="Too Drunk" data-id="music-too-drunk"></a>
+        <!-- Worst Enemy -->
+        <a href="https://orcd.co/lancewoolieworstenemy" class="sub-dot" style="background-image: url('img/WorstEnemymenu.jpg');" target="_blank" data-title="Worst Enemy" data-id="music-worst-enemy"></a>
+        <!-- Full Catalog -->
+        <a href="music.html" class="sub-dot" style="background-image: url('img/Fullcatalogmenu.jpg');" data-title="Full Catalog" data-id="music-full-catalog"></a>
+      </div>
+    </div>
+   
+    <!-- Origins Container (Swapped with Merch) -->
+    <div class="dot-container origins-container">
+      <a href="origins.html" class="interactive-dot main-dot origins-dot"></a>
+      <span class="main-label">Origins</span>
+      <div class="sub-dots"></div>
+    </div>
+   
+    <!-- Contact Container -->
+    <div class="dot-container contact-container">
+      <a href="contact.html" class="interactive-dot main-dot contact-dot"></a>
+      <span class="main-label">Contact</span>
+      <div class="sub-dots"></div>
+    </div>
+  </div>
+</div> </section>
+  <!-- Combined Latest Release & Featured Merch Section -->
+  <section class="py-5 combined-section">
+    <div class="container">
+      <h2 class="text-center mb-4" style="color: white;">Featured Merch & Latest Music Videos</h2>
+      <div class="row">
+        <div class="col-md-6">
+          <div id="merchCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <div class="merch-card card">
+                  <img src="https://f4.bcbits.com/img/0041177986_10.jpg" alt="Cluck Yeah Chicken Socks" class="card-img-top">
+                  <div class="card-body">
+                    <h3>Cluck Yeah Chicken Socks</h3>
+                    <p>Exclusive jet-black socks from premium Chinese cotton, one size fits all.</p>
+                    <span class="price-tag">$10</span>
+                   
+                    <a href="https://lancewoolie.bandcamp.com/merch/chicken-socks-cluck-yeah-step-into-the-flock" class="btn btn-buy mt-2" target="_blank">Buy Now</a>
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="merch-card card">
+                  <img src="https://f4.bcbits.com/img/a2855470268_10.jpg" alt="Uber Single Cover" class="card-img-top">
+                  <div class="card-body">
+                    <h3>Uber (Single)</h3>
+                    <p>Danceable neotraditional tune evoking lost love, featuring Brent Mason.</p>
+                    <span class="price-tag">$1.29</span>
+                   
+                    <a href="https://lancewoolie.bandcamp.com/track/uber" class="btn btn-buy mt-2" target="_blank">Buy Now</a>
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="merch-card card">
+                  <img src="https://f4.bcbits.com/img/a1387979790_10.jpg" alt="Too Drunk Single Cover" class="card-img-top">
+                  <div class="card-body">
+                    <h3>Too Drunk (Single)</h3>
+                    <p>Debut release co-created with Legendary Guitarist Brent Mason—raw country grit.</p>
+                    <span class="price-tag">$1.29</span>
+                   
+                    <a href="https://lancewoolie.bandcamp.com/track/too-drunk-ft-brent-mason" class="btn btn-buy mt-2" target="_blank">Buy Now</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#merchCarousel" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#merchCarousel" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div id="musicCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <div class="video-card card">
+                  <h5>Uber</h5>
+                  <iframe src="https://www.youtube.com/embed/0nTop80SCvs" title="Uber Official Music Video" frameborder="0" allowfullscreen></iframe>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="video-card card">
+                  <h5>Too Drunk</h5>
+                  <iframe src="https://www.youtube.com/embed/K6c5kCqZHOc" title="Too Drunk Official Music Video" frameborder="0" allowfullscreen></iframe>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="video-card card">
+                  <h5>Worst Enemy</h5>
+                  <iframe src="https://www.youtube.com/embed/LQNnYN2J_9w" title="Worst Enemy Official Music Video" frameborder="0" allowfullscreen></iframe>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="video-card card">
+                  <h5>Road To Texas</h5>
+                  <iframe src="https://www.youtube.com/embed/ooabUmI-jL8" title="Road To Texas Official Music Video" frameborder="0" allowfullscreen></iframe>
+                </div>
+              </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#musicCarousel" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#musicCarousel" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Upcoming Events Section -->
+  <section class="py-5" style="background-color: rgba(30, 58, 138, 0.8);">
+    <div class="container">
+      <h2 class="text-center mb-4" style="color: white;">Upcoming Events</h2>
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="tour-card">
+            <div class="row align-items-center">
+              <div class="col-md-3">
+                <h4 class="tour-date">October 24, 2025</h4>
+                <p class="tour-time">9:00 PM Central</p>
+              </div>
+              <div class="col-md-7">
+                <h5 class="tour-venue">Lance Woolie Live at the Smiling Dog</h5>
+                <p>Don't miss this intimate performance!</p>
+              </div>
+              <div class="col-md-2 text-end">
+                <a href="https://www.facebook.com/lancewooliemusic/events" class="btn btn-success" target="_blank">Tickets</a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Your combined merch/video section (unchanged) -->
-  <!-- Your upcoming events section (unchanged) -->
-
-  <!-- NEW CRAZY ARMS POP-UP MODAL -->
+  <!-- CRAZY ARMS POP-UP -->
   <div class="modal fade" id="crazyArmsModal" tabindex="-1" aria-labelledby="crazyArmsModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
         <div class="modal-header border-0">
-          <h5 class="modal-title fs-1 fw-bold" id="crazyArmsModalLabel">🔥 NEW SINGLE DROPPING 🔥</h5>
+          <h5 class="modal-title fs-1 fw-bold" id="crazyArmsModalLabel">🔥 CRAZY ARMS OUT NOW 🔥</h5>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body text-center p-5">
-          <img src="img/Crazy Arms Official.png" alt="Crazy Arms" class="img-fluid rounded-3 mb-4" style="max-height: 460px; border: 6px solid #FFD700; box-shadow: 0 0 40px rgba(255,215,0,0.7);">
+          <img src="img/Crazy Arms Official.png" alt="Crazy Arms" class="img-fluid rounded-3 mb-4" style="max-height:460px;border:6px solid #FFD700;box-shadow:0 0 40px rgba(255,215,0,0.7);">
           <h2 class="text-white mb-3">Crazy Arms</h2>
           <h5 class="text-warning mb-4">feat. Brent Mason & Scotty Sanders</h5>
-          <p class="lead mb-4 text-light">
-            Available <strong>NOW</strong> for purchase on Bandcamp!<br>
-            Streaming everywhere next week.
-          </p>
-          <a href="https://lancewoolie.bandcamp.com/track/crazy-arms-feat-brent-mason-scotty-sanders" 
-             target="_blank" 
-             class="btn btn-buy btn-lg px-5 py-3">
-            BUY ON BANDCAMP NOW →
-          </a>
+          <p class="lead mb-4 text-light">Available <strong>NOW</strong> for purchase on Bandcamp!<br>Streaming everywhere next week.</p>
+          <a href="https://lancewoolie.bandcamp.com/track/crazy-arms-feat-brent-mason-scotty-sanders" target="_blank" class="btn btn-buy btn-lg px-5 py-3">BUY ON BANDCAMP NOW →</a>
         </div>
       </div>
     </div>
   </div>
 
-  <div id="footer-placeholder" class="tight-footer"></div>
-
+  <div id="footer-placeholder" class="tight-footer"> <!-- Dynamic Footer Insert Here - Floating Fixed -->
+  </div>
   <div class="pointingjs">
     <div class="pointer"></div>
     <svg xmlns="http://www.w3.org/2000/svg">
@@ -938,7 +1096,6 @@
       <path id="trail" fill="transparent"/>
     </svg>
   </div>
-
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
 </body>
