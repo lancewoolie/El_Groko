@@ -7,9 +7,9 @@
   position: relative;
 }
 #health-canvas {
-  width: 60px !important;
-  height: 45px !important;
-  background: transparent !important;
+  width: 60px !important; /* Scaled for header */
+  height: 45px !important; /* Proportional scale */
+  background: transparent !important; /* No bg in header */
   overflow: visible;
 }
 #health-canvas #liquid {
@@ -67,4 +67,12 @@ body {
 #crazyArmsModal .btn-buy:hover {
   transform: scale(1.05);
   background-color: #e6c200;
+}
+
+/* Mouse pointer stays on top of modal */
+.pointingjs {
+  z-index: 12000 !important;
+}
+.pointer {
+  z-index: 12001 !important;
 }
