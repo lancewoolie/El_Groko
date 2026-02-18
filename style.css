@@ -53,3 +53,36 @@
 body { 
   background-color: #1e3a8a !important; 
 }
+/* HONKY TONK REBRAND - Feb 2026 */
+.hero, .page-hero {
+  background-image: url('img/hero-honkytonk.jpg') !important;
+  background-size: cover;
+  background-position: center 30%;
+  background-attachment: fixed;
+  min-height: 85vh;
+  position: relative;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(rgba(255,50,50,0.18), rgba(30,30,255,0.18));
+  pointer-events: none;
+}
+
+#game-canvas {
+  background-image: url('img/shooter-bg.jpg') !important;
+  background-size: cover;
+  image-rendering: crisp-edges;
+  max-width: 100%;
+  height: auto;
+}
+
+.score-display {
+  font-family: 'Courier New', monospace;
+  letter-spacing: 4px;
+  text-shadow: 0 0 10px #ffd700;
+}
+
+/* Your existing score & health animations stay untouched */
