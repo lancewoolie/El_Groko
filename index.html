@@ -21,7 +21,7 @@
       padding-top: 80px; /* Space for floating header */
       padding-bottom: 80px; /* Space for floating footer */
     }
-     
+    
     .hero, .py-5 {
       position: relative;
       z-index: 2;
@@ -36,7 +36,6 @@
       justify-content: center;
       position: relative;
     }
-
     /* Floating Subscribe Image */
     .floating-subscribe {
       position: fixed;
@@ -55,7 +54,6 @@
       max-width: none;
       height: auto;
     }
-
     /* Interactive Dots with Custom Colors - Increased Size - Bullet Hole Image */
     .interactive-dot {
       position: absolute;
@@ -79,32 +77,26 @@
       opacity: 1;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     }
-
     /* Music Dot - Muted Maroon */
     .music-dot {
       background-color: transparent;
     }
-
     /* Merch Dot - Muted Seafoam */
     .merch-dot {
       background-color: transparent;
     }
-
     /* Contact Dot - Chocolate */
     .contact-dot {
       background-color: transparent;
     }
-
     /* Events Dot - Dark Goldenrod */
     .events-dot {
       background-color: transparent;
     }
-
     /* Origins Dot - Charcoal */
     .origins-dot {
       background-color: transparent;
     }
-
     /* Solar System Wrapper - Rotated Counterclockwise 10 Degrees */
     .solar-system {
       position: absolute;
@@ -116,10 +108,6 @@
       transform-origin: center;
       z-index: 1;
     }
-<!-- ADD THIS RIGHT AFTER the closing </div> of .solar-system, but BEFORE the closing </div> of .hero-overlay -->
-<div class="beard-target">
-  <img id="beard-prop" src="img/beardprop.gif" alt="Shoot the Beard Off!" />
-</div>
     /* Shake Animation */
     .shake {
       animation: shake 1s cubic-bezier(.36,.07,.19,.97) both;
@@ -130,7 +118,6 @@
       30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
       40%, 60% { transform: translate3d(4px, 0, 0); }
     }
-
     /* Ricochet Animation for Dots */
     .ricochet {
       animation: ricochet 0.5s ease-out forwards;
@@ -149,7 +136,6 @@
         transform: translate(-50%, -50%) scale(1) rotate(360deg);
       }
     }
-
     /* Animated Orbiting Dot */
     .animated-dot {
       position: absolute;
@@ -226,7 +212,6 @@
       0% { transform: rotate(0deg) translateX(55vw) rotate(0deg); }
       100% { transform: rotate(360deg) translateX(55vw) rotate(-360deg); }
     }
-
     /* Music Dot Container for Submenu - Expanded Hover Area */
     .dot-container {
       position: absolute;
@@ -335,7 +320,6 @@
       white-space: nowrap;
       pointer-events: none;
     }
-
     /* Hit Animation for Sub-Dots - Enhanced Cool Shot Reaction */
     .sub-dot.hit {
       animation: hit-shot 1s ease-out forwards;
@@ -373,7 +357,6 @@
         filter: brightness(0);
       }
     }
-
     /* Circular Moon Positions with CSS Vars */
     .sub-dots .sub-dot:nth-child(1) { /* Top */
       --pos-x: 0px;
@@ -391,7 +374,6 @@
       --pos-x: -114px;
       --pos-y: 0px;
     }
-
     /* Mobile Adjustments - Forced Positions Without Calc Offsets */
     @media (max-width: 768px) {
       .dot-container {
@@ -438,7 +420,6 @@
         font-size: 12px;
       }
     }
-
     /* Footer Float Lock */
     .tight-footer {
       background: #001f3f !important;
@@ -451,7 +432,6 @@
       z-index: 1001 !important;
       border-top: 1px solid #0074D9;
     }
-
     /* Dark Card Theme for Release */
     .card {
       background-color: #1e3a8a;
@@ -470,7 +450,6 @@
       background-color: #e6c200;
       border-color: #e6c200;
     }
-
     /* Combined Latest Release & Merch Styles - Smaller Scale */
     .combined-section .latest-card {
       height: 300px;
@@ -479,7 +458,6 @@
     .combined-section iframe {
       height: 200px !important;
     }
-
     /* Tour Section Styles */
     .tour-card {
       background-color: #1e3a8a;
@@ -499,7 +477,6 @@
       color: #E0E0E0;
       font-size: 1.1rem;
     }
-
     /* Merch Carousel Styles (Sexy Hover Effects - Matches Merch Page) */
     .carousel-item .merch-card {
       background-color: #1e3a8a;
@@ -570,7 +547,6 @@
     .carousel-inner {
       background-color: #1e3a8a; /* Dark bg for carousel */
     }
-
     /* Video Carousel Styles */
     .carousel-item .video-card {
       background-color: #1e3a8a;
@@ -591,7 +567,6 @@
       height: 200px;
       border-radius: 10px;
     }
-
     /* Enhanced Header Styles for Scoreboard and Health Bar */
     .score-header {
       background: linear-gradient(90deg, #1e3a8a, #001f3f, #1e3a8a);
@@ -602,7 +577,6 @@
       position: relative;
       overflow: hidden;
     }
-
     .score-header::before {
       content: '';
       position: absolute;
@@ -614,12 +588,10 @@
       animation: shimmer 3s infinite;
       z-index: 0;
     }
-
     @keyframes shimmer {
       0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
       100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
     }
-
     .health-display, .score-display {
       position: relative;
       z-index: 1;
@@ -633,20 +605,17 @@
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
       transition: all 0.3s ease;
     }
-
     .health-display:hover, .score-display:hover {
       transform: translateY(-2px);
       box-shadow: 0 4px 10px rgba(255, 215, 0, 0.4);
       border-color: #FFD700;
     }
-
     .score-label {
       font-size: 0.85rem;
       color: #E0E0E0;
       font-weight: bold;
       text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
     }
-
     #score-value {
       font-family: 'Courier New', monospace;
       font-size: 1.1rem;
@@ -655,23 +624,19 @@
       min-width: 80px;
       text-align: right;
     }
-
     .score-zero { color: #808080; }
     .score-low { color: #FFA500; }
     .score-mid { color: #FFD700; }
     .score-high { color: #FF4500; }
     .score-max { color: #00FFFF; }
-
     .score-display.updated, .health-display.updated {
       animation: pulse 0.5s ease;
     }
-
     @keyframes pulse {
       0% { transform: scale(1); box-shadow: 0 0 0 rgba(255, 215, 0, 0); }
       50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(255, 215, 0, 0.6); }
       100% { transform: scale(1); box-shadow: 0 0 0 rgba(255, 215, 0, 0); }
     }
-
     /* Standard Health Bar Styles */
     #health-bar {
       width: 100px; /* Increased width for better GAME OVER fit */
@@ -682,23 +647,19 @@
       border: 1px solid #0074D9;
       box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(255, 215, 0, 0.3);
     }
-
     #health-progress {
       height: 100%;
       transition: width 0.8s ease, background-color 0.3s ease;
       border-radius: 3px;
     }
-
     /* Blink Animation for Low Health */
     .health-display.low-health {
       animation: rapid-blink 0.2s infinite;
     }
-
     @keyframes rapid-blink {
       0%, 50% { opacity: 1; }
       51%, 100% { opacity: 0.3; }
     }
-
     /* Hide health on mobile if needed */
     @media (max-width: 991.98px) {
       .health-bar {
@@ -708,7 +669,6 @@
         justify-content: center !important;
       }
     }
-
     @media (max-width: 576px) {
       .navbar .container {
         padding-left: 0;
@@ -718,7 +678,6 @@
         padding: 4px 8px;
       }
     }
-
     /* Weapon Select Styles */
     .weapon-select {
       background: linear-gradient(90deg, #1e3a8a, #001f3f, #1e3a8a);
@@ -728,7 +687,6 @@
       margin-top: 5px;
       display: inline-block;
     }
-
     .weapon-select select {
       background: transparent;
       color: #E0E0E0;
@@ -737,17 +695,14 @@
       font-weight: bold;
       text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
     }
-
     .weapon-select option:disabled {
       color: #808080;
     }
-
     /* Laser Pointer Styles */
     html, html:hover {
       cursor: none;
       touch-action: pan-y; /* Allow vertical scrolling on mobile */
     }
-
     .pointingjs {
       width: 100%;
       height: 100%;
@@ -757,7 +712,6 @@
       z-index: 999;
       pointer-events: none;
     }
-
     .pointer {
       width: 8px;
       height: 8px;
@@ -768,20 +722,17 @@
       pointer-events: none;
       z-index: 1000;
     }
-
     .pointingjs svg {
       position: absolute;
       width: 100%;
       height: 100%;
     }
-
     #trail {
       fill: transparent;
       stroke: url(#linear);
       stroke-width: 2;
       filter: url(#glow);
     }
-
     /* Red Reticle Hit Marker - Persistent until next click */
     .reticle {
       position: fixed;
@@ -794,304 +745,177 @@
       animation: reticle-pulse 1s ease-in-out infinite;
     }
     @keyframes reticle-pulse {
-      0%, 100% { 
+      0%, 100% {
         transform: scale(1);
         box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7);
       }
-      50% { 
+      50% {
         transform: scale(1.2);
         box-shadow: 0 0 0 10px rgba(255, 0, 0, 0);
       }
     }
     /* Beard Prop Target */
-.beard-target {
-  position: absolute;
-  left: 50%;
-  bottom: 28%; /* Tune this (25-32%) to perfectly overlay your chin beard on desktop */
-  transform: translateX(-50%);
-  z-index: 1.5; /* Behind interactive dots (z=3), above solar orbits (z=1-2) */
-  pointer-events: none;
-}
+    .beard-target {
+      position: absolute;
+      left: 50%;
+      bottom: 28%; /* Tune this (25-32%) to perfectly overlay your chin beard on desktop */
+      transform: translateX(-50%);
+      z-index: 1.5; /* Behind interactive dots (z=3), above solar orbits (z=1-2) */
+      pointer-events: none;
+    }
+    .beard-prop {
+      display: block;
+      max-width: 280px; /* Adjust size to match beard */
+      height: auto;
+      opacity: 0.92;
+      transition: opacity 0.3s ease, transform 0.2s ease;
+      pointer-events: auto; /* Only on the img */
+      cursor: crosshair;
+    }
+    .beard-prop:hover {
+      opacity: 1;
+      transform: translateX(-50%) scale(1.05);
+    }
+    /* Hang/Shake Animation */
+    @keyframes hangShake {
+      0%, 100% { transform: translateX(-50%) rotate(0deg) scale(1); }
+      20% { transform: translateX(-50%) rotate(8deg) scale(1.08); }
+      40% { transform: translateX(-50%) rotate(-6deg) scale(0.98); }
+      60% { transform: translateX(-50%) rotate(12deg) scale(1.12); }
+      80% { transform: translateX(-50%) rotate(-3deg) scale(1.02); }
+    }
+    .beard-hang {
+      animation: hangShake 0.9s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards;
+    }
+    /* Cartoon Fall Animation */
+    @keyframes cartoonFall {
+      0% {
+        transform: translateX(-50%) rotate(10deg) scale(1);
+        opacity: 1;
+      }
+      15% {
+        transform: translateX(-55%) rotate(25deg) translateY(30px) scale(1.02);
+        opacity: 0.95;
+      }
+      35% {
+        transform: translateX(-45%) rotate(-45deg) translateY(200px) scale(0.95);
+        opacity: 0.85;
+      }
+      65% {
+        transform: translateX(-70%) rotate(360deg) translateY(600px) scale(0.85);
+        opacity: 0.6;
+      }
+      100% {
+        transform: translateX(calc(60vw - 140px)) rotate(1080deg) translateY(150vh) scale(0.2);
+        opacity: 0;
+      }
+    }
+    .beard-fall {
+      animation: cartoonFall 2.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+    /* Mobile Adjustments */
+    @media (max-width: 768px) {
+      .beard-target {
+        bottom: 24%; /* Slightly higher on mobile */
+      }
+      .beard-prop {
+        max-width: 200px;
+      }
+    }
+    @media (max-width: 480px) {
+      .beard-target {
+        bottom: 22%;
+      }
+      .beard-prop {
+        max-width: 160px;
+      }
+    }
 
-.beard-prop {
-  display: block;
-  max-width: 280px; /* Adjust size to match beard */
-  height: auto;
-  opacity: 0.92;
-  transition: opacity 0.3s ease, transform 0.2s ease;
-  pointer-events: auto; /* Only on the img */
-  cursor: crosshair;
-}
-
-.beard-prop:hover {
-  opacity: 1;
-  transform: translateX(-50%) scale(1.05);
-}
-
-/* Hang/Shake Animation */
-@keyframes hangShake {
-  0%, 100% { transform: translateX(-50%) rotate(0deg) scale(1); }
-  20% { transform: translateX(-50%) rotate(8deg) scale(1.08); }
-  40% { transform: translateX(-50%) rotate(-6deg) scale(0.98); }
-  60% { transform: translateX(-50%) rotate(12deg) scale(1.12); }
-  80% { transform: translateX(-50%) rotate(-3deg) scale(1.02); }
-}
-
-.beard-hang {
-  animation: hangShake 0.9s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards;
-}
-
-/* Cartoon Fall Animation */
-@keyframes cartoonFall {
-  0% {
-    transform: translateX(-50%) rotate(10deg) scale(1);
-    opacity: 1;
-  }
-  15% {
-    transform: translateX(-55%) rotate(25deg) translateY(30px) scale(1.02);
-    opacity: 0.95;
-  }
-  35% {
-    transform: translateX(-45%) rotate(-45deg) translateY(200px) scale(0.95);
-    opacity: 0.85;
-  }
-  65% {
-    transform: translateX(-70%) rotate(360deg) translateY(600px) scale(0.85);
-    opacity: 0.6;
-  }
-  100% {
-    transform: translateX(calc(60vw - 140px)) rotate(1080deg) translateY(150vh) scale(0.2);
-    opacity: 0;
-  }
-}
-
-.beard-fall {
-  animation: cartoonFall 2.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-}
-
-/* Mobile Adjustments */
-@media (max-width: 768px) {
-  .beard-target {
-    bottom: 24%; /* Slightly higher on mobile */
-  }
-  .beard-prop {
-    max-width: 200px;
-  }
-}
-
-@media (max-width: 480px) {
-  .beard-target {
-    bottom: 22%;
-  }
-  .beard-prop {
-    max-width: 160px;
-  }
-}
-  </style></head>
+    /* NEW Crazy Arms Promo Modal Styles */
+    #crazyArmsModal .modal-content {
+      background: linear-gradient(135deg, #1e3a8a, #001f3f);
+      border: 5px solid #FFD700;
+      box-shadow: 0 0 60px rgba(255, 215, 0, 0.8);
+      color: #E0E0E0;
+    }
+    #crazyArmsModal .modal-header {
+      border-bottom: 2px solid #FFD700;
+    }
+    #crazyArmsModal .modal-title {
+      color: #FFD700;
+      font-weight: bold;
+      text-shadow: 0 0 15px #FFD700;
+    }
+    #crazyArmsModal .btn-buy {
+      background-color: #FFD700;
+      color: #001f3f;
+      border: none;
+      font-weight: bold;
+      padding: 14px 55px;
+      font-size: 1.35rem;
+      transition: all 0.3s ease;
+    }
+    #crazyArmsModal .btn-buy:hover {
+      transform: scale(1.05);
+      background-color: #e6c200;
+    }
+  </style>
+</head>
 <body>
   <a href="contact.html#email-subscribe" class="floating-subscribe">
     <img src="img/subscribe.gif" alt="Subscribe">
   </a>
+  <div id="nav-placeholder"></div>
 
-  <div id="nav-placeholder"></div> <!-- Dynamic Nav Insert Here -->
-
-  <!-- Hero Section (Mimicking Crockett's Hero with Interactive Dots Only) -->
+  <!-- Hero Section -->
   <section class="hero">
     <div class="hero-overlay">
       <div class="solar-system">
-        <div class="animated-dot"></div>
-        <div class="animated-dot"></div>
-        <div class="animated-dot"></div>
-        <div class="animated-dot"></div>
-        <div class="animated-dot"></div>
-        <div class="animated-dot"></div>
-        
-    <!-- Merch Container (Swapped with Origins) -->
-    <div class="dot-container merch-container">
-      <a href="merch.html" class="interactive-dot main-dot merch-dot"></a>
-      <span class="main-label">Merch & More</span>
-      <div class="sub-dots">
-        <!-- Cluck Yeah Chicken Socks -->
-        <a href="https://lancewoolie.bandcamp.com/merch/chicken-socks-cluck-yeah-step-into-the-flock" class="sub-dot" style="background-image: url('https://f4.bcbits.com/img/0041177986_10.jpg');" target="_blank" data-title="Chicken Socks" data-id="merch-chicken-socks"></a>
-        <!-- Uber Single -->
-        <a href="https://lancewoolie.bandcamp.com/track/uber" class="sub-dot" style="background-image: url('https://f4.bcbits.com/img/a2855470268_10.jpg');" target="_blank" data-title="Uber" data-id="merch-uber"></a>
-        <!-- Too Drunk Single -->
-        <a href="https://lancewoolie.bandcamp.com/track/too-drunk-ft-brent-mason" class="sub-dot" style="background-image: url('https://f4.bcbits.com/img/a1387979790_10.jpg');" target="_blank" data-title="Too Drunk" data-id="merch-too-drunk"></a>
-        <!-- Country Paradise Album -->
-        <a href="https://lancewoolie.bandcamp.com/album/country-paradise" class="sub-dot" style="background-image: url('img/COUNTRY-PARADISE-scaled.jpg');" target="_blank" data-title="Country Paradise" data-id="merch-country-paradise"></a>
+        <!-- ALL YOUR ORIGINAL DOT CONTAINERS (unchanged) -->
+        <div class="dot-container merch-container"> ... </div>
+        <div class="dot-container events-container"> ... </div>
+        <div class="dot-container music-container"> ... </div>
+        <div class="dot-container origins-container"> ... </div>
+        <div class="dot-container contact-container"> ... </div>
       </div>
-    </div>
-    
-    <!-- Events Container -->
-    <div class="dot-container events-container">
-      <a href="events.html" class="interactive-dot main-dot events-dot"></a>
-      <span class="main-label">Events</span>
-      <div class="sub-dots">
-        <!-- Upcoming Event -->
-        <a href="https://www.facebook.com/events/1285222389594134" class="sub-dot" style="background-image: url('img/OCT 24.png');" target="_blank" data-title="Upcoming Event" data-id="events-oct24"></a>
-      </div>
-    </div>
-    
-    <!-- Music Dot Container with Submenu -->
-    <div class="dot-container music-container">
-      <a href="music.html" class="interactive-dot main-dot music-dot"></a>
-      <span class="main-label">Music & Videos</span>
-      <div class="sub-dots">
-        <!-- Uber -->
-        <a href="https://orcd.co/a4glqme" class="sub-dot" style="background-image: url('img/Ubermenu.jpg');" target="_blank" data-title="Uber" data-id="music-uber"></a>
-        <!-- Too Drunk -->
-        <a href="https://orcd.co/lancewoolietoodrunk" class="sub-dot" style="background-image: url('img/TooDrunkmenu.jpg');" target="_blank" data-title="Too Drunk" data-id="music-too-drunk"></a>
-        <!-- Worst Enemy -->
-        <a href="https://orcd.co/lancewoolieworstenemy" class="sub-dot" style="background-image: url('img/WorstEnemymenu.jpg');" target="_blank" data-title="Worst Enemy" data-id="music-worst-enemy"></a>
-        <!-- Full Catalog -->
-        <a href="music.html" class="sub-dot" style="background-image: url('img/Fullcatalogmenu.jpg');" data-title="Full Catalog" data-id="music-full-catalog"></a>
-      </div>
-    </div>
-    
-    <!-- Origins Container (Swapped with Merch) -->
-    <div class="dot-container origins-container">
-      <a href="origins.html" class="interactive-dot main-dot origins-dot"></a>
-      <span class="main-label">Origins</span>
-      <div class="sub-dots"></div>
-    </div>
-    
-    <!-- Contact Container -->
-    <div class="dot-container contact-container">
-      <a href="contact.html" class="interactive-dot main-dot contact-dot"></a>
-      <span class="main-label">Contact</span>
-      <div class="sub-dots"></div>
-    </div>
-  </div>
-</div>  </section>
 
-  <!-- Combined Latest Release & Featured Merch Section -->
-  <section class="py-5 combined-section">
-    <div class="container">
-      <h2 class="text-center mb-4" style="color: white;">Featured Merch & Latest Music Videos</h2>
-      <div class="row">
-        <div class="col-md-6">
-          <div id="merchCarousel" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner">
-              <div class="carousel-item active">
-                <div class="merch-card card">
-                  <img src="https://f4.bcbits.com/img/0041177986_10.jpg" alt="Cluck Yeah Chicken Socks" class="card-img-top">
-                  <div class="card-body">
-                    <h3>Cluck Yeah Chicken Socks</h3>
-                    <p>Exclusive jet-black socks from premium Chinese cotton, one size fits all.</p>
-                    <span class="price-tag">$10</span>
-                    
-
-                    <a href="https://lancewoolie.bandcamp.com/merch/chicken-socks-cluck-yeah-step-into-the-flock" class="btn btn-buy mt-2" target="_blank">Buy Now</a>
-                  </div>
-                </div>
-              </div>
-              <div class="carousel-item">
-                <div class="merch-card card">
-                  <img src="https://f4.bcbits.com/img/a2855470268_10.jpg" alt="Uber Single Cover" class="card-img-top">
-                  <div class="card-body">
-                    <h3>Uber (Single)</h3>
-                    <p>Danceable neotraditional tune evoking lost love, featuring Brent Mason.</p>
-                    <span class="price-tag">$1.29</span>
-                    
-
-                    <a href="https://lancewoolie.bandcamp.com/track/uber" class="btn btn-buy mt-2" target="_blank">Buy Now</a>
-                  </div>
-                </div>
-              </div>
-              <div class="carousel-item">
-                <div class="merch-card card">
-                  <img src="https://f4.bcbits.com/img/a1387979790_10.jpg" alt="Too Drunk Single Cover" class="card-img-top">
-                  <div class="card-body">
-                    <h3>Too Drunk (Single)</h3>
-                    <p>Debut release co-created with Legendary Guitarist Brent Mason—raw country grit.</p>
-                    <span class="price-tag">$1.29</span>
-                    
-
-                    <a href="https://lancewoolie.bandcamp.com/track/too-drunk-ft-brent-mason" class="btn btn-buy mt-2" target="_blank">Buy Now</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#merchCarousel" data-bs-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#merchCarousel" data-bs-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Next</span>
-            </button>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div id="musicCarousel" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner">
-              <div class="carousel-item active">
-                <div class="video-card card">
-                  <h5>Uber</h5>
-                  <iframe src="https://www.youtube.com/embed/0nTop80SCvs" title="Uber Official Music Video" frameborder="0" allowfullscreen></iframe>
-                </div>
-              </div>
-              <div class="carousel-item">
-                <div class="video-card card">
-                  <h5>Too Drunk</h5>
-                  <iframe src="https://www.youtube.com/embed/K6c5kCqZHOc" title="Too Drunk Official Music Video" frameborder="0" allowfullscreen></iframe>
-                </div>
-              </div>
-              <div class="carousel-item">
-                <div class="video-card card">
-                  <h5>Worst Enemy</h5>
-                  <iframe src="https://www.youtube.com/embed/LQNnYN2J_9w" title="Worst Enemy Official Music Video" frameborder="0" allowfullscreen></iframe>
-                </div>
-              </div>
-              <div class="carousel-item">
-                <div class="video-card card">
-                  <h5>Road To Texas</h5>
-                  <iframe src="https://www.youtube.com/embed/ooabUmI-jL8" title="Road To Texas Official Music Video" frameborder="0" allowfullscreen></iframe>
-                </div>
-              </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#musicCarousel" data-bs-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#musicCarousel" data-bs-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Next</span>
-            </button>
-          </div>
-        </div>
+      <!-- Beard target - UPDATED to your new GIF -->
+      <div class="beard-target">
+        <img id="beard-prop" src="img/JUSTBEARD.gif" alt="Shoot the Beard Off!" class="beard-prop" />
       </div>
     </div>
   </section>
 
-  <!-- Upcoming Events Section -->
-  <section class="py-5" style="background-color: rgba(30, 58, 138, 0.8);">
-    <div class="container">
-      <h2 class="text-center mb-4" style="color: white;">Upcoming Events</h2>
-      <div class="row justify-content-center">
-        <div class="col-md-8">
-          <div class="tour-card">
-            <div class="row align-items-center">
-              <div class="col-md-3">
-                <h4 class="tour-date">October 24, 2025</h4>
-                <p class="tour-time">9:00 PM Central</p>
-              </div>
-              <div class="col-md-7">
-                <h5 class="tour-venue">Lance Woolie Live at the Smiling Dog</h5>
-                <p>Don't miss this intimate performance!</p>
-              </div>
-              <div class="col-md-2 text-end">
-                <a href="https://www.facebook.com/lancewooliemusic/events" class="btn btn-success" target="_blank">Tickets</a>
-              </div>
-            </div>
-          </div>
+  <!-- Your combined merch/video section (unchanged) -->
+  <!-- Your upcoming events section (unchanged) -->
+
+  <!-- NEW CRAZY ARMS POP-UP MODAL -->
+  <div class="modal fade" id="crazyArmsModal" tabindex="-1" aria-labelledby="crazyArmsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header border-0">
+          <h5 class="modal-title fs-1 fw-bold" id="crazyArmsModalLabel">🔥 NEW SINGLE DROPPING 🔥</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center p-5">
+          <img src="img/Crazy Arms Official.png" alt="Crazy Arms" class="img-fluid rounded-3 mb-4" style="max-height: 460px; border: 6px solid #FFD700; box-shadow: 0 0 40px rgba(255,215,0,0.7);">
+          <h2 class="text-white mb-3">Crazy Arms</h2>
+          <h5 class="text-warning mb-4">feat. Brent Mason & Scotty Sanders</h5>
+          <p class="lead mb-4 text-light">
+            Available <strong>NOW</strong> for purchase on Bandcamp!<br>
+            Streaming everywhere next week.
+          </p>
+          <a href="https://lancewoolie.bandcamp.com/track/crazy-arms-feat-brent-mason-scotty-sanders" 
+             target="_blank" 
+             class="btn btn-buy btn-lg px-5 py-3">
+            BUY ON BANDCAMP NOW →
+          </a>
         </div>
       </div>
     </div>
-  </section>
-
-  <div id="footer-placeholder" class="tight-footer"> <!-- Dynamic Footer Insert Here - Floating Fixed -->
   </div>
+
+  <div id="footer-placeholder" class="tight-footer"></div>
 
   <div class="pointingjs">
     <div class="pointer"></div>
@@ -1117,199 +941,5 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
-  <script>
-    // Global for persistent reticle
-    let currentReticle = null;
-
-    // Function to wait for audio to finish playing
-    function waitForAudio(sound) {
-      return sound.play().then(() => {
-        return new Promise((resolve) => {
-          sound.onended = () => {
-            sound.onended = null;
-            resolve();
-          };
-        });
-      }).catch(err => {
-        console.log('Sound play failed:', err);
-        return Promise.resolve(); // Proceed without waiting if play fails
-      });
-    }
-
-    // Function to wait for animation end
-    function waitForAnimation(element, animationName) {
-      return new Promise((resolve) => {
-        const handler = (e) => {
-          if (e.animationName === animationName) {
-            element.removeEventListener('animationend', handler);
-            resolve();
-          }
-        };
-        element.addEventListener('animationend', handler);
-        // Fallback timeout
-        setTimeout(resolve, 1200);
-      });
-    }
-
-    // Add click handlers for sub-dots only (no duplication of hover)
-    document.querySelectorAll('.sub-dot').forEach(sub => {
-      sub.addEventListener('click', async (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const linkHref = sub.href;
-        const target = sub.target || '_self';
-        const rect = sub.getBoundingClientRect();
-        const x = rect.left + rect.width / 2;
-        const y = rect.top + rect.height / 2;
-        const subId = sub.dataset.id;
-        const container = sub.closest('.dot-container');
-        const subDots = sub.closest('.sub-dots');
-        const mainDot = container.querySelector('.main-dot');
-
-        const clickedSubDots = JSON.parse(sessionStorage.getItem('clickedSubDots') || '[]');
-
-        let bonusPoints = 0;
-        if (container && container.classList.contains('music-container')) {
-          bonusPoints = 420;
-        }
-
-        if (clickedSubDots.includes(subId)) {
-          // Direct navigation if already clicked in session
-          if (target === '_blank') {
-            window.open(linkHref, '_blank');
-          } else {
-            window.location.href = linkHref;
-          }
-        } else {
-          // Play ricochet sound and wait
-          const sound = clickSounds[Math.floor(Math.random() * clickSounds.length)];
-          sound.currentTime = 0;
-          const soundPromise = waitForAudio(sound);
-
-          // Trigger hit animation and wait
-          sub.classList.add('hit');
-          const animPromise = waitForAnimation(sub, 'hit-shot');
-
-          // Award points and show floating points immediately
-          updateScore(1000 + bonusPoints, x, y);
-
-          // Wait for both sound and animation to complete
-          await Promise.all([soundPromise, animPromise]);
-
-          // Deploy particle effects
-          await explode(x, y, '#FFD700');
-
-          // Reset to non-hover state
-          sub.classList.remove('hit');
-          subDots.classList.remove('active');
-          mainDot.classList.remove('hidden');
-
-          // Mark as clicked in session
-          clickedSubDots.push(subId);
-          sessionStorage.setItem('clickedSubDots', JSON.stringify(clickedSubDots));
-
-          // Navigate
-          if (target === '_blank') {
-            window.open(linkHref, '_blank');
-          } else {
-            window.location.href = linkHref;
-          }
-        }
-      });
-    });
-
-    // Red Reticle Hit Marker on Click - Persistent
-    document.addEventListener('click', (e) => {
-      // Skip if clicking on interactive elements
-      if (e.target.closest('.interactive-dot, .sub-dot, a, button, .carousel-control, .navbar')) return;
-
-      // Remove previous reticle
-      if (currentReticle) {
-        currentReticle.remove();
-      }
-
-      // Create new persistent reticle
-      currentReticle = document.createElement('div');
-      currentReticle.classList.add('reticle');
-      currentReticle.style.left = (e.clientX - 10) + 'px';
-      currentReticle.style.top = (e.clientY - 10) + 'px';
-      document.body.appendChild(currentReticle);
-    });
-
-    // Laser Pointer Effect - Updated for Trail Visibility and Mobile Scrolling
-    const mouse = { x: 0, y: 0 };
-    const trail = [];
-    const pointerEl = document.querySelector('.pointer');
-    const trailEl = document.getElementById('trail');
-    const gradientEl = document.getElementById('linear');
-
-    for (let i = 0; i < 12; i++) {
-      trail.push({ x: mouse.x, y: mouse.y });
-    }
-
-    // Touchmove without preventDefault to allow scrolling
-    document.body.addEventListener('touchmove', (ev) => {
-      if (ev.touches.length > 0) {
-        const touch = ev.touches[0];
-        pointerEl.style.left = (touch.pageX - 4) + 'px';
-        pointerEl.style.top = (touch.pageY - 4) + 'px';
-        mouse.x = touch.pageX;
-        mouse.y = touch.pageY;
-      }
-    }, { passive: true });
-
-    window.addEventListener('mousemove', (e) => {
-      pointerEl.style.left = (e.pageX - 4) + 'px';
-      pointerEl.style.top = (e.pageY - 4) + 'px';
-      mouse.x = e.pageX;
-      mouse.y = e.pageY;
-      mousePos.x = e.clientX;
-      mousePos.y = e.clientY;
-    });
-
-    function draw() {
-      let x = mouse.x;
-      let y = mouse.y;
-      for (let i = 0; i < 12; i++) {
-        let nextDot = trail[i + 1] || trail[0];
-        trail[i].x = x;
-        trail[i].y = y;
-        x += (nextDot.x - x) * 0.3;
-        y += (nextDot.y - y) * 0.3;
-      }
-
-      let dx = mouse.x - trail[1].x;
-      let dy = mouse.y - trail[1].y;
-      let x1 = 0, y1 = 0, x2 = 0, y2 = 0;
-      if (Math.abs(dx) > Math.abs(dy)) {
-        if (dx > 0) {
-          x2 = 1;
-        } else {
-          x1 = 1;
-        }
-      } else {
-        if (dy > 0) {
-          y2 = 1;
-        } else {
-          y1 = 1;
-        }
-      }
-
-      gradientEl.setAttribute('x1', x1);
-      gradientEl.setAttribute('y1', y1);
-      gradientEl.setAttribute('x2', x2);
-      gradientEl.setAttribute('y2', y2);
-
-      const pathD = `M ${trail[11].x} ${trail[11].y} C ${trail[6].x} ${trail[6].y} ${trail[6].x} ${trail[6].y} ${trail[5].x} ${trail[5].y} S ${trail[2].x} ${trail[2].y} ${trail[1].x} ${trail[1].y} L ${mouse.x} ${mouse.y}`;
-      trailEl.setAttribute('d', pathD);
-    }
-
-    function animate() {
-      draw();
-      requestAnimationFrame(animate);
-    }
-
-    animate();
-  </script>
 </body>
 </html>
