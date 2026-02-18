@@ -7,9 +7,9 @@
   position: relative;
 }
 #health-canvas {
-  width: 60px !important; /* Scaled for header */
-  height: 45px !important; /* Proportional scale */
-  background: transparent !important; /* No bg in header */
+  width: 60px !important;
+  height: 45px !important;
+  background: transparent !important;
   overflow: visible;
 }
 #health-canvas #liquid {
@@ -45,7 +45,7 @@ body {
   background-color: #1e3a8a !important;
 }
 
-/* NEW Crazy Arms Promo Modal Styles */
+/* Crazy Arms Promo Modal Styles */
 #crazyArmsModal .modal-content {
   background: linear-gradient(135deg, #1e3a8a, #001f3f);
   border: 5px solid #FFD700;
@@ -67,12 +67,4 @@ body {
 #crazyArmsModal .btn-buy:hover {
   transform: scale(1.05);
   background-color: #e6c200;
-}
-
-/* MOUSE POINTER FIX - stays on top of modal */
-.pointingjs {
-  z-index: 12000 !important;
-}
-.pointer {
-  z-index: 12001 !important;
 }
