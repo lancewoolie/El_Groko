@@ -68,3 +68,11 @@ body {
   transform: scale(1.05);
   background-color: #e6c200;
 }
+
+/* MOUSE POINTER FIX - stays on top of modal */
+.pointingjs {
+  z-index: 12000 !important;
+}
+.pointer {
+  z-index: 12001 !important;
+}
