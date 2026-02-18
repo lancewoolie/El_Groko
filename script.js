@@ -48,7 +48,7 @@ function waitForAnimation(element, animationName) {
     setTimeout(resolve, 1200);
   });
 }
-// Explosion particle function
+// Explosion particle function (add this for sub-dot hits and game over reset)
 function explode(mx, my, hexColor) {
   return new Promise((resolve) => {
     const numParticles = 30;
@@ -116,11 +116,13 @@ function updateScore(points, x = undefined, y = undefined) {
   if (scoreEl) {
     const displayText = score.toString().padStart(6, '0');
     scoreEl.textContent = displayText;
+    // Trigger pulse animation
     const display = scoreEl.closest('.score-display');
     if (display) {
       display.classList.add('updated');
       setTimeout(() => display.classList.remove('updated'), 500);
     }
+    // Update total score color class
     scoreEl.className = '';
     if (score === 0) {
       scoreEl.classList.add('score-zero');
@@ -137,9 +139,9 @@ function updateScore(points, x = undefined, y = undefined) {
   if (x !== undefined && y !== undefined) {
     showFloatingPoints(points, x, y);
   }
-  // Health behaviors - MISS NOW REMOVES TWICE THE HEALTH
+  // Health behaviors
   if (points === 69) {
-    health = Math.max(0, health - 26);
+    health = Math.max(0, health - 13);
     sessionStorage.setItem('health', health.toString());
     updateHealthBar();
   } else {
@@ -159,13 +161,14 @@ function updateHealthBar() {
       healthBar.innerHTML = '';
       const gameOverText = document.createElement('div');
       gameOverText.textContent = 'GAME OVER';
-      gameOverText.style.cssText = 'color: #F44336; font-size: 12px; font-weight: bold; text-align: center; line-height: 12px; padding: 0 5px;';
+      gameOverText.style.cssText = 'color: #F44336; font-size: 12px; font-weight: bold; text-align: center; line-height: 12px; padding: 0 5px;'; /* Smaller font and line-height for fit */
       healthBar.appendChild(gameOverText);
       const onSoundEnd = async () => {
         const healthRect = healthBar.getBoundingClientRect();
         const healthX = healthRect.left + healthRect.width / 2;
         const healthY = healthRect.top + healthRect.height / 2;
-        await explode(healthX, healthY, '#FF4500');
+        await explode(healthX, healthY, '#FF4500'); // Red-orange particles for game over reset
+        // Reset to initial state
         healthBar.innerHTML = '<div id="health-progress"></div>';
         healthProgress = document.getElementById('health-progress');
         health = 100;
@@ -181,6 +184,7 @@ function updateHealthBar() {
         updateHealthBar();
       };
       gameOverSound.onended = onSoundEnd;
+      // Fallback if already ended
       if (gameOverSound.ended) {
         onSoundEnd();
       }
@@ -190,20 +194,22 @@ function updateHealthBar() {
   healthProgress.style.width = `${percent * 100}%`;
   let color = '';
   if (percent >= 0.80) {
-    color = '#4CAF50';
+    color = '#4CAF50'; // Green
   } else if (percent >= 0.51) {
-    color = '#FFD700';
+    color = '#FFD700'; // Yellow
   } else if (percent > 0) {
-    color = '#FF9800';
+    color = '#FF9800'; // Orange
   } else {
-    color = '#F44336';
+    color = '#F44336'; // Red
   }
   healthProgress.style.backgroundColor = color;
+  // Blink if low health
   if (percent < 0.1) {
     if (healthDisplay) healthDisplay.classList.add('low-health');
   } else {
     if (healthDisplay) healthDisplay.classList.remove('low-health');
   }
+  // Trigger pulse on update
   if (healthDisplay) {
     healthDisplay.classList.add('updated');
     setTimeout(() => healthDisplay.classList.remove('updated'), 500);
@@ -213,17 +219,18 @@ function initHealthBar() {
   healthBar = document.getElementById("health-bar");
   healthProgress = document.getElementById("health-progress");
   if (!healthBar || !healthProgress) return;
+  // Initial update
   updateHealthBar();
 }
 function showFloatingPoints(points, mx, my) {
-  let color = '#FFD700';
-  if (points < 100) color = 'rgba(255, 165, 0, 0.8)';
-  else if (points < 1000) color = '#FFA500';
-  else if (points < 2001) color = '#FF4500';
-  else color = '#00FFFF';
+  let color = '#FFD700'; // Default
+  if (points < 100) color = 'rgba(255, 165, 0, 0.8)'; // Faded orange
+  else if (points < 1000) color = '#FFA500'; // Yellow orange
+  else if (points < 2001) color = '#FF4500'; // Red yellow (orangered)
+  else color = '#00FFFF'; // Cyan
   const canvas = document.createElement('canvas');
   const size = 200;
-  const fontSize = 36;
+  const fontSize = 36; // 300% of original 12px
   canvas.width = size;
   canvas.height = size / 2;
   canvas.style.cssText = `
@@ -241,7 +248,9 @@ function showFloatingPoints(points, mx, my) {
   ctx.fillText(`+${points}`, size / 2, size / 4);
   ctx.textShadow = `0 0 3px ${color}`;
   document.body.appendChild(canvas);
+  // Delay particle effect by 300ms
   setTimeout(() => {
+    // Sample pixels for particles (every 2px for performance)
     const imageData = ctx.getImageData(0, 0, size, size / 2);
     const particles = [];
     for (let py = 0; py < size / 2; py += 2) {
@@ -251,8 +260,8 @@ function showFloatingPoints(points, mx, my) {
           particles.push({
             x: px,
             y: py,
-            vx: (Math.random() - 0.5) * 6,
-            vy: (Math.random() - 0.5) * 6 - 1,
+            vx: (Math.random() - 0.5) * 6, // Scatter velocity
+            vy: (Math.random() - 0.5) * 6 - 1, // Slight upward bias
             life: 1,
             decay: 0.015,
             size: 2,
@@ -266,6 +275,7 @@ function showFloatingPoints(points, mx, my) {
       const canvasRect = canvas.getBoundingClientRect();
       let alive = false;
       particles.forEach(p => {
+        // Reactive swarm: attract to cursor if in proximity
         const dx = mousePos.x - (canvasRect.left + p.x);
         const dy = mousePos.y - (canvasRect.top + p.y);
         const dist = Math.sqrt(dx * dx + dy * dy);
@@ -274,15 +284,16 @@ function showFloatingPoints(points, mx, my) {
           p.vx += dx * force * 0.1;
           p.vy += dy * force * 0.1;
         }
+        // Update position
         p.x += p.vx;
         p.y += p.vy;
-        p.vx *= 0.97;
+        p.vx *= 0.97; // Friction
         p.vy *= 0.97;
         p.life -= p.decay;
         if (p.life > 0) {
           alive = true;
           ctx.fillStyle = p.color.replace(/[\d.]+(?=\))/, (m) => (parseFloat(m) * p.life).toFixed(2));
-          ctx.fillRect(p.x - p.size / 2, p.y - p.size / 2, p.size, p.size);
+          ctx.fillRect(p.x - p.size / 2, p.y - p.size / 2, p.size, p.size); // Pixel art style
         }
       });
       if (alive) {
@@ -294,13 +305,13 @@ function showFloatingPoints(points, mx, my) {
     animate();
   }, 300);
 }
-// Reusable Nav Generator
+// Reusable Nav Generator (Updated with Health Progress Bar in Header - Floating)
 function generateNav() {
   let navHTML = `
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="position: fixed !important; top: 0; left: 0; right: 0; z-index: 1000 !important;">
       <div class="container">
         <a class="navbar-brand" href="index.html">
-          <img src="/img/BEARDsmall.png" alt="Lance Woolie" style="height: 20px;"> Lance Woolie
+          <img src="/img/BEARDsmall.png" alt="Lance Woolie" style="height: 20px;"> Lance Woolie <!-- Absolute path -->
         </a>
         <div class="score-header mx-auto d-flex justify-content-center align-items-center gap-3">
           <div class="health-display">
@@ -311,7 +322,7 @@ function generateNav() {
             </div>
           </div>
           <div class="score-display">
-            <span class="score-label">Score</span> <span id="score-value">000000</span>
+            <span class="score-label">Score</span> <span id="score-value">000000</span> <!-- Removed "Your" -->
           </div>
         </div>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -324,16 +335,20 @@ function generateNav() {
               <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Music</a>
               <ul class="dropdown-menu horizontal-dropdown">
                 <li><a class="dropdown-item d-flex align-items-center" href="https://orcd.co/a4glqme" target="_blank">
-                  <img src="/img/Ubermenu.jpg" alt="Uber" class="dropdown-img me-2" style="width: 150px; height: 150px; object-fit: cover;"> Uber
+                  <img src="/img/Ubermenu.jpg" alt="Uber" class="dropdown-img me-2" style="width: 150px; height: 150px; object-fit: cover;"> <!-- Absolute -->
+                  Uber
                 </a></li>
                 <li><a class="dropdown-item d-flex align-items-center" href="https://orcd.co/lancewoolietoodrunk" target="_blank">
-                  <img src="/img/TooDrunkmenu.jpg" alt="Too Drunk" class="dropdown-img me-2" style="width: 150px; height: 150px; object-fit: cover;"> Too Drunk
+                  <img src="/img/TooDrunkmenu.jpg" alt="Too Drunk" class="dropdown-img me-2" style="width: 150px; height: 150px; object-fit: cover;"> <!-- Absolute -->
+                  Too Drunk
                 </a></li>
                 <li><a class="dropdown-item d-flex align-items-center" href="https://orcd.co/lancewoolieworstenemy" target="_blank">
-                  <img src="/img/WorstEnemymenu.jpg" alt="Worst Enemy" class="dropdown-img me-2" style="width: 150px; height: 150px; object-fit: cover;"> Worst Enemy
+                  <img src="/img/WorstEnemymenu.jpg" alt="Worst Enemy" class="dropdown-img me-2" style="width: 150px; height: 150px; object-fit: cover;"> <!-- Absolute -->
+                  Worst Enemy
                 </a></li>
                 <li><a class="dropdown-item d-flex align-items-center" href="music.html">
-                  <img src="/img/Fullcatalogmenu.jpg" alt="Full Catalog" class="dropdown-img me-2" style="width: 150px; height: 150px; object-fit: cover;"> Full Catalog
+                  <img src="/img/Fullcatalogmenu.jpg" alt="Full Catalog" class="dropdown-img me-2" style="width: 150px; height: 150px; object-fit: cover;"> <!-- Absolute -->
+                  Full Catalog
                 </a></li>
               </ul>
             </li>
@@ -346,6 +361,7 @@ function generateNav() {
       </div>
     </nav>
   `;
+  // Auto-Highlight Active Page (Enhanced for Dropdowns)
   const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
   const tempDiv = document.createElement('div');
   tempDiv.innerHTML = navHTML;
@@ -368,9 +384,11 @@ function generateNav() {
       new bootstrap.Collapse(myCollapse, { toggle: false });
     }
   } else {
+    // Fallback: Create and insert nav if placeholder missing
     const newNav = document.createElement('div');
     newNav.innerHTML = navHTML;
     document.body.insertBefore(newNav, document.body.firstChild);
+    console.log('Nav placeholder missing; created and prepended to body.');
     const myCollapse = document.getElementById('navbarNav');
     if (myCollapse) {
       const existingCollapse = bootstrap.Collapse.getInstance(myCollapse);
@@ -379,11 +397,12 @@ function generateNav() {
     }
   }
 }
-// Reusable Footer Generator
+// Reusable Footer Generator (Removed Scoreboard, Added Subscribe Raccoon - Floating)
 function generateFooter() {
   const footerHTML = `
     <footer class="footer bg-dark text-light py-1" style="position: fixed !important; bottom: 0; left: 0; right: 0; z-index: 1001 !important; border-top: 1px solid #0074D9;">
       <div class="container">
+        <!-- Bottom Row: Contact, Copyright, Icons -->
         <div class="row align-items-center">
           <div class="col-md-4 d-flex align-items-center">
             <a href="contact.html" class="text-light me-3">Contact</a>
@@ -418,17 +437,24 @@ function generateFooter() {
           </div>
         </div>
       </div>
+   
     </footer>
   `;
   let placeholder = document.getElementById('footer-placeholder');
   if (!placeholder) {
+    // Fallback: Append directly to body if placeholder missing
     placeholder = document.createElement('div');
     placeholder.id = 'footer-placeholder';
     document.body.appendChild(placeholder);
+    console.log('Footer placeholder missing; created and appended to body.');
   }
   placeholder.innerHTML = footerHTML;
+  // Ensure footer is always on top
   const footer = placeholder.querySelector('.footer');
-  if (footer) footer.style.zIndex = '1002';
+  if (footer) {
+    footer.style.zIndex = '1002';
+  }
+  // Re-init cowboy hat after insert
   const cowboyHat = document.getElementById('cowboy-hat');
   if (cowboyHat) {
     cowboyHat.textContent = '🤠';
@@ -445,56 +471,83 @@ function generateFooter() {
 }
 // Load Nav & Footer on DOM Ready
 document.addEventListener('DOMContentLoaded', () => {
+  // Initialize score
   score = parseInt(sessionStorage.getItem('score')) || 0;
   generateNav();
   generateFooter();
+  // Init score display after nav generation
   scoreEl = document.getElementById('score-value');
   if (scoreEl) {
     const displayText = score.toString().padStart(6, '0');
     scoreEl.textContent = displayText;
-    if (score === 0) scoreEl.classList.add('score-zero');
-    else if (score < 100) scoreEl.classList.add('score-low');
-    else if (score < 1000) scoreEl.classList.add('score-mid');
-    else if (score < 2001) scoreEl.classList.add('score-high');
-    else scoreEl.classList.add('score-max');
+    // Set initial color class
+    if (score === 0) {
+      scoreEl.classList.add('score-zero');
+    } else if (score < 100) {
+      scoreEl.classList.add('score-low');
+    } else if (score < 1000) {
+      scoreEl.classList.add('score-mid');
+    } else if (score < 2001) {
+      scoreEl.classList.add('score-high');
+    } else {
+      scoreEl.classList.add('score-max');
+    }
   }
+  // Init health bar after nav (beefier delay + force init)
   setTimeout(() => {
     initHealthBar();
-    updateScore(0);
+    updateScore(0); // Reset display without adding points
   }, 200);
   const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
-
-  // Beard Shoot Mechanic
-  let beardProp = document.getElementById('beard-prop');
-  if (beardProp && currentPage === 'index') {
-    if (sessionStorage.getItem('beardShot') === 'true') {
-      document.body.style.backgroundImage = "url('img/NO BEARD COVER.jpg')";
-      beardProp.style.opacity = '0';
-      beardProp.style.pointerEvents = 'none';
-    }
-    beardProp.addEventListener('click', async (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      const rect = beardProp.getBoundingClientRect();
-      const x = rect.left + rect.width / 2;
-      const y = rect.top + rect.height / 2;
-      const sound = clickSounds[Math.floor(Math.random() * clickSounds.length)];
-      sound.currentTime = 0;
-      await waitForAudio(sound);
-      updateScore(6969, x, y);
-      await explode(x, y, '#FFD700');
-      beardProp.classList.add('beard-hang');
-      await waitForAnimation(beardProp, 'hangShake');
-      beardProp.classList.add('beard-fall');
-      await waitForAnimation(beardProp, 'cartoonFall');
-      document.body.style.backgroundImage = "url('img/NO BEARD COVER.jpg')";
-      sessionStorage.setItem('beardShot', 'true');
-      beardProp.style.opacity = '0';
-      beardProp.style.pointerEvents = 'none';
-    });
+  // Add Neon Cursor Toy effect to ORIGINS ONLY (avoids bloat/CSP elsewhere)
+  if (currentPage === 'origins') {
+    // Add Montserrat font
+    const fontLink = document.createElement('link');
+    fontLink.href = 'https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap';
+    fontLink.rel = 'stylesheet';
+    document.head.appendChild(fontLink);
+    // Add neon cursor styles
+    const style = document.createElement('style');
+    style.textContent = `
+      body {
+        cursor: none !important;
+        touch-action: pan-y;
+        overflow-x: hidden;
+      }
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        pointer-events: none;
+      }
+    `;
+    document.head.appendChild(style);
+    // Load neon cursor module
+    const neonScript = document.createElement('script');
+    neonScript.type = 'module';
+    neonScript.textContent = `
+      import { neonCursor } from 'https://unpkg.com/threejs-toys@0.0.8/build/threejs-toys.module.cdn.min.js'
+      neonCursor({
+        el: document.body,
+        shaderPoints: 16,
+        curvePoints: 80,
+        curveLerp: 0.5,
+        radius1: 5,
+        radius2: 30,
+        velocityTreshold: 10,
+        sleepRadiusX: 100,
+        sleepRadiusY: 100,
+        sleepTimeCoefX: 0.0025,
+        sleepTimeCoefY: 0.0025
+      })
+    `;
+    document.head.appendChild(neonScript);
   }
-
-  // Global sub-dot click handlers
+  // Global sub-dot click handlers (works on index, empty on other pages)
   document.querySelectorAll('.sub-dot').forEach(sub => {
     sub.addEventListener('click', async (e) => {
       e.preventDefault();
@@ -514,29 +567,43 @@ document.addEventListener('DOMContentLoaded', () => {
         bonusPoints = 420;
       }
       if (clickedSubDots.includes(subId)) {
-        if (target === '_blank') window.open(linkHref, '_blank');
-        else window.location.href = linkHref;
+        // Direct navigation if already clicked in session
+        if (target === '_blank') {
+          window.open(linkHref, '_blank');
+        } else {
+          window.location.href = linkHref;
+        }
       } else {
+        // Play ricochet sound and wait
         const sound = clickSounds[Math.floor(Math.random() * clickSounds.length)];
         sound.currentTime = 0;
         const soundPromise = waitForAudio(sound);
+        // Trigger hit animation and wait
         sub.classList.add('hit');
         const animPromise = waitForAnimation(sub, 'hit-shot');
+        // Award points and show floating points immediately
         updateScore(1000 + bonusPoints, x, y);
+        // Wait for both sound and animation to complete
         await Promise.all([soundPromise, animPromise]);
+        // Deploy particle effects
         await explode(x, y, '#FFD700');
+        // Reset to non-hover state
         sub.classList.remove('hit');
         if (subDots) subDots.classList.remove('active');
         if (mainDot) mainDot.classList.remove('hidden');
+        // Mark as clicked in session
         clickedSubDots.push(subId);
         sessionStorage.setItem('clickedSubDots', JSON.stringify(clickedSubDots));
-        if (target === '_blank') window.open(linkHref, '_blank');
-        else window.location.href = linkHref;
+        // Navigate
+        if (target === '_blank') {
+          window.open(linkHref, '_blank');
+        } else {
+          window.location.href = linkHref;
+        }
       }
     });
   });
-
-  // Global main-dot click handlers
+  // Global main-dot click handlers (works on index, empty on other pages)
   document.querySelectorAll('.main-dot').forEach(dot => {
     dot.addEventListener('click', async (e) => {
       e.preventDefault();
@@ -545,13 +612,14 @@ document.addEventListener('DOMContentLoaded', () => {
       await waitForAudio(sound);
       const container = dot.closest('.dot-container');
       let bonusPoints = 0;
-      if (container && container.classList.contains('music-container')) bonusPoints = 420;
+      if (container && container.classList.contains('music-container')) {
+        bonusPoints = 420;
+      }
       updateScore(800 + bonusPoints, e.clientX, e.clientY);
       window.location.href = dot.href;
     });
   });
-
-  // Delay navigation for nav links
+  // Delay navigation for non-dropdown-toggle nav links with sound completion
   document.addEventListener('click', async (e) => {
     const link = e.target.closest('a');
     if (!link || link.classList.contains('main-dot') || link.classList.contains('sub-dot') || link.getAttribute('data-bs-toggle') === 'dropdown') return;
@@ -559,17 +627,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const sound = clickSounds[Math.floor(Math.random() * clickSounds.length)];
     sound.currentTime = 0;
     await waitForAudio(sound);
-    let points = 500;
+    let points = 500; // Default for nav links
     const href = link.getAttribute('href');
     if (href === 'merch.html') points = 2500;
     if (link.closest('.dropdown-item')) points = 500;
     if (href && href.includes('#email-subscribe')) points = 1500;
     updateScore(points, e.clientX, e.clientY);
-    if (link.target === '_blank') window.open(link.href, '_blank');
-    else window.location.href = link.href;
+    if (link.target === '_blank') {
+      window.open(link.href, '_blank');
+    } else {
+      window.location.href = link.href;
+    }
   });
-
-  // Dropdown items
+  // Separate handler for dropdown items
   document.addEventListener('click', async (e) => {
     const dropdownItem = e.target.closest('.dropdown-item a');
     if (!dropdownItem) return;
@@ -578,12 +648,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const sound = clickSounds[Math.floor(Math.random() * clickSounds.length)];
     sound.currentTime = 0;
     await waitForAudio(sound);
-    updateScore(500, e.clientX, e.clientY);
-    if (dropdownItem.target === '_blank') window.open(dropdownItem.href, '_blank');
-    else window.location.href = dropdownItem.href;
+    const points = 500;
+    updateScore(points, e.clientX, e.clientY);
+    if (dropdownItem.target === '_blank') {
+      window.open(dropdownItem.href, '_blank');
+    } else {
+      window.location.href = dropdownItem.href;
+    }
   });
-
-  // YouTube play detection
+  // YouTube play detection (music page only)
   if (currentPage === 'music') {
     document.querySelectorAll('iframe[src*="youtube.com"], iframe[src*="youtu.be"]').forEach(iframe => {
       if (!iframe.src.includes('enablejsapi=1')) {
@@ -593,13 +666,12 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('message', (e) => {
       if (e.origin !== 'https://www.youtube.com') return;
       const data = e.data;
-      if (data && data.event === 'onStateChange' && data.data === 1) {
+      if (data && data.event === 'onStateChange' && data.data === 1) { // YT.PlayerState.PLAYING
         updateScore(1000, window.innerWidth / 2, window.innerHeight / 2);
       }
     });
   }
-
-  // Site-wide click sound
+  // Site-wide click sound and scoring on all clicks (skip links/buttons handled elsewhere)
   const form = document.getElementById('contact-form');
   document.addEventListener('click', async (e) => {
     if (e.target.closest('a, button')) return;
@@ -608,40 +680,55 @@ document.addEventListener('DOMContentLoaded', () => {
     await waitForAudio(sound);
     let points = 69;
     const target = e.target;
-    if (form && target.type === 'submit' && form.contains(target)) points = 100;
-    if (target.closest('#cowboy-hat')) points = 420;
+    if (form && target.type === 'submit' && form.contains(target)) {
+      points = 100;
+    }
+    if (target.closest('#cowboy-hat')) {
+      points = 420;
+    }
     updateScore(points, e.clientX, e.clientY);
   });
-
-  // Smooth Scroll
+  // Smooth Scroll for Internal Links
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
       e.preventDefault();
       const target = document.querySelector(this.getAttribute('href'));
-      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     });
   });
-
-  // Index Page Specific: Ricochet Load Animation
+  // Index Page Specific: Ricochet Load Animation (post content load, post site shaking, on load of bullet hole dots)
   if (currentPage === 'index') {
     window.addEventListener('load', () => {
       const body = document.body;
       const dots = document.querySelectorAll('.main-dot');
+      // Shake the body
       body.classList.add('shake');
       setTimeout(() => {
+        // Trigger playback post-shake, synced with bullet hole dots animation
+        // ricochetSound.play().catch(e => console.log('Audio play failed:', e)); // Removed as overkill
+       
+        // Fire first 3 dots quicker (100ms intervals)
         setTimeout(() => animateDot(dots[0]), 0);
         setTimeout(() => animateDot(dots[1]), 100);
         setTimeout(() => animateDot(dots[2]), 200);
+       
+        // Pause 0.3s (300ms) after the third dot
         setTimeout(() => {
+          // Then fire last 2 dots quick like the first 3 (100ms interval)
           animateDot(dots[3]);
           setTimeout(() => animateDot(dots[4]), 100);
-        }, 500);
+        }, 500); // 200 (last first-dot) + 300 pause = 500ms
       }, 1000);
     });
     function animateDot(dot) {
       dot.classList.add('ricochet');
-      setTimeout(() => dot.classList.add('visible'), 250);
+      setTimeout(() => {
+        dot.classList.add('visible');
+      }, 250);
     }
+    // Generic submenu logic for containers (index page only, but safe to run globally)
     document.querySelectorAll('.dot-container').forEach(container => {
       const mainDot = container.querySelector('.main-dot');
       const subDots = container.querySelector('.sub-dots');
@@ -657,21 +744,23 @@ document.addEventListener('DOMContentLoaded', () => {
         hideTimeout = setTimeout(() => {
           subDots.classList.remove('active');
           mainDot.classList.remove('hidden');
-        }, 1000);
+        }, 1000); // Increased timeout for easier navigation
       });
       container.querySelectorAll('.sub-dot').forEach(sub => {
-        sub.addEventListener('mouseenter', () => clearTimeout(hideTimeout));
+        sub.addEventListener('mouseenter', () => {
+          clearTimeout(hideTimeout);
+        });
         sub.addEventListener('mouseleave', () => {
           hideTimeout = setTimeout(() => {
             subDots.classList.remove('active');
             mainDot.classList.remove('hidden');
-          }, 1000);
+          }, 1000); // Increased timeout
         });
       });
     });
   }
 
-  // CRAZY ARMS POP-UP - shows once per session
+  // CRAZY ARMS POP-UP (shows once per session on index)
   if (currentPage === 'index' && !sessionStorage.getItem('crazyArmsShown')) {
     setTimeout(() => {
       const modal = new bootstrap.Modal(document.getElementById('crazyArmsModal'));
