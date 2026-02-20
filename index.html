@@ -1,78 +1,1000 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lance Woolie | Honky Tonk Blues & Americana</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="img/neon-lance-sign.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lance Woolie - Do It..</title>
+  <link href="https://fonts.googleapis.com/css2?family=Georgia&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Full-Screen Background Image (Behind All farts Content) */
+    body {
+      position: relative;
+      background-image: url('img/INDEXBGIMAGE.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      background-color: #1e3a8a; /* Fallback dark royal blue base */
+      color: #E0E0E0; /* Light grey text */
+      font-family: 'Georgia', serif;
+      padding-top: 80px; /* Space for floating header */
+      padding-bottom: 80px; /* Space for floating footer */
+    }
+    
+    .hero, .py-5 {
+      position: relative;
+      z-index: 2;
+    }
+    .hero {
+      min-height: 100vh;
+    }
+    .hero-overlay {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    /* Floating Subscribe Image */
+    .floating-subscribe {
+      position: fixed;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%) translateX(-66.67%);
+      transition: transform 0.3s ease;
+      z-index: 1000;
+      display: block;
+    }
+    .floating-subscribe:hover {
+      transform: translateY(-50%) translateX(0);
+    }
+    .floating-subscribe img {
+      display: block;
+      max-width: none;
+      height: auto;
+    }
+    /* Interactive Dots with Custom Colors - Increased Size - Bullet Hole Image */
+    .interactive-dot {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-image: url('img/BULLETHOLE.gif');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      cursor: pointer;
+      z-index: 3;
+      text-decoration: none;
+    }
+    .interactive-dot.visible {
+      opacity: 0.5;
+    }
+    .interactive-dot:hover {
+      opacity: 1;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+    /* Music Dot - Muted Maroon */
+    .music-dot {
+      background-color: transparent;
+    }
+    /* Merch Dot - Muted Seafoam */
+    .merch-dot {
+      background-color: transparent;
+    }
+    /* Contact Dot - Chocolate */
+    .contact-dot {
+      background-color: transparent;
+    }
+    /* Events Dot - Dark Goldenrod */
+    .events-dot {
+      background-color: transparent;
+    }
+    /* Origins Dot - Charcoal */
+    .origins-dot {
+      background-color: transparent;
+    }
+    /* Solar System Wrapper - Rotated Counterclockwise 10 Degrees */
+    .solar-system {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      transform: rotate(-10deg);
+      transform-origin: center;
+      z-index: 1;
+    }
+    /* Shake Animation */
+    .shake {
+      animation: shake 1s cubic-bezier(.36,.07,.19,.97) both;
+    }
+    @keyframes shake {
+      10%, 90% { transform: translate3d(-1px, 0, 0); }
+      20%, 80% { transform: translate3d(2px, 0, 0); }
+      30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+      40%, 60% { transform: translate3d(4px, 0, 0); }
+    }
+    /* Ricochet Animation for Dots */
+    .ricochet {
+      animation: ricochet 0.5s ease-out forwards;
+    }
+    @keyframes ricochet {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0) rotate(0deg);
+      }
+      50% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.2) rotate(180deg);
+      }
+      100% {
+        opacity: 0.5;
+        transform: translate(-50%, -50%) scale(1) rotate(360deg);
+      }
+    }
+    /* Animated Orbiting Dot */
+    .animated-dot {
+      position: absolute;
+      border-radius: 50%;
+      top: 50%;
+      left: 10%;
+      animation: orbit linear infinite;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .animated-dot:nth-child(1) {
+      width: 6px;
+      height: 6px;
+      background: rgba(128, 128, 128, 0.3);
+      animation-duration: 20s;
+      animation: orbit1 20s linear infinite;
+    }
+    .animated-dot:nth-child(2) {
+      width: 8px;
+      height: 8px;
+      background: rgba(100, 100, 100, 0.4);
+      animation-duration: 35s;
+      animation: orbit2 35s linear infinite;
+    }
+    .animated-dot:nth-child(3) {
+      width: 5px;
+      height: 5px;
+      background: rgba(150, 150, 150, 0.2);
+      animation-duration: 45s;
+      animation: orbit3 45s linear infinite;
+    }
+    .animated-dot:nth-child(4) {
+      width: 3px;
+      height: 3px;
+      background: rgba(80, 80, 80, 0.25);
+      animation-duration: 15s;
+      animation: orbit4 15s linear infinite;
+    }
+    .animated-dot:nth-child(5) {
+      width: 4px;
+      height: 4px;
+      background: rgba(120, 120, 120, 0.35);
+      animation-duration: 25s;
+      animation: orbit5 25s linear infinite;
+    }
+    .animated-dot:nth-child(6) {
+      width: 2px;
+      height: 2px;
+      background: rgba(140, 140, 140, 0.15);
+      animation-duration: 30s;
+      animation: orbit6 30s linear infinite;
+    }
+    @keyframes orbit1 {
+      0% { transform: rotate(0deg) translateX(40vw) rotate(0deg); }
+      100% { transform: rotate(360deg) translateX(40vw) rotate(-360deg); }
+    }
+    @keyframes orbit2 {
+      0% { transform: rotate(0deg) translateX(50vw) rotate(0deg); }
+      100% { transform: rotate(360deg) translateX(50vw) rotate(-360deg); }
+    }
+    @keyframes orbit3 {
+      0% { transform: rotate(0deg) translateX(60vw) rotate(0deg); }
+      100% { transform: rotate(360deg) translateX(60vw) rotate(-360deg); }
+    }
+    @keyframes orbit4 {
+      0% { transform: rotate(0deg) translateX(30vw) rotate(0deg); }
+      100% { transform: rotate(360deg) translateX(30vw) rotate(-360deg); }
+    }
+    @keyframes orbit5 {
+      0% { transform: rotate(0deg) translateX(45vw) rotate(0deg); }
+      100% { transform: rotate(360deg) translateX(45vw) rotate(-360deg); }
+    }
+    @keyframes orbit6 {
+      0% { transform: rotate(0deg) translateX(55vw) rotate(0deg); }
+      100% { transform: rotate(360deg) translateX(55vw) rotate(-360deg); }
+    }
+    /* Music Dot Container for Submenu - Expanded Hover Area */
+    .dot-container {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      z-index: 3;
+      perspective: 1000px;
+      transform-style: preserve-3d;
+    }
+    .merch-container {
+      left: 15%;
+      top: 10%;
+    }
+    .events-container {
+      left: 25%;
+      top: 20%;
+    }
+    .music-container {
+      left: 30%;
+      top: 30%;
+    }
+    .origins-container {
+      left: 35%;
+      top: 40%;
+    }
+    .contact-container {
+      left: 40%;
+      top: 50%;
+    }
+    .main-dot {
+      display: block;
+      position: relative;
+      z-index: 4;
+      width: 40px;
+      height: 40px;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      transition: opacity 0.3s ease;
+    }
+    .main-dot.hidden {
+      opacity: 0;
+    }
+    .main-label {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.8);
+      color: #E0E0E0;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 13px;
+      white-space: nowrap;
+      z-index: 5;
+      pointer-events: none;
+      opacity: 0.15;
+      transition: opacity 0.3s ease;
+    }
+    .dot-container:hover .main-label {
+      opacity: 1;
+    }
+    .sub-dots {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: none;
+      pointer-events: none;
+    }
+    .sub-dots.active {
+      display: block;
+      pointer-events: all;
+    }
+    .sub-dot {
+      position: absolute;
+      width: 114px;
+      height: 114px;
+      border-radius: 50%;
+      background-size: cover;
+      background-position: center;
+      opacity: 0.7;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 0 5px rgba(0,0,0,0.5);
+      transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px));
+      will-change: transform;
+    }
+    .sub-dot:hover {
+      transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) scale(1.5);
+      opacity: 1;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    }
+    .sub-dot::after {
+      content: attr(data-title);
+      position: absolute;
+      bottom: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.8);
+      color: #E0E0E0;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    /* Hit Animation for Sub-Dots - Enhanced Cool Shot Reaction */
+    .sub-dot.hit {
+      animation: hit-shot 1s ease-out forwards;
+      pointer-events: none;
+    }
+    @keyframes hit-shot {
+      0% {
+        transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) rotateY(0deg) scale(1) translateX(0px);
+        opacity: 1;
+        filter: brightness(1);
+      }
+      20% {
+        transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) rotateY(90deg) scale(1.2) translateX(10px);
+        opacity: 0.8;
+        filter: brightness(2) drop-shadow(0 0 20px #FFD700);
+      }
+      40% {
+        transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) rotateY(180deg) scale(0.8) translateX(-5px);
+        opacity: 0.6;
+        filter: brightness(1.5) sepia(0.3);
+      }
+      60% {
+        transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) rotateY(270deg) scale(1.1) translateX(5px);
+        opacity: 0.9;
+        filter: brightness(1.8) hue-rotate(90deg);
+      }
+      80% {
+        transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) rotateY(360deg) scale(0.9) translateX(0px);
+        opacity: 0.4;
+        filter: brightness(0.5) grayscale(0.5);
+      }
+      100% {
+        transform: translate(-50%, -50%) translate(var(--pos-x, 0px), var(--pos-y, 0px)) rotateY(720deg) scale(0.5) translateX(0px);
+        opacity: 0;
+        filter: brightness(0);
+      }
+    }
+    /* Circular Moon Positions with CSS Vars */
+    .sub-dots .sub-dot:nth-child(1) { /* Top */
+      --pos-x: 0px;
+      --pos-y: -114px;
+    }
+    .sub-dots .sub-dot:nth-child(2) { /* Right */
+      --pos-x: 114px;
+      --pos-y: 0px;
+    }
+    .sub-dots .sub-dot:nth-child(3) { /* Bottom */
+      --pos-x: 0px;
+      --pos-y: 114px;
+    }
+    .sub-dots .sub-dot:nth-child(4) { /* Left */
+      --pos-x: -114px;
+      --pos-y: 0px;
+    }
+    /* Mobile Adjustments - Forced Positions Without Calc Offsets */
+    @media (max-width: 768px) {
+      .dot-container {
+        width: 250px;
+        height: 250px;
+      }
+      .merch-container {
+        left: 10% !important;
+        top: 5% !important;
+      }
+      .events-container {
+        left: 20% !important;
+        top: 15% !important;
+      }
+      .music-container {
+        left: 25% !important;
+        top: 25% !important;
+      }
+      .origins-container {
+        left: 30% !important;
+        top: 35% !important;
+      }
+      .contact-container {
+        left: 35% !important;
+        top: 45% !important;
+      }
+      .sub-dot {
+        width: 100px;
+        height: 100px;
+      }
+      .sub-dots .sub-dot:nth-child(1) {
+        --pos-y: -100px;
+      }
+      .sub-dots .sub-dot:nth-child(2) {
+        --pos-x: 100px;
+      }
+      .sub-dots .sub-dot:nth-child(3) {
+        --pos-y: 100px;
+      }
+      .sub-dots .sub-dot:nth-child(4) {
+        --pos-x: -100px;
+      }
+      .main-label {
+        font-size: 12px;
+      }
+    }
+    /* Footer Float Lock */
+    .tight-footer {
+      background: #001f3f !important;
+      opacity: 1 !important;
+      position: fixed !important;
+      bottom: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      width: 100% !important;
+      z-index: 1001 !important;
+      border-top: 1px solid #0074D9;
+    }
+    /* Dark Card Theme for Release */
+    .card {
+      background-color: #1e3a8a;
+      color: #E0E0E0;
+      border: 1px solid #0074D9;
+    }
+    .card-body {
+      color: #E0E0E0;
+    }
+    .btn-success {
+      background-color: #FFD700;
+      border-color: #FFD700;
+      color: #001f3f;
+    }
+    .btn-success:hover {
+      background-color: #e6c200;
+      border-color: #e6c200;
+    }
+    /* Combined Latest Release & Merch Styles - Smaller Scale */
+    .combined-section .latest-card {
+      height: 300px;
+      overflow: hidden;
+    }
+    .combined-section iframe {
+      height: 200px !important;
+    }
+    /* Tour Section Styles */
+    .tour-card {
+      background-color: #1e3a8a;
+      border: 1px solid #0074D9;
+      border-radius: 10px;
+      padding: 2rem;
+      margin-bottom: 1rem;
+    }
+    .tour-date {
+      color: #FFD700;
+      font-weight: bold;
+    }
+    .tour-venue {
+      color: #E0E0E0;
+    }
+    .tour-time {
+      color: #E0E0E0;
+      font-size: 1.1rem;
+    }
+    /* Merch Carousel Styles (Sexy Hover Effects - Matches Merch Page) */
+    .carousel-item .merch-card {
+      background-color: #1e3a8a;
+      border: 2px solid #0074D9;
+      border-radius: 15px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      height: 100%;
+      cursor: pointer;
+    }
+    .carousel-item .merch-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 25px rgba(0, 116, 217, 0.3);
+      border-color: #FFD700;
+    }
+    .carousel-item .merch-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+    }
+    .carousel-item .merch-card .card-body {
+      padding: 1rem;
+      text-align: center;
+    }
+    .carousel-item .merch-card h3 {
+      color: #FFD700; /* Gold titles */
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+    }
+    .carousel-item .merch-card p {
+      color: #E0E0E0;
+      font-size: 0.85rem;
+      margin-bottom: 0.5rem;
+    }
+    .carousel-item .btn-buy {
+      background-color: #FFD700;
+      border-color: #FFD700;
+      color: #001f3f;
+      font-weight: bold;
+      padding: 0.5rem 1.5rem;
+      border-radius: 25px;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+    }
+    .carousel-item .btn-buy:hover {
+      background-color: #e6c200;
+      border-color: #e6c200;
+      transform: scale(1.05);
+      color: #001f3f;
+    }
+    .price-tag {
+      background: #001f3f;
+      color: #FFD700;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-weight: bold;
+      display: inline-block;
+      margin-top: 0.25rem;
+      font-size: 0.9rem;
+    }
+    .carousel-control-prev, .carousel-control-next {
+      filter: invert(1); /* White arrows on dark */
+    }
+    .carousel-indicators [data-bs-target] {
+      background-color: #FFD700;
+    }
+    .carousel-inner {
+      background-color: #1e3a8a; /* Dark bg for carousel */
+    }
+    /* Video Carousel Styles */
+    .carousel-item .video-card {
+      background-color: #1e3a8a;
+      border: 2px solid #0074D9;
+      border-radius: 15px;
+      overflow: hidden;
+      height: 100%;
+      text-align: center;
+      padding: 1rem;
+    }
+    .carousel-item .video-card h5 {
+      color: #FFD700;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+    .carousel-item .video-card iframe {
+      width: 100%;
+      height: 200px;
+      border-radius: 10px;
+    }
+    /* Enhanced Header Styles for Scoreboard and Health Bar */
+    .score-header {
+      background: linear-gradient(90deg, #1e3a8a, #001f3f, #1e3a8a);
+      border-radius: 25px;
+      padding: 8px 16px;
+      box-shadow: 0 4px 15px rgba(0, 116, 217, 0.3), inset 0 1px 0 rgba(255, 215, 0, 0.1);
+      border: 1px solid #0074D9;
+      position: relative;
+      overflow: hidden;
+    }
+    .score-header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.05), transparent);
+      animation: shimmer 3s infinite;
+      z-index: 0;
+    }
+    @keyframes shimmer {
+      0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+      100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+    }
+    .health-display, .score-display {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 4px 8px;
+      border-radius: 15px;
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+    .health-display:hover, .score-display:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(255, 215, 0, 0.4);
+      border-color: #FFD700;
+    }
+    .score-label {
+      font-size: 0.85rem;
+      color: #E0E0E0;
+      font-weight: bold;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    }
+    #score-value {
+      font-family: 'Courier New', monospace;
+      font-size: 1.1rem;
+      font-weight: bold;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+      min-width: 80px;
+      text-align: right;
+    }
+    .score-zero { color: #808080; }
+    .score-low { color: #FFA500; }
+    .score-mid { color: #FFD700; }
+    .score-high { color: #FF4500; }
+    .score-max { color: #00FFFF; }
+    .score-display.updated, .health-display.updated {
+      animation: pulse 0.5s ease;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); box-shadow: 0 0 0 rgba(255, 215, 0, 0); }
+      50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(255, 215, 0, 0.6); }
+      100% { transform: scale(1); box-shadow: 0 0 0 rgba(255, 215, 0, 0); }
+    }
+    /* Standard Health Bar Styles */
+    #health-bar {
+      width: 100px; /* Increased width for better GAME OVER fit */
+      height: 18px; /* Increased by 50% */
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid #0074D9;
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(255, 215, 0, 0.3);
+    }
+    #health-progress {
+      height: 100%;
+      transition: width 0.8s ease, background-color 0.3s ease;
+      border-radius: 3px;
+    }
+    /* Blink Animation for Low Health */
+    .health-display.low-health {
+      animation: rapid-blink 0.2s infinite;
+    }
+    @keyframes rapid-blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0.3; }
+    }
+    /* Hide health on mobile if needed */
+    @media (max-width: 991.98px) {
+      .health-bar {
+        display: none;
+      }
+      .score-header {
+        justify-content: center !important;
+      }
+    }
+    @media (max-width: 576px) {
+      .navbar .container {
+        padding-left: 0;
+        padding-right: 0;
+      }
+      .score-header {
+        padding: 4px 8px;
+      }
+    }
+    /* Weapon Select Styles */
+    .weapon-select {
+      background: linear-gradient(90deg, #1e3a8a, #001f3f, #1e3a8a);
+      border-radius: 15px;
+      padding: 4px 8px;
+      border: 1px solid #0074D9;
+      margin-top: 5px;
+      display: inline-block;
+    }
+    .weapon-select select {
+      background: transparent;
+      color: #E0E0E0;
+      border: none;
+      font-size: 0.85rem;
+      font-weight: bold;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    }
+    .weapon-select option:disabled {
+      color: #808080;
+    }
+    /* Laser Pointer Styles */
+    html, html:hover {
+      cursor: none;
+      touch-action: pan-y; /* Allow vertical scrolling on mobile */
+    }
+    .pointingjs {
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 12000;
+      pointer-events: none;
+    }
+    .pointer {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      position: fixed;
+      background-color: #00ff00;
+      box-shadow: 0 0 8px #00ff00;
+      pointer-events: none;
+      z-index: 12001;
+    }
+    .pointingjs svg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+    #trail {
+      fill: transparent;
+      stroke: url(#linear);
+      stroke-width: 2;
+      filter: url(#glow);
+    }
+    /* Red Reticle Hit Marker - Persistent until next click */
+    .reticle {
+      position: fixed;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #ff0000;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 1000;
+      animation: reticle-pulse 1s ease-in-out infinite;
+    }
+    @keyframes reticle-pulse {
+      0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7);
+      }
+      50% {
+        transform: scale(1.2);
+        box-shadow: 0 0 0 10px rgba(255, 0, 0, 0);
+      }
+    }
+  </style>
 </head>
-<body class="bg-dark text-light">
-
-    <!-- NAV -->
-    <div id="nav-placeholder"></div>
-
-    <!-- HERO - HONKY TONK -->
-    <section class="hero text-center d-flex align-items-center">
-        <div class="container position-relative z-3">
-            <img src="img/neon-lance-sign.png" alt="Lance Woolie" class="img-fluid mb-4" style="max-height: 140px;">
-            <h1 class="display-3 fw-bold mb-3" style="text-shadow: 0 0 20px #ff0000, 0 0 40px #0000ff;">LANCE WOOLIE</h1>
-            <p class="lead mb-5" style="font-size: 1.4rem; text-shadow: 0 0 10px rgba(255,215,0,0.8);">Honky Tonk Dance Hall • Blues • Americana</p>
-            <a href="music.html" class="btn btn-danger btn-lg px-5 py-3">LISTEN NOW</a>
-        </div>
-    </section>
-
-    <!-- SALOON SHOOTER GAME -->
-    <section class="py-5 text-center" style="background:#0f0a05;">
-        <div class="container">
-            <h2 class="mb-4">Lance Woolie’s Honky Tonk Shooter</h2>
-            <p class="lead mb-4">Click the bottles. Rack up points. Survive the night.</p>
-            <canvas id="game-canvas" width="800" height="500" class="border border-warning rounded shadow"></canvas>
-            <div class="mt-3 text-warning">
-                <span id="score-display" class="score-display fs-4">SCORE <span id="score">000000</span></span>
+<body>
+  <a href="contact.html#email-subscribe" class="floating-subscribe">
+    <img src="img/subscribe.gif" alt="Subscribe">
+  </a>
+  <div id="nav-placeholder"></div> <!-- Dynamic Nav Insert Here -->
+  <!-- Hero Section (Mimicking Crockett's Hero with Interactive Dots Only) -->
+  <section class="hero">
+    <div class="hero-overlay">
+      <div class="solar-system">
+        <div class="animated-dot"></div>
+        <div class="animated-dot"></div>
+        <div class="animated-dot"></div>
+        <div class="animated-dot"></div>
+        <div class="animated-dot"></div>
+        <div class="animated-dot"></div>
+       
+    <!-- Merch Container (Swapped with Origins) -->
+    <div class="dot-container merch-container">
+      <a href="merch.html" class="interactive-dot main-dot merch-dot"></a>
+      <span class="main-label">Merch & More</span>
+      <div class="sub-dots">
+        <!-- Cluck Yeah Chicken Socks -->
+        <a href="https://lancewoolie.bandcamp.com/merch/chicken-socks-cluck-yeah-step-into-the-flock" class="sub-dot" style="background-image: url('https://f4.bcbits.com/img/0041177986_10.jpg');" target="_blank" data-title="Chicken Socks" data-id="merch-chicken-socks"></a>
+        <!-- Uber Single -->
+        <a href="https://lancewoolie.bandcamp.com/track/uber" class="sub-dot" style="background-image: url('https://f4.bcbits.com/img/a2855470268_10.jpg');" target="_blank" data-title="Uber" data-id="merch-uber"></a>
+        <!-- Too Drunk Single -->
+        <a href="https://lancewoolie.bandcamp.com/track/too-drunk-ft-brent-mason" class="sub-dot" style="background-image: url('https://f4.bcbits.com/img/a1387979790_10.jpg');" target="_blank" data-title="Too Drunk" data-id="merch-too-drunk"></a>
+        <!-- Country Paradise Album -->
+        <a href="https://lancewoolie.bandcamp.com/album/country-paradise" class="sub-dot" style="background-image: url('img/COUNTRY-PARADISE-scaled.jpg');" target="_blank" data-title="Country Paradise" data-id="merch-country-paradise"></a>
+      </div>
+    </div>
+   
+    <!-- Events Container -->
+    <div class="dot-container events-container">
+      <a href="events.html" class="interactive-dot main-dot events-dot"></a>
+      <span class="main-label">Events</span>
+      <div class="sub-dots">
+        <!-- Upcoming Event -->
+        <a href="https://www.facebook.com/events/1285222389594134" class="sub-dot" style="background-image: url('img/OCT 24.png');" target="_blank" data-title="Upcoming Event" data-id="events-oct24"></a>
+      </div>
+    </div>
+   
+    <!-- Music Dot Container with Submenu -->
+    <div class="dot-container music-container">
+      <a href="music.html" class="interactive-dot main-dot music-dot"></a>
+      <span class="main-label">Music & Videos</span>
+      <div class="sub-dots">
+        <!-- Uber -->
+        <a href="https://orcd.co/a4glqme" class="sub-dot" style="background-image: url('img/Ubermenu.jpg');" target="_blank" data-title="Uber" data-id="music-uber"></a>
+        <!-- Too Drunk -->
+        <a href="https://orcd.co/lancewoolietoodrunk" class="sub-dot" style="background-image: url('img/TooDrunkmenu.jpg');" target="_blank" data-title="Too Drunk" data-id="music-too-drunk"></a>
+        <!-- Worst Enemy -->
+        <a href="https://orcd.co/lancewoolieworstenemy" class="sub-dot" style="background-image: url('img/WorstEnemymenu.jpg');" target="_blank" data-title="Worst Enemy" data-id="music-worst-enemy"></a>
+        <!-- Full Catalog -->
+        <a href="music.html" class="sub-dot" style="background-image: url('img/Fullcatalogmenu.jpg');" data-title="Full Catalog" data-id="music-full-catalog"></a>
+      </div>
+    </div>
+   
+    <!-- Origins Container (Swapped with Merch) -->
+    <div class="dot-container origins-container">
+      <a href="origins.html" class="interactive-dot main-dot origins-dot"></a>
+      <span class="main-label">Origins</span>
+      <div class="sub-dots"></div>
+    </div>
+   
+    <!-- Contact Container -->
+    <div class="dot-container contact-container">
+      <a href="contact.html" class="interactive-dot main-dot contact-dot"></a>
+      <span class="main-label">Contact</span>
+      <div class="sub-dots"></div>
+    </div>
+  </div>
+</div> </section>
+  <!-- Combined Latest Release & Featured Merch Section -->
+  <section class="py-5 combined-section">
+    <div class="container">
+      <h2 class="text-center mb-4" style="color: white;">Featured Merch & Latest Music Videos</h2>
+      <div class="row">
+        <div class="col-md-6">
+          <div id="merchCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <div class="merch-card card">
+                  <img src="https://f4.bcbits.com/img/0041177986_10.jpg" alt="Cluck Yeah Chicken Socks" class="card-img-top">
+                  <div class="card-body">
+                    <h3>Cluck Yeah Chicken Socks</h3>
+                    <p>Exclusive jet-black socks from premium Chinese cotton, one size fits all.</p>
+                    <span class="price-tag">$10</span>
+                   
+                    <a href="https://lancewoolie.bandcamp.com/merch/chicken-socks-cluck-yeah-step-into-the-flock" class="btn btn-buy mt-2" target="_blank">Buy Now</a>
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="merch-card card">
+                  <img src="https://f4.bcbits.com/img/a2855470268_10.jpg" alt="Uber Single Cover" class="card-img-top">
+                  <div class="card-body">
+                    <h3>Uber (Single)</h3>
+                    <p>Danceable neotraditional tune evoking lost love, featuring Brent Mason.</p>
+                    <span class="price-tag">$1.29</span>
+                   
+                    <a href="https://lancewoolie.bandcamp.com/track/uber" class="btn btn-buy mt-2" target="_blank">Buy Now</a>
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="merch-card card">
+                  <img src="https://f4.bcbits.com/img/a1387979790_10.jpg" alt="Too Drunk Single Cover" class="card-img-top">
+                  <div class="card-body">
+                    <h3>Too Drunk (Single)</h3>
+                    <p>Debut release co-created with Legendary Guitarist Brent Mason—raw country grit.</p>
+                    <span class="price-tag">$1.29</span>
+                   
+                    <a href="https://lancewoolie.bandcamp.com/track/too-drunk-ft-brent-mason" class="btn btn-buy mt-2" target="_blank">Buy Now</a>
+                  </div>
+                </div>
+              </div>
             </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#merchCarousel" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#merchCarousel" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
         </div>
-    </section>
-
-    <!-- QUICK LINKS / MUSIC TEASER -->
-    <section class="py-5 bg-black">
-        <div class="container">
-            <div class="row text-center">
-                <div class="col-md-4">
-                    <img src="img/stage-spotlight.jpg" class="img-fluid rounded mb-3" alt="Stage">
-                    <h5>Music</h5>
-                    <a href="music.html" class="btn btn-outline-light">Stream Now</a>
+        <div class="col-md-6">
+          <div id="musicCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <div class="video-card card">
+                  <h5>Uber</h5>
+                  <iframe src="https://www.youtube.com/embed/0nTop80SCvs" title="Uber Official Music Video" frameborder="0" allowfullscreen></iframe>
                 </div>
-                <div class="col-md-4">
-                    <img src="img/whiskey-target.png" class="img-fluid rounded mb-3" alt="Live">
-                    <h5>Events</h5>
-                    <a href="events.html" class="btn btn-outline-light">See Tour Dates</a>
+              </div>
+              <div class="carousel-item">
+                <div class="video-card card">
+                  <h5>Too Drunk</h5>
+                  <iframe src="https://www.youtube.com/embed/K6c5kCqZHOc" title="Too Drunk Official Music Video" frameborder="0" allowfullscreen></iframe>
                 </div>
-                <div class="col-md-4">
-                    <img src="img/hero-honkytonk.jpg" class="img-fluid rounded mb-3" alt="Merch">
-                    <h5>Merch</h5>
-                    <a href="merch.html" class="btn btn-outline-light">Shop the Bar</a>
+              </div>
+              <div class="carousel-item">
+                <div class="video-card card">
+                  <h5>Worst Enemy</h5>
+                  <iframe src="https://www.youtube.com/embed/LQNnYN2J_9w" title="Worst Enemy Official Music Video" frameborder="0" allowfullscreen></iframe>
                 </div>
+              </div>
+              <div class="carousel-item">
+                <div class="video-card card">
+                  <h5>Road To Texas</h5>
+                  <iframe src="https://www.youtube.com/embed/ooabUmI-jL8" title="Road To Texas Official Music Video" frameborder="0" allowfullscreen></iframe>
+                </div>
+              </div>
             </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#musicCarousel" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#musicCarousel" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
         </div>
-    </section>
-
-    <!-- FOOTER EMAIL CAPTURE -->
-    <footer class="py-5 text-center" style="background: #1a0f08; color: #ffd700;">
-        <div class="container">
-            <p class="mb-3 fs-5">Sign up at the bar — get free downloads, tour alerts & stories straight from Lance</p>
-            <form action="https://buttondown.email/api/forms/YOUR-FORM-ID" method="post" class="d-flex justify-content-center gap-2 flex-wrap">
-                <input type="email" name="email" placeholder="your@email.com" class="form-control" style="max-width: 320px;" required>
-                <button type="submit" class="btn btn-danger px-4">Join the List</button>
-            </form>
-            <small class="mt-3 d-block opacity-75">No spam. Just real country from the dance floor.</small>
-            <hr class="my-4 border-secondary">
-            <p class="mb-0">&copy; 2026 Lance Woolie • Human Made in Louisiana</p>
+      </div>
+    </div>
+  </section>
+  <!-- Upcoming Events Section -->
+  <section class="py-5" style="background-color: rgba(30, 58, 138, 0.8);">
+    <div class="container">
+      <h2 class="text-center mb-4" style="color: white;">Upcoming Events</h2>
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="tour-card">
+            <div class="row align-items-center">
+              <div class="col-md-3">
+                <h4 class="tour-date">October 24, 2025</h4>
+                <p class="tour-time">9:00 PM Central</p>
+              </div>
+              <div class="col-md-7">
+                <h5 class="tour-venue">Lance Woolie Live at the Smiling Dog</h5>
+                <p>Don't miss this intimate performance!</p>
+              </div>
+              <div class="col-md-2 text-end">
+                <a href="https://www.facebook.com/lancewooliemusic/events" class="btn btn-success" target="_blank">Tickets</a>
+              </div>
+            </div>
+          </div>
         </div>
-    </footer>
+      </div>
+    </div>
+  </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="script.js"></script>
+  <!-- CRAZY ARMS POP-UP MODAL -->
+  <div class="modal fade" id="crazyArmsModal" tabindex="-1" aria-labelledby="crazyArmsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header border-0">
+          <h5 class="modal-title fs-1 fw-bold" id="crazyArmsModalLabel">🔥 CRAZY ARMS OUT NOW 🔥</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center p-5">
+          <img src="img/Crazy Arms Official.png" alt="Crazy Arms" class="img-fluid rounded-3 mb-4" style="max-height:460px;border:6px solid #FFD700;box-shadow:0 0 40px rgba(255,215,0,0.7);">
+          <h2 class="text-white mb-3">Crazy Arms</h2>
+          <h5 class="text-warning mb-4">feat. Brent Mason & Scotty Sanders</h5>
+          <p class="lead mb-4 text-light">Available <strong>NOW</strong> for purchase on Bandcamp!<br>Streaming everywhere next week.</p>
+          <a href="https://lancewoolie.bandcamp.com/track/crazy-arms-feat-brent-mason-scotty-sanders" target="_blank" class="btn btn-buy btn-lg px-5 py-3">BUY ON BANDCAMP NOW →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="footer-placeholder" class="tight-footer"> <!-- Dynamic Footer Insert Here - Floating Fixed -->
+  </div>
+  <div class="pointingjs">
+    <div class="pointer"></div>
+    <svg xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="glow">
+          <feGaussianBlur result="coloredBlur" stdDeviation="4"></feGaussianBlur>
+          <feMerge>
+            <feMergeNode in="coloredBlur"></feMergeNode>
+            <feMergeNode in="coloredBlur"></feMergeNode>
+            <feMergeNode in="coloredBlur"></feMergeNode>
+            <feMergeNode in="SourceGraphic"></feMergeNode>
+          </feMerge>
+        </filter>
+        <linearGradient id="linear">
+          <stop offset="0" stop-color="#00ff00" stop-opacity="0"/>
+          <stop offset="1" stop-color="#00ff00"/>
+        </linearGradient>
+      </defs>
+      <path id="trail" fill="transparent"/>
+    </svg>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
