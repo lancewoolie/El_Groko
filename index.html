@@ -4,14 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lance Woolie’s Moon Saloon</title>
+  
+  <!-- Moon Favicon -->
+  <link rel="icon" type="image/png" href="/img/moon-favicon.png"> <!-- upload your moon icon here -->
+
   <link href="https://fonts.googleapis.com/css2?family=Georgia&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   
-  <!-- MOON SALOON HERO STYLES -->
+  <!-- MOON SALOON HERO + NEW HUD -->
   <style>
     .hero {
-      min-height: 100vh;
+      height: 100vh;
       background: url('/img/moonsaloon/moon-saloon-base.jpg') center/cover no-repeat fixed;
       position: relative;
       overflow: hidden;
@@ -39,124 +43,117 @@
       filter: grayscale(0.9);
       pointer-events: none;
     }
-    #lunar-timer {
+
+    /* NEW LONG NEON HUD BAR */
+    #game-hud {
       position: absolute;
-      top: 22px;
-      right: 22px;
-      background: rgba(0,0,0,0.75);
-      color: #00ffcc;
+      top: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 92%;
+      max-width: 1280px;
+      background: rgba(11, 20, 38, 0.92);
+      border: 3px solid #00ffcc;
+      border-radius: 50px;
+      padding: 12px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 0 40px rgba(0, 255, 204, 0.6);
+      z-index: 25;
       font-family: 'Courier New', monospace;
-      font-size: 1.35rem;
+    }
+    #game-hud .hud-item {
+      color: #00ffcc;
+      font-size: 1.15rem;
       font-weight: bold;
-      padding: 8px 20px;
+    }
+    #restart-btn {
+      display: none;
+      background: #ffd700;
+      color: #001f3f;
+      border: none;
+      padding: 8px 24px;
       border-radius: 30px;
-      border: 2px solid #00ffcc;
-      box-shadow: 0 0 20px #00ffcc;
-      z-index: 20;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    #restart-btn:hover {
+      background: #e6c200;
+      transform: scale(1.05);
     }
   </style>
 </head>
 <body>
-  <!-- Floating Subscribe -->
-  <a href="contact.html#email-subscribe" class="floating-subscribe">
-    <img src="img/subscribe.gif" alt="Subscribe">
-  </a>
-
-  <!-- Dynamic Nav (Score + Health HUD) -->
+  <!-- Dynamic Nav (menu only – small icons) -->
   <div id="nav-placeholder"></div>
 
   <!-- MOON SALOON SHOOTING GALLERY HERO -->
   <section class="hero">
+    <!-- NEW GAME HUD BAR -->
+    <div id="game-hud">
+      <div class="hud-item">SCORE <span id="score-value" style="color:#ffd700;">000000</span></div>
+      
+      <div class="hud-item">
+        HEALTH 
+        <div id="health-bar" style="display:inline-block;width:120px;height:18px;background:#111;border:2px solid #00ffcc;border-radius:10px;overflow:hidden;margin:0 10px;">
+          <div id="health-progress" style="height:100%;background:#00ffcc;width:100%;"></div>
+        </div>
+      </div>
+      
+      <div class="hud-item">TIMER <span id="lunar-timer" style="color:#00ffcc;">30</span></div>
+      
+      <button id="restart-btn" onclick="location.reload()">RESTART GAME</button>
+    </div>
+
+    <!-- Props Container -->
     <div class="props-container">
       <!-- 1. Music & Video Neon -->
-      <img id="music-video-neon"
-           src="/img/moonsaloon/music-video-neon.png"
-           class="moonsaloon-prop"
-           alt="Music & Video"
-           data-link="music.html"
-           data-score="175"
-           data-max-hits="4"
+      <img id="music-video-neon" src="/img/moonsaloon/music-video-neon.png" class="moonsaloon-prop"
+           data-link="music.html" data-score="175" data-max-hits="4"
            style="top:15%; left:49%; width:31%;">
 
       <!-- 2. Contact Earth Trophy -->
-      <img id="contact-earth-trophy"
-           src="/img/moonsaloon/contact-earth-trophy.png"
-           class="moonsaloon-prop"
-           alt="Contact Earth"
-           data-link="contact.html"
-           data-score="200"
-           data-max-hits="3"
+      <img id="contact-earth-trophy" src="/img/moonsaloon/contact-earth-trophy.png" class="moonsaloon-prop"
+           data-link="contact.html" data-score="200" data-max-hits="3"
            style="top:46%; left:7%; width:19%;">
 
       <!-- 3. Cowboy Hat Merch -->
-      <img id="cowboy-hat-merch"
-           src="/img/moonsaloon/cowboy-hat-merch.png"
-           class="moonsaloon-prop"
-           alt="Merch"
-           data-link="merch.html"
-           data-score="150"
-           data-max-hits="5"
+      <img id="cowboy-hat-merch" src="/img/moonsaloon/cowboy-hat-merch.png" class="moonsaloon-prop"
+           data-link="merch.html" data-score="150" data-max-hits="5"
            style="top:33%; left:72%; width:23%;">
 
       <!-- 4. Hourglass Origins -->
-      <img id="hourglass-origins"
-           src="/img/moonsaloon/hourglass-origins.png"
-           class="moonsaloon-prop"
-           alt="Origins"
-           data-link="origins.html"
-           data-score="125"
-           data-max-hits="3"
+      <img id="hourglass-origins" src="/img/moonsaloon/hourglass-origins.png" class="moonsaloon-prop"
+           data-link="origins.html" data-score="125" data-max-hits="3"
            style="top:61%; left:26%; width:16%;">
 
       <!-- 5. Holo Calendar Events -->
-      <img id="holo-calendar-events"
-           src="/img/moonsaloon/holo-calendar-events.png"
-           class="moonsaloon-prop"
-           alt="Events"
-           data-link="events.html"
-           data-score="150"
-           data-max-hits="4"
+      <img id="holo-calendar-events" src="/img/moonsaloon/holo-calendar-events.png" class="moonsaloon-prop"
+           data-link="events.html" data-score="150" data-max-hits="4"
            style="top:52%; left:65%; width:21%;">
-    </div>
 
-    <!-- 30-Second Lunar Timer -->
-    <div id="lunar-timer">30</div>
+      <!-- 6. NEW SHOOTABLE RACCOON (super bonus) -->
+      <img id="raccoon-subscribe" src="/img/moonsaloon/raccoon-subscribe.png" class="moonsaloon-prop"
+           data-link="contact.html#email-subscribe" data-score="500" data-max-hits="2"
+           style="top:68%; left:82%; width:14%;">
+    </div>
   </section>
 
-  <!-- OLD CONTENT SECTIONS (unchanged & preserved) -->
+  <!-- OLD CONTENT SECTIONS BELOW (unchanged) -->
   <section class="py-5 combined-section">
-    <div class="container">
-      <h2 class="text-center mb-4" style="color: white;">Featured Merch & Latest Music Videos</h2>
-      <div class="row">
-        <div class="col-md-6">
-          <div id="merchCarousel" class="carousel slide" data-bs-ride="carousel">
-            <!-- YOUR OLD MERCH CAROUSEL CONTENT HERE (exactly as before) -->
-            <div class="carousel-inner">
-              <!-- Cluck Yeah, Uber, Too Drunk items -->
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#merchCarousel" data-bs-slide="prev">…</button>
-            <button class="carousel-control-next" type="button" data-bs-target="#merchCarousel" data-bs-slide="next">…</button>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div id="musicCarousel" class="carousel slide" data-bs-ride="carousel">
-            <!-- YOUR OLD VIDEO CAROUSEL CONTENT HERE -->
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- YOUR OLD MERCH + VIDEO CAROUSEL HERE -->
   </section>
 
   <section class="py-5" style="background-color: rgba(30, 58, 138, 0.8);">
-    <!-- YOUR OLD UPCOMING EVENTS SECTION HERE -->
+    <!-- YOUR OLD EVENTS SECTION HERE -->
   </section>
 
-  <!-- CRAZY ARMS MODAL (unchanged) -->
+  <!-- CRAZY ARMS MODAL -->
   <div class="modal fade" id="crazyArmsModal" tabindex="-1" aria-labelledby="crazyArmsModalLabel" aria-hidden="true">
     <!-- YOUR OLD MODAL CONTENT HERE -->
   </div>
 
-  <!-- Footer -->
   <div id="footer-placeholder" class="tight-footer"></div>
 
   <!-- Laser Pointer -->
