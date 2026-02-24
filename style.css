@@ -5,21 +5,18 @@ body {
   margin: 0;
   padding: 0;
 }
-
 .hero {
   height: 100vh !important;
   background: url('/img/moonsaloon/moon-saloon-base.jpg') center/cover no-repeat fixed;
   position: relative;
   overflow: hidden;
 }
-
 .props-container {
   position: absolute;
   inset: 0;
   pointer-events: none;
   z-index: 5;
 }
-
 .moonsaloon-prop {
   position: absolute;
   pointer-events: auto;
@@ -28,24 +25,20 @@ body {
   transition: filter 0.12s ease, transform 0.2s ease;
   z-index: 6;
 }
-
 /* 50% LESS BRIGHT HOVER (as you liked) */
 .moonsaloon-prop:hover {
   filter: brightness(1.4) saturate(2) drop-shadow(0 0 18px #00ffcc);
   transform: scale(1.06) rotate(2deg);
 }
-
 .moonsaloon-prop.hit {
   filter: brightness(2.2) saturate(2.5) hue-rotate(15deg);
   transform: scale(1.14) rotate(5deg);
 }
-
 .moonsaloon-prop.destroyed {
   opacity: 0.25;
   filter: grayscale(0.9);
   pointer-events: none;
 }
-
 /* Compact HUD */
 #game-hud {
   position: absolute;
@@ -81,7 +74,6 @@ body {
   font-weight:bold;
   cursor:pointer;
 }
-
 .tight-footer {
   background:#001f3f !important;
   position:fixed !important;
@@ -92,5 +84,4 @@ body {
   z-index:1001 !important;
   border-top:1px solid #0074D9;
 }
-
 /* Paste all your old styles (interactive-dot, sub-dot, card, carousel, etc.) here */
