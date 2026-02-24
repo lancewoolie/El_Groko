@@ -1,6 +1,4 @@
-// ====================== MOON SALOON script.js – FULL WORKING FX RESTORED ======================
-// Your old working code + new props added at the end
-
+// ====================== MOON SALOON script.js – FULL WORKING FX RESTORED (CRISP CLICKS) ======================
 // Preload click ricochet sounds
 const clickSounds = [
   new Audio('sounds/ricochet-1.mp3'),
@@ -23,7 +21,7 @@ let health = parseFloat(sessionStorage.getItem('health')) || 100;
 let healthBar = null;
 let healthProgress = null;
 let gameOverShown = false;
-// Function to wait for audio to finish playing
+// Function to wait for audio to finish playing (kept for game-over only)
 function waitForAudio(sound) {
   return sound.play().then(() => {
     return new Promise((resolve) => {
@@ -34,7 +32,7 @@ function waitForAudio(sound) {
     });
   }).catch(err => {
     console.log('Sound play failed:', err);
-    return Promise.resolve(); // Proceed without waiting if play fails
+    return Promise.resolve();
   });
 }
 // Function to wait for animation end
@@ -47,11 +45,10 @@ function waitForAnimation(element, animationName) {
       }
     };
     element.addEventListener('animationend', handler);
-    // Fallback timeout
     setTimeout(resolve, 1200);
   });
 }
-// Explosion particle function
+// Explosion particle function (non-blocking)
 function explode(mx, my, hexColor) {
   return new Promise((resolve) => {
     const numParticles = 30;
@@ -325,10 +322,9 @@ document.addEventListener('DOMContentLoaded', () => {
     updateScore(0);
   }, 200);
   const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
-
-  // ====================== NEW MOON SALOON SHOOTING ======================
+  // ====================== NEW MOON SALOON SHOOTING – CRISP & NON-BLOCKING ======================
   document.querySelectorAll('.moonsaloon-prop').forEach(prop => {
-    prop.addEventListener('click', async (e) => {
+    prop.addEventListener('click', (e) => {
       e.stopImmediatePropagation();
       const rect = prop.getBoundingClientRect();
       const x = rect.left + rect.width / 2;
@@ -337,23 +333,25 @@ document.addEventListener('DOMContentLoaded', () => {
       let hits = parseInt(prop.dataset.hits || '0') + 1;
       prop.dataset.hits = hits;
 
+      // CRISP INSTANT SOUND (fire-and-forget)
       const sound = clickSounds[Math.floor(Math.random() * clickSounds.length)];
       sound.currentTime = 0;
-      await waitForAudio(sound);
+      sound.play().catch(() => {});
 
       updateScore(parseInt(prop.dataset.score), x, y);
-      await explode(x, y, '#00ffcc');
+
+      // Non-blocking explosion
+      explode(x, y, '#00ffcc');
 
       prop.classList.add('hit');
-      setTimeout(() => prop.classList.remove('hit'), 180);
+      setTimeout(() => prop.classList.remove('hit'), 160);
 
       if (hits >= parseInt(prop.dataset.maxHits)) {
         prop.classList.add('destroyed');
-        setTimeout(() => window.location.href = prop.dataset.link, 800);
+        setTimeout(() => window.location.href = prop.dataset.link, 700);
       }
     });
   });
-
   // Dry fire on empty space
   document.querySelector('.hero').addEventListener('click', (e) => {
     if (e.target.classList.contains('moonsaloon-prop')) return;
@@ -361,7 +359,6 @@ document.addEventListener('DOMContentLoaded', () => {
     sound.currentTime = 0;
     sound.play();
   });
-
   // 30-second Lunar Timer
   const timerEl = document.getElementById('lunar-timer');
   let timer = 30;
@@ -374,6 +371,5 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('restart-btn').style.display = 'block';
     }
   }, 1000);
-
   // Paste the rest of your original code here (beard, sub-dot, main-dot, nav delay, etc.)
 });
