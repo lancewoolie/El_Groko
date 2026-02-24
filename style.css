@@ -1,11 +1,4 @@
-body {
-  background-color: #0b1426;
-  color: #E0E0E0;
-  font-family: 'Georgia', serif;
-  margin: 0;
-  padding: 0;
-}
-
+/* MOON SALOON style.css – 50% less bright hover version */
 .hero {
   height: 100vh !important;
   background: url('/img/moonsaloon/moon-saloon-base.jpg') center/cover no-repeat fixed;
@@ -20,7 +13,6 @@ body {
   z-index: 5;
 }
 
-/* Props – smaller + hover glow + jiggle */
 .moonsaloon-prop {
   position: absolute;
   pointer-events: auto;
@@ -29,14 +21,18 @@ body {
   transition: filter 0.12s ease, transform 0.2s ease;
   z-index: 6;
 }
+
+/* 50% less bright hover */
 .moonsaloon-prop:hover {
-  filter: brightness(1.4) saturate(2) drop-shadow(0 0 20px #00ffcc);
+  filter: brightness(1.4) saturate(2) drop-shadow(0 0 18px #00ffcc);
   transform: scale(1.06) rotate(2deg);
 }
+
 .moonsaloon-prop.hit {
   filter: brightness(2.2) saturate(2.5) hue-rotate(15deg);
   transform: scale(1.14) rotate(5deg);
 }
+
 .moonsaloon-prop.destroyed {
   opacity: 0.25;
   filter: grayscale(0.9);
@@ -79,7 +75,6 @@ body {
   cursor:pointer;
 }
 
-/* Footer fixed */
 .tight-footer {
   background:#001f3f !important;
   position:fixed !important;
@@ -91,4 +86,4 @@ body {
   border-top:1px solid #0074D9;
 }
 
-/* All your old styles (sub-dot, card, carousel, etc.) go here exactly as before */
+/* Paste all your old styles here (interactive-dot, sub-dot, card, carousel, etc.) */
