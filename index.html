@@ -1,118 +1,66 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lance Woolie’s Moon Saloon</title>
-  
-  <!-- Moon Favicon -->
-  <link rel="icon" type="image/png" href="/img/moon-favicon.png">
+// ====================== MOON SALOON script.js – FINAL ======================
+const clickSounds = [new Audio('sounds/ricochet-1.mp3'), new Audio('sounds/ricochet-2.mp3')];
+clickSounds.forEach(s => { s.preload='auto'; s.volume=0.85; });
+const dryFireSound = new Audio('sounds/dry-click.mp3');
+dryFireSound.volume = 0.6;
 
-  <link href="https://fonts.googleapis.com/css2?family=Georgia&display=swap" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">   <!-- ← UPDATED TO style.css (singular) -->
+let score = parseInt(sessionStorage.getItem('score')) || 0;
+let health = parseInt(sessionStorage.getItem('health')) || 100;
+let timer = 30;
 
-  <!-- MOON SALOON HERO + HUD -->
-  <style>
-    .hero {
-      height: 100vh !important;
-      background: url('/img/moonsaloon/moon-saloon-base.jpg') center/cover no-repeat fixed;
-      position: relative;
-      overflow: hidden;
+document.addEventListener('DOMContentLoaded', () => {
+  generateNav();
+  generateFooter();
+  scoreEl = document.getElementById('score-value');
+  initHealthBar();
+  updateScore(0);
+
+  // All shootable props
+  document.querySelectorAll('.moonsaloon-prop').forEach(prop => {
+    prop.addEventListener('click', async (e) => {
+      e.stopImmediatePropagation();
+      const rect = prop.getBoundingClientRect();
+      const x = rect.left + rect.width / 2;
+      const y = rect.top + rect.height / 2;
+
+      let hits = parseInt(prop.dataset.hits || '0') + 1;
+      prop.dataset.hits = hits;
+
+      const sound = clickSounds[Math.floor(Math.random() * clickSounds.length)];
+      sound.currentTime = 0;
+      await sound.play();
+
+      updateScore(parseInt(prop.dataset.score), x, y);
+      explode(x, y, '#00ffcc');
+
+      prop.classList.add('hit');
+      setTimeout(() => prop.classList.remove('hit'), 180);
+
+      if (hits >= parseInt(prop.dataset.maxHits)) {
+        prop.classList.add('destroyed');
+        setTimeout(() => window.location.href = prop.dataset.link, 800);
+      }
+    });
+  });
+
+  // Dry fire
+  document.querySelector('.hero').addEventListener('click', (e) => {
+    if (e.target.classList.contains('moonsaloon-prop')) return;
+    dryFireSound.currentTime = 0;
+    dryFireSound.play();
+  });
+
+  // Timer
+  const timerEl = document.getElementById('lunar-timer');
+  const timerInterval = setInterval(() => {
+    timer--;
+    timerEl.textContent = timer;
+    if (timer <= 5) timerEl.style.color = '#ff3366';
+    if (timer <= 0) {
+      clearInterval(timerInterval);
+      document.getElementById('restart-btn').style.display = 'block';
     }
-    .props-container {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      z-index: 5;
-    }
-    .moonsaloon-prop {
-      position: absolute;
-      pointer-events: auto;
-      cursor: crosshair;
-      user-select: none;
-      transition: filter 0.08s ease, transform 0.15s ease;
-      z-index: 6;
-    }
-    .moonsaloon-prop.hit {
-      filter: brightness(2.8) saturate(2.5) hue-rotate(15deg);
-      transform: scale(1.12) rotate(4deg);
-    }
-    .moonsaloon-prop.destroyed {
-      opacity: 0.25;
-      filter: grayscale(0.9);
-      pointer-events: none;
-    }
-  </style>
-</head>
-<body>
-  <div id="nav-placeholder"></div>
+  }, 1000);
 
-  <section class="hero">
-    <!-- NEW COMPACT HUD -->
-    <div id="game-hud">
-      <div class="hud-item">SCORE <span id="score-value">000000</span></div>
-      <div class="hud-item">
-        HEALTH 
-        <div id="health-bar"><div id="health-progress"></div></div>
-      </div>
-      <div class="hud-item">TIMER <span id="lunar-timer">30</span></div>
-      <button id="restart-btn" onclick="location.reload()">RESTART GAME</button>
-    </div>
-
-    <div class="props-container">
-      <!-- Music & Video -->
-      <img id="music-video-neon" src="/img/moonsaloon/music-video-neon.png" class="moonsaloon-prop"
-           data-link="music.html" data-score="175" data-max-hits="4"
-           style="top:15%; left:49%; width:28%;">
-
-      <!-- Contact Earth -->
-      <img id="contact-earth-trophy" src="/img/moonsaloon/contact-earth-trophy.png" class="moonsaloon-prop"
-           data-link="contact.html" data-score="200" data-max-hits="3"
-           style="top:46%; left:7%; width:17%;">
-
-      <!-- Cowboy Hat -->
-      <img id="cowboy-hat-merch" src="/img/moonsaloon/cowboy-hat-merch.png" class="moonsaloon-prop"
-           data-link="merch.html" data-score="150" data-max-hits="5"
-           style="top:33%; left:72%; width:21%;">
-
-      <!-- Hourglass -->
-      <img id="hourglass-origins" src="/img/moonsaloon/hourglass-origins.png" class="moonsaloon-prop"
-           data-link="origins.html" data-score="125" data-max-hits="3"
-           style="top:61%; left:26%; width:15%;">
-
-      <!-- Holo Calendar -->
-      <img id="holo-calendar-events" src="/img/moonsaloon/holo-calendar-events.png" class="moonsaloon-prop"
-           data-link="events.html" data-score="150" data-max-hits="4"
-           style="top:52%; left:65%; width:19%;">
-
-      <!-- Raccoon Subscribe (super bonus) -->
-      <img id="raccoon-subscribe" src="/img/moonsaloon/raccoon-subscribe.png" class="moonsaloon-prop"
-           data-link="contact.html#email-subscribe" data-score="500" data-max-hits="2"
-           style="top:68%; left:82%; width:12%;">
-    </div>
-  </section>
-
-  <!-- OLD CONTENT SECTIONS (unchanged) -->
-  <section class="py-5 combined-section">
-    <!-- YOUR OLD CAROUSELS HERE -->
-  </section>
-
-  <section class="py-5" style="background-color: rgba(30, 58, 138, 0.8);">
-    <!-- YOUR OLD EVENTS HERE -->
-  </section>
-
-  <div class="modal fade" id="crazyArmsModal" tabindex="-1" aria-labelledby="crazyArmsModalLabel" aria-hidden="true">
-    <!-- YOUR OLD MODAL HERE -->
-  </div>
-
-  <div id="footer-placeholder" class="tight-footer"></div>
-
-  <div class="pointingjs">
-    <!-- YOUR OLD POINTINGJS HERE -->
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="script.js"></script>
-</body>
-</html>
+  // Paste all your original sub-dot, main-dot, beard, Crazy Arms, etc. code here (unchanged)
+});
