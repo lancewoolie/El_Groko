@@ -1,4 +1,11 @@
-/* MOON SALOON style.css – 50% less bright hover version */
+body {
+  background-color: #0b1426;
+  color: #E0E0E0;
+  font-family: 'Georgia', serif;
+  margin: 0;
+  padding: 0;
+}
+
 .hero {
   height: 100vh !important;
   background: url('/img/moonsaloon/moon-saloon-base.jpg') center/cover no-repeat fixed;
@@ -22,7 +29,7 @@
   z-index: 6;
 }
 
-/* 50% less bright hover */
+/* 50% LESS BRIGHT HOVER (as you liked) */
 .moonsaloon-prop:hover {
   filter: brightness(1.4) saturate(2) drop-shadow(0 0 18px #00ffcc);
   transform: scale(1.06) rotate(2deg);
@@ -86,4 +93,4 @@
   border-top:1px solid #0074D9;
 }
 
-/* Paste all your old styles here (interactive-dot, sub-dot, card, carousel, etc.) */
+/* Paste all your old styles (interactive-dot, sub-dot, card, carousel, etc.) here */
