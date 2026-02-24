@@ -1,4 +1,4 @@
-// ====================== MOON SALOON script.js – FINAL ======================
+// ====================== MOON SALOON script.js – FULL FINAL ======================
 const clickSounds = [new Audio('sounds/ricochet-1.mp3'), new Audio('sounds/ricochet-2.mp3')];
 clickSounds.forEach(s => { s.preload='auto'; s.volume=0.85; });
 const dryFireSound = new Audio('sounds/dry-click.mp3');
@@ -7,6 +7,7 @@ dryFireSound.volume = 0.6;
 let score = parseInt(sessionStorage.getItem('score')) || 0;
 let health = parseInt(sessionStorage.getItem('health')) || 100;
 let timer = 30;
+let timerInterval = null;
 
 document.addEventListener('DOMContentLoaded', () => {
   generateNav();
@@ -15,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initHealthBar();
   updateScore(0);
 
-  // All shootable props
+  // ALL SHOOTABLE PROPS
   document.querySelectorAll('.moonsaloon-prop').forEach(prop => {
     prop.addEventListener('click', async (e) => {
       e.stopImmediatePropagation();
@@ -52,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Timer
   const timerEl = document.getElementById('lunar-timer');
-  const timerInterval = setInterval(() => {
+  timerInterval = setInterval(() => {
     timer--;
     timerEl.textContent = timer;
     if (timer <= 5) timerEl.style.color = '#ff3366';
@@ -62,5 +63,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }, 1000);
 
-  // Paste all your original sub-dot, main-dot, beard, Crazy Arms, etc. code here (unchanged)
+  // Paste ALL your original sub-dot, main-dot, beard, Crazy Arms, etc. code here (unchanged)
 });
