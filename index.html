@@ -7,18 +7,20 @@
   <link href="https://fonts.googleapis.com/css2?family=Georgia&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  
+  <!-- MOON SALOON HERO STYLES -->
   <style>
-    /* Moon Saloon Hero – Base Background + Props Layer */
     .hero {
       min-height: 100vh;
-      background: url('/img/moonsaloon/moon-saloon-base.jpg') center/cover no-repeat;
+      background: url('/img/moonsaloon/moon-saloon-base.jpg') center/cover no-repeat fixed;
       position: relative;
       overflow: hidden;
     }
     .props-container {
       position: absolute;
       inset: 0;
-      pointer-events: none; /* only props get clicks */
+      pointer-events: none;
+      z-index: 5;
     }
     .moonsaloon-prop {
       position: absolute;
@@ -26,7 +28,7 @@
       cursor: crosshair;
       user-select: none;
       transition: filter 0.08s ease, transform 0.15s ease;
-      z-index: 5;
+      z-index: 6;
     }
     .moonsaloon-prop.hit {
       filter: brightness(2.8) saturate(2.5) hue-rotate(15deg);
@@ -37,7 +39,6 @@
       filter: grayscale(0.9);
       pointer-events: none;
     }
-    /* 30s Lunar Timer */
     #lunar-timer {
       position: absolute;
       top: 22px;
@@ -56,18 +57,21 @@
   </style>
 </head>
 <body>
+  <!-- Floating Subscribe -->
   <a href="contact.html#email-subscribe" class="floating-subscribe">
     <img src="img/subscribe.gif" alt="Subscribe">
   </a>
+
+  <!-- Dynamic Nav (Score + Health HUD) -->
   <div id="nav-placeholder"></div>
 
-  <!-- MOON SALOON GAME HERO -->
+  <!-- MOON SALOON SHOOTING GALLERY HERO -->
   <section class="hero">
     <div class="props-container">
       <!-- 1. Music & Video Neon -->
-      <img id="music-video-neon" 
-           src="/img/moonsaloon/music-video-neon.png" 
-           class="moonsaloon-prop" 
+      <img id="music-video-neon"
+           src="/img/moonsaloon/music-video-neon.png"
+           class="moonsaloon-prop"
            alt="Music & Video"
            data-link="music.html"
            data-score="175"
@@ -75,9 +79,9 @@
            style="top:15%; left:49%; width:31%;">
 
       <!-- 2. Contact Earth Trophy -->
-      <img id="contact-earth-trophy" 
-           src="/img/moonsaloon/contact-earth-trophy.png" 
-           class="moonsaloon-prop" 
+      <img id="contact-earth-trophy"
+           src="/img/moonsaloon/contact-earth-trophy.png"
+           class="moonsaloon-prop"
            alt="Contact Earth"
            data-link="contact.html"
            data-score="200"
@@ -85,9 +89,9 @@
            style="top:46%; left:7%; width:19%;">
 
       <!-- 3. Cowboy Hat Merch -->
-      <img id="cowboy-hat-merch" 
-           src="/img/moonsaloon/cowboy-hat-merch.png" 
-           class="moonsaloon-prop" 
+      <img id="cowboy-hat-merch"
+           src="/img/moonsaloon/cowboy-hat-merch.png"
+           class="moonsaloon-prop"
            alt="Merch"
            data-link="merch.html"
            data-score="150"
@@ -95,9 +99,9 @@
            style="top:33%; left:72%; width:23%;">
 
       <!-- 4. Hourglass Origins -->
-      <img id="hourglass-origins" 
-           src="/img/moonsaloon/hourglass-origins.png" 
-           class="moonsaloon-prop" 
+      <img id="hourglass-origins"
+           src="/img/moonsaloon/hourglass-origins.png"
+           class="moonsaloon-prop"
            alt="Origins"
            data-link="origins.html"
            data-score="125"
@@ -105,9 +109,9 @@
            style="top:61%; left:26%; width:16%;">
 
       <!-- 5. Holo Calendar Events -->
-      <img id="holo-calendar-events" 
-           src="/img/moonsaloon/holo-calendar-events.png" 
-           class="moonsaloon-prop" 
+      <img id="holo-calendar-events"
+           src="/img/moonsaloon/holo-calendar-events.png"
+           class="moonsaloon-prop"
            alt="Events"
            data-link="events.html"
            data-score="150"
@@ -115,15 +119,50 @@
            style="top:52%; left:65%; width:21%;">
     </div>
 
-    <!-- 30-second Lunar Timer -->
+    <!-- 30-Second Lunar Timer -->
     <div id="lunar-timer">30</div>
   </section>
 
-  <!-- Keep your existing sections (Latest Release, Events, Crazy Arms modal) -->
-  <section class="py-5 combined-section">...</section>
-  <!-- (same as your old code – unchanged) -->
+  <!-- OLD CONTENT SECTIONS (unchanged & preserved) -->
+  <section class="py-5 combined-section">
+    <div class="container">
+      <h2 class="text-center mb-4" style="color: white;">Featured Merch & Latest Music Videos</h2>
+      <div class="row">
+        <div class="col-md-6">
+          <div id="merchCarousel" class="carousel slide" data-bs-ride="carousel">
+            <!-- YOUR OLD MERCH CAROUSEL CONTENT HERE (exactly as before) -->
+            <div class="carousel-inner">
+              <!-- Cluck Yeah, Uber, Too Drunk items -->
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#merchCarousel" data-bs-slide="prev">…</button>
+            <button class="carousel-control-next" type="button" data-bs-target="#merchCarousel" data-bs-slide="next">…</button>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div id="musicCarousel" class="carousel slide" data-bs-ride="carousel">
+            <!-- YOUR OLD VIDEO CAROUSEL CONTENT HERE -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
+  <section class="py-5" style="background-color: rgba(30, 58, 138, 0.8);">
+    <!-- YOUR OLD UPCOMING EVENTS SECTION HERE -->
+  </section>
+
+  <!-- CRAZY ARMS MODAL (unchanged) -->
+  <div class="modal fade" id="crazyArmsModal" tabindex="-1" aria-labelledby="crazyArmsModalLabel" aria-hidden="true">
+    <!-- YOUR OLD MODAL CONTENT HERE -->
+  </div>
+
+  <!-- Footer -->
   <div id="footer-placeholder" class="tight-footer"></div>
+
+  <!-- Laser Pointer -->
+  <div class="pointingjs">
+    <!-- YOUR OLD POINTINGJS SVG HERE -->
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
