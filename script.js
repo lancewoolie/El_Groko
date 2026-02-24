@@ -322,36 +322,37 @@ document.addEventListener('DOMContentLoaded', () => {
     updateScore(0);
   }, 200);
   const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
-  // ====================== NEW MOON SALOON SHOOTING – CRISP & NON-BLOCKING ======================
-  document.querySelectorAll('.moonsaloon-prop').forEach(prop => {
-    prop.addEventListener('click', (e) => {
-      e.stopImmediatePropagation();
-      const rect = prop.getBoundingClientRect();
-      const x = rect.left + rect.width / 2;
-      const y = rect.top + rect.height / 2;
+// ====================== FAST NAVIGATION CLICK HANDLER ======================
+document.querySelectorAll('.moonsaloon-prop').forEach(prop => {
+  prop.addEventListener('click', (e) => {
+    e.stopImmediatePropagation();
+    const rect = prop.getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
 
-      let hits = parseInt(prop.dataset.hits || '0') + 1;
-      prop.dataset.hits = hits;
+    let hits = parseInt(prop.dataset.hits || '0') + 1;
+    prop.dataset.hits = hits;
 
-      // CRISP INSTANT SOUND (fire-and-forget)
-      const sound = clickSounds[Math.floor(Math.random() * clickSounds.length)];
-      sound.currentTime = 0;
-      sound.play().catch(() => {});
+    // Instant crisp sound
+    const sound = clickSounds[Math.floor(Math.random() * clickSounds.length)];
+    sound.currentTime = 0;
+    sound.play().catch(() => {});
 
-      updateScore(parseInt(prop.dataset.score), x, y);
+    updateScore(parseInt(prop.dataset.score), x, y);
+    explode(x, y, '#00ffcc');
 
-      // Non-blocking explosion
-      explode(x, y, '#00ffcc');
+    prop.classList.add('hit');
+    setTimeout(() => prop.classList.remove('hit'), 160);
 
-      prop.classList.add('hit');
-      setTimeout(() => prop.classList.remove('hit'), 160);
-
-      if (hits >= parseInt(prop.dataset.maxHits)) {
-        prop.classList.add('destroyed');
-        setTimeout(() => window.location.href = prop.dataset.link, 700);
-      }
-    });
+    if (hits >= parseInt(prop.dataset.maxHits)) {
+      prop.classList.add('destroyed');
+      // ULTRA FAST REDIRECT – only 320ms
+      setTimeout(() => {
+        window.location.href = prop.dataset.link;
+      }, 320);
+    }
   });
+});
   // Dry fire on empty space
   document.querySelector('.hero').addEventListener('click', (e) => {
     if (e.target.classList.contains('moonsaloon-prop')) return;
