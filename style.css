@@ -20,27 +20,23 @@ body {
   z-index: 5;
 }
 
+/* Props – smaller + hover glow + jiggle */
 .moonsaloon-prop {
   position: absolute;
   pointer-events: auto;
   cursor: crosshair;
   user-select: none;
-  transition: filter 0.1s ease, transform 0.2s ease;
+  transition: filter 0.12s ease, transform 0.2s ease;
   z-index: 6;
 }
-
-/* Hover: Neon Glow + Jiggle */
 .moonsaloon-prop:hover {
-  filter: brightness(2.6) saturate(2.8) drop-shadow(0 0 25px #00ffcc);
-  transform: scale(1.08) rotate(3deg);
-  transition: all 0.15s ease;
+  filter: brightness(1.4) saturate(2) drop-shadow(0 0 20px #00ffcc);
+  transform: scale(1.06) rotate(2deg);
 }
-
 .moonsaloon-prop.hit {
-  filter: brightness(3) saturate(3) hue-rotate(20deg);
-  transform: scale(1.15) rotate(6deg);
+  filter: brightness(2.2) saturate(2.5) hue-rotate(15deg);
+  transform: scale(1.14) rotate(5deg);
 }
-
 .moonsaloon-prop.destroyed {
   opacity: 0.25;
   filter: grayscale(0.9);
@@ -83,7 +79,7 @@ body {
   cursor:pointer;
 }
 
-/* Footer */
+/* Footer fixed */
 .tight-footer {
   background:#001f3f !important;
   position:fixed !important;
@@ -95,4 +91,4 @@ body {
   border-top:1px solid #0074D9;
 }
 
-/* All your old styles (interactive-dot, sub-dot, card, carousel, etc.) go here exactly as before */
+/* All your old styles (sub-dot, card, carousel, etc.) go here exactly as before */
