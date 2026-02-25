@@ -8,14 +8,14 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <style>
-    html, body { 
-      margin:0 !important; 
-      padding:0 !important; 
-      width:100% !important; 
-      height:100% !important; 
-      overflow:hidden; 
+    html, body {
+      margin:0 !important;
+      padding:0 !important;
+      width:100% !important;
+      height:100% !important;
+      overflow:hidden;
     }
-    
+   
     .hero {
       height: 100vh !important;
       width: 100vw !important;
@@ -25,7 +25,6 @@
       padding-top: 92px;
       margin: 0 !important;
     }
-
     /* === OPTIMIZED MOBILE HUD (much smaller, no more blocking view) === */
     #game-hud {
       position: absolute;
@@ -45,14 +44,14 @@
       box-shadow: 0 0 30px rgba(0,255,157,0.6);
       backdrop-filter: blur(10px);
     }
-    
+   
     #game-hud .hud-item {
       display: flex;
       align-items: center;
       gap: 6px;
       white-space: nowrap;
     }
-    
+   
     #health-bar {
       width: 130px;
       height: 12px;
@@ -61,13 +60,13 @@
       border-radius: 999px;
       overflow: hidden;
     }
-    
+   
     #health-progress {
       height: 100%;
       background: linear-gradient(90deg, #00ff9d, #39ff14);
       transition: width 0.4s ease;
     }
-    
+   
     #restart-btn {
       background: #ffd700;
       color: #000;
@@ -78,11 +77,11 @@
       cursor: pointer;
       transition: all 0.2s;
     }
-    
+   
     /* Mobile HUD – compact & clean */
     @media (max-width: 768px) {
       .hero { padding-top: 62px !important; }
-      
+     
       #game-hud {
         top: 8px;
         padding: 6px 14px;
@@ -90,27 +89,25 @@
         font-size: 0.82rem;
         border-radius: 40px;
       }
-      
+     
       #health-bar { width: 95px; height: 9px; }
-      
+     
       #restart-btn {
         padding: 5px 14px;
         font-size: 0.78rem;
       }
     }
-
     #saloon-svg {
       position: absolute; top:0; left:0;
       width: 100% !important; height: 100% !important;
       z-index: 2; pointer-events: none;
     }
-    
+   
     #saloon-svg .moonsaloon-prop {
-      pointer-events: auto; 
+      pointer-events: auto;
       cursor: crosshair;
       transition: filter 0.12s ease, transform 0.2s ease;
     }
-
     /* Video Transition Layer – plays every single time (no sessionStorage limit) */
     #transition-overlay {
       position: fixed;
@@ -123,31 +120,40 @@
       overflow: hidden;
       background: #000;
     }
-    
+   
     .transition-video {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
-    
+   
     #raccoon-subscribe:hover { transform: translateX(14px) scale(1.08) !important; }
   </style>
 </head>
 <body>
   <div id="nav-placeholder"></div>
-  
+ 
   <section class="hero">
     <!-- Game HUD (now small & clean on mobile) -->
     <div id="game-hud">
       <div class="hud-item">SCORE <span id="score-value">000000</span></div>
-      <div class="hud-item">HEALTH 
+      <div class="hud-item">HEALTH
         <div id="health-bar"><div id="health-progress"></div></div>
       </div>
       <div class="hud-item">TIMER <span id="lunar-timer">30</span></div>
       <button id="restart-btn" onclick="location.reload()">RESTART GAME</button>
     </div>
-
     <svg id="saloon-svg" width="100%" height="100%" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+      <!-- NEW TESLA CHIME PROP – VERY TOP CENTER -->
+      <image id="tesla-chime-prop" 
+             href="/img/moonsaloon/Tesla-Chime-nav.png" 
+             x="765" y="28" 
+             width="390" height="265" 
+             class="moonsaloon-prop" 
+             data-link="chimes.html" 
+             data-score="350" 
+             data-max-hits="1" />
+
       <!-- Slightly raised bottom icons so they never sit below the lunar horizon on mobile -->
       <image id="hourglass-origins" href="/img/moonsaloon/hourglass-origins-nav.png" x="586" y="662" width="179" height="245" class="moonsaloon-prop" data-link="origins.html" data-score="125" data-max-hits="1" />
       <image id="holo-calendar-events" href="/img/moonsaloon/holo-calendar-events-nav.png" x="740" y="731" width="175" height="193" class="moonsaloon-prop" data-link="events.html" data-score="150" data-max-hits="1" />
@@ -176,11 +182,9 @@
       const overlay = document.getElementById('transition-overlay');
       const forwardVideo = document.getElementById('forward-video');
       const reverseVideo = document.getElementById('reverse-video');
-
       // Set your actual video paths here (update if filenames differ)
       forwardVideo.src = '/videos/moon-saloon-transition-forward.mp4';
       reverseVideo.src = '/videos/moon-saloon-transition-reverse.mp4';
-
       // Function to play reverse video when returning via nav doors
       window.playSaloonReturnTransition = () => {
         overlay.style.display = 'block';
@@ -188,14 +192,11 @@
         reverseVideo.style.display = 'block';
         reverseVideo.currentTime = 0;
         reverseVideo.play().catch(() => {});
-        
+       
         reverseVideo.onended = () => {
           overlay.style.display = 'none';
         };
       };
-
-      // If you ever want forward transition on initial load (optional)
-      // window.playSaloonForwardTransition = () => { ... similar logic ... };
     });
   </script>
 </body>
