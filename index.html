@@ -10,18 +10,23 @@
   <style>
     .hero {
       height: 100vh !important;
-      background: url('/img/moonsaloon/moon-saloon-base.jpg') center/cover no-repeat fixed;
       position: relative;
       overflow: hidden;
-      padding-top: 92px; /* nav perfectly where footer used to be */
+      padding-top: 92px; /* keeps nav in the exact spot */
     }
-    .props-container {
+    #saloon-svg {
       position: absolute;
       inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
       pointer-events: none;
-      z-index: 5;
     }
-
+    #saloon-svg .moonsaloon-prop {
+      pointer-events: auto;
+      cursor: crosshair;
+      transition: filter 0.12s ease, transform 0.2s ease;
+    }
     /* SQUEEZED + CENTERED TOP NAV */
     #nav-placeholder nav,
     #nav-placeholder .navbar,
@@ -35,23 +40,13 @@
       justify-content: center !important;
       gap: 18px;
     }
-
-    /* MOBILE – PROPS 2× BIGGER & EASIER TO TAP */
-    @media (max-width: 992px) {
-      #cowboy-hat-merch      { width: 13.8% !important; }
-      #music-video-neon      { width: 24.5% !important; }
-      #raccoon-subscribe     { width: 12.8% !important; }
-      #hourglass-origins     { width: 10.5% !important; }
-      #holo-calendar-events  { width: 14.5% !important; }
-      #contact-earth-trophy  { width: 15.2% !important; }
-    }
   </style>
 </head>
 <body>
   <div id="nav-placeholder"></div>
 
   <section class="hero">
-    <!-- Compact Neon HUD -->
+    <!-- Compact Neon HUD (stays on top) -->
     <div id="game-hud">
       <div class="hud-item">SCORE <span id="score-value">000000</span></div>
       <div class="hud-item">HEALTH <div id="health-bar"><div id="health-progress"></div></div></div>
@@ -59,42 +54,52 @@
       <button id="restart-btn" onclick="location.reload()">RESTART GAME</button>
     </div>
 
-    <div class="props-container">
-      <!-- PERFECTLY ALIGNED TO GROK EXAMPLE LAYOUT (bar cluster) -->
+    <!-- FULL SVG OVERLAY – PERFECT ALIGNMENT FOREVER -->
+    <svg id="saloon-svg" width="100%" height="100%" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+      <!-- Background image (scales perfectly on every device) -->
+      <image href="/img/moonsaloon/moon-saloon-base.jpg" width="1920" height="1080" />
 
+      <!-- SHOOTABLE PROPS – calibrated to your Grok Example Layout -->
       <!-- Merch Hat -->
-      <img id="cowboy-hat-merch" src="/img/moonsaloon/cowboy-hat-merch-nav.png" class="moonsaloon-prop"
-           data-link="merch.html" data-score="150" data-max-hits="1"
-           style="top:32.5%; left:27.8%; width:8.2%;">
+      <image id="cowboy-hat-merch" href="/img/moonsaloon/cowboy-hat-merch-nav.png"
+             x="533" y="351" width="157" height="140"
+             class="moonsaloon-prop" data-link="merch.html" data-score="150" data-max-hits="1" />
 
       <!-- Music & Video Neon -->
-      <img id="music-video-neon" src="/img/moonsaloon/music-video-neon-nav.png" class="moonsaloon-prop"
-           data-link="music.html" data-score="175" data-max-hits="1"
-           style="top:23.5%; left:56.2%; width:14.1%;">
+      <image id="music-video-neon" href="/img/moonsaloon/music-video-neon-nav.png"
+             x="1079" y="254" width="271" height="210"
+             class="moonsaloon-prop" data-link="music.html" data-score="175" data-max-hits="1" />
 
       <!-- Raccoon Subscribe -->
-      <img id="raccoon-subscribe" src="/img/moonsaloon/raccoon-subscribe-nav.png" class="moonsaloon-prop"
-           data-link="contact.html#email-subscribe" data-score="500" data-max-hits="1"
-           style="top:54.8%; left:25.2%; width:6.9%;">
+      <image id="raccoon-subscribe" href="/img/moonsaloon/raccoon-subscribe-nav.png"
+             x="484" y="592" width="132" height="165"
+             class="moonsaloon-prop" data-link="contact.html#email-subscribe" data-score="500" data-max-hits="1" />
 
       <!-- Origins Hourglass -->
-      <img id="hourglass-origins" src="/img/moonsaloon/hourglass-origins-nav.png" class="moonsaloon-prop"
-           data-link="origins.html" data-score="125" data-max-hits="1"
-           style="top:70%; left:26.8%; width:5.7%;">
+      <image id="hourglass-origins" href="/img/moonsaloon/hourglass-origins-nav.png"
+             x="515" y="756" width="109" height="148"
+             class="moonsaloon-prop" data-link="origins.html" data-score="125" data-max-hits="1" />
 
       <!-- Events Calendar -->
-      <img id="holo-calendar-events" src="/img/moonsaloon/holo-calendar-events-nav.png" class="moonsaloon-prop"
-           data-link="events.html" data-score="150" data-max-hits="1"
-           style="top:65.5%; left:48.5%; width:7.9%;">
+      <image id="holo-calendar-events" href="/img/moonsaloon/holo-calendar-events-nav.png"
+             x="931" y="707" width="152" height="168"
+             class="moonsaloon-prop" data-link="events.html" data-score="150" data-max-hits="1" />
 
       <!-- Contact Earth Trophy -->
-      <img id="contact-earth-trophy" src="/img/moonsaloon/contact-earth-trophy-nav.png" class="moonsaloon-prop"
-           data-link="contact.html" data-score="200" data-max-hits="1"
-           style="top:64.8%; left:66.5%; width:8.3%;">
-    </div>
+      <image id="contact-earth-trophy" href="/img/moonsaloon/contact-earth-trophy-nav.png"
+             x="1277" y="700" width="159" height="142"
+             class="moonsaloon-prop" data-link="contact.html" data-score="200" data-max-hits="1" />
+
+      <!-- FUTURE PROPS GO HERE (just copy-paste a line) -->
+      <!-- Example NPC: 
+      <image id="moon-mouse-1" href="/img/moonsaloon/moon-mouse.png"
+             x="720" y="620" width="85" height="95"
+             class="moonsaloon-prop npc-prop" data-score="300" data-max-hits="4" />
+      -->
+    </svg>
   </section>
 
-  <!-- FOOTER, OLD CAROUSELS, EVENTS & MODAL ALL GONE -->
+  <!-- FOOTER, OLD SECTIONS & MODAL ALL REMOVED -->
 
   <div class="pointingjs">
     <!-- YOUR OLD POINTINGJS SVG HERE -->
