@@ -38,21 +38,21 @@
       padding-top: 120px;
     }
 
-    /* HERO WITH STATIC DOORS ON LEFT OF TITLE */
+    /* HERO – Doors LEFT of Title */
     .hero-music {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 30px;
+      gap: 40px;
       padding: 60px 0 40px;
       flex-wrap: wrap;
     }
     .hero-music .doors {
-      width: 120px; /* 33% size as requested */
+      width: 120px;
       flex-shrink: 0;
     }
     .hero-music .title-area {
-      text-align: center;
+      text-align: left;
     }
     .hero-music h1 {
       font-size: 3.2rem;
@@ -61,6 +61,7 @@
       margin: 0;
     }
 
+    /* Cards with light grey/white text */
     .card {
       background: rgba(10, 25, 50, 0.75);
       border: 2px solid #00ffcc;
@@ -78,6 +79,10 @@
                   inset 0 0 40px rgba(255, 0, 170, 0.3);
       border-color: #ff00aa;
     }
+    .card-body p {
+      color: #f0f0f0 !important;     /* bright white / light grey */
+      line-height: 1.7;
+    }
   </style>
 </head>
 <body>
@@ -90,8 +95,8 @@
 
   <div class="content-overlay">
     <div class="content" id="main-content">
-      <!-- HERO WITH STATIC DOORS LEFT OF TITLE -->
       <div class="hero-music">
+        <!-- Doors on the LEFT of title -->
         <img id="saloon-doors-back" 
              src="/img/moonsaloon/saloon-doors-nav.png" 
              class="moonsaloon-prop doors" 
