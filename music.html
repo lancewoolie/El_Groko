@@ -17,29 +17,20 @@
       padding-bottom: 60px;
     }
     .content-overlay {
-      background: rgba(0, 31, 63, 0.35); /* MUCH lighter – new bg shows through */
+      background: rgba(0, 31, 63, 0.35); /* Light overlay so new BG shows */
       min-height: 100vh;
       padding-top: 120px;
     }
-    .hero-music {
-      text-align: center;
-      padding: 60px 0;
-      background: none;
-    }
+    .hero-music { text-align: center; padding: 60px 0; }
     .hero-music h1 { font-size: 3rem; color: #FFD700; text-shadow: 2px 2px 6px #000; }
     .card {
       background-color: rgba(30, 58, 138, 0.85);
       border: 2px solid #0074D9;
       border-radius: 15px;
       overflow: hidden;
-      transition: all 0.3s ease;
       height: 100%;
     }
-    .card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 10px 25px rgba(0,116,217,0.5);
-      border-color: #FFD700;
-    }
+    .card:hover { transform: translateY(-10px); box-shadow: 0 10px 25px rgba(0,116,217,0.5); border-color: #FFD700; }
     .tight-footer {
       background: #001f3f !important;
       position: fixed !important;
@@ -59,16 +50,82 @@
     <section class="hero-music">
       <div class="container">
         <h1 class="mb-4">Music & Videos</h1>
-        <p class="lead">Dive into Lance's catalog—from raw country anthems to soulful live sessions.</p>
+        <p class="lead">Dive into Lance's catalog—from raw country anthems to soulful live sessions. Stream on your FAV platform, watch on YouTube.</p>
         <a href="#music-grid" class="btn btn-success btn-lg mt-3">Explore Tracks</a>
       </div>
     </section>
 
     <div class="container py-5" id="music-grid">
       <div class="row g-4">
-        <!-- ALL YOUR ORIGINAL CARDS GO HERE (unchanged) -->
-        <!-- Uber 2025, Too Drunk, Worst Enemy, Road To Texas, Country Paradise, Live Little Wing -->
-        <!-- (paste your original 6 cards exactly as before – they are already in the previous message) -->
+        <!-- Uber 2025 -->
+        <div class="col-md-6 col-lg-6">
+          <div class="card">
+            <img src="https://img.youtube.com/vi/0nTop80SCvs/0.jpg" alt="Uber Cover Art" class="card-img-top">
+            <div class="card-body">
+              <h3>Uber (2025)</h3>
+              <p>A danceable neotraditional tune, evoking lost love with "I would give anything to see you walk through that door." Lance's striking, one-of-a-kind vocal uses no auto-tune. Uber features Brent Mason...</p>
+              <a href="https://orcd.co/a4glqme" class="btn btn-success mt-2" target="_blank">Stream</a>
+              <iframe width="100%" height="250" src="https://www.youtube.com/embed/0nTop80SCvs" frameborder="0" allowfullscreen class="mt-2"></iframe>
+            </div>
+          </div>
+        </div>
+        <!-- Too Drunk 2024 -->
+        <div class="col-md-6 col-lg-6">
+          <div class="card">
+            <img src="https://img.youtube.com/vi/K6c5kCqZHOc/0.jpg" alt="Too Drunk Cover Art" class="card-img-top">
+            <div class="card-body">
+              <h3>Too Drunk (2024)</h3>
+              <p>Lance Woolie's debut release "Too Drunk" was created in collaboration the renowned Legendary Guitarist of the Year Brent Mason...</p>
+              <a href="https://orcd.co/lancewoolietoodrunk" class="btn btn-success mt-2" target="_blank">Stream</a>
+              <iframe width="100%" height="250" src="https://www.youtube.com/embed/K6c5kCqZHOc" frameborder="0" allowfullscreen class="mt-2"></iframe>
+            </div>
+          </div>
+        </div>
+        <!-- Worst Enemy 2023 -->
+        <div class="col-md-6 col-lg-6">
+          <div class="card">
+            <img src="https://img.youtube.com/vi/neRw6xjusAg/0.jpg" alt="Worst Enemy Cover Art" class="card-img-top">
+            <div class="card-body">
+              <h3>Worst Enemy (2023)</h3>
+              <p>With raw and honest lyrics like “I’ll gouge out both my eyes then complain that I can’t see,” this song captures the struggles of self-sabotage...</p>
+              <a href="https://orcd.co/lancewoolieworstenemy" class="btn btn-success mt-2" target="_blank">Stream</a>
+              <iframe width="100%" height="250" src="https://www.youtube.com/embed/neRw6xjusAg" frameborder="0" allowfullscreen class="mt-2"></iframe>
+            </div>
+          </div>
+        </div>
+        <!-- Road To Texas 2021 -->
+        <div class="col-md-6 col-lg-6">
+          <div class="card">
+            <img src="https://img.youtube.com/vi/WliGvdfdWxw/0.jpg" alt="Road To Texas Cover Art" class="card-img-top">
+            <div class="card-body">
+              <h3>Road To Texas (2021)</h3>
+              <p>Written in Honor of the late legendary radio Gawd John Walton.</p>
+              <a href="https://orcd.co/pbadp4n" class="btn btn-success mt-2" target="_blank">Stream</a>
+              <iframe width="100%" height="250" src="https://www.youtube.com/embed/WliGvdfdWxw" frameborder="0" allowfullscreen class="mt-2"></iframe>
+            </div>
+          </div>
+        </div>
+        <!-- Country Paradise 2021 Album -->
+        <div class="col-12">
+          <div class="card">
+            <img src="img/COUNTRY-PARADISE-scaled.jpg" alt="Country Paradise Album Cover" class="card-img-top">
+            <div class="card-body">
+              <h3>Country Paradise (2021) - Full Album</h3>
+              <p>The debut album by Hogleg band with frontman Lance Woolie</p>
+              <a href="https://orcd.co/o4qa0ba" class="btn btn-success mt-2" target="_blank">Stream Album</a>
+            </div>
+          </div>
+        </div>
+        <!-- Bonus Live Video -->
+        <div class="col-md-6 col-lg-6">
+          <div class="card">
+            <img src="https://img.youtube.com/vi/MXyIZonwOEk/0.jpg" alt="Little Wing Live Cover" class="card-img-top">
+            <div class="card-body">
+              <h3>Live: Little Wing at The Texas Club (2025)</h3>
+              <iframe width="100%" height="250" src="https://www.youtube.com/embed/MXyIZonwOEk" frameborder="0" allowfullscreen class="mt-2"></iframe>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="text-center mt-5">
         <p class="lead">More tracks coming soon—stay tuned for bayou-fresh drops.</p>
