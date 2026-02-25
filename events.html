@@ -17,16 +17,6 @@
       margin: 0;
       padding-bottom: 100px;
     }
-    #intro-video {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover;
-      z-index: 9999;
-      display: none;
-      background: #000;
-    }
     .content {
       position: relative;
       z-index: 1;
@@ -37,33 +27,21 @@
     .content-overlay {
       background: rgba(0, 15, 40, 0.18);
       min-height: 100vh;
-      padding-top: 120px;
+      padding-top: 90px;
     }
-
-    /* HERO – Doors static top-left */
+    /* Doors only at top */
     .hero-events {
       display: flex;
-      align-items: center;
       justify-content: center;
-      gap: 40px;
-      padding: 60px 0 40px;
-      flex-wrap: wrap;
+      padding: 30px 0 40px;
     }
     .hero-events .doors {
-      width: 120px;
-      flex-shrink: 0;
+      width: 130px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
     }
-    .hero-events .title-area {
-      text-align: left;
-    }
-    .hero-events h1 {
-      font-size: 3.2rem;
-      color: #00ffcc;
-      text-shadow: 0 0 20px #00ffcc, 0 0 40px #ff00aa;
-      margin: 0;
-    }
+    .hero-events .doors:hover { transform: scale(1.08); }
 
-    /* Futuristic Cards */
     .card {
       background: rgba(10, 25, 50, 0.75);
       border: 2px solid #00ffcc;
@@ -81,24 +59,16 @@
                   inset 0 0 40px rgba(255, 0, 170, 0.3);
       border-color: #ff00aa;
     }
-    .card h3, .card h5, .card-title {
-      color: #f0f0f0 !important;
-    }
-    .card-body p, .card-text {
-      color: #ddd !important;
-      line-height: 1.7;
-    }
+    .card h3, .card h5, .card-title { color: #f0f0f0 !important; }
+    .card-body p, .card-text { color: #ddd !important; line-height: 1.7; }
 
-    /* Scrollable lists */
     #upcoming-list, #past-list {
       max-height: 620px;
       overflow-y: auto;
       scrollbar-width: thin;
       scrollbar-color: #00ffcc #112233;
     }
-    #upcoming-list::-webkit-scrollbar, #past-list::-webkit-scrollbar {
-      width: 8px;
-    }
+    #upcoming-list::-webkit-scrollbar, #past-list::-webkit-scrollbar { width: 8px; }
     #upcoming-list::-webkit-scrollbar-thumb, #past-list::-webkit-scrollbar-thumb {
       background: #00ffcc;
       border-radius: 10px;
@@ -108,21 +78,23 @@
 <body>
   <div id="nav-placeholder"></div>
 
-  <!-- Intro Video -->
-  <video id="intro-video" muted playsinline></video>
+  <!-- VIDEO TRANSITION OVERLAY (forward on load + reverse on doors) -->
+  <div id="transition-overlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:9999;display:none;overflow:hidden;background:#000;">
+    <video id="forward-video" class="transition-video" muted playsinline style="width:100%;height:100%;object-fit:cover;"></video>
+    <video id="reverse-video" class="transition-video" muted playsinline style="width:100%;height:100%;object-fit:cover;display:none;"></video>
+  </div>
 
   <div class="content-overlay">
     <div class="content" id="main-content">
+      <!-- Doors only (title/subtitle/explore removed) -->
       <div class="hero-events">
-        <img id="saloon-doors-back" 
-             src="/img/moonsaloon/saloon-doors-nav.png" 
-             class="moonsaloon-prop doors" 
-             data-link="index.html" 
-             data-score="100" 
+        <img id="saloon-doors-back"
+             src="/img/moonsaloon/saloon-doors-nav.png"
+             class="moonsaloon-prop doors"
+             data-link="index.html"
+             data-score="100"
              data-max-hits="1"
              alt="Back to Saloon">
-
-      
       </div>
 
       <div class="container py-5" id="events-grid">
@@ -130,12 +102,10 @@
           <h2 class="text-center mb-4">Upcoming Events</h2>
           <div id="upcoming-list"></div>
         </section>
-
         <section id="past-events" class="past-events">
           <h2 class="text-center mb-4">Past Events</h2>
           <div class="row" id="past-list"></div>
         </section>
-
         <div class="text-center mt-5">
           <p>Want to book Lance for your next event? <a href="contact.html">Get in touch</a> today!</p>
         </div>
@@ -148,7 +118,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
 
-  <!-- FULL ORIGINAL EVENTS DATA (10/24/2025 removed, everything else retained) -->
+  <!-- FULL EVENTS DATA & LOGIC (100% complete - no abbreviations) -->
   <script>
     const eventsData = [
       {
@@ -530,39 +500,45 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+      // Populate events (unchanged)
       const sortedEvents = eventsData.sort((a, b) => new Date(b.date) - new Date(a.date));
-
       const upcomingEvents = sortedEvents.filter(e => new Date(e.date) > currentDate && e.isUpcoming);
       const pastEvents = sortedEvents.filter(e => new Date(e.date) <= currentDate);
+      document.getElementById('upcoming-list').innerHTML = upcomingEvents.map(generateUpcomingCard).join('');
+      document.getElementById('past-list').innerHTML = pastEvents.map(generatePastCard).join('');
 
-      const upcomingContainer = document.getElementById('upcoming-list');
-      upcomingEvents.forEach(event => upcomingContainer.innerHTML += generateUpcomingCard(event));
-
-      const pastContainer = document.getElementById('past-list');
-      pastEvents.forEach(event => pastContainer.innerHTML += generatePastCard(event));
-
-      // Transition video plays ONLY ONCE per session
-      const video = document.getElementById('intro-video');
+      // === VIDEO TRANSITION SYSTEM (plays every time - no sessionStorage) ===
+      const overlay = document.getElementById('transition-overlay');
+      const forwardVideo = document.getElementById('forward-video');
+      const reverseVideo = document.getElementById('reverse-video');
       const content = document.getElementById('main-content');
 
-      if (!sessionStorage.getItem('eventsIntroPlayed')) {
-        video.src = '/video/events-video-transition.mp4';
-        video.style.display = 'block';
-        video.play();
+      forwardVideo.src = '/video/events-video-transition.mp4';
+      reverseVideo.src = '/video/events-video-reverse.mp4';
 
-        video.onended = () => {
-          sessionStorage.setItem('eventsIntroPlayed', 'true');
-          video.style.transition = 'opacity 1.2s ease';
-          video.style.opacity = '0';
-          setTimeout(() => {
-            video.style.display = 'none';
-            content.classList.add('show');
-          }, 1200);
-        };
-      } else {
-        // Skip video on repeat visits in same session
+      // Forward transition on every page load
+      overlay.style.display = 'block';
+      forwardVideo.style.display = 'block';
+      forwardVideo.play();
+
+      forwardVideo.onended = () => {
+        overlay.style.display = 'none';
         content.classList.add('show');
-      }
+      };
+
+      // Reverse transition when clicking saloon doors
+      document.getElementById('saloon-doors-back').addEventListener('click', (e) => {
+        e.preventDefault();
+        overlay.style.display = 'block';
+        forwardVideo.style.display = 'none';
+        reverseVideo.style.display = 'block';
+        reverseVideo.currentTime = 0;
+        reverseVideo.play();
+
+        reverseVideo.onended = () => {
+          window.location.href = 'index.html';
+        };
+      });
     });
   </script>
 </body>
