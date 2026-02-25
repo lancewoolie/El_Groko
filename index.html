@@ -47,17 +47,11 @@
     </div>
 
     <svg id="saloon-svg" width="100%" height="100%" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
-      <!-- ORIGINS (left -35px + up -25px) -->
       <image id="hourglass-origins" href="/img/moonsaloon/hourglass-origins-nav.png" x="586" y="712" width="179" height="245" class="moonsaloon-prop" data-link="origins.html" data-score="125" data-max-hits="1" />
-      <!-- EVENTS -->
       <image id="holo-calendar-events" href="/img/moonsaloon/holo-calendar-events-nav.png" x="740" y="781" width="175" height="193" class="moonsaloon-prop" data-link="events.html" data-score="150" data-max-hits="1" />
-      <!-- Merch -->
       <image id="cowboy-hat-merch" href="/img/moonsaloon/cowboy-hat-merch-nav.png" x="555" y="331" width="314" height="280" class="moonsaloon-prop" data-link="merch.html" data-score="150" data-max-hits="1" />
-      <!-- Music & Video -->
       <image id="music-video-neon" href="/img/moonsaloon/music-video-neon-nav.png" x="1089" y="474" width="205" height="158" class="moonsaloon-prop" data-score="175" data-max-hits="1" />
-      <!-- Raccoon -->
       <image id="raccoon-subscribe" href="/img/moonsaloon/raccoon-subscribe-nav.png" x="669" y="617" width="132" height="165" class="moonsaloon-prop" data-link="contact.html#email-subscribe" data-score="500" data-max-hits="1" />
-      <!-- Contact (down +20px) -->
       <image id="contact-earth-trophy" href="/img/moonsaloon/contact-earth-trophy-nav.png" x="882" y="752" width="199" height="178" class="moonsaloon-prop" data-link="contact.html" data-score="200" data-max-hits="1" />
     </svg>
   </section>
@@ -69,7 +63,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
 
-  <!-- ROBUST TRANSITION WITH FALLBACK -->
+  <!-- SUPER ROBUST TRANSITION -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const musicProp = document.getElementById('music-video-neon');
@@ -78,41 +72,44 @@
       if (musicProp) {
         musicProp.addEventListener('click', (e) => {
           e.stopImmediatePropagation();
+          console.log('🎬 Music & Video clicked — starting transition');
 
-          console.log('🎬 Music icon clicked – starting transition...');
-
-          // Try correct spelling first
-          const attempts = [
-            '/video/music-and-video-transition.mp4',
-            '/video/music-and-video-transistion.mp4'  // your original spelling as backup
+          const videoPaths = [
+            '/video/music-and-video-transition.mp4',     // correct spelling
+            '/video/music-and-video-transistion.mp4'    // your old spelling as backup
           ];
 
-          let attemptIndex = 0;
+          let index = 0;
 
-          function tryNext() {
-            if (attemptIndex >= attempts.length) {
-              console.error('❌ All video attempts failed – going straight to music.html');
+          function tryVideo() {
+            if (index >= videoPaths.length) {
+              console.error('❌ All video paths failed — jumping directly');
               window.location.href = 'music.html';
               return;
             }
-            video.src = attempts[attemptIndex];
-            console.log(`Trying video: ${video.src}`);
+            video.src = videoPaths[index];
+            console.log('Trying:', video.src);
             video.style.display = 'block';
-            video.play().then(() => {
-              console.log('✅ Video started playing');
-            }).catch(err => {
-              console.warn(`⚠️ Attempt ${attemptIndex+1} failed:`, err.message);
-              attemptIndex++;
-              tryNext();
+            video.play().catch(() => {
+              console.warn('Attempt failed, trying next...');
+              index++;
+              tryVideo();
             });
           }
 
+          // Auto-fallback after 1.5 seconds if video doesn't start
+          const fallbackTimer = setTimeout(() => {
+            console.warn('⏰ Video timeout — forcing navigation');
+            window.location.href = 'music.html';
+          }, 1500);
+
           video.onended = () => {
-            console.log('✅ Transition finished – loading music.html');
+            clearTimeout(fallbackTimer);
+            console.log('✅ Transition finished — loading music.html');
             window.location.href = 'music.html';
           };
 
-          tryNext();
+          tryVideo();
         });
       }
     });
