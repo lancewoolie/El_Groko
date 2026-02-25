@@ -16,15 +16,6 @@
       margin: 0;
       padding-bottom: 100px;
     }
-    #intro-video {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover;
-      z-index: 9999;
-      display: block;
-    }
     .content {
       position: relative;
       z-index: 1;
@@ -35,22 +26,24 @@
     .content-overlay {
       background: rgba(0, 15, 40, 0.18);
       min-height: 100vh;
-      padding-top: 120px;
+      padding-top: 90px;
     }
-
     /* HERO – Doors LEFT of Title */
     .hero-contact {
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 40px;
-      padding: 60px 0 40px;
+      padding: 30px 0 50px;
       flex-wrap: wrap;
     }
     .hero-contact .doors {
-      width: 120px;
+      width: 130px;
       flex-shrink: 0;
+      cursor: pointer;
+      transition: transform 0.3s ease;
     }
+    .hero-contact .doors:hover { transform: scale(1.08); }
     .hero-contact .title-area {
       text-align: left;
     }
@@ -88,21 +81,19 @@
 <body>
   <div id="nav-placeholder"></div>
 
-  <!-- Intro Video -->
-  <video id="intro-video" muted playsinline autoplay>
-    <source src="/video/contact-video-transistion.mp4" type="video/mp4">
-  </video>
+  <!-- VIDEO TRANSITION OVERLAY – 50% SOUND, PLAYS EVERY TIME -->
+  <div id="transition-overlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:9999;display:none;overflow:hidden;background:#000;">
+    <video id="forward-video" playsinline style="width:100%;height:100%;object-fit:cover;"></video>
+    <video id="reverse-video" playsinline style="width:100%;height:100%;object-fit:cover;display:none;"></video>
+  </div>
 
   <div class="content-overlay">
     <div class="content" id="main-content">
-      <!-- HERO WITH STATIC DOORS LEFT OF TITLE -->
+      <!-- HERO – Doors LEFT of Title -->
       <div class="hero-contact">
-        <img id="saloon-doors-back" 
-             src="/img/moonsaloon/saloon-doors-nav.png" 
-             class="moonsaloon-prop doors" 
-             data-link="index.html" 
-             data-score="100" 
-             data-max-hits="1"
+        <img id="saloon-doors-back"
+             src="/img/moonsaloon/saloon-doors-nav.png"
+             class="doors"
              alt="Back to Saloon">
 
         <div class="title-area">
@@ -181,7 +172,7 @@
           <div class="col-md-6 text-center">
             <h5>Follow & Connect</h5>
             <p>
-              YouTube: <a href="https://www.youtube.com/channel/UC9NUm7_BejCwctJ9u6dps7g" target="_blank">Lance Woolie</a><br>
+              YouTube: <a href="https://www.youtube.com/channel/UC9NUm7_BejCwctJ9u6dps7g" target="_blank">Lance Woolie</a><br><br>
               Facebook: <a href="https://www.facebook.com/lancewooliemusic/" target="_blank">@lancewooliemusic</a>
             </p>
           </div>
@@ -190,21 +181,12 @@
     </div>
   </div>
 
-  <!-- Swinging Saloon Doors Back Button -->
-  <img id="saloon-doors-back" 
-       src="/img/moonsaloon/saloon-doors-nav.png" 
-       class="moonsaloon-prop doors" 
-       data-link="index.html" 
-       data-score="100" 
-       data-max-hits="1"
-       alt="Back to Saloon">
-
   <div id="footer-placeholder" class="tight-footer"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
 
-  <!-- Firebase & EmailJS scripts (kept exactly as you had) -->
+  <!-- Firebase & EmailJS scripts (exactly as you had them) -->
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
     import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
@@ -231,7 +213,7 @@
     })();
   </script>
 
-  <!-- Form handling -->
+  <!-- Form handling (exactly as you had) -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const sanitizeInput = (str) => str.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '').replace(/<\/?[^>]+(>|$)/g, '').trim();
@@ -288,23 +270,42 @@
     });
   </script>
 
-  <!-- Intro Video Logic -->
+  <!-- VIDEO TRANSITION SYSTEM – 50% SOUND, PLAYS EVERY TIME -->
   <script>
-    const video = document.getElementById('intro-video');
-    const content = document.getElementById('main-content');
+    document.addEventListener('DOMContentLoaded', () => {
+      const overlay = document.getElementById('transition-overlay');
+      const forwardVideo = document.getElementById('forward-video');
+      const reverseVideo = document.getElementById('reverse-video');
+      const content = document.getElementById('main-content');
 
-    video.onended = () => {
-      video.style.transition = 'opacity 1.2s ease';
-      video.style.opacity = '0';
-      setTimeout(() => {
-        video.style.display = 'none';
+      forwardVideo.src = '/video/contact-video-transition.mp4';
+      reverseVideo.src = '/video/contact-video-reverse.mp4';
+
+      // Forward on every load (50% volume)
+      overlay.style.display = 'block';
+      forwardVideo.style.display = 'block';
+      forwardVideo.volume = 0.5;
+      forwardVideo.play().catch(() => {});
+
+      forwardVideo.onended = () => {
+        overlay.style.display = 'none';
         content.classList.add('show');
-      }, 1200);
-    };
+      };
 
-    video.addEventListener('error', () => {
-      video.style.display = 'none';
-      content.classList.add('show');
+      // Reverse on doors click (50% volume, full play before return)
+      document.getElementById('saloon-doors-back').addEventListener('click', (e) => {
+        e.preventDefault();
+        overlay.style.display = 'block';
+        forwardVideo.style.display = 'none';
+        reverseVideo.style.display = 'block';
+        reverseVideo.currentTime = 0;
+        reverseVideo.volume = 0.5;
+        reverseVideo.play().catch(() => {});
+
+        reverseVideo.onended = () => {
+          window.location.href = 'index.html';
+        };
+      });
     });
   </script>
 </body>
