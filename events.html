@@ -17,6 +17,28 @@
       margin: 0;
       padding-bottom: 100px;
     }
+    #intro-video {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: 9999;
+      display: none;
+      background: #000;
+    }
+    .content {
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      transition: opacity 1.2s ease;
+    }
+    .content.show { opacity: 1; }
+    .content-overlay {
+      background: rgba(0, 15, 40, 0.18);
+      min-height: 100vh;
+      padding-top: 120px;
+    }
 
     /* HERO – Doors static top-left */
     .hero-events {
@@ -41,7 +63,7 @@
       margin: 0;
     }
 
-    /* Futuristic Moonbase Cards – fully visible */
+    /* Futuristic Cards */
     .card {
       background: rgba(10, 25, 50, 0.75);
       border: 2px solid #00ffcc;
@@ -60,14 +82,14 @@
       border-color: #ff00aa;
     }
     .card h3, .card h5, .card-title {
-      color: #f0f0f0 !important; /* off-white */
+      color: #f0f0f0 !important;
     }
     .card-body p, .card-text {
       color: #ddd !important;
       line-height: 1.7;
     }
 
-    /* Scrollable floating lists */
+    /* Scrollable lists */
     #upcoming-list, #past-list {
       max-height: 620px;
       overflow-y: auto;
@@ -86,38 +108,42 @@
 <body>
   <div id="nav-placeholder"></div>
 
-  <div class="hero-events">
-    <!-- Saloon Doors – static top-left -->
-    <img id="saloon-doors-back" 
-         src="/img/moonsaloon/saloon-doors-nav.png" 
-         class="moonsaloon-prop doors" 
-         data-link="index.html" 
-         data-score="100" 
-         data-max-hits="1"
-         alt="Back to Saloon">
+  <!-- Intro Video -->
+  <video id="intro-video" muted playsinline></video>
 
-    <div class="title-area">
-      <h1>Live Events</h1>
-      <p class="lead mt-3">Upcoming and past performances—from intimate gigs to high-energy shows. Check back for updates!</p>
-      <a href="#events-grid" class="btn btn-success btn-lg mt-3">View Schedule</a>
-    </div>
-  </div>
+  <div class="content-overlay">
+    <div class="content" id="main-content">
+      <div class="hero-events">
+        <img id="saloon-doors-back" 
+             src="/img/moonsaloon/saloon-doors-nav.png" 
+             class="moonsaloon-prop doors" 
+             data-link="index.html" 
+             data-score="100" 
+             data-max-hits="1"
+             alt="Back to Saloon">
 
-  <div class="container py-5" id="events-grid">
-    <!-- Upcoming Events -->
-    <section id="upcoming-events">
-      <h2 class="text-center mb-4">Upcoming Events</h2>
-      <div id="upcoming-list"></div>
-    </section>
+        <div class="title-area">
+          <h1>Live Events</h1>
+          <p class="lead mt-3">Upcoming and past performances—from intimate gigs to high-energy shows. Check back for updates!</p>
+          <a href="#events-grid" class="btn btn-success btn-lg mt-3">View Schedule</a>
+        </div>
+      </div>
 
-    <!-- Past Events -->
-    <section id="past-events" class="past-events">
-      <h2 class="text-center mb-4">Past Events</h2>
-      <div class="row" id="past-list"></div>
-    </section>
+      <div class="container py-5" id="events-grid">
+        <section id="upcoming-events">
+          <h2 class="text-center mb-4">Upcoming Events</h2>
+          <div id="upcoming-list"></div>
+        </section>
 
-    <div class="text-center mt-5">
-      <p>Want to book Lance for your next event? <a href="contact.html">Get in touch</a> today!</p>
+        <section id="past-events" class="past-events">
+          <h2 class="text-center mb-4">Past Events</h2>
+          <div class="row" id="past-list"></div>
+        </section>
+
+        <div class="text-center mt-5">
+          <p>Want to book Lance for your next event? <a href="contact.html">Get in touch</a> today!</p>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -126,7 +152,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
 
-  <!-- FULL EVENTS DATA – ALL ORIGINAL EVENTS RETAINED EXCEPT 10/24/2025 -->
+  <!-- FULL ORIGINAL EVENTS DATA (10/24/2025 removed, everything else retained) -->
   <script>
     const eventsData = [
       {
@@ -518,6 +544,29 @@
 
       const pastContainer = document.getElementById('past-list');
       pastEvents.forEach(event => pastContainer.innerHTML += generatePastCard(event));
+
+      // Transition video plays ONLY ONCE per session
+      const video = document.getElementById('intro-video');
+      const content = document.getElementById('main-content');
+
+      if (!sessionStorage.getItem('eventsIntroPlayed')) {
+        video.src = '/video/events-video-transition.mp4';
+        video.style.display = 'block';
+        video.play();
+
+        video.onended = () => {
+          sessionStorage.setItem('eventsIntroPlayed', 'true');
+          video.style.transition = 'opacity 1.2s ease';
+          video.style.opacity = '0';
+          setTimeout(() => {
+            video.style.display = 'none';
+            content.classList.add('show');
+          }, 1200);
+        };
+      } else {
+        // Skip video on repeat visits in same session
+        content.classList.add('show');
+      }
     });
   </script>
 </body>
