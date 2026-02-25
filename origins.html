@@ -47,47 +47,63 @@
       width: 120px;
       flex-shrink: 0;
     }
-    .hero-origins .title-area {
-      text-align: left;
-    }
-    .hero-origins h1 {
+    .hero-origins .title-area h1 {
       font-size: 3.4rem;
       color: #00ffcc;
       text-shadow: 0 0 25px #00ffcc, 0 0 50px #ff00aa;
       margin: 0;
     }
 
-    /* Holographic Carousel – Bigger images & text */
-    .holo-carousel {
-      background: rgba(10, 25, 50, 0.65);
-      border: 2px solid #00ffcc;
-      border-radius: 20px;
-      padding: 3rem;
+    /* Holographic Rectangle – 70% width, contained scroll */
+    .holo-box {
+      background: rgba(10, 25, 50, 0.68);
+      border: 3px solid #00ffcc;
+      border-radius: 24px;
+      padding: 2.5rem;
       margin: 0 auto;
-      max-width: 1100px;
-      box-shadow: 0 0 50px rgba(0, 255, 204, 0.45),
-                  inset 0 0 50px rgba(255, 0, 170, 0.2);
+      max-width: 70%;
+      max-height: 70vh;
+      overflow-y: auto;
+      box-shadow: 0 0 50px rgba(0, 255, 204, 0.5),
+                  inset 0 0 40px rgba(255, 0, 170, 0.25);
       backdrop-filter: blur(12px);
+      scrollbar-width: thin;
+      scrollbar-color: #00ffcc #112233;
     }
-    .holo-slide h3 {
+    .holo-box::-webkit-scrollbar {
+      width: 10px;
+    }
+    .holo-box::-webkit-scrollbar-thumb {
+      background: #00ffcc;
+      border-radius: 10px;
+    }
+    .holo-section {
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px dashed rgba(0, 255, 204, 0.3);
+    }
+    .holo-section:last-child { border-bottom: none; }
+    .holo-section h3 {
       color: #00ffcc;
       text-shadow: 0 0 20px #00ffcc;
-      font-size: 1.85rem;
+      font-size: 1.9rem;
+      margin-bottom: 1rem;
     }
-    .holo-slide p {
+    .holo-section p {
       color: #f0f0f0;
       line-height: 1.85;
-      font-size: 1.15rem; /* bigger text */
+      font-size: 1.18rem;
     }
     .thumb-carousel {
       display: flex;
       gap: 15px;
       overflow-x: auto;
-      padding: 20px 0;
+      padding: 15px 0;
+      scrollbar-width: thin;
     }
     .thumb-img {
-      width: 170px; /* bigger images */
-      height: 170px;
+      width: 180px;
+      height: 180px;
       object-fit: cover;
       border-radius: 14px;
       border: 3px solid #00ffcc;
@@ -100,35 +116,12 @@
       transform: scale(1.08);
       box-shadow: 0 0 30px #00ffcc;
     }
-
-    /* Share Button – Same neon/saloon motif */
-    #share-btn {
-      position: fixed;
-      bottom: 40px;
-      right: 40px;
-      background: rgba(10, 25, 50, 0.85);
-      border: 2px solid #00ffcc;
-      color: #00ffcc;
-      padding: 12px 28px;
-      border-radius: 30px;
-      font-weight: bold;
-      font-size: 1.1rem;
-      cursor: pointer;
-      box-shadow: 0 0 25px rgba(0,255,204,0.5);
-      transition: all 0.3s ease;
-      z-index: 10000;
-    }
-    #share-btn:hover {
-      transform: scale(1.1) rotate(3deg);
-      box-shadow: 0 0 40px #00ffcc;
-      background: rgba(255, 0, 170, 0.2);
-    }
   </style>
 </head>
 <body>
   <div id="nav-placeholder"></div>
 
-  <!-- Intro Video (plays once per session) -->
+  <!-- Intro Video (once per session) -->
   <video id="intro-video" muted playsinline></video>
 
   <div class="content-overlay">
@@ -147,26 +140,19 @@
         </div>
       </div>
 
-      <!-- Holographic Carousel -->
-      <div class="container py-5">
-        <div class="holo-carousel" id="holo-carousel">
-          <!-- Populated by JS -->
-        </div>
+      <!-- Holographic Scrollable Rectangle (70% width) -->
+      <div class="holo-box" id="holo-box">
+        <!-- Populated by JS -->
       </div>
     </div>
   </div>
-
-  <!-- Share Button -->
-  <button id="share-btn" onclick="sharePage()">
-    <i class="bi bi-share-fill"></i> SHARE THIS STORY
-  </button>
 
   <div id="footer-placeholder" class="tight-footer"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
 
-  <!-- Holographic Bio (Reverse Chronological) -->
+  <!-- Bio Data + Holographic Box -->
   <script>
     const bioSections = [
       { year: "2025", title: "The Whole Two Dollars Era", content: "We're almost 2 years in on production of this record \"The Whole Two Dollars\". We have released a couple singles from this album \"Too Drunk\" and Uber, both featuring Brent Mason. Brent has been a Godsend and a great friend and colleague on this album.", images: ["img/bandmembers/Brent Mason LIVE.png"] },
@@ -178,7 +164,7 @@
       { year: "1979", title: "Birth & Early Years", content: "I was born in the Baton Rouge Police Department Headquarters on July 3, 1979 at 3:33 am, and forged my path through shadows of loss, shades of truth, and FAFO grit.", images: [] }
     ];
 
-    function createSlide(section, index) {
+    function createSection(section) {
       let imagesHTML = '';
       if (section.images && section.images.length) {
         imagesHTML = `<div class="thumb-carousel mt-4">`;
@@ -188,7 +174,7 @@
         imagesHTML += `</div>`;
       }
       return `
-        <div class="holo-slide ${index === 0 ? 'active' : ''}" data-index="${index}">
+        <div class="holo-section">
           <h3>${section.year} — ${section.title}</h3>
           <p>${section.content}</p>
           ${imagesHTML}
@@ -197,35 +183,12 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      const carousel = document.getElementById('holo-carousel');
+      const box = document.getElementById('holo-box');
       let html = '';
-      bioSections.forEach((section, i) => html += createSlide(section, i));
-      carousel.innerHTML = html;
+      bioSections.forEach(section => html += createSection(section));
+      box.innerHTML = html;
 
-      let current = 0;
-      const slides = document.querySelectorAll('.holo-slide');
-
-      window.changeSlide = (dir) => {
-        slides[current].classList.remove('active');
-        current = (current + dir + slides.length) % slides.length;
-        slides[current].classList.add('active');
-      };
-
-      // Add navigation arrows
-      const prev = document.createElement('button');
-      prev.innerHTML = '←';
-      prev.style.cssText = 'position:absolute; left:30px; top:50%; transform:translateY(-50%); background:none; border:none; font-size:2.5rem; color:#00ffcc; cursor:pointer; z-index:10;';
-      prev.onclick = () => changeSlide(-1);
-
-      const next = document.createElement('button');
-      next.innerHTML = '→';
-      next.style.cssText = 'position:absolute; right:30px; top:50%; transform:translateY(-50%); background:none; border:none; font-size:2.5rem; color:#00ffcc; cursor:pointer; z-index:10;';
-      next.onclick = () => changeSlide(1);
-
-      carousel.appendChild(prev);
-      carousel.appendChild(next);
-
-      // Intro video plays only once per session
+      // Intro video once per session
       const video = document.getElementById('intro-video');
       const content = document.getElementById('main-content');
 
@@ -253,21 +216,6 @@
       modal.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); display:flex; align-items:center; justify-content:center; z-index:10002;';
       modal.innerHTML = `<img src="${src}" style="max-width:90%; max-height:90%; border-radius:16px; box-shadow:0 0 50px #00ffcc;" onclick="this.parentElement.remove()">`;
       document.body.appendChild(modal);
-    }
-
-    // Share Button
-    function sharePage() {
-      if (navigator.share) {
-        navigator.share({
-          title: 'Origins of Lance Woolie',
-          text: 'From bayou struggles to country gold — the full story.',
-          url: window.location.href
-        });
-      } else {
-        navigator.clipboard.writeText(window.location.href).then(() => {
-          alert('Link copied to clipboard! Share the story.');
-        });
-      }
     }
   </script>
 </body>
