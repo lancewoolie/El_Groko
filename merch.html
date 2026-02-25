@@ -28,7 +28,7 @@
       min-height: 100vh;
       padding-top: 90px;
     }
-    /* HERO – Doors only (top-left, no title) */
+    /* HERO – Doors only (top-left) */
     .hero-merch {
       display: flex;
       align-items: center;
@@ -45,7 +45,7 @@
     }
     .hero-merch .doors:hover { transform: scale(1.08); }
 
-    /* Futuristic Neon Cards */
+    /* Cards */
     .card {
       background: rgba(10, 25, 50, 0.75);
       border: 2px solid #00ffcc;
@@ -63,24 +63,10 @@
                   inset 0 0 40px rgba(255, 0, 170, 0.3);
       border-color: #ff00aa;
     }
-    .card-img-top {
-      height: 260px;
-      object-fit: cover;
-    }
-    .card-body {
-      padding: 1.8rem;
-      text-align: center;
-    }
-    .card h3 {
-      color: #00ffcc;
-      text-shadow: 0 0 15px #00ffcc;
-      font-size: 1.55rem;
-    }
-    .card p {
-      color: #f0f0f0;
-      line-height: 1.7;
-      font-size: 1.05rem;
-    }
+    .card-img-top { height: 260px; object-fit: cover; }
+    .card-body { padding: 1.8rem; text-align: center; }
+    .card h3 { color: #00ffcc; text-shadow: 0 0 15px #00ffcc; font-size: 1.55rem; }
+    .card p { color: #f0f0f0; line-height: 1.7; font-size: 1.05rem; }
     .price-tag {
       background: #001f3f;
       color: #FFD700;
@@ -90,7 +76,6 @@
       display: inline-block;
       margin: 1rem 0;
     }
-    /* Highlighted New Release - Crazy Arms */
     .new-release {
       border: 4px solid #ff00aa !important;
       box-shadow: 0 0 40px #ff00aa, 0 0 80px rgba(255, 0, 170, 0.6) !important;
@@ -114,26 +99,26 @@
 <body>
   <div id="nav-placeholder"></div>
 
-  <!-- VIDEO TRANSITION OVERLAY – SOUND ENABLED AT 50% VOLUME -->
+  <!-- VIDEO TRANSITION OVERLAY – SOUND 50% -->
   <div id="transition-overlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:9999;display:none;overflow:hidden;background:#000;">
-    <video id="forward-video" class="transition-video" playsinline style="width:100%;height:100%;object-fit:cover;"></video>
-    <video id="reverse-video" class="transition-video" playsinline style="width:100%;height:100%;object-fit:cover;display:none;"></video>
+    <video id="forward-video" playsinline style="width:100%;height:100%;object-fit:cover;"></video>
+    <video id="reverse-video" playsinline style="width:100%;height:100%;object-fit:cover;display:none;"></video>
   </div>
 
   <div class="content-overlay">
     <div class="content" id="main-content">
-      <!-- HERO – Doors only (top-left, no title) -->
+      <!-- Doors only -->
       <div class="hero-merch">
         <img id="saloon-doors-back"
              src="/img/moonsaloon/saloon-doors-nav.png"
              class="doors"
-             alt="Back to Saloon">
+             alt="Back to Moon Saloon">
       </div>
 
       <!-- Merch Grid -->
       <div class="container py-5" id="merch-grid">
         <div class="row g-4">
-          <!-- NEW HIGHLIGHTED ITEM - Crazy Arms (Top of page) -->
+          <!-- Crazy Arms NEW -->
           <div class="col-md-6 col-lg-4">
             <div class="card new-release">
               <img src="img/CrazyArmsweb.jpg" alt="Crazy Arms Single" class="card-img-top">
@@ -157,7 +142,7 @@
               </div>
             </div>
           </div>
-          <!-- Uber Single -->
+          <!-- Uber -->
           <div class="col-md-6 col-lg-4">
             <div class="card">
               <img src="https://f4.bcbits.com/img/a2855470268_10.jpg" alt="Uber Single Cover" class="card-img-top">
@@ -169,7 +154,7 @@
               </div>
             </div>
           </div>
-          <!-- Too Drunk Single -->
+          <!-- Too Drunk -->
           <div class="col-md-6 col-lg-4">
             <div class="card">
               <img src="https://f4.bcbits.com/img/a1387979790_10.jpg" alt="Too Drunk Single Cover" class="card-img-top">
@@ -181,7 +166,7 @@
               </div>
             </div>
           </div>
-          <!-- Country Paradise Album -->
+          <!-- Country Paradise -->
           <div class="col-md-6 col-lg-4">
             <div class="card">
               <img src="img/COUNTRY-PARADISE-scaled.jpg" alt="Country Paradise Album Cover" class="card-img-top">
@@ -206,10 +191,8 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
 
-  <!-- FULL MERCH PAGE LOGIC + VIDEO TRANSITIONS (sound at 50%) -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // VIDEO TRANSITION SYSTEM – SOUND AT 50% VOLUME, PLAYS EVERY TIME
       const overlay = document.getElementById('transition-overlay');
       const forwardVideo = document.getElementById('forward-video');
       const reverseVideo = document.getElementById('reverse-video');
@@ -218,7 +201,7 @@
       forwardVideo.src = '/video/merch-video-transition.mp4';
       reverseVideo.src = '/video/merch-video-reverse.mp4';
 
-      // Forward transition on every page load (50% volume)
+      // Forward on every load
       overlay.style.display = 'block';
       forwardVideo.style.display = 'block';
       forwardVideo.volume = 0.5;
@@ -229,7 +212,7 @@
         content.classList.add('show');
       };
 
-      // Reverse transition on doors click (50% volume, full play before return)
+      // Reverse on doors click + return to saloon
       document.getElementById('saloon-doors-back').addEventListener('click', (e) => {
         e.preventDefault();
         overlay.style.display = 'block';
