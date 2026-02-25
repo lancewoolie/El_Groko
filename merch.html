@@ -107,6 +107,26 @@
       display: inline-block;
       margin: 1rem 0;
     }
+
+    /* Highlighted New Release - Crazy Arms */
+    .new-release {
+      border: 4px solid #ff00aa !important;
+      box-shadow: 0 0 40px #ff00aa, 0 0 80px rgba(255, 0, 170, 0.6) !important;
+      position: relative;
+    }
+    .new-release::after {
+      content: "NEW RELEASE";
+      position: absolute;
+      top: -14px;
+      right: 20px;
+      background: #ff00aa;
+      color: #000;
+      font-weight: bold;
+      padding: 4px 18px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      box-shadow: 0 0 15px #ff00aa;
+    }
   </style>
 </head>
 <body>
@@ -137,13 +157,26 @@
       <div class="container py-5" id="merch-grid">
         <div class="row g-4">
 
+          <!-- NEW HIGHLIGHTED ITEM - Crazy Arms (Top of page) -->
+          <div class="col-md-6 col-lg-4">
+            <div class="card new-release">
+              <img src="img/CrazyArmsweb.jpg" alt="Crazy Arms Single" class="card-img-top">
+              <div class="card-body">
+                <h3>Crazy Arms feat. Brent Mason & Scotty Sanders (2025)</h3>
+                <p>A honky tonk instant classic written by Legendary steel guitar player Ralph Mooney that gets your feet stomping on the dancefloor.</p>
+                <span class="price-tag">$1.29</span>
+                <a href="https://orcd.co/crazyarms" class="btn btn-success w-100" target="_blank">Stream Now</a>
+              </div>
+            </div>
+          </div>
+
           <!-- Chicken Socks -->
           <div class="col-md-6 col-lg-4">
             <div class="card">
               <img src="https://f4.bcbits.com/img/0041177986_10.jpg" alt="Cluck Yeah Chicken Socks" class="card-img-top">
               <div class="card-body">
                 <h3>Cluck Yeah Chicken Socks</h3>
-                <p>Strut your stuff with our exclusive Chicken Socks – the ultimate feather in your foot fashion! These sleek, jet-black socks are crafted from premium Chinese cotton, a buttery-soft blend that's as cozy as a hen house hug and tough enough to handle your wildest stage dives. One size fits all, worn by Lance on stage for unbeatable grip and vibes. Limited stock—ships within 5 days.</p>
+                <p>Strut your stuff with our exclusive Chicken Socks – the ultimate feather in your foot fashion! These sleek, jet-black socks are crafted from premium Chinese cotton...</p>
                 <span class="price-tag">$10</span>
                 <a href="https://lancewoolie.bandcamp.com/merch/chicken-socks-cluck-yeah-step-into-the-flock" class="btn btn-success w-100" target="_blank">Buy Now</a>
               </div>
@@ -156,7 +189,7 @@
               <img src="https://f4.bcbits.com/img/a2855470268_10.jpg" alt="Uber Single Cover" class="card-img-top">
               <div class="card-body">
                 <h3>Uber (Single)</h3>
-                <p>A danceable neotraditional tune evoking lost love, featuring Brent Mason on electric guitar and Scotty Sanders on slide. Lance's raw vocals shine—no auto-tune, pure bayou heart. Unlimited streaming or high-quality download in MP3, FLAC (24-bit/88.2kHz available).</p>
+                <p>A danceable neotraditional tune evoking lost love, featuring Brent Mason on electric guitar and Scotty Sanders on slide.</p>
                 <span class="price-tag">$1.29</span>
                 <a href="https://lancewoolie.bandcamp.com/track/uber" class="btn btn-success w-100" target="_blank">Buy Now</a>
               </div>
@@ -182,7 +215,7 @@
               <img src="img/COUNTRY-PARADISE-scaled.jpg" alt="Country Paradise Album Cover" class="card-img-top">
               <div class="card-body">
                 <h3>Country Paradise Album (2021)</h3>
-                <p>The debut album by Hogleg band with frontman Lance Woolie—a labor of love weaving life's scars and triumphs into raw, reflective country anthems. Full tracklist available; CD or digital download with high-quality audio.</p>
+                <p>The debut album by Hogleg band with frontman Lance Woolie—a labor of love weaving life's scars and triumphs into raw, reflective country anthems.</p>
                 <span class="price-tag">$10</span>
                 <a href="https://lancewoolie.bandcamp.com/album/country-paradise" class="btn btn-success w-100" target="_blank">Buy Now</a>
               </div>
