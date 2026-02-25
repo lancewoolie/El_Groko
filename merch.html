@@ -3,290 +3,228 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Merch - Lance Woolie - Do it.</title>
+  <title>Moon General Store - Lance Woolie’s Moon Saloon</title>
   <link href="https://fonts.googleapis.com/css2?family=Georgia&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/png" href="img/LanceWoolieHeadonly.png">
-  <meta name="description" content="Merch - Lance Woolie - Do it. Grab exclusive bayou gear, albums, and fan favorites.">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://cdn.jsdelivr.net https://www.youtube.com https://bandcamp.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https: blob:; frame-src 'self' https://www.youtube.com https://bandcamp.com; font-src 'self' https://fonts.gstatic.com; object-src 'none'">
-  <meta http-equiv="X-Frame-Options" content="DENY">
-  <meta http-equiv="X-Content-Type-Options" content="nosniff">
-  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
   <style>
     body {
-      background-color: #1e3a8a; /* Dark royal blue - matches events */
-      color: #E0E0E0; /* Light grey text */
-      padding-bottom: 60px; /* Space for fixed footer */
+      background: url('/img/moonsaloon/merch-base-bg.jpg') center/cover no-repeat fixed !important;
+      color: #E0E0E0;
+      font-family: 'Georgia', serif;
+      margin: 0;
+      padding-bottom: 100px;
     }
+    #intro-video {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: 9999;
+      display: none;
+      background: #000;
+    }
+    .content {
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      transition: opacity 1.2s ease;
+    }
+    .content.show { opacity: 1; }
+    .content-overlay {
+      background: rgba(0, 15, 40, 0.18);
+      min-height: 100vh;
+      padding-top: 120px;
+    }
+
+    /* HERO – Doors static top-left */
     .hero-merch {
-      background: linear-gradient(rgba(0, 31, 63, 0.8), rgba(30, 58, 138, 0.8)), url('img/ai-bayou-swamp.jpg') center/cover;
-      color: white;
-      padding: 80px 0;
-      text-align: center;
-      margin-top: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 40px;
+      padding: 60px 0 40px;
+      flex-wrap: wrap;
+    }
+    .hero-merch .doors {
+      width: 120px;
+      flex-shrink: 0;
+    }
+    .hero-merch .title-area {
+      text-align: left;
     }
     .hero-merch h1 {
-      font-size: 3rem;
-      font-weight: bold;
-      color: #FFD700; /* Gold hero title */
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+      font-size: 3.2rem;
+      color: #00ffcc;
+      text-shadow: 0 0 25px #00ffcc, 0 0 50px #ff00aa;
+      margin: 0;
     }
-    .hero-merch .lead {
-      font-size: 1.25rem;
-      color: #E0E0E0;
-    }
-    .merch-card {
-      background-color: #1e3a8a;
-      border: 2px solid #0074D9;
-      border-radius: 15px;
+
+    /* Futuristic Neon Cards */
+    .card {
+      background: rgba(10, 25, 50, 0.75);
+      border: 2px solid #00ffcc;
+      border-radius: 16px;
       overflow: hidden;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
       height: 100%;
+      box-shadow: 0 0 25px rgba(0, 255, 204, 0.3),
+                  inset 0 0 25px rgba(255, 0, 170, 0.15);
+      transition: all 0.4s ease;
+      backdrop-filter: blur(8px);
     }
-    .merch-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 10px 25px rgba(0, 116, 217, 0.3);
-      border-color: #FFD700;
+    .card:hover {
+      transform: translateY(-12px) scale(1.02);
+      box-shadow: 0 0 40px rgba(0, 255, 204, 0.6),
+                  inset 0 0 40px rgba(255, 0, 170, 0.3);
+      border-color: #ff00aa;
     }
-    .merch-card img {
-      width: 100%;
-      height: 250px;
+    .card-img-top {
+      height: 260px;
       object-fit: cover;
     }
-    .merch-card .card-body {
-      padding: 1.5rem;
+    .card-body {
+      padding: 1.8rem;
       text-align: center;
     }
-    .merch-card h3 {
-      color: #FFD700; /* Gold titles */
-      font-weight: bold;
-      margin-bottom: 1rem;
+    .card h3 {
+      color: #00ffcc;
+      text-shadow: 0 0 15px #00ffcc;
+      font-size: 1.55rem;
     }
-    .merch-card p {
-      color: #E0E0E0;
-      font-size: 0.95rem;
-      margin-bottom: 1rem;
-    }
-    .btn-buy {
-      background-color: #FFD700;
-      border-color: #FFD700;
-      color: #001f3f;
-      font-weight: bold;
-      padding: 0.75rem 2rem;
-      border-radius: 25px;
-      transition: all 0.3s ease;
-    }
-    .btn-buy:hover {
-      background-color: #e6c200;
-      border-color: #e6c200;
-      transform: scale(1.05);
-      color: #001f3f;
+    .card p {
+      color: #f0f0f0;
+      line-height: 1.7;
+      font-size: 1.05rem;
     }
     .price-tag {
       background: #001f3f;
       color: #FFD700;
-      padding: 0.5rem 1rem;
-      border-radius: 20px;
+      padding: 0.6rem 1.4rem;
+      border-radius: 30px;
       font-weight: bold;
       display: inline-block;
-      margin-top: 0.5rem;
-    }
-    .tight-footer {
-      background: #001f3f !important;
-      opacity: 1 !important;
-      position: fixed !important;
-      bottom: 0 !important;
-      left: 0 !important;
-      right: 0 !important;
-      width: 100% !important;
-      z-index: 1001 !important;
-      border-top: 1px solid #0074D9;
-    }
-    /* Enhanced Header Styles for Scoreboard and Health Bar - from index */
-    .score-header {
-      background: linear-gradient(90deg, #1e3a8a, #001f3f, #1e3a8a);
-      border-radius: 25px;
-      padding: 8px 16px;
-      box-shadow: 0 4px 15px rgba(0, 116, 217, 0.3), inset 0 1px 0 rgba(255, 215, 0, 0.1);
-      border: 1px solid #0074D9;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .score-header::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.05), transparent);
-      animation: shimmer 3s infinite;
-      z-index: 0;
-    }
-
-    @keyframes shimmer {
-      0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-      100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-    }
-
-    .health-display, .score-display {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(0, 0, 0, 0.2);
-      padding: 4px 8px;
-      border-radius: 15px;
-      border: 1px solid rgba(255, 215, 0, 0.3);
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-      transition: all 0.3s ease;
-    }
-
-    .health-display:hover, .score-display:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 10px rgba(255, 215, 0, 0.4);
-      border-color: #FFD700;
-    }
-
-    .score-label {
-      font-size: 0.85rem;
-      color: #E0E0E0;
-      font-weight: bold;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-    }
-
-    #score-value {
-      font-family: 'Courier New', monospace;
-      font-size: 1.1rem;
-      font-weight: bold;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-      min-width: 80px;
-      text-align: right;
-    }
-
-    .score-zero { color: #808080; }
-    .score-low { color: #FFA500; }
-    .score-mid { color: #FFD700; }
-    .score-high { color: #FF4500; }
-    .score-max { color: #00FFFF; }
-
-    .score-display.updated, .health-display.updated {
-      animation: pulse 0.5s ease;
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(1); box-shadow: 0 0 0 rgba(255, 215, 0, 0); }
-      50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(255, 215, 0, 0.6); }
-      100% { transform: scale(1); box-shadow: 0 0 0 rgba(255, 215, 0, 0); }
-    }
-
-    /* Standard Health Bar Styles */
-    #health-bar {
-      width: 100px;
-      height: 18px;
-      background: rgba(0, 0, 0, 0.3);
-      border-radius: 4px;
-      overflow: hidden;
-      border: 1px solid #0074D9;
-      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(255, 215, 0, 0.3);
-    }
-
-    #health-progress {
-      height: 100%;
-      transition: width 0.8s ease, background-color 0.3s ease;
-      border-radius: 3px;
-    }
-
-    /* Blink Animation for Low Health */
-    .health-display.low-health {
-      animation: rapid-blink 0.2s infinite;
-    }
-
-    @keyframes rapid-blink {
-      0%, 50% { opacity: 1; }
-      51%, 100% { opacity: 0.3; }
+      margin: 1rem 0;
     }
   </style>
 </head>
 <body>
-  <div id="nav-placeholder"></div> <!-- Dynamic Nav Insert Here -->
+  <div id="nav-placeholder"></div>
 
-  <!-- Hero Section -->
-  <section class="hero-merch">
-    <div class="container">
-      <h1 class="mb-4">Shop the Swamp Soul</h1>
-      <p class="lead">Exclusive gear and tunes straight from the bayou—wear the twang, stream the grit. Limited drops for true fans. Do it.</p>
-      <a href="#merch-grid" class="btn btn-success btn-lg mt-3">Browse Collection</a>
-    </div>
-  </section>
+  <!-- Intro Video (plays once per session) -->
+  <video id="intro-video" muted playsinline></video>
 
-  <!-- Merch Grid -->
-  <div class="container py-5" id="merch-grid">
-    <div class="row g-4">
-      <!-- Chicken Socks -->
-      <div class="col-md-6 col-lg-4">
-        <div class="merch-card">
-          <img src="https://f4.bcbits.com/img/0041177986_10.jpg" alt="Cluck Yeah Chicken Socks" class="card-img-top">
-          <div class="card-body">
-            <h3>Cluck Yeah Chicken Socks</h3>
-            <p>Strut your stuff with our exclusive Chicken Socks – the ultimate feather in your foot fashion! These sleek, jet-black socks are crafted from premium Chinese cotton, a buttery-soft blend that's as cozy as a hen house hug and tough enough to handle your wildest stage dives. One size fits all, worn by Lance on stage for unbeatable grip and vibes. Limited stock—ships within 5 days.</p>
-            <span class="price-tag">$10</span>
-            <a href="https://lancewoolie.bandcamp.com/merch/chicken-socks-cluck-yeah-step-into-the-flock" class="btn btn-buy mt-3" target="_blank">Buy Now</a>
-          </div>
+  <div class="content-overlay">
+    <div class="content" id="main-content">
+      <!-- HERO – Doors static top-left -->
+      <div class="hero-merch">
+        <img id="saloon-doors-back" 
+             src="/img/moonsaloon/saloon-doors-nav.png" 
+             class="moonsaloon-prop doors" 
+             data-link="index.html" 
+             data-score="100" 
+             data-max-hits="1"
+             alt="Back to Saloon">
+
+        <div class="title-area">
+          <h1>Moon General Store</h1>
+          <p class="lead mt-3">Exclusive gear and tunes straight from the bayou—wear the twang, stream the grit. Limited drops for true fans. Do it.</p>
         </div>
       </div>
 
-      <!-- Uber Single -->
-      <div class="col-md-6 col-lg-4">
-        <div class="merch-card">
-          <img src="https://f4.bcbits.com/img/a2855470268_10.jpg" alt="Uber Single Cover" class="card-img-top">
-          <div class="card-body">
-            <h3>Uber (Single)</h3>
-            <p>A danceable neotraditional tune evoking lost love, featuring Brent Mason on electric guitar and Scotty Sanders on slide. Lance's raw vocals shine—no auto-tune, pure bayou heart. Unlimited streaming or high-quality download in MP3, FLAC (24-bit/88.2kHz available).</p>
-            <span class="price-tag">$1.29</span>
-            <a href="https://lancewoolie.bandcamp.com/track/uber" class="btn btn-buy mt-3" target="_blank">Buy Now</a>
-          </div>
-        </div>
-      </div>
+      <!-- Merch Grid -->
+      <div class="container py-5" id="merch-grid">
+        <div class="row g-4">
 
-      <!-- Too Drunk Single -->
-      <div class="col-md-6 col-lg-4">
-        <div class="merch-card">
-          <img src="https://f4.bcbits.com/img/a1387979790_10.jpg" alt="Too Drunk Single Cover" class="card-img-top">
-          <div class="card-body">
-            <h3>Too Drunk (Single)</h3>
-            <p>The debut release co-created with Legendary Guitarist Brent Mason—raw, captivating country grit.</p>
-            <span class="price-tag">$1.29</span>
-            <a href="https://lancewoolie.bandcamp.com/track/too-drunk-ft-brent-mason" class="btn btn-buy mt-3" target="_blank">Buy Now</a>
+          <!-- Chicken Socks -->
+          <div class="col-md-6 col-lg-4">
+            <div class="card">
+              <img src="https://f4.bcbits.com/img/0041177986_10.jpg" alt="Cluck Yeah Chicken Socks" class="card-img-top">
+              <div class="card-body">
+                <h3>Cluck Yeah Chicken Socks</h3>
+                <p>Strut your stuff with our exclusive Chicken Socks – the ultimate feather in your foot fashion! These sleek, jet-black socks are crafted from premium Chinese cotton, a buttery-soft blend that's as cozy as a hen house hug and tough enough to handle your wildest stage dives. One size fits all, worn by Lance on stage for unbeatable grip and vibes. Limited stock—ships within 5 days.</p>
+                <span class="price-tag">$10</span>
+                <a href="https://lancewoolie.bandcamp.com/merch/chicken-socks-cluck-yeah-step-into-the-flock" class="btn btn-success w-100" target="_blank">Buy Now</a>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
 
-      <!-- Country Paradise Album -->
-      <div class="col-md-6 col-lg-4">
-        <div class="merch-card">
-          <img src="img/COUNTRY-PARADISE-scaled.jpg" alt="Country Paradise Album Cover" class="card-img-top">
-          <div class="card-body">
-            <h3>Country Paradise Album (2021)</h3>
-            <p>The debut album by Hogleg band with frontman Lance Woolie—a labor of love weaving life's scars and triumphs into raw, reflective country anthems. Full tracklist available; CD or digital download with high-quality audio.</p>
-            <span class="price-tag">$10</span>
-            <a href="https://lancewoolie.bandcamp.com/album/country-paradise" class="btn btn-buy mt-3" target="_blank">Buy Now</a>
+          <!-- Uber Single -->
+          <div class="col-md-6 col-lg-4">
+            <div class="card">
+              <img src="https://f4.bcbits.com/img/a2855470268_10.jpg" alt="Uber Single Cover" class="card-img-top">
+              <div class="card-body">
+                <h3>Uber (Single)</h3>
+                <p>A danceable neotraditional tune evoking lost love, featuring Brent Mason on electric guitar and Scotty Sanders on slide. Lance's raw vocals shine—no auto-tune, pure bayou heart. Unlimited streaming or high-quality download in MP3, FLAC (24-bit/88.2kHz available).</p>
+                <span class="price-tag">$1.29</span>
+                <a href="https://lancewoolie.bandcamp.com/track/uber" class="btn btn-success w-100" target="_blank">Buy Now</a>
+              </div>
+            </div>
           </div>
+
+          <!-- Too Drunk Single -->
+          <div class="col-md-6 col-lg-4">
+            <div class="card">
+              <img src="https://f4.bcbits.com/img/a1387979790_10.jpg" alt="Too Drunk Single Cover" class="card-img-top">
+              <div class="card-body">
+                <h3>Too Drunk (Single)</h3>
+                <p>The debut release co-created with Legendary Guitarist Brent Mason—raw, captivating country grit.</p>
+                <span class="price-tag">$1.29</span>
+                <a href="https://lancewoolie.bandcamp.com/track/too-drunk-ft-brent-mason" class="btn btn-success w-100" target="_blank">Buy Now</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Country Paradise Album -->
+          <div class="col-md-6 col-lg-4">
+            <div class="card">
+              <img src="img/COUNTRY-PARADISE-scaled.jpg" alt="Country Paradise Album Cover" class="card-img-top">
+              <div class="card-body">
+                <h3>Country Paradise Album (2021)</h3>
+                <p>The debut album by Hogleg band with frontman Lance Woolie—a labor of love weaving life's scars and triumphs into raw, reflective country anthems. Full tracklist available; CD or digital download with high-quality audio.</p>
+                <span class="price-tag">$10</span>
+                <a href="https://lancewoolie.bandcamp.com/album/country-paradise" class="btn btn-success w-100" target="_blank">Buy Now</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="text-center mt-5">
+          <p class="lead">Can't find what you're looking for? <a href="contact.html">Hit us up</a> for custom requests—bayou style.</p>
         </div>
       </div>
-    </div>
-    <div class="text-center mt-5">
-      <p class="lead">Can't find what you're looking for? <a href="contact.html">Hit us up</a> for custom requests—bayou style.</p>
     </div>
   </div>
 
-  <div id="footer-placeholder"></div> <!-- Dynamic Footer Insert Here - Fixed Floating -->
+  <div id="footer-placeholder" class="tight-footer"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
+
+  <!-- Intro Video Logic (plays once per session) -->
+  <script>
+    const video = document.getElementById('intro-video');
+    const content = document.getElementById('main-content');
+
+    if (!sessionStorage.getItem('merchIntroPlayed')) {
+      video.src = '/video/merch-video-transition.mp4';
+      video.style.display = 'block';
+      video.play();
+
+      video.onended = () => {
+        sessionStorage.setItem('merchIntroPlayed', 'true');
+        video.style.transition = 'opacity 1.2s ease';
+        video.style.opacity = '0';
+        setTimeout(() => {
+          video.style.display = 'none';
+          content.classList.add('show');
+        }, 1200);
+      };
+    } else {
+      content.classList.add('show');
+    }
+  </script>
 </body>
 </html>
