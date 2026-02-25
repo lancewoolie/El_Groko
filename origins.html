@@ -3,526 +3,282 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Origins of Lance Woolie - Do it.</title>
+  <title>Origins - Lance Woolie’s Moon Saloon</title>
   <link href="https://fonts.googleapis.com/css2?family=Georgia&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/png" href="img/LanceWoolieHeadonly.png">
-  <meta name="description" content="Origins - Lance Woolie - Do it. From bayou struggles to country gold.">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://cdn.jsdelivr.net https://www.youtube.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https: blob:; frame-src 'self' https://www.youtube.com; font-src 'self' https://fonts.gstatic.com; object-src 'none'">
-  <meta http-equiv="X-Frame-Options" content="DENY">
-  <meta http-equiv="X-Content-Type-Options" content="nosniff">
-  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
-  <!-- Email Signup Head Tags -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script src="https://static.elfsight.com/platform/platform.js" data-use-service-core defer></script>
   <style>
     body {
-      background-color: #1e3a8a; /* Dark royal blue - matches merch */
-      color: #E0E0E0; /* Light grey text */
-      padding-bottom: 60px; /* Space for fixed footer */
+      background: url('/img/moonsaloon/origins-base-bg.jpg') center/cover no-repeat fixed !important;
+      color: #E0E0E0;
       font-family: 'Georgia', serif;
-      touch-action: pan-y;
-      overflow-x: hidden;
+      margin: 0;
+      padding-bottom: 100px;
     }
-    body::before {
-      content: '';
+    #intro-video {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      pointer-events: none;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: 9999;
+      display: none;
+      background: #000;
     }
+    .content {
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      transition: opacity 1.2s ease;
+    }
+    .content.show { opacity: 1; }
+
+    /* HERO – Doors static top-left */
     .hero-origins {
-      background: linear-gradient(rgba(0, 31, 63, 0.8), rgba(30, 58, 138, 0.8)), url('img/ai-bayou-swamp.jpg') center/cover;
-      color: white;
-      padding: 60px 0;
-      text-align: center;
-      margin-top: 80px;
-    }
-    .hero-origins h1 {
-      font-size: 2.5rem;
-      font-weight: bold;
-      color: #FFD700; /* Gold hero title */
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-    }
-    .hero-origins .lead {
-      font-size: 1.1rem;
-      color: #E0E0E0;
-    }
-    .bio-container {
-      background-color: rgba(30, 58, 138, 0.2);
-      border: 1px solid #0074D9;
-      border-radius: 15px;
-      padding: 30px;
-      margin-bottom: 2rem;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      overflow: visible; /* Changed to allow better float wrapping */
-    }
-    .bio-container:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 25px rgba(0, 116, 217, 0.4);
-      border-color: #FFD700;
-    }
-    .bio-container p {
-      font-size: 1.1rem;
-      line-height: 1.7;
-      margin-bottom: 1rem; /* Tightened for better flow */
-      color: #E0E0E0;
-      text-align: justify;
-    }
-    .bio-container .timeline-year {
-      font-size: 1.3rem;
-      color: #FFD700;
-      font-weight: bold;
-      text-align: left;
-      margin: 2rem 0 1rem 0;
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-      display: inline-block;
-    }
-    .year-row {
       display: flex;
       align-items: center;
-      margin-bottom: 1rem;
+      justify-content: center;
+      gap: 40px;
+      padding: 60px 0 40px;
+      flex-wrap: wrap;
+    }
+    .hero-origins .doors {
+      width: 120px;
+      flex-shrink: 0;
+    }
+    .hero-origins .title-area {
+      text-align: left;
+    }
+    .hero-origins h1 {
+      font-size: 3.2rem;
+      color: #00ffcc;
+      text-shadow: 0 0 20px #00ffcc, 0 0 40px #ff00aa;
+      margin: 0;
+    }
+
+    /* Holographic Carousel Container */
+    .holo-carousel {
+      background: rgba(10, 25, 50, 0.65);
+      border: 2px solid #00ffcc;
+      border-radius: 20px;
+      padding: 2.5rem;
+      margin: 0 auto;
+      max-width: 1100px;
+      box-shadow: 0 0 40px rgba(0, 255, 204, 0.4),
+                  inset 0 0 40px rgba(255, 0, 170, 0.15);
+      backdrop-filter: blur(12px);
+      position: relative;
+      overflow: hidden;
+    }
+    .holo-slide {
+      display: none;
+    }
+    .holo-slide.active {
+      display: block;
+      animation: holoFade 0.8s ease;
+    }
+    @keyframes holoFade {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .holo-slide h3 {
+      color: #00ffcc;
+      text-shadow: 0 0 15px #00ffcc;
+      font-size: 1.6rem;
+    }
+    .holo-slide p {
+      color: #f0f0f0;
+      line-height: 1.75;
+      font-size: 1.05rem;
     }
     .thumb-carousel {
       display: flex;
+      gap: 12px;
       overflow-x: auto;
-      gap: 0.5rem;
-      padding: 0.5rem 0;
-      flex-shrink: 0;
+      padding: 15px 0;
       scrollbar-width: thin;
-      -ms-overflow-style: none;
-      justify-content: flex-start;
-    }
-    .thumb-carousel::-webkit-scrollbar {
-      height: 4px;
     }
     .thumb-img {
-      width: 140px;
-      height: 140px;
+      width: 130px;
+      height: 130px;
       object-fit: cover;
-      border-radius: 8px;
+      border-radius: 12px;
+      border: 2px solid #00ffcc;
       cursor: pointer;
       flex-shrink: 0;
-      transition: transform 0.2s;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-    }
-    .thumb-img:hover {
-      transform: scale(1.1);
-    }
-    /* Modal for band images */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 10002;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0,0,0,0.9);
-    }
-    .modal-content {
-      margin: auto;
-      display: block;
-      width: 80%;
-      max-width: 700px;
-      max-height: 80%;
-      cursor: pointer;
-    }
-    .close {
-      position: absolute;
-      top: 15px;
-      right: 35px;
-      color: #f1f1f1;
-      font-size: 40px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .subscribe-btn {
-      cursor: pointer;
-      transition: transform 0.3s ease; /* Smooth hover behavior */
-    }
-    .subscribe-btn:hover {
-      transform: scale(1.05); /* Subtle scale on hover */
-    }
-    .tight-footer {
-      background: #001f3f !important;
-      opacity: 1 !important;
-      position: fixed !important;
-      bottom: 0 !important;
-      left: 0 !important;
-      right: 0 !important;
-      width: 100% !important;
-      z-index: 1001 !important;
-      border-top: 1px solid #0074D9;
-    }
-    /* Email signup form styles if needed */
-    .email-signup {
-      background: rgba(30, 58, 138, 0.9);
-      border-radius: 10px;
-      padding: 20px;
-      margin-top: 20px;
-    }
-    /* Enhanced Header Styles for Scoreboard and Health Bar - from index */
-    .score-header {
-      background: linear-gradient(90deg, #1e3a8a, #001f3f, #1e3a8a);
-      border-radius: 25px;
-      padding: 8px 16px;
-      box-shadow: 0 4px 15px rgba(0, 116, 217, 0.3), inset 0 1px 0 rgba(255, 215, 0, 0.1);
-      border: 1px solid #0074D9;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .score-header::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.05), transparent);
-      animation: shimmer 3s infinite;
-      z-index: 0;
-    }
-
-    @keyframes shimmer {
-      0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-      100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-    }
-
-    .health-display, .score-display {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(0, 0, 0, 0.2);
-      padding: 4px 8px;
-      border-radius: 15px;
-      border: 1px solid rgba(255, 215, 0, 0.3);
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
       transition: all 0.3s ease;
     }
-
-    .health-display:hover, .score-display:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 10px rgba(255, 215, 0, 0.4);
-      border-color: #FFD700;
-    }
-
-    .score-label {
-      font-size: 0.85rem;
-      color: #E0E0E0;
-      font-weight: bold;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-    }
-
-    #score-value {
-      font-family: 'Courier New', monospace;
-      font-size: 1.1rem;
-      font-weight: bold;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-      min-width: 80px;
-      text-align: right;
-    }
-
-    .score-zero { color: #808080; }
-    .score-low { color: #FFA500; }
-    .score-mid { color: #FFD700; }
-    .score-high { color: #FF4500; }
-    .score-max { color: #00FFFF; }
-
-    .score-display.updated, .health-display.updated {
-      animation: pulse 0.5s ease;
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(1); box-shadow: 0 0 0 rgba(255, 215, 0, 0); }
-      50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(255, 215, 0, 0.6); }
-      100% { transform: scale(1); box-shadow: 0 0 0 rgba(255, 215, 0, 0); }
-    }
-
-    /* Standard Health Bar Styles */
-    #health-bar {
-      width: 100px;
-      height: 18px;
-      background: rgba(0, 0, 0, 0.3);
-      border-radius: 4px;
-      overflow: hidden;
-      border: 1px solid #0074D9;
-      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(255, 215, 0, 0.3);
-    }
-
-    #health-progress {
-      height: 100%;
-      transition: width 0.8s ease, background-color 0.3s ease;
-      border-radius: 3px;
-    }
-
-    /* Blink Animation for Low Health */
-    .health-display.low-health {
-      animation: rapid-blink 0.2s infinite;
-    }
-
-    @keyframes rapid-blink {
-      0%, 50% { opacity: 1; }
-      51%, 100% { opacity: 0.3; }
-    }
-
-    #custom-cursor {
-      position: fixed !important;
-      pointer-events: none !important;
-      z-index: 10001 !important;
-      width: 8px;
-      height: 8px;
-      background: radial-gradient(circle, #00ff00 0%, transparent 70%);
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
-      transition: transform 0.1s ease;
-    }
-
-    .video-embed {
-      border-radius: 12px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 215, 0, 0.2);
-      margin: 1rem auto;
-      display: block;
-      max-width: 100%;
-    }
-    .video-embed iframe {
-      width: 100%;
-      height: 250px;
-      border: none;
+    .thumb-img:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 20px #00ffcc;
     }
   </style>
 </head>
 <body>
-  <div id="nav-placeholder"></div> <!-- Dynamic Nav Insert Here -->
+  <div id="nav-placeholder"></div>
 
-  <!-- Hero Section -->
-  <section class="hero-origins">
-    <div class="container">
-      <h1 class="mb-4">Origins</h1>
-      <p class="lead">From bayou struggles to country gold—Lance Woolie's story of grit, loss, and unbreakable spirit.</p>
-      <a href="#origins-content" class="btn btn-success btn-lg mt-3">Read the Story</a>
-    </div>
-  </section>
+  <!-- Intro Video (plays once per session) -->
+  <video id="intro-video" muted playsinline></video>
 
-  <div class="container py-4" id="origins-content">
-    <div class="row justify-content-center">
-      <div class="col-lg-10">
-        <div class="bio-container">
-          <p>I was born in the Baton Rouge Police Department Headquarters (aka Woman's Hospital), on July 3, 1979 at 3:33 am, and forged my path through shadows of loss, shades of truth, and FAFO grit. I grew up in Baton Rouge, attended 17 different middle schools due to my undiagnosed ADHD and my parents separate financial struggles. In 1995, my teenage years unraveled amid turmoil, culminating in the tragic loss of my brother, Leigh Michael.</p>
+  <div class="content-overlay">
+    <div class="content" id="main-content">
+      <!-- HERO with static doors top-left -->
+      <div class="hero-origins">
+        <img id="saloon-doors-back" 
+             src="/img/moonsaloon/saloon-doors-nav.png" 
+             class="moonsaloon-prop doors" 
+             data-link="index.html" 
+             data-score="100" 
+             data-max-hits="1"
+             alt="Back to Saloon">
 
-          <div class="year-row">
-            <div class="timeline-year me-3">1995</div>
-            <div class="thumb-carousel">
-              <img class="thumb-img" src="img/WHITETRASH3.jpg" alt="Lance Woolie Early Years" onclick="openModal('img/WHITETRASH3.jpg')">
-            </div>
-          </div>
-
-          <p>Addiction and depression followed in 1996, living in the outskirts New Orleans running with the wrong people, leading to my juvenile nonviolent arrest and a pivotal 2 year, 3 week and 4 day stint in juvenile detention at JCCY. While serving time there, during what the wardens called "Fun Day", Warden Lawrence Gorham had heard about my guitar skills and grabbed me and I was thwarted onstage to perform with the <a href="https://wgno.com/news-with-a-twist/angolas-guts-and-glory-band-the-sound-of-the-louisiana-state-penitentiary/" target="_blank">Angola Travelin’ Band</a>.</p>
-
-          <div class="year-row">
-            <div class="timeline-year me-3">1999</div>
-            <div class="thumb-carousel">
-              <img class="thumb-img" src="img/Vert4Sad.jpg" alt="Lance Woolie Pondering" onclick="openModal('img/Vert4Sad.jpg')">
-            </div>
-          </div>
-
-          <p>Who I have never met. Stage fright quickly ensued. I hadn't touched a guitar in over a year. The drummer of ATB (Sexual Chocolate) had been locked up for longer than I had been alive. Would he even know any songs I know? No time to think about it, so we jammed "Basket Case" by Green Day, and the inmates went wild. Re-Igniting my lifelong passion for music. Behind bars, I led worship sessions that honed my voice, gave me access to geetar and built spiritual depth.</p>
-
-          <p>While working in the K-9 unit, I fostered a quiet resolve with my prison boss Captain Leo Brown (2 verse of <a href="#" target="_blank">How It Feels To Be A Cowboy</a>); I also took correspondence courses from <a href="https://www.subr.edu/" target="_blank">Southern University</a>, laying groundwork for my future. Released from Jetson Correctional Facility, I channeled that fire into higher education, beginning at Southern University.</p>
-
-          <div class="year-row">
-            <div class="timeline-year me-3">2000</div>
-          </div>
-
-          <p>In 2000, I transferred to <a href="https://www.lsu.edu/" target="_blank">Louisiana State University</a>, initially majoring in Veterinary Medicine but switching to Information Systems & Decision Sciences due to ethical conflicts with Al Stevens leadership style; a self-taught web developer, I've built every band website I've been in, including the current <a href="https://lancewoolie.com/">https://lancewoolie.com/</a>.</p>
-
-          <div class="year-row">
-            <div class="timeline-year me-3">2001</div>
-            <div class="thumb-carousel">
-              <img class="thumb-img" src="img/COUCHLance.jpg" alt="Lance Woolie Artist Image" onclick="openModal('img/COUCHLance.jpg')">
-            </div>
-          </div>
-
-          <p>I was invited to visit Colombia, a journey that would reshape my life and sound. By 2004, I released a Christian crossover record No Important One “<a href="https://orcd.co/v8kk12j" target="_blank">Let It Ride</a>” (produced at Healing Place). I moved to Bogotá, settling into an apartment at Calle 49, Carrera Séptima #2, immersing myself in the vibrant local rhythms.</p>
-
-          <div class="year-row">
-            <div class="timeline-year me-3">2005</div>
-          </div>
-
-          <p>Hurricane Katrina devastated New Orleans, displacing my mother and influencing my long-term stay in Bogotá; that year, I acted as "El Gringo" in the feature film <a href="https://www.imdb.com/title/tt0485618/" target="_blank">El Colombian Dream</a>. Filmed in Colombia and directed by Felipe Aljure. Amid personal milestones, then-Congressman Bobby Jindal wrote a letter to the State Department on my behalf to expedite my fiancée's visa so our child could be born on American soil—but the request was declined. Cause nobody like Bobby apparently.</p>
-
-          <div class="year-row">
-            <div class="timeline-year me-3">2006</div>
-            <div class="thumb-carousel">
-              <img class="thumb-img" src="img/Lancetexasclub.jpg" alt="Lance Woolie Live at Texas Club" onclick="openModal('img/Lancetexasclub.jpg')">
-            </div>
-          </div>
-
-          <p>My daughter, Emma, was born in Ibagué, Colombia, as an American citizen born abroad—a profound anchor in my evolving world. From 2006 to 2023, returning stateside, I worked as a stone mason, machinist, blending technical precision with my creative drive; my path twisted through cultures and sounds.</p>
-
-          <p>I co-produced the album <a href="https://lancewoolie.bandcamp.com/album/country-paradise" target="_blank">Hogleg Band - Country Paradise</a> with local Legends Brian Brignac, Corban Barnes, Chris Roberts—a labor of love weaving scars and triumphs into raw, reflective songs.</p>
-
-          <div class="year-row">
-            <div class="timeline-year me-3">2022</div>
-            <div class="thumb-carousel">
-              <img class="thumb-img" src="img/bandmembers/BrianBrignac_TabBenoit.png" alt="Brian Brignac" onclick="openModal('img/bandmembers/BrianBrignac_TabBenoit.png')">
-              <img class="thumb-img" src="img/bandmembers/CORBANGEETAR&Keys.png" alt="Corban Barnes" onclick="openModal('img/bandmembers/CORBANGEETAR&Keys.png')">
-              <img class="thumb-img" src="img/bandmembers/chrisroberts_atbrians.png" alt="Chris Roberts" onclick="openModal('img/bandmembers/chrisroberts_atbrians.png')">
-              <img class="thumb-img" src="img/bandmembers/lance_shane_fatcats.png" alt="Shane Reid" onclick="openModal('img/bandmembers/lance_shane_fatcats.png')">
-              <img class="thumb-img" src="img/COUNTRY-PARADISE-scaled.jpg" alt="Country Paradise Album" onclick="window.open('https://orcd.co/o4qa0ba', '_blank')">
-            </div>
-          </div>
-
-          <p>Between this record and the follow up record, I rebranded to my name given at birth, Lance Woolie. I have retained my dedication to excellence in production quality, strong songs, and the best players to deliver an album that rings true to today's listener while remaining timeless for generations to come.</p>
-
-          <p>We're almost 2 years in on production of this record "The Whole Two Dollars". We have released a couple singles from this album "Too Drunk" (with help of lyricist Jefferey Allen Imler) and Uber, both featuring Brent Mason.</p>
-
-          <div class="year-row">
-            <div class="timeline-year me-3">2024</div>
-            <div class="thumb-carousel">
-              <img class="thumb-img" src="img/bandmembers/Brent Mason LIVE.png" alt="Brent Mason" onclick="openModal('img/bandmembers/Brent Mason LIVE.png')">
-            </div>
-          </div>
-
-          <div class="row justify-content-center">
-            <div class="col-md-5">
-              <div class="video-embed">
-                <iframe width="100%" height="250" src="https://www.youtube.com/embed/K6c5kCqZHOc" title="Lance Woolie - Too Drunk (Official Music Video)" frameborder="0" allowfullscreen class="mt-2"></iframe>
-              </div>
-            </div>
-            <div class="col-md-5">
-              <div class="video-embed">
-                <iframe width="100%" height="250" src="https://www.youtube.com/embed/0nTop80SCvs" title="Lance Woolie - Uber (Official Music Video)" frameborder="0" allowfullscreen class="mt-2"></iframe>
-              </div>
-            </div>
-          </div>
-
-          <p>Brent has been a Godsend and a great friend and colleague on this album. His encouragement and enthusiasm to work on songs I wrote is a gift I never knew I wanted. Listening to records with Brent playing guitar for Zach Top, Post Malone, Alan Jackson, Garth Brooks, Toby Keith, George Strait, Shania Twain, and 1000's more re-confirms the decision to bring him on this project.</p>
-
-          <p>Brent listens to the lyrics, then tracks guitar licks that support those lyrics. This is what I like to call "groove glue". Where each player on a record effect what the next player is tracking. Making a Nashville level authentic country or americana record is a long process and it takes a village of individuals dedicated to their craft.</p>
-
-          <p>In the past, many of these session musicians received only hourly pay for the hit songs they performed on and zero after the songs became hits. Not on my records. Every player that makes it to the final mix gets 4% of the publishing royalties of that song. For example, on the song Country Paradise, Corban Barnes owns 50% of the writing for the co-write, an additional 8% for producer credit, 4% for guitars, and 4% for keys, for a total of 16% publishing + 50% writing.</p>
-
-          <p>TBH, Corban has more publishing credits on the Country Paradise album than anyone else, even me. I ain't mad at all. Each musician that tracks on a record lays down a piece of themselves on tape, and they should share in the spoils, should the song become a hit. Corban Barnes is a musical monster, a freakin phenom. He performs regularly with my good buddy Kendal Schaffer and he tears up the stage every night. We're all just a big coonass family of artists that love to make great music.</p>
-
-          <p>I also must give an honorable mention to my lead guitarist Shane Reid who started playing live with Hogleg Band early on at the age of 17 and has continuously grown into the dynamic lead guitarist and most recently, a song writer for himself and a couple the heavy hitting rock songs on my new album.</p>
-
-          <div class="video-embed mx-auto" style="max-width: 560px;">
-            <iframe width="100%" height="250" src="https://www.youtube.com/embed/MXyIZonwOEk" title="Lance Woolie - Little Wing- Live at The Texas Club 6/21/2025" frameborder="0" allowfullscreen class="mt-2"></iframe>
-          </div>
-
-          <p>Keep an eye on Shane, he's 22 now and what a great friend he is. Another great friend of mine on this album is the Legendary Jonathon Boogie Long. We tracked a masterpiece edition of Jimi Hendrix little wing with Boogie, Brian Brignac and Chris Roberts. I won't be released until 2026 after Boogies new album has had a chance to shine like it deserves. Don't miss it!!</p>
-
-          <div class="year-row">
-            <div class="timeline-year me-3">2025</div>
-            <div class="thumb-carousel">
-              <img class="thumb-img" src="img/Vert2websitesidebar.jpg" alt="Lance Woolie Stoic" onclick="openModal('img/Vert2websitesidebar.jpg')">
-            </div>
-          </div>
-
-          <p>Today I am the Director of the <a href="https://www.facebook.com/texascountrynetwork" target="_blank">Texas Country Music Network</a>—a subsidiary of the <a href="https://www.texascountrymusicassociation.org/" target="_blank">Texas Country Music Association</a>—I curate music videos for country artists for the TXCN Roku and Firestick apps, having reengineered the workflow to boost load speeds and overall audio/video quality. I do this at no cost to the TXCN or the TCMA.</p>
-
-          <p>I am firm believer that rising water rases all ships. Support your fellow musicians. Encourage and enable them to grow and become what you know they are capable of. My best advice to all artists. "Groove is king".</p>
+        <div class="title-area">
+          <h1>Origins</h1>
+          <p class="lead mt-3">From bayou struggles to country gold — Lance Woolie’s story of grit, loss, and unbreakable spirit.</p>
         </div>
+      </div>
 
-        <!-- Subscribe GIF Button - Added at end of content, centered, with hover behavior -->
-        <div class="text-center mt-4">
-          <img src="img/subscribe.gif" alt="Subscribe to Newsletter" class="subscribe-btn img-fluid rounded" style="max-width: 250px; cursor: pointer;" onclick="window.location.href='contact.html#email-subscribe';">
+      <!-- Holographic Carousel -->
+      <div class="container py-5">
+        <div class="holo-carousel">
+          <!-- Slides will be populated by JS -->
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Modal for band images -->
-  <div id="imageModal" class="modal">
-    <span class="close" onclick="closeModal()">&times;</span>
-    <img class="modal-content" id="modalImg">
-  </div>
-
-  <div id="footer-placeholder"></div> <!-- Dynamic Footer Insert Here - Fixed Floating -->
+  <div id="footer-placeholder" class="tight-footer"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
-  <!-- Additional script for email signup functionality if needed -->
+
+  <!-- Holographic Carousel + Bio Data (reverse chrono) -->
   <script>
-    // Example behavior for subscribe button (redirect to signup page)
-    document.querySelector('.subscribe-btn').addEventListener('click', function() {
-      // Add any animation or modal behavior here
-      console.log('Subscribe clicked');
-    });
-
-    // Green laser pointer cursor
-    const cursor = document.createElement('div');
-    cursor.id = 'custom-cursor';
-    document.body.appendChild(cursor);
-
-    let mouseX = window.innerWidth / 2;
-    let mouseY = window.innerHeight / 2;
-    let ticking = false;
-
-    function updatePosition() {
-      cursor.style.left = mouseX + 'px';
-      cursor.style.top = mouseY + 'px';
-      ticking = false;
-    }
-
-    function requestTick() {
-      if (!ticking) {
-        requestAnimationFrame(updatePosition);
-        ticking = true;
+    const bioSections = [
+      {
+        year: "2025",
+        title: "The Whole Two Dollars Era",
+        content: "We're almost 2 years in on production of this record \"The Whole Two Dollars\". We have released a couple singles from this album \"Too Drunk\" (with help of lyricist Jefferey Allen Imler) and Uber, both featuring Brent Mason. Brent has been a Godsend and a great friend and colleague on this album.",
+        images: ["img/bandmembers/Brent Mason LIVE.png"]
+      },
+      {
+        year: "2022",
+        title: "Country Paradise Album",
+        content: "I co-produced the album Hogleg Band - Country Paradise with local Legends Brian Brignac, Corban Barnes, Chris Roberts — a labor of love weaving scars and triumphs into raw, reflective songs.",
+        images: ["img/bandmembers/BrianBrignac_TabBenoit.png", "img/bandmembers/CORBANGEETAR&Keys.png", "img/bandmembers/chrisroberts_atbrians.png", "img/bandmembers/lance_shane_fatcats.png", "img/COUNTRY-PARADISE-scaled.jpg"]
+      },
+      {
+        year: "2006",
+        title: "Colombia Years & Emma's Birth",
+        content: "My daughter, Emma, was born in Ibagué, Colombia, as an American citizen born abroad — a profound anchor in my evolving world. From 2006 to 2023, returning stateside, I worked as a stone mason, machinist, blending technical precision with my creative drive.",
+        images: ["img/Vert4Sad.jpg"]
+      },
+      {
+        year: "2005",
+        title: "Hurricane Katrina & El Colombian Dream",
+        content: "Hurricane Katrina devastated New Orleans. That year, I acted as \"El Gringo\" in the feature film El Colombian Dream. Amid personal milestones, then-Congressman Bobby Jindal wrote a letter to the State Department on my behalf...",
+        images: ["img/Vert2websitesidebar.jpg"]
+      },
+      {
+        year: "2001",
+        title: "LSU & Information Systems",
+        content: "In 2000, I transferred to Louisiana State University, initially majoring in Veterinary Medicine but switching to Information Systems & Decision Sciences. A self-taught web developer, I've built every band website I've been in.",
+        images: ["img/COUCHLance.jpg"]
+      },
+      {
+        year: "1999",
+        title: "Juvenile Detention & Angola Band",
+        content: "In 1995, my teenage years unraveled amid turmoil, culminating in the tragic loss of my brother, Leigh Michael. Addiction and depression followed in 1996... While serving time, during \"Fun Day\", Warden Lawrence Gorham had heard about my guitar skills and I performed with the Angola Travelin’ Band.",
+        images: ["img/WHITETRASH3.jpg"]
+      },
+      {
+        year: "1979",
+        title: "Birth & Early Years",
+        content: "I was born in the Baton Rouge Police Department Headquarters (aka Woman's Hospital), on July 3, 1979 at 3:33 am, and forged my path through shadows of loss, shades of truth, and FAFO grit. I grew up in Baton Rouge, attended 17 different middle schools due to my undiagnosed ADHD.",
+        images: []
       }
+    ];
+
+    function createSlide(section, index) {
+      let imagesHTML = '';
+      if (section.images && section.images.length) {
+        imagesHTML = `<div class="thumb-carousel mt-4">`;
+        section.images.forEach(src => {
+          imagesHTML += `<img class="thumb-img" src="${src}" onclick="openModal('${src}')" alt="${section.year}">`;
+        });
+        imagesHTML += `</div>`;
+      }
+
+      return `
+        <div class="holo-slide ${index === 0 ? 'active' : ''}" data-index="${index}">
+          <h3>${section.year} — ${section.title}</h3>
+          <p>${section.content}</p>
+          ${imagesHTML}
+        </div>
+      `;
     }
 
-    document.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      requestTick();
+    document.addEventListener('DOMContentLoaded', () => {
+      const carousel = document.querySelector('.holo-carousel');
+      let html = '';
+      bioSections.forEach((section, i) => {
+        html += createSlide(section, i);
+      });
+      carousel.innerHTML = html;
+
+      // Navigation buttons for carousel
+      const prev = document.createElement('button');
+      prev.innerHTML = '←';
+      prev.style.cssText = 'position:absolute; left:20px; top:50%; transform:translateY(-50%); background:none; border:none; font-size:2rem; color:#00ffcc; cursor:pointer; z-index:10;';
+      prev.onclick = () => changeSlide(-1);
+
+      const next = document.createElement('button');
+      next.innerHTML = '→';
+      next.style.cssText = 'position:absolute; right:20px; top:50%; transform:translateY(-50%); background:none; border:none; font-size:2rem; color:#00ffcc; cursor:pointer; z-index:10;';
+      next.onclick = () => changeSlide(1);
+
+      carousel.appendChild(prev);
+      carousel.appendChild(next);
+
+      let current = 0;
+      window.changeSlide = (dir) => {
+        const slides = document.querySelectorAll('.holo-slide');
+        slides[current].classList.remove('active');
+        current = (current + dir + slides.length) % slides.length;
+        slides[current].classList.add('active');
+      };
+
+      // Intro video plays only once per session
+      const video = document.getElementById('intro-video');
+      const content = document.getElementById('main-content');
+
+      if (!sessionStorage.getItem('originsIntroPlayed')) {
+        video.src = '/video/origins-video-transition.mp4';
+        video.style.display = 'block';
+        video.play();
+
+        video.onended = () => {
+          sessionStorage.setItem('originsIntroPlayed', 'true');
+          video.style.transition = 'opacity 1.2s ease';
+          video.style.opacity = '0';
+          setTimeout(() => {
+            video.style.display = 'none';
+            content.classList.add('show');
+          }, 1200);
+        };
+      } else {
+        content.classList.add('show');
+      }
     });
 
-    // Initial position set
-    setTimeout(() => {
-      updatePosition();
-    }, 100);
-
-    // Hide on touch devices
-    if ('ontouchstart' in window) {
-      cursor.style.display = 'none';
-    }
-
-    // Re-center on resize
-    window.addEventListener('resize', () => {
-      mouseX = window.innerWidth / 2;
-      mouseY = window.innerHeight / 2;
-      requestTick();
-    });
-
-    // Modal functionality
+    // Modal for images
     function openModal(src) {
-      const modal = document.getElementById('imageModal');
-      const modalImg = document.getElementById('modalImg');
-      modal.style.display = 'block';
-      modalImg.src = src;
+      const modal = document.createElement('div');
+      modal.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); display:flex; align-items:center; justify-content:center; z-index:10002;';
+      modal.innerHTML = `<img src="${src}" style="max-width:90%; max-height:90%; border-radius:12px; box-shadow:0 0 40px #00ffcc;" onclick="this.parentElement.remove()">`;
+      document.body.appendChild(modal);
     }
-
-    function closeModal() {
-      document.getElementById('imageModal').style.display = 'none';
-    }
-
-    // Close modal when clicking on image
-    document.getElementById('imageModal').onclick = function(e) {
-      if (e.target.classList.contains('modal')) {
-        closeModal();
-      }
-    };
   </script>
 </body>
 </html>
