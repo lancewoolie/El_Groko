@@ -32,18 +32,35 @@
       transition: opacity 1.2s ease;
     }
     .content.show { opacity: 1; }
-
-    /* VERY LIGHT OVERLAY – new bg now fully visible */
     .content-overlay {
       background: rgba(0, 15, 40, 0.18);
       min-height: 100vh;
-      padding-top: 140px;
+      padding-top: 120px;
     }
 
-    .hero-music { text-align: center; padding: 60px 0; }
-    .hero-music h1 { font-size: 3.2rem; color: #00ffcc; text-shadow: 0 0 20px #00ffcc, 0 0 40px #ff00aa; }
+    /* HERO WITH STATIC DOORS ON LEFT OF TITLE */
+    .hero-music {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 30px;
+      padding: 60px 0 40px;
+      flex-wrap: wrap;
+    }
+    .hero-music .doors {
+      width: 120px; /* 33% size as requested */
+      flex-shrink: 0;
+    }
+    .hero-music .title-area {
+      text-align: center;
+    }
+    .hero-music h1 {
+      font-size: 3.2rem;
+      color: #00ffcc;
+      text-shadow: 0 0 20px #00ffcc, 0 0 40px #ff00aa;
+      margin: 0;
+    }
 
-    /* FUTURISTIC MOONBASE CARDS */
     .card {
       background: rgba(10, 25, 50, 0.75);
       border: 2px solid #00ffcc;
@@ -61,34 +78,6 @@
                   inset 0 0 40px rgba(255, 0, 170, 0.3);
       border-color: #ff00aa;
     }
-    .card-img-top {
-      filter: brightness(1.05) contrast(1.1);
-    }
-    .card-body {
-      padding: 1.8rem;
-      color: #E0E0E0;
-    }
-    .card h3 {
-      color: #00ffcc;
-      text-shadow: 0 0 12px #00ffcc;
-      font-size: 1.45rem;
-    }
-    p { line-height: 1.65; color: #ddd; }
-
-    /* Swinging Saloon Doors – TOP + 33% size */
-    #saloon-doors-back {
-      position: fixed;
-      top: 35px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 120px; /* 33% of previous size */
-      z-index: 10000;
-      cursor: pointer;
-      transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-    }
-    #saloon-doors-back:hover {
-      transform: translateX(-50%) rotate(-12deg) scale(1.12);
-    }
   </style>
 </head>
 <body>
@@ -101,18 +90,26 @@
 
   <div class="content-overlay">
     <div class="content" id="main-content">
-      <section class="hero-music">
-        <div class="container">
-          <h1 class="mb-4">Music & Videos</h1>
-          <p class="lead">Dive into Lance's catalog—from raw country anthems to soulful live sessions. Stream on your FAV platform, watch on YouTube.</p>
+      <!-- HERO WITH STATIC DOORS LEFT OF TITLE -->
+      <div class="hero-music">
+        <img id="saloon-doors-back" 
+             src="/img/moonsaloon/saloon-doors-nav.png" 
+             class="moonsaloon-prop doors" 
+             data-link="index.html" 
+             data-score="100" 
+             data-max-hits="1"
+             alt="Back to Saloon">
+
+        <div class="title-area">
+          <h1>Music & Videos</h1>
+          <p class="lead mt-3">Dive into Lance's catalog—from raw country anthems to soulful live sessions. Stream on your FAV platform, watch on YouTube.</p>
           <a href="#music-grid" class="btn btn-success btn-lg mt-3">Explore Tracks</a>
         </div>
-      </section>
+      </div>
 
       <div class="container py-5" id="music-grid">
         <div class="row g-4">
-
-          <!-- Crazy Arms (2025) – Top Card -->
+          <!-- Crazy Arms (2025) -->
           <div class="col-md-6 col-lg-6">
             <div class="card">
               <img src="https://img.youtube.com/vi/wFVxcOHna7Q/0.jpg" alt="Crazy Arms Cover Art" class="card-img-top">
@@ -125,7 +122,6 @@
             </div>
           </div>
 
-          <!-- All your other cards (Uber, Too Drunk, etc.) remain exactly as before -->
           <!-- Uber 2025 -->
           <div class="col-md-6 col-lg-6">
             <div class="card">
@@ -200,7 +196,6 @@
               </div>
             </div>
           </div>
-
         </div>
         <div class="text-center mt-5">
           <p class="lead">More tracks coming soon—stay tuned for bayou-fresh drops.</p>
@@ -208,15 +203,6 @@
       </div>
     </div>
   </div>
-
-  <!-- Swinging Saloon Doors – TOP + 33% size -->
-  <img id="saloon-doors-back" 
-       src="/img/moonsaloon/saloon-doors-nav.png" 
-       class="moonsaloon-prop" 
-       data-link="index.html" 
-       data-score="100" 
-       data-max-hits="1"
-       alt="Back to Saloon">
 
   <div id="footer-placeholder" class="tight-footer"></div>
 
