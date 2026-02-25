@@ -32,11 +32,9 @@
       cursor: crosshair;
       transition: filter 0.12s ease, transform 0.2s ease;
     }
-    /* Raccoon hover twitches RIGHT only (no downward movement) */
     #raccoon-subscribe:hover {
       transform: translateX(14px) scale(1.08) !important;
     }
-    /* SQUEEZED + CENTERED TOP NAV */
     #nav-placeholder nav,
     #nav-placeholder .navbar,
     #nav-placeholder .nav-table {
@@ -63,34 +61,35 @@
     </div>
 
     <svg id="saloon-svg" width="100%" height="100%" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
-      <image href="/img/moonsaloon/moon-saloon-base.jpg" width="1920" height="1080" />
+      <!-- CACHE-BUSTER for your new background image -->
+      <image href="/img/moonsaloon/moon-saloon-base.jpg?v=2" width="1920" height="1080" />
 
-      <!-- Merch (unchanged – big) -->
+      <!-- Merch (unchanged) -->
       <image id="cowboy-hat-merch" href="/img/moonsaloon/cowboy-hat-merch-nav.png"
              x="555" y="331" width="314" height="280"
              class="moonsaloon-prop" data-link="merch.html" data-score="150" data-max-hits="1" />
 
-      <!-- Music & Video (down 100, right 35) -->
+      <!-- Music & Video → right +25px -->
       <image id="music-video-neon" href="/img/moonsaloon/music-video-neon-nav.png"
-             x="1064" y="474" width="205" height="158"
+             x="1089" y="474" width="205" height="158"
              class="moonsaloon-prop" data-link="music.html" data-score="175" data-max-hits="1" />
 
-      <!-- Raccoon (down 5) -->
+      <!-- Raccoon (unchanged) -->
       <image id="raccoon-subscribe" href="/img/moonsaloon/raccoon-subscribe-nav.png"
              x="669" y="617" width="132" height="165"
              class="moonsaloon-prop" data-link="contact.html#email-subscribe" data-score="500" data-max-hits="1" />
 
-      <!-- Origins (down 25 + 25% bigger) -->
+      <!-- Origins → up 20px, left 10px, +15% size -->
       <image id="hourglass-origins" href="/img/moonsaloon/hourglass-origins-nav.png"
-             x="631" y="807" width="136" height="185"
+             x="621" y="787" width="156" height="213"
              class="moonsaloon-prop" data-link="origins.html" data-score="125" data-max-hits="1" />
 
-      <!-- Events (down 25 + left 30) -->
+      <!-- Events → left 25px -->
       <image id="holo-calendar-events" href="/img/moonsaloon/holo-calendar-events-nav.png"
-             x="785" y="781" width="152" height="168"
+             x="760" y="781" width="152" height="168"
              class="moonsaloon-prop" data-link="events.html" data-score="150" data-max-hits="1" />
 
-      <!-- Contact (left 25 + up 25) -->
+      <!-- Contact (unchanged) -->
       <image id="contact-earth-trophy" href="/img/moonsaloon/contact-earth-trophy-nav.png"
              x="882" y="732" width="199" height="178"
              class="moonsaloon-prop" data-link="contact.html" data-score="200" data-max-hits="1" />
