@@ -17,37 +17,31 @@
       margin: 0;
       padding-bottom: 100px;
     }
-    #intro-video {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover;
-      z-index: 9999;
-      display: block;
-    }
-    .content {
-      position: relative;
-      z-index: 1;
-      opacity: 0;
-      transition: opacity 1.2s ease;
-    }
-    .content.show { opacity: 1; }
-    .content-overlay {
-      background: rgba(0, 15, 40, 0.18);
-      min-height: 100vh;
-      padding-top: 120px;
-    }
+
+    /* HERO – Doors static top-left */
     .hero-events {
-      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
       padding: 60px 0 40px;
+      flex-wrap: wrap;
+    }
+    .hero-events .doors {
+      width: 120px;
+      flex-shrink: 0;
+    }
+    .hero-events .title-area {
+      text-align: left;
     }
     .hero-events h1 {
       font-size: 3.2rem;
       color: #00ffcc;
       text-shadow: 0 0 20px #00ffcc, 0 0 40px #ff00aa;
+      margin: 0;
     }
-    /* Futuristic Moonbase Cards */
+
+    /* Futuristic Moonbase Cards – fully visible */
     .card {
       background: rgba(10, 25, 50, 0.75);
       border: 2px solid #00ffcc;
@@ -72,6 +66,7 @@
       color: #ddd !important;
       line-height: 1.7;
     }
+
     /* Scrollable floating lists */
     #upcoming-list, #past-list {
       max-height: 620px;
@@ -91,36 +86,38 @@
 <body>
   <div id="nav-placeholder"></div>
 
-  <!-- Intro Video -->
-  <video id="intro-video" muted playsinline autoplay>
-    <source src="/video/events-video-transition.mp4" type="video/mp4">
-  </video>
+  <div class="hero-events">
+    <!-- Saloon Doors – static top-left -->
+    <img id="saloon-doors-back" 
+         src="/img/moonsaloon/saloon-doors-nav.png" 
+         class="moonsaloon-prop doors" 
+         data-link="index.html" 
+         data-score="100" 
+         data-max-hits="1"
+         alt="Back to Saloon">
 
-  <div class="content-overlay">
-    <div class="content" id="main-content">
-      <div class="hero-events">
-        <h1>Live Events</h1>
-        <p class="lead mt-3">Upcoming and past performances—from intimate gigs to high-energy shows. Check back for updates!</p>
-        <a href="#events-grid" class="btn btn-success btn-lg mt-3">View Schedule</a>
-      </div>
+    <div class="title-area">
+      <h1>Live Events</h1>
+      <p class="lead mt-3">Upcoming and past performances—from intimate gigs to high-energy shows. Check back for updates!</p>
+      <a href="#events-grid" class="btn btn-success btn-lg mt-3">View Schedule</a>
+    </div>
+  </div>
 
-      <div class="container py-5" id="events-grid">
-        <!-- Upcoming Events -->
-        <section id="upcoming-events">
-          <h2 class="text-center mb-4">Upcoming Events</h2>
-          <div id="upcoming-list"></div>
-        </section>
+  <div class="container py-5" id="events-grid">
+    <!-- Upcoming Events -->
+    <section id="upcoming-events">
+      <h2 class="text-center mb-4">Upcoming Events</h2>
+      <div id="upcoming-list"></div>
+    </section>
 
-        <!-- Past Events -->
-        <section id="past-events" class="past-events">
-          <h2 class="text-center mb-4">Past Events</h2>
-          <div class="row" id="past-list"></div>
-        </section>
+    <!-- Past Events -->
+    <section id="past-events" class="past-events">
+      <h2 class="text-center mb-4">Past Events</h2>
+      <div class="row" id="past-list"></div>
+    </section>
 
-        <div class="text-center mt-5">
-          <p>Want to book Lance for your next event? <a href="contact.html">Get in touch</a> today!</p>
-        </div>
-      </div>
+    <div class="text-center mt-5">
+      <p>Want to book Lance for your next event? <a href="contact.html">Get in touch</a> today!</p>
     </div>
   </div>
 
@@ -129,7 +126,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
 
-  <!-- FULL ORIGINAL EVENTS DATA (10/24/2025 Smiling Dog removed) -->
+  <!-- FULL EVENTS DATA – ALL ORIGINAL EVENTS RETAINED EXCEPT 10/24/2025 -->
   <script>
     const eventsData = [
       {
@@ -521,26 +518,6 @@
 
       const pastContainer = document.getElementById('past-list');
       pastEvents.forEach(event => pastContainer.innerHTML += generatePastCard(event));
-    });
-  </script>
-
-  <!-- Intro Video Logic -->
-  <script>
-    const video = document.getElementById('intro-video');
-    const content = document.getElementById('main-content');
-
-    video.onended = () => {
-      video.style.transition = 'opacity 1.2s ease';
-      video.style.opacity = '0';
-      setTimeout(() => {
-        video.style.display = 'none';
-        content.classList.add('show');
-      }, 1200);
-    };
-
-    video.addEventListener('error', () => {
-      video.style.display = 'none';
-      content.classList.add('show');
     });
   </script>
 </body>
