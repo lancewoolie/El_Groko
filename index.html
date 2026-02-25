@@ -8,13 +8,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <style>
-    html, body {
-      margin: 0 !important;
-      padding: 0 !important;
-      width: 100% !important;
-      height: 100% !important;
-      overflow: hidden;
-    }
+    html, body { margin:0 !important; padding:0 !important; width:100% !important; height:100% !important; overflow:hidden; }
     .hero {
       height: 100vh !important;
       width: 100vw !important;
@@ -26,8 +20,7 @@
     }
     #saloon-svg {
       position: absolute;
-      top: 0;
-      left: 0;
+      top: 0; left: 0;
       width: 100% !important;
       height: 100% !important;
       z-index: 2;
@@ -38,20 +31,14 @@
       cursor: crosshair;
       transition: filter 0.12s ease, transform 0.2s ease;
     }
-    #raccoon-subscribe:hover {
-      transform: translateX(14px) scale(1.08) !important;
-    }
-    #nav-placeholder nav,
-    #nav-placeholder .navbar,
-    #nav-placeholder .nav-table {
-      max-width: 920px !important;
-      margin: 0 auto !important;
-      padding: 0 30px;
-    }
-    #nav-placeholder .nav-link,
-    #nav-placeholder .navbar-nav {
-      justify-content: center !important;
-      gap: 18px;
+    #raccoon-subscribe:hover { transform: translateX(14px) scale(1.08) !important; }
+    #transition-video {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      object-fit: cover;
+      z-index: 9999;
+      display: none;
     }
   </style>
 </head>
@@ -67,9 +54,9 @@
     </div>
 
     <svg id="saloon-svg" width="100%" height="100%" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
-      <!-- ORIGINS – moved up another 30px (total up 50px from previous) -->
+      <!-- ORIGINS – left -35px + up -25px -->
       <image id="hourglass-origins" href="/img/moonsaloon/hourglass-origins-nav.png"
-             x="621" y="737" width="179" height="245"
+             x="586" y="712" width="179" height="245"
              class="moonsaloon-prop" data-link="origins.html" data-score="125" data-max-hits="1" />
 
       <!-- EVENTS -->
@@ -82,22 +69,25 @@
              x="555" y="331" width="314" height="280"
              class="moonsaloon-prop" data-link="merch.html" data-score="150" data-max-hits="1" />
 
-      <!-- Music & Video -->
+      <!-- Music & Video – special transition handler (no data-link) -->
       <image id="music-video-neon" href="/img/moonsaloon/music-video-neon-nav.png"
              x="1089" y="474" width="205" height="158"
-             class="moonsaloon-prop" data-link="music.html" data-score="175" data-max-hits="1" />
+             class="moonsaloon-prop" data-score="175" data-max-hits="1" />
 
       <!-- Raccoon -->
       <image id="raccoon-subscribe" href="/img/moonsaloon/raccoon-subscribe-nav.png"
              x="669" y="617" width="132" height="165"
              class="moonsaloon-prop" data-link="contact.html#email-subscribe" data-score="500" data-max-hits="1" />
 
-      <!-- Contact -->
+      <!-- Contact – down +20px -->
       <image id="contact-earth-trophy" href="/img/moonsaloon/contact-earth-trophy-nav.png"
-             x="882" y="732" width="199" height="178"
+             x="882" y="752" width="199" height="178"
              class="moonsaloon-prop" data-link="contact.html" data-score="200" data-max-hits="1" />
     </svg>
   </section>
+
+  <!-- Transition Video (fullscreen) -->
+  <video id="transition-video" muted playsinline></video>
 
   <div class="pointingjs">
     <!-- YOUR OLD POINTINGJS SVG HERE -->
@@ -105,5 +95,29 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
+
+  <!-- Music Transition Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const musicProp = document.getElementById('music-video-neon');
+      const transitionVideo = document.getElementById('transition-video');
+
+      if (musicProp) {
+        musicProp.addEventListener('click', (e) => {
+          e.stopImmediatePropagation();
+          transitionVideo.src = '/video/music-and-video-transistion.mp4';
+          transitionVideo.style.display = 'block';
+          transitionVideo.play().catch(() => {
+            // fallback if autoplay blocked
+            window.location.href = 'music.html';
+          });
+
+          transitionVideo.onended = () => {
+            window.location.href = 'music.html';
+          };
+        });
+      }
+    });
+  </script>
 </body>
 </html>
