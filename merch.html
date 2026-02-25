@@ -16,16 +16,6 @@
       margin: 0;
       padding-bottom: 100px;
     }
-    #intro-video {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover;
-      z-index: 9999;
-      display: none;
-      background: #000;
-    }
     .content {
       position: relative;
       z-index: 1;
@@ -36,22 +26,24 @@
     .content-overlay {
       background: rgba(0, 15, 40, 0.18);
       min-height: 100vh;
-      padding-top: 120px;
+      padding-top: 90px;
     }
-
-    /* HERO – Only Doors (static top-left) */
+    /* HERO – Doors only (top-left, no title) */
     .hero-merch {
       display: flex;
       align-items: center;
       justify-content: flex-start;
       gap: 40px;
-      padding: 60px 0 40px;
+      padding: 30px 0 50px;
       flex-wrap: wrap;
     }
     .hero-merch .doors {
-      width: 120px;
+      width: 130px;
       flex-shrink: 0;
+      cursor: pointer;
+      transition: transform 0.3s ease;
     }
+    .hero-merch .doors:hover { transform: scale(1.08); }
 
     /* Futuristic Neon Cards */
     .card {
@@ -98,7 +90,6 @@
       display: inline-block;
       margin: 1rem 0;
     }
-
     /* Highlighted New Release - Crazy Arms */
     .new-release {
       border: 4px solid #ff00aa !important;
@@ -123,26 +114,25 @@
 <body>
   <div id="nav-placeholder"></div>
 
-  <!-- Intro Video (plays once per session) -->
-  <video id="intro-video" muted playsinline></video>
+  <!-- VIDEO TRANSITION OVERLAY – SOUND ENABLED AT 50% VOLUME -->
+  <div id="transition-overlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:9999;display:none;overflow:hidden;background:#000;">
+    <video id="forward-video" class="transition-video" playsinline style="width:100%;height:100%;object-fit:cover;"></video>
+    <video id="reverse-video" class="transition-video" playsinline style="width:100%;height:100%;object-fit:cover;display:none;"></video>
+  </div>
 
   <div class="content-overlay">
     <div class="content" id="main-content">
-      <!-- HERO – Only Doors (static top-left, no title/subtitle) -->
+      <!-- HERO – Doors only (top-left, no title) -->
       <div class="hero-merch">
-        <img id="saloon-doors-back" 
-             src="/img/moonsaloon/saloon-doors-nav.png" 
-             class="moonsaloon-prop doors" 
-             data-link="index.html" 
-             data-score="100" 
-             data-max-hits="1"
+        <img id="saloon-doors-back"
+             src="/img/moonsaloon/saloon-doors-nav.png"
+             class="doors"
              alt="Back to Saloon">
       </div>
 
       <!-- Merch Grid -->
       <div class="container py-5" id="merch-grid">
         <div class="row g-4">
-
           <!-- NEW HIGHLIGHTED ITEM - Crazy Arms (Top of page) -->
           <div class="col-md-6 col-lg-4">
             <div class="card new-release">
@@ -150,12 +140,11 @@
               <div class="card-body">
                 <h3>Crazy Arms feat. Brent Mason & Scotty Sanders (2025)</h3>
                 <p>A honky tonk instant classic written by Legendary steel guitar player Ralph Mooney that gets your feet stomping on the dancefloor.</p>
-                <span class="price-tag">$1.29</span>
+                <span class="price-tag">$1</span>
                 <a href="https://orcd.co/crazyarms" class="btn btn-success w-100" target="_blank">Stream Now</a>
               </div>
             </div>
           </div>
-
           <!-- Chicken Socks -->
           <div class="col-md-6 col-lg-4">
             <div class="card">
@@ -168,7 +157,6 @@
               </div>
             </div>
           </div>
-
           <!-- Uber Single -->
           <div class="col-md-6 col-lg-4">
             <div class="card">
@@ -176,12 +164,11 @@
               <div class="card-body">
                 <h3>Uber (Single)</h3>
                 <p>A danceable neotraditional tune evoking lost love, featuring Brent Mason on electric guitar and Scotty Sanders on slide.</p>
-                <span class="price-tag">$1.29</span>
+                <span class="price-tag">$1</span>
                 <a href="https://lancewoolie.bandcamp.com/track/uber" class="btn btn-success w-100" target="_blank">Buy Now</a>
               </div>
             </div>
           </div>
-
           <!-- Too Drunk Single -->
           <div class="col-md-6 col-lg-4">
             <div class="card">
@@ -189,12 +176,11 @@
               <div class="card-body">
                 <h3>Too Drunk (Single)</h3>
                 <p>The debut release co-created with Legendary Guitarist Brent Mason—raw, captivating country grit.</p>
-                <span class="price-tag">$1.29</span>
+                <span class="price-tag">$1</span>
                 <a href="https://lancewoolie.bandcamp.com/track/too-drunk-ft-brent-mason" class="btn btn-success w-100" target="_blank">Buy Now</a>
               </div>
             </div>
           </div>
-
           <!-- Country Paradise Album -->
           <div class="col-md-6 col-lg-4">
             <div class="card">
@@ -207,9 +193,7 @@
               </div>
             </div>
           </div>
-
         </div>
-
         <div class="text-center mt-5">
           <p class="lead">Can't find what you're looking for? <a href="contact.html">Hit us up</a> for custom requests—bayou style.</p>
         </div>
@@ -222,28 +206,44 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
 
-  <!-- Intro Video Logic (plays once per session) -->
+  <!-- FULL MERCH PAGE LOGIC + VIDEO TRANSITIONS (sound at 50%) -->
   <script>
-    const video = document.getElementById('intro-video');
-    const content = document.getElementById('main-content');
+    document.addEventListener('DOMContentLoaded', () => {
+      // VIDEO TRANSITION SYSTEM – SOUND AT 50% VOLUME, PLAYS EVERY TIME
+      const overlay = document.getElementById('transition-overlay');
+      const forwardVideo = document.getElementById('forward-video');
+      const reverseVideo = document.getElementById('reverse-video');
+      const content = document.getElementById('main-content');
 
-    if (!sessionStorage.getItem('merchIntroPlayed')) {
-      video.src = '/video/merch-video-transition.mp4';
-      video.style.display = 'block';
-      video.play();
+      forwardVideo.src = '/video/merch-video-transition.mp4';
+      reverseVideo.src = '/video/merch-video-reverse.mp4';
 
-      video.onended = () => {
-        sessionStorage.setItem('merchIntroPlayed', 'true');
-        video.style.transition = 'opacity 1.2s ease';
-        video.style.opacity = '0';
-        setTimeout(() => {
-          video.style.display = 'none';
-          content.classList.add('show');
-        }, 1200);
+      // Forward transition on every page load (50% volume)
+      overlay.style.display = 'block';
+      forwardVideo.style.display = 'block';
+      forwardVideo.volume = 0.5;
+      forwardVideo.play().catch(() => {});
+
+      forwardVideo.onended = () => {
+        overlay.style.display = 'none';
+        content.classList.add('show');
       };
-    } else {
-      content.classList.add('show');
-    }
+
+      // Reverse transition on doors click (50% volume, full play before return)
+      document.getElementById('saloon-doors-back').addEventListener('click', (e) => {
+        e.preventDefault();
+        overlay.style.display = 'block';
+        forwardVideo.style.display = 'none';
+        reverseVideo.style.display = 'block';
+        reverseVideo.currentTime = 0;
+        reverseVideo.volume = 0.5;
+        reverseVideo.play().catch(() => {});
+
+        reverseVideo.onended = () => {
+          window.location.href = 'index.html';
+        };
+      });
+    });
   </script>
 </body>
 </html>
