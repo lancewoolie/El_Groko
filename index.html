@@ -10,16 +10,21 @@
   <style>
     .hero {
       height: 100vh !important;
+      width: 100vw !important;           /* FORCES FULL WIDTH */
       position: relative;
       overflow: hidden;
       padding-top: 92px;
-      background: none !important; /* KILLS THE DOUBLE BACKGROUND */
+      background: none !important;
+      margin: 0 !important;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
     }
     #saloon-svg {
       position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
+      top: 0;
+      left: 0;
+      width: 100% !important;
+      height: 100% !important;
       z-index: 1;
       pointer-events: none;
     }
@@ -55,40 +60,40 @@
       <button id="restart-btn" onclick="location.reload()">RESTART GAME</button>
     </div>
 
-    <!-- FULL SVG OVERLAY (single background only) -->
+    <!-- FULL SVG OVERLAY (now guaranteed full-screen width) -->
     <svg id="saloon-svg" width="100%" height="100%" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
-      <!-- Background image (only one now) -->
+      <!-- Background image (only one, full width) -->
       <image href="/img/moonsaloon/moon-saloon-base.jpg" width="1920" height="1080" />
 
-      <!-- SHIFTED PROPS (exactly as you asked) -->
-      <!-- Merch Hat → shifted RIGHT 200px -->
+      <!-- ALL REQUESTED MOVES APPLIED -->
+      <!-- Merch Hat: left -100px + down +50px -->
       <image id="cowboy-hat-merch" href="/img/moonsaloon/cowboy-hat-merch-nav.png"
-             x="733" y="351" width="157" height="140"
+             x="633" y="401" width="157" height="140"
              class="moonsaloon-prop" data-link="merch.html" data-score="150" data-max-hits="1" />
 
-      <!-- Music & Video → shifted LEFT 300px -->
+      <!-- Music & Video: right +150px + down +120px -->
       <image id="music-video-neon" href="/img/moonsaloon/music-video-neon-nav.png"
-             x="779" y="254" width="271" height="210"
+             x="929" y="374" width="271" height="210"
              class="moonsaloon-prop" data-link="music.html" data-score="175" data-max-hits="1" />
 
-      <!-- Raccoon Subscribe → shifted RIGHT 200px -->
+      <!-- Raccoon: down +50px -->
       <image id="raccoon-subscribe" href="/img/moonsaloon/raccoon-subscribe-nav.png"
-             x="684" y="592" width="132" height="165"
+             x="684" y="642" width="132" height="165"
              class="moonsaloon-prop" data-link="contact.html#email-subscribe" data-score="500" data-max-hits="1" />
 
-      <!-- Origins Hourglass → shifted RIGHT 200px -->
+      <!-- Origins: right +100px -->
       <image id="hourglass-origins" href="/img/moonsaloon/hourglass-origins-nav.png"
-             x="715" y="756" width="109" height="148"
+             x="815" y="756" width="109" height="148"
              class="moonsaloon-prop" data-link="origins.html" data-score="125" data-max-hits="1" />
 
-      <!-- Events Calendar → shifted LEFT 300px -->
+      <!-- Events: down +75px -->
       <image id="holo-calendar-events" href="/img/moonsaloon/holo-calendar-events-nav.png"
-             x="631" y="707" width="152" height="168"
+             x="631" y="782" width="152" height="168"
              class="moonsaloon-prop" data-link="events.html" data-score="150" data-max-hits="1" />
 
-      <!-- Contact Earth Trophy → shifted LEFT 300px -->
+      <!-- Contact: left -50px + down +75px -->
       <image id="contact-earth-trophy" href="/img/moonsaloon/contact-earth-trophy-nav.png"
-             x="977" y="700" width="159" height="142"
+             x="927" y="775" width="159" height="142"
              class="moonsaloon-prop" data-link="contact.html" data-score="200" data-max-hits="1" />
     </svg>
   </section>
