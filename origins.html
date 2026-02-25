@@ -34,7 +34,7 @@
     }
     .content.show { opacity: 1; }
 
-    /* HERO – Doors static top-left, no title */
+    /* HERO – Doors static top-left */
     .hero-origins {
       display: flex;
       align-items: center;
@@ -47,14 +47,14 @@
       flex-shrink: 0;
     }
 
-    /* Holographic Rectangle - Clean Vertical Layout */
+    /* Holographic Rectangle – widened + moved up */
     .holo-box {
       background: rgba(10, 25, 50, 0.68);
       border: 3px solid #00ffcc;
       border-radius: 24px;
       padding: 3rem;
-      margin: 0 auto;
-      max-width: 1100px;
+      margin: -60px auto 40px;   /* moved up 60px */
+      max-width: 1300px;         /* widened by 100px each side */
       max-height: 72vh;
       overflow-y: auto;
       box-shadow: 0 0 60px rgba(0, 255, 204, 0.5),
@@ -98,7 +98,6 @@
       cursor: pointer;
       flex-shrink: 0;
       transition: all 0.3s ease;
-      box-shadow: 0 0 20px rgba(0,255,204,0.4);
     }
     .thumb-img:hover {
       transform: scale(1.08);
@@ -125,7 +124,7 @@
              alt="Back to Saloon">
       </div>
 
-      <!-- Holographic Rectangle - Full Bio -->
+      <!-- Holographic Rectangle -->
       <div class="container py-5">
         <div class="holo-box" id="holo-box">
           <!-- Populated by JS -->
