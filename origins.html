@@ -16,16 +16,6 @@
       margin: 0;
       padding-bottom: 100px;
     }
-    #intro-video {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover;
-      z-index: 9999;
-      display: none;
-      background: #000;
-    }
     .content {
       position: relative;
       z-index: 1;
@@ -33,19 +23,26 @@
       transition: opacity 1.2s ease;
     }
     .content.show { opacity: 1; }
-
-    /* HERO – Doors static top-left, no title */
+    .content-overlay {
+      background: rgba(0, 15, 40, 0.18);
+      min-height: 100vh;
+      padding-top: 90px;
+    }
+    /* HERO – Doors only (top-left, no title) */
     .hero-origins {
       display: flex;
       align-items: center;
       justify-content: flex-start;
-      padding: 60px 0 40px;
+      padding: 30px 0 50px;
       gap: 40px;
     }
     .hero-origins .doors {
-      width: 120px;
+      width: 130px;
       flex-shrink: 0;
+      cursor: pointer;
+      transition: transform 0.3s ease;
     }
+    .hero-origins .doors:hover { transform: scale(1.08); }
 
     /* Holographic Rectangle – widened by 200px each side */
     .holo-box {
@@ -54,7 +51,7 @@
       border-radius: 24px;
       padding: 3.5rem;
       margin: -60px auto 40px;
-      max-width: 1500px;        /* widened by 200px each side */
+      max-width: 1500px;
       max-height: 72vh;
       overflow-y: auto;
       box-shadow: 0 0 60px rgba(0, 255, 204, 0.5),
@@ -81,7 +78,7 @@
     .holo-section p {
       color: #f0f0f0;
       line-height: 1.95;
-      font-size: 1.28rem;   /* bigger text */
+      font-size: 1.28rem;
     }
     .thumb-carousel {
       display: flex;
@@ -108,19 +105,19 @@
 <body>
   <div id="nav-placeholder"></div>
 
-  <!-- Intro Video (once per session) -->
-  <video id="intro-video" muted playsinline></video>
+  <!-- VIDEO TRANSITION OVERLAY – SOUND ENABLED AT 50% VOLUME -->
+  <div id="transition-overlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:9999;display:none;overflow:hidden;background:#000;">
+    <video id="forward-video" class="transition-video" playsinline style="width:100%;height:100%;object-fit:cover;"></video>
+    <video id="reverse-video" class="transition-video" playsinline style="width:100%;height:100%;object-fit:cover;display:none;"></video>
+  </div>
 
   <div class="content-overlay">
     <div class="content" id="main-content">
-      <!-- HERO – Doors top-left, no title -->
+      <!-- HERO – Doors only (top-left, no title) -->
       <div class="hero-origins">
-        <img id="saloon-doors-back" 
-             src="/img/moonsaloon/saloon-doors-nav.png" 
-             class="moonsaloon-prop doors" 
-             data-link="index.html" 
-             data-score="100" 
-             data-max-hits="1"
+        <img id="saloon-doors-back"
+             src="/img/moonsaloon/saloon-doors-nav.png"
+             class="doors"
              alt="Back to Saloon">
       </div>
 
@@ -138,7 +135,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
 
-  <!-- 3rd Person Bio Data -->
+  <!-- FULL BIO DATA & LOGIC -->
   <script>
     const bioSections = [
       { year: "2025", title: "The Whole Two Dollars Era", content: "Lance is almost 2 years into production of his record \"The Whole Two Dollars\". He has released a couple singles from this album \"Too Drunk\" and Uber, both featuring Brent Mason. Brent has been a Godsend and a great friend and colleague on this album.", images: ["img/bandmembers/Brent Mason LIVE.png"] },
@@ -169,32 +166,46 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+      // Populate holographic bio box
       const box = document.getElementById('holo-box');
       let html = '';
       bioSections.forEach(section => html += createSection(section));
       box.innerHTML = html;
 
-      // Intro video once per session
-      const video = document.getElementById('intro-video');
+      // VIDEO TRANSITION SYSTEM – SOUND AT 50% VOLUME, PLAYS EVERY TIME
+      const overlay = document.getElementById('transition-overlay');
+      const forwardVideo = document.getElementById('forward-video');
+      const reverseVideo = document.getElementById('reverse-video');
       const content = document.getElementById('main-content');
 
-      if (!sessionStorage.getItem('originsIntroPlayed')) {
-        video.src = '/video/origins-video-transition.mp4';
-        video.style.display = 'block';
-        video.play();
+      forwardVideo.src = '/video/origins-video-transition.mp4';
+      reverseVideo.src = '/video/origins-video-reverse.mp4';
 
-        video.onended = () => {
-          sessionStorage.setItem('originsIntroPlayed', 'true');
-          video.style.transition = 'opacity 1.2s ease';
-          video.style.opacity = '0';
-          setTimeout(() => {
-            video.style.display = 'none';
-            content.classList.add('show');
-          }, 1200);
-        };
-      } else {
+      // Forward transition on every page load (50% volume)
+      overlay.style.display = 'block';
+      forwardVideo.style.display = 'block';
+      forwardVideo.volume = 0.5;
+      forwardVideo.play().catch(() => {});
+
+      forwardVideo.onended = () => {
+        overlay.style.display = 'none';
         content.classList.add('show');
-      }
+      };
+
+      // Reverse transition on doors click (50% volume, full play before return)
+      document.getElementById('saloon-doors-back').addEventListener('click', (e) => {
+        e.preventDefault();
+        overlay.style.display = 'block';
+        forwardVideo.style.display = 'none';
+        reverseVideo.style.display = 'block';
+        reverseVideo.currentTime = 0;
+        reverseVideo.volume = 0.5;
+        reverseVideo.play().catch(() => {});
+
+        reverseVideo.onended = () => {
+          window.location.href = 'index.html';
+        };
+      });
     });
 
     function openModal(src) {
