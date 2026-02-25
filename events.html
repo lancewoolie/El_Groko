@@ -29,18 +29,36 @@
       min-height: 100vh;
       padding-top: 90px;
     }
-    /* Doors only at top */
+    /* HERO – Doors LEFT of Title */
     .hero-events {
       display: flex;
+      align-items: center;
       justify-content: center;
-      padding: 30px 0 40px;
+      gap: 40px;
+      padding: 30px 0 50px;
+      flex-wrap: wrap;
     }
     .hero-events .doors {
       width: 130px;
+      flex-shrink: 0;
       cursor: pointer;
       transition: transform 0.3s ease;
     }
     .hero-events .doors:hover { transform: scale(1.08); }
+    .hero-events .title-area {
+      text-align: left;
+    }
+    .hero-events h1 {
+      font-size: 3.2rem;
+      color: #00ffcc;
+      text-shadow: 0 0 20px #00ffcc, 0 0 40px #ff00aa;
+      margin: 0;
+    }
+    .hero-events .lead {
+      color: #ddd;
+      font-size: 1.25rem;
+      margin-top: 10px;
+    }
 
     .card {
       background: rgba(10, 25, 50, 0.75);
@@ -62,6 +80,15 @@
     .card h3, .card h5, .card-title { color: #f0f0f0 !important; }
     .card-body p, .card-text { color: #ddd !important; line-height: 1.7; }
 
+    /* Clear separation between new & old events */
+    #upcoming-events { margin-bottom: 80px; }
+    #past-events { margin-top: 80px; }
+    .section-divider {
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #00ffcc, transparent);
+      margin: 60px 0;
+    }
+
     #upcoming-list, #past-list {
       max-height: 620px;
       overflow-y: auto;
@@ -78,23 +105,24 @@
 <body>
   <div id="nav-placeholder"></div>
 
-  <!-- VIDEO TRANSITION OVERLAY (forward on load + reverse on doors) -->
+  <!-- VIDEO TRANSITION OVERLAY – SOUND ENABLED -->
   <div id="transition-overlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:9999;display:none;overflow:hidden;background:#000;">
-    <video id="forward-video" class="transition-video" muted playsinline style="width:100%;height:100%;object-fit:cover;"></video>
-    <video id="reverse-video" class="transition-video" muted playsinline style="width:100%;height:100%;object-fit:cover;display:none;"></video>
+    <video id="forward-video" class="transition-video" playsinline style="width:100%;height:100%;object-fit:cover;"></video>
+    <video id="reverse-video" class="transition-video" playsinline style="width:100%;height:100%;object-fit:cover;display:none;"></video>
   </div>
 
   <div class="content-overlay">
     <div class="content" id="main-content">
-      <!-- Doors only (title/subtitle/explore removed) -->
+      <!-- Doors LEFT of title -->
       <div class="hero-events">
         <img id="saloon-doors-back"
              src="/img/moonsaloon/saloon-doors-nav.png"
-             class="moonsaloon-prop doors"
-             data-link="index.html"
-             data-score="100"
-             data-max-hits="1"
+             class="doors"
              alt="Back to Saloon">
+        <div class="title-area">
+          <h1>Live Events</h1>
+          <p class="lead">Catch Lance Woolie live on the road</p>
+        </div>
       </div>
 
       <div class="container py-5" id="events-grid">
@@ -102,10 +130,14 @@
           <h2 class="text-center mb-4">Upcoming Events</h2>
           <div id="upcoming-list"></div>
         </section>
+
+        <div class="section-divider"></div>
+
         <section id="past-events" class="past-events">
           <h2 class="text-center mb-4">Past Events</h2>
           <div class="row" id="past-list"></div>
         </section>
+
         <div class="text-center mt-5">
           <p>Want to book Lance for your next event? <a href="contact.html">Get in touch</a> today!</p>
         </div>
@@ -118,347 +150,35 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
 
-  <!-- FULL EVENTS DATA & LOGIC (100% complete - no abbreviations) -->
+  <!-- FULL EVENTS DATA & LOGIC -->
   <script>
     const eventsData = [
-      {
-        date: '09/13/2025',
-        eventName: 'Court To Table Baton Rouge Presents Lance Woolie w/ Shane Reid',
-        venue: '7477 Burbank Dr',
-        fullVenue: '7477 Burbank Dr',
-        city: 'Baton Rouge, LA 70820',
-        time: '11:00 PM',
-        description: 'A night of music and mingling with special guest Shane Reid.',
-        tickets: 'https://www.facebook.com/lancewooliemusic/events',
-        imageSrc: 'https://lancewoolie.github.io/El_Groko/img/Setp13.jpg',
-        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
-        isUpcoming: true
-      },
-      {
-        date: '09/05/2025',
-        eventName: 'Court To Table Baton Rouge Presents Lance Woolie w/ Earl Wheeler III',
-        venue: '7477 Burbank Dr',
-        fullVenue: '7477 Burbank Dr',
-        city: 'Baton Rouge, LA 70820',
-        time: '11:00 PM',
-        description: 'Court to Table series featuring Earl Wheeler III.',
-        tickets: 'https://www.facebook.com/events/2788495294681182',
-        imageSrc: 'https://lancewoolie.github.io/El_Groko/img/Sept5th.jpg',
-        imageLink: 'https://www.facebook.com/events/2788495294681182',
-        isUpcoming: true
-      },
-      {
-        date: '06/21/2025',
-        eventName: 'Art Night HOEDOWN',
-        venue: '456 N Donmoor Ave',
-        fullVenue: '456 N Donmoor Ave',
-        city: 'Baton Rouge, LA 70806',
-        time: '11:00 PM',
-        description: 'Hoedown at Art Night with live performances.',
-        tickets: 'https://www.facebook.com/lancewooliemusic/events',
-        imageSrc: 'https://lancewoolie.github.io/El_Groko/img/hoe down.jpg',
-        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
-        isUpcoming: false
-      },
-      {
-        date: '06/15/2025',
-        eventName: "Jim's Bar in Ventress, LA",
-        venue: '7913 Park St',
-        fullVenue: '7913 Park St',
-        city: 'Ventress, LA 70783',
-        time: '08:00 PM',
-        description: 'Solo acoustic set at Jim\'s Bar.',
-        tickets: 'https://www.facebook.com/lancewooliemusic/events',
-        imageSrc: 'https://lancewoolie.github.io/El_Groko/img/JUNE 15th.jpg',
-        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
-        isUpcoming: false
-      },
-      {
-        date: '05/31/2025',
-        eventName: 'Lance Woolie w/ Shane Reid @ The Smiling Dog',
-        venue: '4215 S Sherwood Forest Blvd',
-        fullVenue: '4215 S Sherwood Forest Blvd',
-        city: 'Baton Rouge, LA 70816',
-        time: '02:00 AM',
-        description: 'Dynamic duo performance with Shane Reid.',
-        tickets: 'https://www.facebook.com/lancewooliemusic/events',
-        imageSrc: 'https://lancewoolie.github.io/El_Groko/img/May 30.jpg',
-        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
-        isUpcoming: false
-      },
-      {
-        date: '03/28/2025',
-        eventName: 'Private Event - Woodforest (Houston)',
-        venue: '251 Central Pine St',
-        fullVenue: '251 Central Pine St',
-        city: 'Montgomery, TX 77316',
-        time: '11:00 PM',
-        description: 'Exclusive private performance in Houston area.',
-        tickets: 'https://www.facebook.com/lancewooliemusic/events',
-        imageSrc: 'https://lancewoolie.github.io/El_Groko/img/CROPPED.png',
-        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
-        isUpcoming: false
-      },
-      {
-        date: '03/16/2025',
-        eventName: 'Lance Woolie Live at The Smiling Dog 2nd Floor Stage (solo)',
-        venue: '4215 S Sherwood Forest Blvd',
-        fullVenue: '4215 S Sherwood Forest Blvd',
-        city: 'Baton Rouge, LA 70816',
-        time: '01:50 AM',
-        description: 'Intimate solo set on the 2nd floor stage.',
-        tickets: 'https://www.facebook.com/lancewooliemusic/events',
-        imageSrc: 'https://lancewoolie.github.io/El_Groko/img/March 15th.jpg',
-        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
-        isUpcoming: false
-      },
-      {
-        date: '02/22/2025',
-        eventName: 'The Smiling Dog Presents Lance Woolie',
-        venue: '4215 S Sherwood Forest Blvd',
-        fullVenue: '4215 S Sherwood Forest Blvd',
-        city: 'Baton Rouge, LA 70816',
-        time: '03:00 AM',
-        description: 'High-energy show at Smiling Dog.',
-        tickets: 'https://www.facebook.com/lancewooliemusic/events',
-        imageSrc: 'https://lancewoolie.github.io/El_Groko/img/feb 21.jpg',
-        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
-        isUpcoming: false
-      },
-      {
-        date: '02/09/2025',
-        eventName: 'Lance Woolie (Full Band) @ Papi\'s In Watson',
-        venue: '35055 LA-16',
-        fullVenue: '35055 LA-16',
-        city: 'Denham Springs, LA 70706',
-        time: '12:00 AM',
-        description: 'Full band performance at Papi\'s.',
-        tickets: 'https://www.facebook.com/lancewooliemusic/events',
-        imageSrc: 'https://lancewoolie.github.io/El_Groko/img/Feb 8th.jpg',
-        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
-        isUpcoming: false
-      },
-      {
-        date: '02/02/2025',
-        eventName: 'Lance Woolie @ Ed\'s Place',
-        venue: '111 Duson Ave',
-        fullVenue: '111 Duson Ave',
-        city: 'Iota, LA 70543',
-        time: '02:00 AM',
-        description: 'Live set at Ed\'s Place in Iota.',
-        tickets: 'https://www.facebook.com/lancewooliemusic/events',
-        imageSrc: 'https://lancewoolie.github.io/El_Groko/img/fEB1ST eDS.jpg',
-        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
-        isUpcoming: false
-      },
-      {
-        date: '01/25/2025',
-        eventName: 'The Smiling Dog Presents Lance Woolie',
-        venue: '4215 S Sherwood Forest Blvd',
-        fullVenue: '4215 S Sherwood Forest Blvd',
-        city: 'Baton Rouge, LA 70816',
-        time: '02:00 AM',
-        description: 'Another night of twang at Smiling Dog.',
-        tickets: 'https://www.facebook.com/lancewooliemusic/events',
-        imageSrc: 'https://lancewoolie.github.io/El_Groko/img/Jan 24.jpg',
-        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
-        isUpcoming: false
-      },
-      {
-        date: '01/13/2025',
-        eventName: 'Uber World Premiere',
-        venue: '',
-        fullVenue: '',
-        city: '',
-        time: '11:00 PM',
-        description: 'World premiere event for Uber single.',
-        tickets: 'https://www.facebook.com/lancewooliemusic/events',
-        imageSrc: 'https://lancewoolie.github.io/El_Groko/img/Ubermenu.jpg',
-        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
-        isUpcoming: false
-      },
-      {
-        date: '01/11/2025',
-        eventName: 'Spankys Dutchtown Presents Lance Woolie',
-        venue: '36520 Oak Plaza Ave suite a',
-        fullVenue: '36520 Oak Plaza Ave suite a',
-        city: 'Prairieville, LA 70769',
-        time: '02:00 AM',
-        description: 'Celebrating new location with toe-tapping tunes.',
-        tickets: 'https://www.facebook.com/lancewooliemusic/events',
-        imageSrc: 'https://lancewoolie.github.io/El_Groko/img/Jan10.jpg',
-        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
-        isUpcoming: false
-      },
-      {
-        date: '12/11/2024',
-        eventName: 'Windy City Presents Lance Woolie w/ Washboard Guidry',
-        venue: '505 S Main St',
-        fullVenue: '505 S Main St',
-        city: 'Breckenridge, CO 80424',
-        time: '11:00 PM',
-        description: 'Featuring Washboard Guidry in Colorado.',
-        tickets: 'https://www.facebook.com/lancewooliemusic/events',
-        imageSrc: 'https://lancewoolie.github.io/El_Groko/img/CROPPED.png',
-        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
-        isUpcoming: false
-      },
-      {
-        date: '11/11/2024',
-        eventName: 'TCMA award ceremony',
-        venue: '2520 Rodeo Plaza',
-        fullVenue: '2520 Rodeo Plaza',
-        city: 'Fort Worth, TX 76164',
-        time: '12:00 AM',
-        description: 'Attending TCMA awards.',
-        tickets: 'https://www.facebook.com/lancewooliemusic/events',
-        imageSrc: 'https://lancewoolie.github.io/El_Groko/img/CROPPED.png',
-        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
-        isUpcoming: false
-      },
-      {
-        date: '11/09/2024',
-        eventName: 'Wimberley Valley Winery presents Lance Woolie',
-        venue: '2825 Lone Man Mountain Rd',
-        fullVenue: '2825 Lone Man Mountain Rd',
-        city: 'Driftwood, TX 78619',
-        time: '08:00 PM',
-        description: 'Performance at scenic winery.',
-        tickets: 'https://www.facebook.com/lancewooliemusic/events',
-        imageSrc: 'https://lancewoolie.github.io/El_Groko/img/Nov 9th.jpg',
-        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
-        isUpcoming: false
-      },
-      {
-        date: '10/19/2024',
-        eventName: "10/18 Rene's Bar Presents Lance Woolie & Washboard Guidry",
-        venue: '204 St Philip St',
-        fullVenue: '204 St Philip St',
-        city: 'Thibodaux, LA 70301',
-        time: '12:00 AM',
-        description: 'With Elliot Guidry at Rene\'s Bar.',
-        tickets: 'https://www.facebook.com/lancewooliemusic/events',
-        imageSrc: 'https://lancewoolie.github.io/El_Groko/img/OCt 18th.jpg',
-        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
-        isUpcoming: false
-      },
-      {
-        date: '10/12/2024',
-        eventName: 'Lance Filming in Fort Worth, Texas',
-        venue: 'Fort Worth',
-        fullVenue: 'Fort Worth',
-        city: 'TX',
-        time: '12:00 AM',
-        description: 'On-location filming in Texas.',
-        tickets: 'https://www.facebook.com/lancewooliemusic/events',
-        imageSrc: 'https://lancewoolie.github.io/El_Groko/img/ROAD TO TEXASweb.jpg',
-        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
-        isUpcoming: false
-      },
-      {
-        date: '10/10/2024',
-        eventName: '99.1 The Buck w/ Lance',
-        venue: '2125 Sidney Baker St',
-        fullVenue: '2125 Sidney Baker St',
-        city: 'Kerrville, TX 78028',
-        time: '09:00 PM',
-        description: 'Radio appearance and performance.',
-        tickets: 'https://www.facebook.com/lancewooliemusic/events',
-        imageSrc: 'https://lancewoolie.github.io/El_Groko/img/CROPPED.png',
-        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
-        isUpcoming: false
-      },
-      {
-        date: '10/09/2024',
-        eventName: '102.1 KEOK w/ Lance',
-        venue: '5686 S Muskogee Ave',
-        fullVenue: '5686 S Muskogee Ave',
-        city: 'Tahlequah, OK 74464',
-        time: '02:00 PM',
-        description: 'Live on 102.1 KEOK.',
-        tickets: 'https://www.facebook.com/lancewooliemusic/events',
-        imageSrc: 'https://lancewoolie.github.io/El_Groko/img/CROPPED.png',
-        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
-        isUpcoming: false
-      },
-      {
-        date: '10/04/2024',
-        eventName: "T'quilas Bar & Grill Presents Lance Woolie w/ Special guest Corban Barnes",
-        venue: '5647 Main St suite f',
-        fullVenue: '5647 Main St suite f',
-        city: 'Zachary, LA 70791',
-        time: '11:00 PM',
-        description: 'With special guest Corban Barnes.',
-        tickets: 'https://www.facebook.com/lancewooliemusic/events',
-        imageSrc: 'https://lancewoolie.github.io/El_Groko/img/OCT 4th.jpg',
-        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
-        isUpcoming: false
-      },
-      {
-        date: '09/21/2024',
-        eventName: '9/21 Wimberley Valley Winery presents Lance Woolie',
-        venue: '2825 Lone Man Mountain Rd',
-        fullVenue: '2825 Lone Man Mountain Rd',
-        city: 'Driftwood, TX 78619',
-        time: '09:00 PM',
-        description: 'Evening at the winery.',
-        tickets: 'https://www.facebook.com/lancewooliemusic/events',
-        imageSrc: 'https://lancewoolie.github.io/El_Groko/img/September 21.jpg',
-        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
-        isUpcoming: false
-      },
-      {
-        date: '08/04/2024',
-        eventName: 'Jim\'s Bar Presents Lance Woolie',
-        venue: '7913 Park St',
-        fullVenue: '7913 Park St',
-        city: 'Ventress, LA 70783',
-        time: '08:00 PM',
-        description: 'Live at Jim\'s Bar.',
-        tickets: 'https://www.facebook.com/lancewooliemusic/events',
-        imageSrc: 'https://lancewoolie.github.io/El_Groko/img/JimsBarPresents.jpg',
-        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
-        isUpcoming: false
-      },
-      {
-        date: '07/13/2024',
-        eventName: 'Casting Call (Music Video) July13th',
-        venue: '108 Main St',
-        fullVenue: '108 Main St',
-        city: 'New Roads, LA 70760',
-        time: '01:00 PM',
-        description: 'Music video shoot casting call.',
-        tickets: 'https://www.facebook.com/lancewooliemusic/events',
-        imageSrc: 'https://lancewoolie.github.io/El_Groko/img/casting call.jpg',
-        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
-        isUpcoming: false
-      },
-      {
-        date: '07/07/2024',
-        eventName: 'Jim\'s Bar Presents Lance Woolie',
-        venue: '7913 Park St',
-        fullVenue: '7913 Park St',
-        city: 'Ventress, LA 70783',
-        time: '08:00 PM',
-        description: 'Another night at Jim\'s.',
-        tickets: 'https://www.facebook.com/lancewooliemusic/events',
-        imageSrc: 'https://lancewoolie.github.io/El_Groko/img/JimsBarPresents.jpg',
-        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
-        isUpcoming: false
-      },
-      {
-        date: '07/04/2024',
-        eventName: 'Too Drunk release',
-        venue: '',
-        fullVenue: '',
-        city: '',
-        time: '12:00 AM',
-        description: 'Release party for Too Drunk single.',
-        tickets: 'https://www.facebook.com/lancewooliemusic/events',
-        imageSrc: 'https://lancewoolie.github.io/El_Groko/img/TooDrunkmenu.jpg',
-        imageLink: 'https://www.facebook.com/lancewooliemusic/events',
-        isUpcoming: false
-      }
+      { date: '09/13/2025', eventName: 'Court To Table Baton Rouge Presents Lance Woolie w/ Shane Reid', venue: '7477 Burbank Dr', fullVenue: '7477 Burbank Dr', city: 'Baton Rouge, LA 70820', time: '11:00 PM', description: 'A night of music and mingling with special guest Shane Reid.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/Setp13.jpg', imageLink: 'https://www.facebook.com/lancewooliemusic/events', isUpcoming: true },
+      { date: '09/05/2025', eventName: 'Court To Table Baton Rouge Presents Lance Woolie w/ Earl Wheeler III', venue: '7477 Burbank Dr', fullVenue: '7477 Burbank Dr', city: 'Baton Rouge, LA 70820', time: '11:00 PM', description: 'Court to Table series featuring Earl Wheeler III.', tickets: 'https://www.facebook.com/events/2788495294681182', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/Sept5th.jpg', imageLink: 'https://www.facebook.com/events/2788495294681182', isUpcoming: true },
+      { date: '06/21/2025', eventName: 'Art Night HOEDOWN', venue: '456 N Donmoor Ave', fullVenue: '456 N Donmoor Ave', city: 'Baton Rouge, LA 70806', time: '11:00 PM', description: 'Hoedown at Art Night with live performances.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/hoe down.jpg', imageLink: 'https://www.facebook.com/lancewooliemusic/events', isUpcoming: false },
+      { date: '06/15/2025', eventName: "Jim's Bar in Ventress, LA", venue: '7913 Park St', fullVenue: '7913 Park St', city: 'Ventress, LA 70783', time: '08:00 PM', description: 'Solo acoustic set at Jim\'s Bar.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/JUNE 15th.jpg', imageLink: 'https://www.facebook.com/lancewooliemusic/events', isUpcoming: false },
+      { date: '05/31/2025', eventName: 'Lance Woolie w/ Shane Reid @ The Smiling Dog', venue: '4215 S Sherwood Forest Blvd', fullVenue: '4215 S Sherwood Forest Blvd', city: 'Baton Rouge, LA 70816', time: '02:00 AM', description: 'Dynamic duo performance with Shane Reid.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/May 30.jpg', imageLink: 'https://www.facebook.com/lancewooliemusic/events', isUpcoming: false },
+      { date: '03/28/2025', eventName: 'Private Event - Woodforest (Houston)', venue: '251 Central Pine St', fullVenue: '251 Central Pine St', city: 'Montgomery, TX 77316', time: '11:00 PM', description: 'Exclusive private performance in Houston area.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/CROPPED.png', imageLink: 'https://www.facebook.com/lancewooliemusic/events', isUpcoming: false },
+      { date: '03/16/2025', eventName: 'Lance Woolie Live at The Smiling Dog 2nd Floor Stage (solo)', venue: '4215 S Sherwood Forest Blvd', fullVenue: '4215 S Sherwood Forest Blvd', city: 'Baton Rouge, LA 70816', time: '01:50 AM', description: 'Intimate solo set on the 2nd floor stage.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/March 15th.jpg', imageLink: 'https://www.facebook.com/lancewooliemusic/events', isUpcoming: false },
+      { date: '02/22/2025', eventName: 'The Smiling Dog Presents Lance Woolie', venue: '4215 S Sherwood Forest Blvd', fullVenue: '4215 S Sherwood Forest Blvd', city: 'Baton Rouge, LA 70816', time: '03:00 AM', description: 'High-energy show at Smiling Dog.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/feb 21.jpg', imageLink: 'https://www.facebook.com/lancewooliemusic/events', isUpcoming: false },
+      { date: '02/09/2025', eventName: 'Lance Woolie (Full Band) @ Papi\'s In Watson', venue: '35055 LA-16', fullVenue: '35055 LA-16', city: 'Denham Springs, LA 70706', time: '12:00 AM', description: 'Full band performance at Papi\'s.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/Feb 8th.jpg', imageLink: 'https://www.facebook.com/lancewooliemusic/events', isUpcoming: false },
+      { date: '02/02/2025', eventName: 'Lance Woolie @ Ed\'s Place', venue: '111 Duson Ave', fullVenue: '111 Duson Ave', city: 'Iota, LA 70543', time: '02:00 AM', description: 'Live set at Ed\'s Place in Iota.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/fEB1ST eDS.jpg', imageLink: 'https://www.facebook.com/lancewooliemusic/events', isUpcoming: false },
+      { date: '01/25/2025', eventName: 'The Smiling Dog Presents Lance Woolie', venue: '4215 S Sherwood Forest Blvd', fullVenue: '4215 S Sherwood Forest Blvd', city: 'Baton Rouge, LA 70816', time: '02:00 AM', description: 'Another night of twang at Smiling Dog.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/Jan 24.jpg', imageLink: 'https://www.facebook.com/lancewooliemusic/events', isUpcoming: false },
+      { date: '01/13/2025', eventName: 'Uber World Premiere', venue: '', fullVenue: '', city: '', time: '11:00 PM', description: 'World premiere event for Uber single.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/Ubermenu.jpg', imageLink: 'https://www.facebook.com/lancewooliemusic/events', isUpcoming: false },
+      { date: '01/11/2025', eventName: 'Spankys Dutchtown Presents Lance Woolie', venue: '36520 Oak Plaza Ave suite a', fullVenue: '36520 Oak Plaza Ave suite a', city: 'Prairieville, LA 70769', time: '02:00 AM', description: 'Celebrating new location with toe-tapping tunes.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/Jan10.jpg', imageLink: 'https://www.facebook.com/lancewooliemusic/events', isUpcoming: false },
+      { date: '12/11/2024', eventName: 'Windy City Presents Lance Woolie w/ Washboard Guidry', venue: '505 S Main St', fullVenue: '505 S Main St', city: 'Breckenridge, CO 80424', time: '11:00 PM', description: 'Featuring Washboard Guidry in Colorado.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/CROPPED.png', imageLink: 'https://www.facebook.com/lancewooliemusic/events', isUpcoming: false },
+      { date: '11/11/2024', eventName: 'TCMA award ceremony', venue: '2520 Rodeo Plaza', fullVenue: '2520 Rodeo Plaza', city: 'Fort Worth, TX 76164', time: '12:00 AM', description: 'Attending TCMA awards.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/CROPPED.png', imageLink: 'https://www.facebook.com/lancewooliemusic/events', isUpcoming: false },
+      { date: '11/09/2024', eventName: 'Wimberley Valley Winery presents Lance Woolie', venue: '2825 Lone Man Mountain Rd', fullVenue: '2825 Lone Man Mountain Rd', city: 'Driftwood, TX 78619', time: '08:00 PM', description: 'Performance at scenic winery.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/Nov 9th.jpg', imageLink: 'https://www.facebook.com/lancewooliemusic/events', isUpcoming: false },
+      { date: '10/19/2024', eventName: "10/18 Rene's Bar Presents Lance Woolie & Washboard Guidry", venue: '204 St Philip St', fullVenue: '204 St Philip St', city: 'Thibodaux, LA 70301', time: '12:00 AM', description: 'With Elliot Guidry at Rene\'s Bar.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/OCt 18th.jpg', imageLink: 'https://www.facebook.com/lancewooliemusic/events', isUpcoming: false },
+      { date: '10/12/2024', eventName: 'Lance Filming in Fort Worth, Texas', venue: 'Fort Worth', fullVenue: 'Fort Worth', city: 'TX', time: '12:00 AM', description: 'On-location filming in Texas.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/ROAD TO TEXASweb.jpg', imageLink: 'https://www.facebook.com/lancewooliemusic/events', isUpcoming: false },
+      { date: '10/10/2024', eventName: '99.1 The Buck w/ Lance', venue: '2125 Sidney Baker St', fullVenue: '2125 Sidney Baker St', city: 'Kerrville, TX 78028', time: '09:00 PM', description: 'Radio appearance and performance.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/CROPPED.png', imageLink: 'https://www.facebook.com/lancewooliemusic/events', isUpcoming: false },
+      { date: '10/09/2024', eventName: '102.1 KEOK w/ Lance', venue: '5686 S Muskogee Ave', fullVenue: '5686 S Muskogee Ave', city: 'Tahlequah, OK 74464', time: '02:00 PM', description: 'Live on 102.1 KEOK.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/CROPPED.png', imageLink: 'https://www.facebook.com/lancewooliemusic/events', isUpcoming: false },
+      { date: '10/04/2024', eventName: "T'quilas Bar & Grill Presents Lance Woolie w/ Special guest Corban Barnes", venue: '5647 Main St suite f', fullVenue: '5647 Main St suite f', city: 'Zachary, LA 70791', time: '11:00 PM', description: 'With special guest Corban Barnes.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/OCT 4th.jpg', imageLink: 'https://www.facebook.com/lancewooliemusic/events', isUpcoming: false },
+      { date: '09/21/2024', eventName: '9/21 Wimberley Valley Winery presents Lance Woolie', venue: '2825 Lone Man Mountain Rd', fullVenue: '2825 Lone Man Mountain Rd', city: 'Driftwood, TX 78619', time: '09:00 PM', description: 'Evening at the winery.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/September 21.jpg', imageLink: 'https://www.facebook.com/lancewooliemusic/events', isUpcoming: false },
+      { date: '08/04/2024', eventName: 'Jim\'s Bar Presents Lance Woolie', venue: '7913 Park St', fullVenue: '7913 Park St', city: 'Ventress, LA 70783', time: '08:00 PM', description: 'Live at Jim\'s Bar.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/JimsBarPresents.jpg', imageLink: 'https://www.facebook.com/lancewooliemusic/events', isUpcoming: false },
+      { date: '07/13/2024', eventName: 'Casting Call (Music Video) July13th', venue: '108 Main St', fullVenue: '108 Main St', city: 'New Roads, LA 70760', time: '01:00 PM', description: 'Music video shoot casting call.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/casting call.jpg', imageLink: 'https://www.facebook.com/lancewooliemusic/events', isUpcoming: false },
+      { date: '07/07/2024', eventName: 'Jim\'s Bar Presents Lance Woolie', venue: '7913 Park St', fullVenue: '7913 Park St', city: 'Ventress, LA 70783', time: '08:00 PM', description: 'Another night at Jim\'s.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/JimsBarPresents.jpg', imageLink: 'https://www.facebook.com/lancewooliemusic/events', isUpcoming: false },
+      { date: '07/04/2024', eventName: 'Too Drunk release', venue: '', fullVenue: '', city: '', time: '12:00 AM', description: 'Release party for Too Drunk single.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/TooDrunkmenu.jpg', imageLink: 'https://www.facebook.com/lancewooliemusic/events', isUpcoming: false }
     ];
 
     const currentDate = new Date('2025-10-07');
@@ -500,14 +220,14 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      // Populate events (unchanged)
+      // Populate events
       const sortedEvents = eventsData.sort((a, b) => new Date(b.date) - new Date(a.date));
       const upcomingEvents = sortedEvents.filter(e => new Date(e.date) > currentDate && e.isUpcoming);
       const pastEvents = sortedEvents.filter(e => new Date(e.date) <= currentDate);
       document.getElementById('upcoming-list').innerHTML = upcomingEvents.map(generateUpcomingCard).join('');
       document.getElementById('past-list').innerHTML = pastEvents.map(generatePastCard).join('');
 
-      // === VIDEO TRANSITION SYSTEM (plays every time - no sessionStorage) ===
+      // VIDEO TRANSITION SYSTEM – SOUND ENABLED
       const overlay = document.getElementById('transition-overlay');
       const forwardVideo = document.getElementById('forward-video');
       const reverseVideo = document.getElementById('reverse-video');
@@ -516,24 +236,26 @@
       forwardVideo.src = '/video/events-video-transition.mp4';
       reverseVideo.src = '/video/events-video-reverse.mp4';
 
-      // Forward transition on every page load
+      // Forward on every load with sound
       overlay.style.display = 'block';
       forwardVideo.style.display = 'block';
-      forwardVideo.play();
+      forwardVideo.volume = 1.0;
+      forwardVideo.play().catch(() => {});
 
       forwardVideo.onended = () => {
         overlay.style.display = 'none';
         content.classList.add('show');
       };
 
-      // Reverse transition when clicking saloon doors
+      // Reverse on doors click with sound
       document.getElementById('saloon-doors-back').addEventListener('click', (e) => {
         e.preventDefault();
         overlay.style.display = 'block';
         forwardVideo.style.display = 'none';
         reverseVideo.style.display = 'block';
         reverseVideo.currentTime = 0;
-        reverseVideo.play();
+        reverseVideo.volume = 1.0;
+        reverseVideo.play().catch(() => {});
 
         reverseVideo.onended = () => {
           window.location.href = 'index.html';
