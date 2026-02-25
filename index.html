@@ -12,7 +12,8 @@
       height: 100vh !important;
       position: relative;
       overflow: hidden;
-      padding-top: 92px; /* keeps nav in the exact spot */
+      padding-top: 92px;
+      background: none !important; /* KILLS THE DOUBLE BACKGROUND */
     }
     #saloon-svg {
       position: absolute;
@@ -46,7 +47,7 @@
   <div id="nav-placeholder"></div>
 
   <section class="hero">
-    <!-- Compact Neon HUD (stays on top) -->
+    <!-- Compact Neon HUD -->
     <div id="game-hud">
       <div class="hud-item">SCORE <span id="score-value">000000</span></div>
       <div class="hud-item">HEALTH <div id="health-bar"><div id="health-progress"></div></div></div>
@@ -54,52 +55,43 @@
       <button id="restart-btn" onclick="location.reload()">RESTART GAME</button>
     </div>
 
-    <!-- FULL SVG OVERLAY – PERFECT ALIGNMENT FOREVER -->
+    <!-- FULL SVG OVERLAY (single background only) -->
     <svg id="saloon-svg" width="100%" height="100%" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
-      <!-- Background image (scales perfectly on every device) -->
+      <!-- Background image (only one now) -->
       <image href="/img/moonsaloon/moon-saloon-base.jpg" width="1920" height="1080" />
 
-      <!-- SHOOTABLE PROPS – calibrated to your Grok Example Layout -->
-      <!-- Merch Hat -->
+      <!-- SHIFTED PROPS (exactly as you asked) -->
+      <!-- Merch Hat → shifted RIGHT 200px -->
       <image id="cowboy-hat-merch" href="/img/moonsaloon/cowboy-hat-merch-nav.png"
-             x="533" y="351" width="157" height="140"
+             x="733" y="351" width="157" height="140"
              class="moonsaloon-prop" data-link="merch.html" data-score="150" data-max-hits="1" />
 
-      <!-- Music & Video Neon -->
+      <!-- Music & Video → shifted LEFT 300px -->
       <image id="music-video-neon" href="/img/moonsaloon/music-video-neon-nav.png"
-             x="1079" y="254" width="271" height="210"
+             x="779" y="254" width="271" height="210"
              class="moonsaloon-prop" data-link="music.html" data-score="175" data-max-hits="1" />
 
-      <!-- Raccoon Subscribe -->
+      <!-- Raccoon Subscribe → shifted RIGHT 200px -->
       <image id="raccoon-subscribe" href="/img/moonsaloon/raccoon-subscribe-nav.png"
-             x="484" y="592" width="132" height="165"
+             x="684" y="592" width="132" height="165"
              class="moonsaloon-prop" data-link="contact.html#email-subscribe" data-score="500" data-max-hits="1" />
 
-      <!-- Origins Hourglass -->
+      <!-- Origins Hourglass → shifted RIGHT 200px -->
       <image id="hourglass-origins" href="/img/moonsaloon/hourglass-origins-nav.png"
-             x="515" y="756" width="109" height="148"
+             x="715" y="756" width="109" height="148"
              class="moonsaloon-prop" data-link="origins.html" data-score="125" data-max-hits="1" />
 
-      <!-- Events Calendar -->
+      <!-- Events Calendar → shifted LEFT 300px -->
       <image id="holo-calendar-events" href="/img/moonsaloon/holo-calendar-events-nav.png"
-             x="931" y="707" width="152" height="168"
+             x="631" y="707" width="152" height="168"
              class="moonsaloon-prop" data-link="events.html" data-score="150" data-max-hits="1" />
 
-      <!-- Contact Earth Trophy -->
+      <!-- Contact Earth Trophy → shifted LEFT 300px -->
       <image id="contact-earth-trophy" href="/img/moonsaloon/contact-earth-trophy-nav.png"
-             x="1277" y="700" width="159" height="142"
+             x="977" y="700" width="159" height="142"
              class="moonsaloon-prop" data-link="contact.html" data-score="200" data-max-hits="1" />
-
-      <!-- FUTURE PROPS GO HERE (just copy-paste a line) -->
-      <!-- Example NPC: 
-      <image id="moon-mouse-1" href="/img/moonsaloon/moon-mouse.png"
-             x="720" y="620" width="85" height="95"
-             class="moonsaloon-prop npc-prop" data-score="300" data-max-hits="4" />
-      -->
     </svg>
   </section>
-
-  <!-- FOOTER, OLD SECTIONS & MODAL ALL REMOVED -->
 
   <div class="pointingjs">
     <!-- YOUR OLD POINTINGJS SVG HERE -->
