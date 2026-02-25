@@ -44,7 +44,7 @@
     }
     .hero-origins .doors:hover { transform: scale(1.08); }
 
-    /* Holographic Rectangle – widened by 200px each side */
+    /* Holographic Rectangle */
     .holo-box {
       background: rgba(10, 25, 50, 0.68);
       border: 3px solid #00ffcc;
@@ -105,20 +105,20 @@
 <body>
   <div id="nav-placeholder"></div>
 
-  <!-- VIDEO TRANSITION OVERLAY – SOUND ENABLED AT 50% VOLUME -->
+  <!-- VIDEO TRANSITION OVERLAY – SOUND AT 50% VOLUME -->
   <div id="transition-overlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:9999;display:none;overflow:hidden;background:#000;">
-    <video id="forward-video" class="transition-video" playsinline style="width:100%;height:100%;object-fit:cover;"></video>
-    <video id="reverse-video" class="transition-video" playsinline style="width:100%;height:100%;object-fit:cover;display:none;"></video>
+    <video id="forward-video" playsinline style="width:100%;height:100%;object-fit:cover;"></video>
+    <video id="reverse-video" playsinline style="width:100%;height:100%;object-fit:cover;display:none;"></video>
   </div>
 
   <div class="content-overlay">
     <div class="content" id="main-content">
-      <!-- HERO – Doors only (top-left, no title) -->
+      <!-- Doors only (top-left) -->
       <div class="hero-origins">
         <img id="saloon-doors-back"
              src="/img/moonsaloon/saloon-doors-nav.png"
              class="doors"
-             alt="Back to Saloon">
+             alt="Back to Moon Saloon">
       </div>
 
       <!-- Holographic Rectangle -->
@@ -135,7 +135,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
 
-  <!-- FULL BIO DATA & LOGIC -->
+  <!-- FULL BIO DATA + VIDEO TRANSITIONS (sound 50%) -->
   <script>
     const bioSections = [
       { year: "2025", title: "The Whole Two Dollars Era", content: "Lance is almost 2 years into production of his record \"The Whole Two Dollars\". He has released a couple singles from this album \"Too Drunk\" and Uber, both featuring Brent Mason. Brent has been a Godsend and a great friend and colleague on this album.", images: ["img/bandmembers/Brent Mason LIVE.png"] },
@@ -165,14 +165,21 @@
       `;
     }
 
+    function openModal(src) {
+      const modal = document.createElement('div');
+      modal.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); display:flex; align-items:center; justify-content:center; z-index:10002;';
+      modal.innerHTML = `<img src="${src}" style="max-width:90%; max-height:90%; border-radius:16px; box-shadow:0 0 50px #00ffcc;" onclick="this.parentElement.remove()">`;
+      document.body.appendChild(modal);
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
-      // Populate holographic bio box
+      // Populate bio
       const box = document.getElementById('holo-box');
       let html = '';
       bioSections.forEach(section => html += createSection(section));
       box.innerHTML = html;
 
-      // VIDEO TRANSITION SYSTEM – SOUND AT 50% VOLUME, PLAYS EVERY TIME
+      // VIDEO TRANSITIONS – 50% VOLUME, PLAY EVERY TIME
       const overlay = document.getElementById('transition-overlay');
       const forwardVideo = document.getElementById('forward-video');
       const reverseVideo = document.getElementById('reverse-video');
@@ -181,7 +188,7 @@
       forwardVideo.src = '/video/origins-video-transition.mp4';
       reverseVideo.src = '/video/origins-video-reverse.mp4';
 
-      // Forward transition on every page load (50% volume)
+      // Forward on every load
       overlay.style.display = 'block';
       forwardVideo.style.display = 'block';
       forwardVideo.volume = 0.5;
@@ -192,7 +199,7 @@
         content.classList.add('show');
       };
 
-      // Reverse transition on doors click (50% volume, full play before return)
+      // Reverse on doors click → return to saloon
       document.getElementById('saloon-doors-back').addEventListener('click', (e) => {
         e.preventDefault();
         overlay.style.display = 'block';
@@ -207,13 +214,6 @@
         };
       });
     });
-
-    function openModal(src) {
-      const modal = document.createElement('div');
-      modal.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); display:flex; align-items:center; justify-content:center; z-index:10002;';
-      modal.innerHTML = `<img src="${src}" style="max-width:90%; max-height:90%; border-radius:16px; box-shadow:0 0 50px #00ffcc;" onclick="this.parentElement.remove()">`;
-      document.body.appendChild(modal);
-    }
   </script>
 </body>
 </html>
