@@ -16,16 +16,6 @@
       margin: 0;
       padding-bottom: 100px;
     }
-    #intro-video {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover;
-      z-index: 9999;
-      display: none;
-      background: #000;
-    }
     .content {
       position: relative;
       z-index: 1;
@@ -36,22 +26,24 @@
     .content-overlay {
       background: rgba(0, 15, 40, 0.18);
       min-height: 100vh;
-      padding-top: 120px;
+      padding-top: 90px;
     }
-
-    /* HERO – Doors static top-left, no title/subtitle */
+    /* HERO – Doors only (top-left, no title) */
     .hero-friends {
       display: flex;
       align-items: center;
       justify-content: flex-start;
       gap: 40px;
-      padding: 60px 0 40px;
+      padding: 30px 0 50px;
       flex-wrap: wrap;
     }
     .hero-friends .doors {
-      width: 120px;
+      width: 130px;
       flex-shrink: 0;
+      cursor: pointer;
+      transition: transform 0.3s ease;
     }
+    .hero-friends .doors:hover { transform: scale(1.08); }
 
     /* Futuristic Subscribe Card */
     .friend-card {
@@ -81,20 +73,20 @@
 <body>
   <div id="nav-placeholder"></div>
 
-  <!-- Intro Video (plays once per session) -->
-  <video id="intro-video" muted playsinline></video>
+  <!-- VIDEO TRANSITION OVERLAY – 50% SOUND, PLAYS EVERY TIME -->
+  <div id="transition-overlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:9999;display:none;overflow:hidden;background:#000;">
+    <video id="forward-video" playsinline style="width:100%;height:100%;object-fit:cover;"></video>
+    <video id="reverse-video" playsinline style="width:100%;height:100%;object-fit:cover;display:none;"></video>
+  </div>
 
   <div class="content-overlay">
     <div class="content" id="main-content">
-      <!-- HERO – Only Doors (top-left) -->
+      <!-- HERO – Doors only (top-left) -->
       <div class="hero-friends">
-        <img id="saloon-doors-back" 
-             src="/img/moonsaloon/saloon-doors-nav.png" 
-             class="moonsaloon-prop doors" 
-             data-link="index.html" 
-             data-score="100" 
-             data-max-hits="1"
-             alt="Back to Saloon">
+        <img id="saloon-doors-back"
+             src="/img/moonsaloon/saloon-doors-nav.png"
+             class="doors"
+             alt="Back to Moon Saloon">
       </div>
 
       <!-- Friend Zone Subscribe Card -->
@@ -102,7 +94,7 @@
         <div class="friend-card">
           <h2>Welcome to the Friend Zone</h2>
           <p class="lead mt-4">Join the inner circle. Get first dibs on new drops, secret shows, and bayou insider vibes.</p>
-          
+         
           <form id="newsletter-form" class="row g-3 justify-content-center mt-4">
             <div class="col-md-8">
               <input type="email" class="form-control" id="signup-email" placeholder="your@bayou.com" required>
@@ -123,7 +115,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
 
-  <!-- Firebase for Newsletter -->
+  <!-- Firebase for Newsletter (unchanged) -->
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
     import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
@@ -144,7 +136,7 @@
     window.serverTimestamp = serverTimestamp;
   </script>
 
-  <!-- Form handling -->
+  <!-- Form handling (unchanged) -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const newsletterForm = document.getElementById('newsletter-form');
@@ -172,28 +164,43 @@
     });
   </script>
 
-  <!-- Intro Video Logic (once per session) -->
+  <!-- VIDEO TRANSITIONS – 50% SOUND, PLAYS EVERY TIME -->
   <script>
-    const video = document.getElementById('intro-video');
-    const content = document.getElementById('main-content');
+    document.addEventListener('DOMContentLoaded', () => {
+      const overlay = document.getElementById('transition-overlay');
+      const forwardVideo = document.getElementById('forward-video');
+      const reverseVideo = document.getElementById('reverse-video');
+      const content = document.getElementById('main-content');
 
-    if (!sessionStorage.getItem('friendZoneIntroPlayed')) {
-      video.src = '/video/subscribe-video-transition.mp4';
-      video.style.display = 'block';
-      video.play();
+      forwardVideo.src = '/video/subscribe-video-transition.mp4';
+      reverseVideo.src = '/video/subscribe-video-reverse.mp4';
 
-      video.onended = () => {
-        sessionStorage.setItem('friendZoneIntroPlayed', 'true');
-        video.style.transition = 'opacity 1.2s ease';
-        video.style.opacity = '0';
-        setTimeout(() => {
-          video.style.display = 'none';
-          content.classList.add('show');
-        }, 1200);
+      // Forward on every page load (50% volume)
+      overlay.style.display = 'block';
+      forwardVideo.style.display = 'block';
+      forwardVideo.volume = 0.5;
+      forwardVideo.play().catch(() => {});
+
+      forwardVideo.onended = () => {
+        overlay.style.display = 'none';
+        content.classList.add('show');
       };
-    } else {
-      content.classList.add('show');
-    }
+
+      // Reverse on doors click (50% volume, full play before return)
+      document.getElementById('saloon-doors-back').addEventListener('click', (e) => {
+        e.preventDefault();
+        overlay.style.display = 'block';
+        forwardVideo.style.display = 'none';
+        reverseVideo.style.display = 'block';
+        reverseVideo.currentTime = 0;
+        reverseVideo.volume = 0.5;
+        reverseVideo.play().catch(() => {});
+
+        reverseVideo.onended = () => {
+          window.location.href = 'index.html';
+        };
+      });
+    });
   </script>
 </body>
 </html>
