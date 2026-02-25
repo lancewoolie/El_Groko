@@ -13,6 +13,7 @@
       background: url('/img/moonsaloon/moon-saloon-base.jpg') center/cover no-repeat fixed;
       position: relative;
       overflow: hidden;
+      padding-top: 92px; /* nav slid down exactly where footer used to be */
     }
     .props-container {
       position: absolute;
@@ -20,10 +21,24 @@
       pointer-events: none;
       z-index: 5;
     }
+    /* SQUEEZED + CENTERED NAV */
+    #nav-placeholder nav,
+    #nav-placeholder .navbar,
+    #nav-placeholder .nav-table {
+      max-width: 920px !important;
+      margin: 0 auto !important;
+      padding: 0 30px;
+    }
+    #nav-placeholder .nav-link,
+    #nav-placeholder .navbar-nav {
+      justify-content: center !important;
+      gap: 18px;
+    }
   </style>
 </head>
 <body>
   <div id="nav-placeholder"></div>
+
   <section class="hero">
     <!-- Compact Neon HUD -->
     <div id="game-hud">
@@ -34,51 +49,44 @@
     </div>
 
     <div class="props-container">
-      <!-- Merch Hat – Row 1, Col 1 -->
+      <!-- SINGLE-CLICK PROPS – perfectly centered on the bar (your 4×4 layout) -->
+
+      <!-- Merch Hat -->
       <img id="cowboy-hat-merch" src="/img/moonsaloon/cowboy-hat-merch-nav.png" class="moonsaloon-prop"
-           data-link="merch.html" data-score="150" data-max-hits="2"
-           style="top:31.5%; left:23.5%; width:6.8%;">
+           data-link="merch.html" data-score="150" data-max-hits="1"
+           style="top:29%; left:27%; width:7.2%;">
 
-      <!-- Music & Video – Row 2, Col 4 -->
+      <!-- Music & Video -->
       <img id="music-video-neon" src="/img/moonsaloon/music-video-neon-nav.png" class="moonsaloon-prop"
-           data-link="music.html" data-score="175" data-max-hits="2"
-           style="top:26%; left:51%; width:13.2%;">
+           data-link="music.html" data-score="175" data-max-hits="1"
+           style="top:26%; left:58%; width:12.8%;">
 
-      <!-- Raccoon Subscribe – Row 3, Col 1 -->
+      <!-- Raccoon Subscribe -->
       <img id="raccoon-subscribe" src="/img/moonsaloon/raccoon-subscribe-nav.png" class="moonsaloon-prop"
-           data-link="contact.html#email-subscribe" data-score="500" data-max-hits="2"
-           style="top:54.5%; left:21.5%; width:6.2%;">
+           data-link="contact.html#email-subscribe" data-score="500" data-max-hits="1"
+           style="top:52%; left:24%; width:6.4%;">
 
-      <!-- Origins Hourglass – Row 4, Col 1 -->
+      <!-- Origins Hourglass -->
       <img id="hourglass-origins" src="/img/moonsaloon/hourglass-origins-nav.png" class="moonsaloon-prop"
-           data-link="origins.html" data-score="125" data-max-hits="2"
-           style="top:67%; left:25%; width:5.1%;">
+           data-link="origins.html" data-score="125" data-max-hits="1"
+           style="top:67%; left:26%; width:5.3%;">
 
-      <!-- Events Calendar – Row 4, Col 2 -->
+      <!-- Events Calendar -->
       <img id="holo-calendar-events" src="/img/moonsaloon/holo-calendar-events-nav.png" class="moonsaloon-prop"
-           data-link="events.html" data-score="150" data-max-hits="2"
-           style="top:64.5%; left:47.5%; width:7.1%;">
+           data-link="events.html" data-score="150" data-max-hits="1"
+           style="top:64%; left:46%; width:7.4%;">
 
-      <!-- Contact Earth Trophy – Row 4, Col 3 -->
+      <!-- Contact Earth Trophy -->
       <img id="contact-earth-trophy" src="/img/moonsaloon/contact-earth-trophy-nav.png" class="moonsaloon-prop"
-           data-link="contact.html" data-score="200" data-max-hits="2"
-           style="top:63.5%; left:65%; width:7.6%;">
+           data-link="contact.html" data-score="200" data-max-hits="1"
+           style="top:63%; left:64%; width:7.9%;">
     </div>
   </section>
 
-  <!-- OLD CONTENT SECTIONS (unchanged) -->
-  <section class="py-5 combined-section">
-    <!-- YOUR OLD CAROUSELS HERE -->
-  </section>
-  <section class="py-5" style="background-color: rgba(30, 58, 138, 0.8);">
-    <!-- YOUR OLD EVENTS HERE -->
-  </section>
-  <div class="modal fade" id="crazyArmsModal" tabindex="-1" aria-labelledby="crazyArmsModalLabel" aria-hidden="true">
-    <!-- YOUR OLD MODAL HERE -->
-  </div>
-  <div id="footer-placeholder" class="tight-footer"></div>
+  <!-- FOOTER, OLD CAROUSELS, EVENTS & MODAL ALL GONE FOREVER -->
+
   <div class="pointingjs">
-    <!-- YOUR OLD POINTINGJS SVG HERE -->
+    <!-- YOUR OLD POINTINGJS SVG HERE (kept because it still looks cool with the saloon) -->
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
