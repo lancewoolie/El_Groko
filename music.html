@@ -67,15 +67,15 @@
 <body>
   <div id="nav-placeholder"></div>
 
-  <!-- VIDEO TRANSITION OVERLAY (forward + reverse) -->
+  <!-- VIDEO TRANSITION OVERLAY – SOUND ENABLED AT 50% VOLUME -->
   <div id="transition-overlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:9999;display:none;overflow:hidden;background:#000;">
-    <video id="forward-video" class="transition-video" muted playsinline style="width:100%;height:100%;object-fit:cover;"></video>
-    <video id="reverse-video" class="transition-video" muted playsinline style="width:100%;height:100%;object-fit:cover;display:none;"></video>
+    <video id="forward-video" playsinline style="width:100%;height:100%;object-fit:cover;"></video>
+    <video id="reverse-video" playsinline style="width:100%;height:100%;object-fit:cover;display:none;"></video>
   </div>
 
   <div class="content-overlay">
     <div class="content" id="main-content">
-      <!-- Doors only – title/subtitle/explore button removed -->
+      <!-- Doors only -->
       <div class="hero-music">
         <img id="saloon-doors-back"
              src="/img/moonsaloon/saloon-doors-nav.png"
@@ -183,7 +183,7 @@
   <script src="script.js"></script>
 
   <script>
-    // VIDEO TRANSITION SYSTEM – forward on load, reverse on doors click
+    // VIDEO TRANSITION SYSTEM – forward on load, reverse on doors click (50% sound)
     document.addEventListener('DOMContentLoaded', () => {
       const overlay = document.getElementById('transition-overlay');
       const forwardVideo = document.getElementById('forward-video');
@@ -193,24 +193,26 @@
       forwardVideo.src = '/video/music-and-video-transition.mp4';
       reverseVideo.src = '/video/music-and-video-reverse.mp4';
 
-      // Forward transition on page load
+      // Forward transition on every page load – 50% volume
       overlay.style.display = 'block';
       forwardVideo.style.display = 'block';
-      forwardVideo.play();
+      forwardVideo.volume = 0.5;
+      forwardVideo.play().catch(() => {});
 
       forwardVideo.onended = () => {
         overlay.style.display = 'none';
         content.classList.add('show');
       };
 
-      // Reverse transition when clicking saloon doors
+      // Reverse transition when clicking saloon doors – 50% volume
       document.getElementById('saloon-doors-back').addEventListener('click', (e) => {
         e.preventDefault();
         overlay.style.display = 'block';
         forwardVideo.style.display = 'none';
         reverseVideo.style.display = 'block';
         reverseVideo.currentTime = 0;
-        reverseVideo.play();
+        reverseVideo.volume = 0.5;
+        reverseVideo.play().catch(() => {});
 
         reverseVideo.onended = () => {
           window.location.href = 'index.html';
