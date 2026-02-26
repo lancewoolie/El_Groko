@@ -26,7 +26,7 @@
       margin: 0 !important;
     }
 
-    /* === OPTIMIZED MOBILE HUD (much smaller, no more blocking view) === */
+    /* === OPTIMIZED MOBILE HUD === */
     #game-hud {
       position: absolute;
       top: 14px;
@@ -116,27 +116,29 @@
     @media (max-width: 768px) {
       .hero { padding-top: 62px !important; }
 
-      /* Decrease HUD height by 50% */
+      /* HUD 50% smaller */
       #game-hud {
         top: 8px;
         padding: 6px 14px;
         gap: 10px;
         font-size: 0.78rem;
         border-radius: 40px;
-        height: auto;
         min-height: 42px;
       }
       #health-bar { width: 80px; height: 8px; }
 
-      /* ICON SHIFTS ON MOBILE ONLY */
-      #hourglass-origins { x: 636 !important; }     /* Origins +50px right (1 icon width) */
-      #cowboy-hat-merch { x: 580 !important; }     /* Merch +25px right (1/2 icon width) */
-      #raccoon-subscribe { x: 694 !important; }    /* Raccoon +25px right (1/2 icon width) */
-      #music-video-neon { x: 1064 !important; }    /* Music left -25px (1/2 icon width) */
-      #holo-calendar-events { x: 790 !important; } /* Events +50px right (1 icon width) */
-      #contact-earth-trophy { x: 932 !important; } /* Contact +50px right (1 icon width) */
+      /* ALL ICONS 10% SMALLER ON MOBILE ONLY */
+      .moonsaloon-prop {
+        transform: scale(0.9) !important;
+      }
 
-      /* Lower chimes icon 75px */
+      /* Previous position shifts (kept as requested) */
+      #hourglass-origins { x: 636 !important; }
+      #cowboy-hat-merch { x: 580 !important; }
+      #raccoon-subscribe { x: 694 !important; }
+      #music-video-neon { x: 1064 !important; }
+      #holo-calendar-events { x: 790 !important; }
+      #contact-earth-trophy { x: 932 !important; }
       #tesla-chime-prop { y: 103 !important; }
     }
   </style>
