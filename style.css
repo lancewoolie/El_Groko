@@ -1,16 +1,3 @@
-body { background-color: #0b1426; color: #E0E0E0; font-family: 'Georgia', serif; margin:0; padding:0; }
-.hero { height: 100vh !important; background: url('/img/moonsaloon/moon-saloon-base.jpg') center/cover no-repeat fixed; position: relative; overflow: hidden; }
-
-/* HUD INVISIBLE GLOBALLY (uncomment display:block when you add more props) */
-#game-hud { display: none !important; }
-
-/* All your existing styles (props, hover, hit, destroyed, cards, footer, etc.) stay exactly as before */
-.moonsaloon-prop { position: absolute; pointer-events: auto; cursor: crosshair; user-select: none; transition: filter 0.12s ease, transform 0.2s ease; z-index: 6; }
-/* ... paste the rest of your original style.css here (cards, tight-footer, etc.) ... */
-
-/* Transition overlay safety */
-#transition-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 9999; pointer-events: none; display: none; overflow: hidden; background: #000; }
-.transition-video { width: 100%; height: 100%; object-fit: cover; }
 body {
   background-color: #0b1426;
   color: #E0E0E0;
@@ -38,7 +25,6 @@ body {
   transition: filter 0.12s ease, transform 0.2s ease;
   z-index: 6;
 }
-/* 50% LESS BRIGHT HOVER (as you liked) */
 .moonsaloon-prop:hover {
   filter: brightness(1.4) saturate(2) drop-shadow(0 0 18px #00ffcc);
   transform: scale(1.06) rotate(2deg);
@@ -52,8 +38,8 @@ body {
   filter: grayscale(0.9);
   pointer-events: none;
 }
-/* Compact HUD */
 #game-hud {
+  display: none !important; /* HUD hidden globally as requested */
   position: absolute;
   top: 18px;
   left: 50%;
@@ -97,4 +83,9 @@ body {
   z-index:1001 !important;
   border-top:1px solid #0074D9;
 }
-/* Paste all your old styles (interactive-dot, sub-dot, card, carousel, etc.) here */
+#transition-overlay {
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  z-index: 9999; pointer-events: none; display: none; overflow: hidden; background: #000;
+}
+.transition-video { width: 100%; height: 100%; object-fit: cover; }
+/* All your other styles (cards, carousel, interactive-dot, sub-dot, etc.) go here exactly as before */
