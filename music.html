@@ -28,6 +28,7 @@
       min-height: 100vh;
       padding-top: 90px;
     }
+    /* Top doors only */
     .hero-music {
       display: flex;
       justify-content: center;
@@ -74,6 +75,7 @@
 
   <div class="content-overlay">
     <div class="content" id="main-content">
+      <!-- Doors only -->
       <div class="hero-music">
         <img id="saloon-doors-back"
              src="/img/moonsaloon/saloon-doors-nav.png"
@@ -86,8 +88,87 @@
 
       <div class="container py-5" id="music-grid">
         <div class="row g-4">
-          <!-- All your existing music cards stay exactly the same -->
-          <!-- ... (Crazy Arms, Uber, Too Drunk, etc.) ... -->
+          <!-- Crazy Arms (2025) -->
+          <div class="col-md-6 col-lg-6">
+            <div class="card">
+              <img src="https://img.youtube.com/vi/wFVxcOHna7Q/0.jpg" alt="Crazy Arms Cover Art" class="card-img-top">
+              <div class="card-body">
+                <h3>Crazy Arms feat: Brent Mason & Scotty Sanders (2025)</h3>
+                <p>A honky tonk instant classic written by Legendary steel guitar player Ralph Mooney that gets your feet stomping on the dancefloor. features Brent Mason...</p>
+                <a href="https://orcd.co/crazyarms" class="btn btn-success mt-2" target="_blank">Stream now</a>
+                <iframe width="100%" height="250" src="https://www.youtube.com/embed/wFVxcOHna7Q" frameborder="0" allowfullscreen class="mt-2"></iframe>
+              </div>
+            </div>
+          </div>
+          <!-- Uber 2025 -->
+          <div class="col-md-6 col-lg-6">
+            <div class="card">
+              <img src="https://img.youtube.com/vi/0nTop80SCvs/0.jpg" alt="Uber Cover Art" class="card-img-top">
+              <div class="card-body">
+                <h3>Uber (2025)</h3>
+                <p>A danceable neotraditional tune, evoking lost love with "I would give anything to see you walk through that door." Lance's striking, one-of-a-kind vocal uses no auto-tune. Uber features Brent Mason...</p>
+                <a href="https://orcd.co/a4glqme" class="btn btn-success mt-2" target="_blank">Stream</a>
+                <iframe width="100%" height="250" src="https://www.youtube.com/embed/0nTop80SCvs" frameborder="0" allowfullscreen class="mt-2"></iframe>
+              </div>
+            </div>
+          </div>
+          <!-- Too Drunk 2024 -->
+          <div class="col-md-6 col-lg-6">
+            <div class="card">
+              <img src="https://img.youtube.com/vi/K6c5kCqZHOc/0.jpg" alt="Too Drunk Cover Art" class="card-img-top">
+              <div class="card-body">
+                <h3>Too Drunk (2024)</h3>
+                <p>Lance Woolie's debut release "Too Drunk" was created in collaboration the renowned Legendary Guitarist of the Year Brent Mason...</p>
+                <a href="https://orcd.co/lancewoolietoodrunk" class="btn btn-success mt-2" target="_blank">Stream</a>
+                <iframe width="100%" height="250" src="https://www.youtube.com/embed/K6c5kCqZHOc" frameborder="0" allowfullscreen class="mt-2"></iframe>
+              </div>
+            </div>
+          </div>
+          <!-- Worst Enemy 2023 -->
+          <div class="col-md-6 col-lg-6">
+            <div class="card">
+              <img src="https://img.youtube.com/vi/neRw6xjusAg/0.jpg" alt="Worst Enemy Cover Art" class="card-img-top">
+              <div class="card-body">
+                <h3>Worst Enemy (2023)</h3>
+                <p>With raw and honest lyrics like “I’ll gouge out both my eyes then complain that I can’t see,” this song captures the struggles of self-sabotage...</p>
+                <a href="https://orcd.co/lancewoolieworstenemy" class="btn btn-success mt-2" target="_blank">Stream</a>
+                <iframe width="100%" height="250" src="https://www.youtube.com/embed/neRw6xjusAg" frameborder="0" allowfullscreen class="mt-2"></iframe>
+              </div>
+            </div>
+          </div>
+          <!-- Road To Texas 2021 -->
+          <div class="col-md-6 col-lg-6">
+            <div class="card">
+              <img src="https://img.youtube.com/vi/WliGvdfdWxw/0.jpg" alt="Road To Texas Cover Art" class="card-img-top">
+              <div class="card-body">
+                <h3>Road To Texas (2021)</h3>
+                <p>Written in Honor of the late legendary radio Gawd John Walton.</p>
+                <a href="https://orcd.co/pbadp4n" class="btn btn-success mt-2" target="_blank">Stream</a>
+                <iframe width="100%" height="250" src="https://www.youtube.com/embed/WliGvdfdWxw" frameborder="0" allowfullscreen class="mt-2"></iframe>
+              </div>
+            </div>
+          </div>
+          <!-- Country Paradise 2021 Album -->
+          <div class="col-12">
+            <div class="card">
+              <img src="img/COUNTRY-PARADISE-scaled.jpg" alt="Country Paradise Album Cover" class="card-img-top">
+              <div class="card-body">
+                <h3>Country Paradise (2021) - Full Album</h3>
+                <p>The debut album by Hogleg band with frontman Lance Woolie</p>
+                <a href="https://orcd.co/o4qa0ba" class="btn btn-success mt-2" target="_blank">Stream Album</a>
+              </div>
+            </div>
+          </div>
+          <!-- Bonus Live Video -->
+          <div class="col-md-6 col-lg-6">
+            <div class="card">
+              <img src="https://img.youtube.com/vi/MXyIZonwOEk/0.jpg" alt="Little Wing Live Cover" class="card-img-top">
+              <div class="card-body">
+                <h3>Live: Little Wing at The Texas Club (2025)</h3>
+                <iframe width="100%" height="250" src="https://www.youtube.com/embed/MXyIZonwOEk" frameborder="0" allowfullscreen class="mt-2"></iframe>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="text-center mt-5">
           <p class="lead">More tracks coming soon—stay tuned for bayou-fresh drops.</p>
@@ -102,6 +183,7 @@
   <script src="script.js"></script>
 
   <script>
+    // IMPROVED VIDEO TRANSITION – waits until video is ready (no black flash)
     document.addEventListener('DOMContentLoaded', () => {
       const overlay = document.getElementById('transition-overlay');
       const forwardVideo = document.getElementById('forward-video');
@@ -111,11 +193,11 @@
       forwardVideo.src = '/video/music-and-video-transition.mp4';
       reverseVideo.src = '/video/music-and-video-reverse.mp4';
 
-      // Show overlay immediately and preload aggressively
+      // Show overlay immediately
       overlay.style.display = 'block';
       forwardVideo.style.display = 'block';
 
-      // KEY FIX: Wait until video is fully ready to play smoothly
+      // Wait until video is fully buffered and ready to play smoothly
       forwardVideo.oncanplaythrough = () => {
         forwardVideo.volume = 0.5;
         forwardVideo.play().catch(() => {});
@@ -126,7 +208,7 @@
         content.classList.add('show');
       };
 
-      // Reverse transition (unchanged, works great)
+      // Reverse transition on doors click
       document.getElementById('saloon-doors-back').addEventListener('click', (e) => {
         e.preventDefault();
         overlay.style.display = 'block';
