@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Live Events - Lance Woolie</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Georgia&display=swap" rel="stylesheet">
@@ -16,6 +16,7 @@
       font-family: 'Georgia', serif;
       margin: 0;
       padding-bottom: 100px;
+      touch-action: manipulation;
     }
     .content {
       position: relative;
@@ -25,7 +26,7 @@
     }
     .content.show { opacity: 1; }
     .content-overlay {
-      background: rgba(0, 15, 40, 0.18);
+      background: url('/img/moonsaloon/events-base-bg.jpg') center/cover no-repeat fixed !important; /* FALLBACK BG */
       min-height: 100vh;
       padding-top: 90px;
     }
@@ -105,10 +106,10 @@
 <body>
   <div id="nav-placeholder"></div>
 
-  <!-- VIDEO TRANSITION OVERLAY – SOUND ENABLED -->
+  <!-- VIDEO TRANSITION OVERLAY -->
   <div id="transition-overlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:9999;display:none;overflow:hidden;background:#000;">
-    <video id="forward-video" class="transition-video" playsinline style="width:100%;height:100%;object-fit:cover;"></video>
-    <video id="reverse-video" class="transition-video" playsinline style="width:100%;height:100%;object-fit:cover;display:none;"></video>
+    <video id="forward-video" playsinline preload="auto" style="width:100%;height:100%;object-fit:cover;"></video>
+    <video id="reverse-video" playsinline preload="auto" style="width:100%;height:100%;object-fit:cover;display:none;"></video>
   </div>
 
   <div class="content-overlay">
@@ -227,7 +228,7 @@
       document.getElementById('upcoming-list').innerHTML = upcomingEvents.map(generateUpcomingCard).join('');
       document.getElementById('past-list').innerHTML = pastEvents.map(generatePastCard).join('');
 
-      // VIDEO TRANSITION SYSTEM – SOUND ENABLED
+      // ROBUST MOBILE TRANSITION
       const overlay = document.getElementById('transition-overlay');
       const forwardVideo = document.getElementById('forward-video');
       const reverseVideo = document.getElementById('reverse-video');
@@ -236,25 +237,41 @@
       forwardVideo.src = '/video/events-video-transition.mp4';
       reverseVideo.src = '/video/events-video-reverse.mp4';
 
-      // Forward on every load with sound
       overlay.style.display = 'block';
       forwardVideo.style.display = 'block';
-      forwardVideo.volume = 1.0;
-      forwardVideo.play().catch(() => {});
+
+      let started = false;
+
+      forwardVideo.oncanplaythrough = () => {
+        if (started) return;
+        started = true;
+        forwardVideo.muted = true;     // MUTED for mobile autoplay
+        forwardVideo.volume = 0.5;
+        forwardVideo.play().catch(() => {});
+      };
+
+      // HARD SAFETY – content ALWAYS shows
+      setTimeout(() => {
+        if (!started) {
+          started = true;
+          overlay.style.display = 'none';
+          content.classList.add('show');
+        }
+      }, 1600);
 
       forwardVideo.onended = () => {
         overlay.style.display = 'none';
         content.classList.add('show');
       };
 
-      // Reverse on doors click with sound
+      // Reverse on doors click (50% volume, full play before return)
       document.getElementById('saloon-doors-back').addEventListener('click', (e) => {
         e.preventDefault();
         overlay.style.display = 'block';
         forwardVideo.style.display = 'none';
         reverseVideo.style.display = 'block';
         reverseVideo.currentTime = 0;
-        reverseVideo.volume = 1.0;
+        reverseVideo.volume = 0.5;
         reverseVideo.play().catch(() => {});
 
         reverseVideo.onended = () => {
