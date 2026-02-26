@@ -9,19 +9,36 @@
   <link rel="stylesheet" href="style.css">
   <style>
     html, body {
-      margin:0 !important; padding:0 !important; width:100% !important; height:100% !important; overflow:hidden;
+      margin:0 !important;
+      padding:0 !important;
+      width:100% !important;
+      height:100% !important;
+      overflow:hidden;
     }
     .hero {
-      height: 100vh !important; width: 100vw !important;
+      height: 100vh !important;
+      width: 100vw !important;
       background: url('/img/moonsaloon/moon-saloon-base-wide.jpg?v=3') center/cover no-repeat fixed !important;
-      position: relative; overflow: hidden; padding-top: 92px; margin: 0 !important;
+      position: relative;
+      overflow: hidden;
+      padding-top: 92px;
+      margin: 0 !important;
     }
     #transition-overlay {
-      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-      z-index: 9999; pointer-events: none; display: none; overflow: hidden; background: #000;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 9999;
+      pointer-events: none;
+      display: none;
+      overflow: hidden;
+      background: #000;
     }
     .transition-video {
-      width: 100%; height: 100%; object-fit: cover;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
     @media (max-width: 768px) {
       .hero { padding-top: 62px !important; }
@@ -38,36 +55,19 @@
   <div id="nav-placeholder"></div>
   <section class="hero">
     <svg id="saloon-svg" width="100%" height="100%" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
-      <!-- Tesla Chime -->
-      <image id="tesla-chime-prop" href="/img/moonsaloon/Tesla-Chime-nav.png" x="862.5" y="28" width="195" height="132.5" class="moonsaloon-prop"
-             data-link="chimes.html" data-score="350" data-max-hits="1" data-forward-video="/video/chimes-video-transition.mp4" />
-      <!-- Origins -->
-      <image id="hourglass-origins" href="/img/moonsaloon/hourglass-origins-nav.png" x="586" y="707" width="179" height="245" class="moonsaloon-prop"
-             data-link="origins.html" data-score="125" data-max-hits="1" data-forward-video="/video/origins-video-transition.mp4" />
-      <!-- Events -->
-      <image id="holo-calendar-events" href="/img/moonsaloon/holo-calendar-events-nav.png" x="740" y="776" width="175" height="193" class="moonsaloon-prop"
-             data-link="events.html" data-score="150" data-max-hits="1" data-forward-video="/video/events-video-transition.mp4" />
-      <!-- Merch -->
-      <image id="cowboy-hat-merch" href="/img/moonsaloon/cowboy-hat-merch-nav.png" x="555" y="331" width="314" height="280" class="moonsaloon-prop"
-             data-link="merch.html" data-score="150" data-max-hits="1" data-forward-video="/video/merch-video-transition.mp4" />
-      <!-- Music -->
-      <image id="music-video-neon" href="/img/moonsaloon/music-video-neon-nav.png" x="1089" y="474" width="205" height="158" class="moonsaloon-prop"
-             data-link="music.html" data-score="175" data-max-hits="1" data-forward-video="/video/music-and-video-transition.mp4" />
-      <!-- Raccoon / Friends -->
-      <image id="raccoon-subscribe" href="/img/moonsaloon/raccoon-subscribe-nav.png" x="669" y="617" width="132" height="165" class="moonsaloon-prop"
-             data-link="friends.html" data-score="500" data-max-hits="1" data-forward-video="/video/friends-video-transition.mp4" />
-      <!-- Contact -->
-      <image id="contact-earth-trophy" href="/img/moonsaloon/contact-earth-trophy-nav.png" x="882" y="747" width="199" height="178" class="moonsaloon-prop"
-             data-link="contact.html" data-score="200" data-max-hits="1" data-forward-video="/video/contact-video-transition.mp4" />
+      <image id="tesla-chime-prop" href="/img/moonsaloon/Tesla-Chime-nav.png" x="862.5" y="28" width="195" height="132.5" class="moonsaloon-prop" data-link="chimes.html" data-score="350" data-max-hits="1" data-forward-video="/video/chimes-video-transition.mp4" />
+      <image id="hourglass-origins" href="/img/moonsaloon/hourglass-origins-nav.png" x="586" y="707" width="179" height="245" class="moonsaloon-prop" data-link="origins.html" data-score="125" data-max-hits="1" data-forward-video="/video/origins-video-transition.mp4" />
+      <image id="holo-calendar-events" href="/img/moonsaloon/holo-calendar-events-nav.png" x="740" y="776" width="175" height="193" class="moonsaloon-prop" data-link="events.html" data-score="150" data-max-hits="1" data-forward-video="/video/events-video-transition.mp4" />
+      <image id="cowboy-hat-merch" href="/img/moonsaloon/cowboy-hat-merch-nav.png" x="555" y="331" width="314" height="280" class="moonsaloon-prop" data-link="merch.html" data-score="150" data-max-hits="1" data-forward-video="/video/merch-video-transition.mp4" />
+      <image id="music-video-neon" href="/img/moonsaloon/music-video-neon-nav.png" x="1089" y="474" width="205" height="158" class="moonsaloon-prop" data-link="music.html" data-score="175" data-max-hits="1" data-forward-video="/video/music-and-video-transition.mp4" />
+      <image id="raccoon-subscribe" href="/img/moonsaloon/raccoon-subscribe-nav.png" x="669" y="617" width="132" height="165" class="moonsaloon-prop" data-link="friends.html" data-score="500" data-max-hits="1" data-forward-video="/video/friends-video-transition.mp4" />
+      <image id="contact-earth-trophy" href="/img/moonsaloon/contact-earth-trophy-nav.png" x="882" y="747" width="199" height="178" class="moonsaloon-prop" data-link="contact.html" data-score="200" data-max-hits="1" data-forward-video="/video/contact-video-transition.mp4" />
     </svg>
   </section>
-
-  <!-- TRANSITION OVERLAY (used by index for forward + all sub-pages for reverse) -->
   <div id="transition-overlay">
     <video id="forward-video" class="transition-video" playsinline preload="auto"></video>
     <video id="reverse-video" class="transition-video" playsinline preload="auto" style="display:none;"></video>
   </div>
-
   <div class="pointingjs"></div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
