@@ -10,7 +10,7 @@
   <link rel="icon" type="image/png" href="img/LanceWoolieHeadonly.png">
   <style>
     body {
-      background: url('/img/moonsaloon/friends-base-bg.jpg') center/cover no-repeat fixed !important;
+      background: url('/img/moonsaloon/chimes-base-bg.jpg') center/cover no-repeat fixed !important;
       color: #E0E0E0;
       font-family: 'Georgia', serif;
       margin: 0;
@@ -83,7 +83,7 @@
       animation: pulse 0.6s infinite alternate;
     }
 
-    /* Tesla Referral Block – top right, glowing */
+    /* Tesla Referral Block */
     .referral-block {
       position: absolute;
       top: 120px;
@@ -137,7 +137,7 @@
       <div class="container">
         <div class="chime-block">
           <h2 class="text-center mb-4" style="color:#00ffcc; text-shadow:0 0 30px #00ffcc;">🔊 LOCK CHIMES FOR TESLA</h2>
-          <p class="text-center mb-5">Click any chime below to preview. Rename any file to <strong>lockchime.wav</strong> and drop it in your Tesla’s sound folder for instant custom horn/lock sound.</p>
+          <p class="text-center mb-5">Click any chime below to preview. Rename any file to <strong>lockchime.wav</strong> and drop it in your Tesla’s sound folder.</p>
 
           <div class="row g-3" id="chimes-grid">
             <!-- Populated by JS -->
@@ -145,7 +145,7 @@
         </div>
       </div>
 
-      <!-- Tesla Referral Block (top-right, glowing) -->
+      <!-- Tesla Referral Block -->
       <div class="referral-block" onclick="window.open('https://www.tesla.com/referral/lance680518','_blank')">
         <div class="tesla-t">T</div>
         <h4 style="margin:0; font-weight:900;">REFER A FRIEND</h4>
@@ -161,7 +161,6 @@
   <script src="script.js"></script>
 
   <script>
-    // All lock chimes
     const chimes = [
       { name: "Crazy Arms Steel Solo", file: "sounds/LockChime.wav" },
       { name: "Star Trek Red Alert", file: "sounds/REDALERT.wav" },
@@ -185,11 +184,8 @@
       const audio = new Audio(file);
       audio.volume = 0.5;
       audio.play();
-
       btn.classList.add('playing');
       setTimeout(() => btn.classList.remove('playing'), 1200);
-
-      // Simple particle burst
       createParticles(btn);
     }
 
@@ -213,7 +209,7 @@
 
         const anim = setInterval(() => {
           x += Math.cos(angle) * vel;
-          y += Math.sin(angle) * vel - 1.5; // gravity
+          y += Math.sin(angle) * vel - 1.5;
           p.style.transform = `translate(${x}px, ${y}px)`;
           p.style.opacity = 1 - (Math.abs(y)/200);
           if (p.style.opacity <= 0) {
@@ -224,8 +220,8 @@
       }
     }
 
-    // Build grid
     document.addEventListener('DOMContentLoaded', () => {
+      // Build chime buttons
       const grid = document.getElementById('chimes-grid');
       chimes.forEach(chime => grid.appendChild(createChimeButton(chime)));
 
@@ -235,8 +231,8 @@
       const reverseVideo = document.getElementById('reverse-video');
       const content = document.getElementById('main-content');
 
-      forwardVideo.src = '/video/chimes-video-transition.mp4';
-      reverseVideo.src = '/video/chimes-video-reverse.mp4';
+      forwardVideo.src = '/video/chines-video-transition.mp4';
+      reverseVideo.src = '/video/chines-video-reverse.mp4';
 
       overlay.style.display = 'block';
       forwardVideo.style.display = 'block';
