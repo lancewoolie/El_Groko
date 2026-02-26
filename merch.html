@@ -25,7 +25,7 @@
     }
     .content.show { opacity: 1; }
     .content-overlay {
-      background: rgba(0, 15, 40, 0.18);
+      background: url('/img/moonsaloon/merch-base-bg.jpg') center/cover no-repeat fixed !important; /* FALLBACK BG */
       min-height: 100vh;
       padding-top: 90px;
     }
@@ -201,58 +201,4 @@
   <script src="script.js"></script>
 
   <script>
-    // ROBUST MOBILE TRANSITION (forward muted on mobile)
-    document.addEventListener('DOMContentLoaded', () => {
-      const overlay = document.getElementById('transition-overlay');
-      const forwardVideo = document.getElementById('forward-video');
-      const reverseVideo = document.getElementById('reverse-video');
-      const content = document.getElementById('main-content');
-
-      forwardVideo.src = '/video/merch-video-transition.mp4';
-      reverseVideo.src = '/video/merch-video-reverse.mp4';
-
-      overlay.style.display = 'block';
-      forwardVideo.style.display = 'block';
-
-      let started = false;
-
-      forwardVideo.oncanplaythrough = () => {
-        if (started) return;
-        started = true;
-        forwardVideo.muted = true;     // MUTED for mobile autoplay
-        forwardVideo.volume = 0.5;
-        forwardVideo.play().catch(() => {});
-      };
-
-      // HARD SAFETY – content ALWAYS shows after max 1.6 seconds
-      setTimeout(() => {
-        if (!started) {
-          started = true;
-          overlay.style.display = 'none';
-          content.classList.add('show');
-        }
-      }, 1600);
-
-      forwardVideo.onended = () => {
-        overlay.style.display = 'none';
-        content.classList.add('show');
-      };
-
-      // Reverse transition (user click = sound allowed)
-      document.getElementById('saloon-doors-back').addEventListener('click', (e) => {
-        e.preventDefault();
-        overlay.style.display = 'block';
-        forwardVideo.style.display = 'none';
-        reverseVideo.style.display = 'block';
-        reverseVideo.currentTime = 0;
-        reverseVideo.volume = 0.5;
-        reverseVideo.play().catch(() => {});
-
-        reverseVideo.onended = () => {
-          window.location.href = 'index.html';
-        };
-      });
-    });
-  </script>
-</body>
-</html>
+    // ROBUST
