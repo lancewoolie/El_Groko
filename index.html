@@ -144,11 +144,11 @@
       <button id="restart-btn" onclick="location.reload()">RESTART GAME</button>
     </div>
     <svg id="saloon-svg" width="100%" height="100%" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
-      <!-- NEW TESLA CHIME PROP – VERY TOP CENTER -->
+      <!-- NEW TESLA CHIME PROP – 50% SIZE, STILL PERFECTLY CENTERED AT TOP -->
       <image id="tesla-chime-prop" 
              href="/img/moonsaloon/Tesla-Chime-nav.png" 
-             x="765" y="28" 
-             width="390" height="265" 
+             x="862.5" y="28" 
+             width="195" height="132.5" 
              class="moonsaloon-prop" 
              data-link="chimes.html" 
              data-score="350" 
@@ -182,10 +182,8 @@
       const overlay = document.getElementById('transition-overlay');
       const forwardVideo = document.getElementById('forward-video');
       const reverseVideo = document.getElementById('reverse-video');
-      // Set your actual video paths here (update if filenames differ)
       forwardVideo.src = '/videos/moon-saloon-transition-forward.mp4';
       reverseVideo.src = '/videos/moon-saloon-transition-reverse.mp4';
-      // Function to play reverse video when returning via nav doors
       window.playSaloonReturnTransition = () => {
         overlay.style.display = 'block';
         forwardVideo.style.display = 'none';
