@@ -24,7 +24,7 @@
     .hero-chimes {
       display: flex;
       justify-content: flex-start;
-      padding: 30px 0 50px;
+      padding: 30px 0 40px;
       gap: 40px;
     }
     .hero-chimes .doors {
@@ -34,21 +34,7 @@
     }
     .hero-chimes .doors:hover { transform: scale(1.08); }
 
-    /* Tesla Chime Prop */
-    .tesla-chime-prop {
-      width: 420px;
-      margin: 0 auto 40px;
-      display: block;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      filter: drop-shadow(0 0 40px #00ffcc);
-    }
-    .tesla-chime-prop:hover {
-      transform: scale(1.08) rotate(3deg);
-      filter: drop-shadow(0 0 80px #ff00aa);
-    }
-
-    /* Futuristic Sound Blocks */
+    /* Main Chimes Block – raised higher */
     .chime-block {
       background: rgba(10,25,50,0.75);
       border: 3px solid #00ffcc;
@@ -56,7 +42,8 @@
       padding: 2.5rem;
       box-shadow: 0 0 60px rgba(0,255,204,0.5), inset 0 0 50px rgba(255,0,170,0.25);
       backdrop-filter: blur(12px);
-      margin-bottom: 60px;
+      margin: -20px auto 60px;   /* raised up */
+      max-width: 1100px;
     }
     .sound-btn {
       background: rgba(0,0,0,0.6);
@@ -83,31 +70,49 @@
       animation: pulse 0.6s infinite alternate;
     }
 
-    /* Tesla Referral Block */
+    /* Sexy Tesla Referral Block – moved LEFT, bigger, glowing */
     .referral-block {
       position: absolute;
-      top: 120px;
-      right: 40px;
+      top: 130px;
+      left: 40px;
       background: linear-gradient(135deg, #00ffcc, #ff00aa);
       color: #000;
-      padding: 1.8rem 2.2rem;
-      border-radius: 20px;
-      box-shadow: 0 0 60px #00ffcc, 0 0 100px rgba(255,0,170,0.6);
+      padding: 2rem 2.5rem;
+      border-radius: 24px;
+      box-shadow: 0 0 80px #00ffcc, 0 0 140px rgba(255,0,170,0.7);
       text-align: center;
-      max-width: 280px;
+      max-width: 320px;
       cursor: pointer;
       transition: all 0.4s ease;
-      z-index: 10;
+      z-index: 20;
+      border: 3px solid rgba(255,255,255,0.3);
     }
     .referral-block:hover {
-      transform: scale(1.08) rotate(2deg);
-      box-shadow: 0 0 90px #ff00aa;
+      transform: scale(1.12) rotate(1deg);
+      box-shadow: 0 0 100px #ff00aa, 0 0 180px rgba(255,0,170,0.9);
     }
     .referral-block .tesla-t {
-      font-size: 4.5rem;
+      font-size: 5.8rem;
       font-weight: 900;
       line-height: 1;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
+      text-shadow: 0 0 20px #000;
+    }
+    .referral-block h4 {
+      font-size: 1.65rem;
+      margin: 0 0 6px;
+      font-weight: 900;
+    }
+    .referral-block p {
+      font-size: 1.15rem;
+      margin: 0;
+      font-weight: 600;
+    }
+    .referral-block small {
+      font-size: 1rem;
+      opacity: 0.95;
+      display: block;
+      margin-top: 10px;
     }
   </style>
 </head>
@@ -130,10 +135,7 @@
              alt="Back to Moon Saloon">
       </div>
 
-      <!-- Tesla Chime Prop -->
-      <img src="/img/moonsaloon/Tesla-Chime-nav.png" id="chime-prop" class="tesla-chime-prop" alt="Tesla Chime">
-
-      <!-- Main Chimes Block -->
+      <!-- Main Chimes Block (raised higher) -->
       <div class="container">
         <div class="chime-block">
           <h2 class="text-center mb-4" style="color:#00ffcc; text-shadow:0 0 30px #00ffcc;">🔊 LOCK CHIMES FOR TESLA</h2>
@@ -145,12 +147,12 @@
         </div>
       </div>
 
-      <!-- Tesla Referral Block -->
+      <!-- Sexy Tesla Referral Block – LEFT SIDE -->
       <div class="referral-block" onclick="window.open('https://www.tesla.com/referral/lance680518','_blank')">
         <div class="tesla-t">T</div>
-        <h4 style="margin:0; font-weight:900;">REFER A FRIEND</h4>
-        <p style="margin:8px 0 0; font-size:1.1rem;">Get 1,000 Free Supercharger Miles + they get 1,000 too.</p>
-        <small style="opacity:0.9;">lance680518</small>
+        <h4>REFER A FRIEND</h4>
+        <p>Get 1,000 Free Supercharger Miles<br>They get 1,000 too.</p>
+        <small>lance680518</small>
       </div>
     </div>
   </div>
@@ -221,11 +223,10 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      // Build chime buttons
       const grid = document.getElementById('chimes-grid');
       chimes.forEach(chime => grid.appendChild(createChimeButton(chime)));
 
-      // VIDEO TRANSITIONS – 50% SOUND
+      // VIDEO TRANSITIONS
       const overlay = document.getElementById('transition-overlay');
       const forwardVideo = document.getElementById('forward-video');
       const reverseVideo = document.getElementById('reverse-video');
@@ -254,14 +255,6 @@
         reverseVideo.play().catch(() => {});
 
         reverseVideo.onended = () => window.location.href = 'index.html';
-      });
-
-      // Clickable Tesla Chime prop
-      document.getElementById('chime-prop').addEventListener('click', () => {
-        const audio = new Audio('sounds/LockChime.wav');
-        audio.volume = 0.6;
-        audio.play();
-        createParticles(document.getElementById('chime-prop'));
       });
     });
   </script>
