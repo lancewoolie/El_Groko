@@ -187,7 +187,7 @@
   <script src="script.js"></script>
 
   <script>
-    // MOBILE-ROBUST VIDEO TRANSITION (forward starts muted)
+    // MOBILE-ROBUST FORWARD TRANSITION (muted on mobile)
     document.addEventListener('DOMContentLoaded', () => {
       const overlay = document.getElementById('transition-overlay');
       const forwardVideo = document.getElementById('forward-video');
@@ -205,12 +205,12 @@
       forwardVideo.oncanplaythrough = () => {
         if (started) return;
         started = true;
-        forwardVideo.muted = true;     // MUTED for mobile autoplay
+        forwardVideo.muted = true;        // MUTED for mobile autoplay
         forwardVideo.volume = 0.5;
         forwardVideo.play().catch(() => {});
       };
 
-      // HARD SAFETY – content ALWAYS shows (max 1.6 seconds black screen)
+      // HARD SAFETY TIMEOUT - content ALWAYS shows
       setTimeout(() => {
         if (!started) {
           started = true;
@@ -224,7 +224,7 @@
         content.classList.add('show');
       };
 
-      // Reverse transition (user click = sound allowed)
+      // Reverse transition (works because user clicked)
       document.getElementById('saloon-doors-back').addEventListener('click', (e) => {
         e.preventDefault();
         overlay.style.display = 'block';
