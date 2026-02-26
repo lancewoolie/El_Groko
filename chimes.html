@@ -3,101 +3,154 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Music & Videos - Lance Woolie</title>
+  <title>Tesla Chimes - Lance Woolie’s Moon Saloon</title>
   <link href="https://fonts.googleapis.com/css2?family=Georgia&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/png" href="img/LanceWoolieHeadonly.png">
   <style>
     body {
-      background: url('/img/moonsaloon/music-video-base-bg.jpg') center/cover no-repeat fixed !important;
+      background: url('/img/moonsaloon/chimes-base-bg.jpg') center/cover no-repeat fixed !important;
       color: #E0E0E0;
       font-family: 'Georgia', serif;
       margin: 0;
       padding-bottom: 100px;
     }
-    .content {
-      position: relative;
-      z-index: 1;
-      opacity: 0;
-      transition: opacity 1.2s ease;
-    }
+    .content { position: relative; z-index: 1; opacity: 0; transition: opacity 1.2s ease; }
     .content.show { opacity: 1; }
-    .content-overlay {
-      background: rgba(0, 15, 40, 0.18);
-      min-height: 100vh;
-      padding-top: 90px;
-    }
-    .hero-music {
+    .content-overlay { background: rgba(0,15,40,0.18); min-height: 100vh; padding-top: 90px; }
+
+    /* Hero – Doors only */
+    .hero-chimes {
       display: flex;
-      justify-content: center;
-      padding: 30px 0 40px;
+      justify-content: flex-start;
+      padding: 30px 0 50px;
+      gap: 40px;
     }
-    .hero-music .doors {
+    .hero-chimes .doors {
       width: 130px;
       cursor: pointer;
       transition: transform 0.3s ease;
     }
-    .hero-music .doors:hover { transform: scale(1.08); }
+    .hero-chimes .doors:hover { transform: scale(1.08); }
 
-    .card {
-      background: rgba(10, 25, 50, 0.75);
+    /* Tesla Chime Prop */
+    .tesla-chime-prop {
+      width: 420px;
+      margin: 0 auto 40px;
+      display: block;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      filter: drop-shadow(0 0 40px #00ffcc);
+    }
+    .tesla-chime-prop:hover {
+      transform: scale(1.08) rotate(3deg);
+      filter: drop-shadow(0 0 80px #ff00aa);
+    }
+
+    /* Main Chimes Block */
+    .chime-block {
+      background: rgba(10,25,50,0.75);
+      border: 3px solid #00ffcc;
+      border-radius: 24px;
+      padding: 2.5rem;
+      box-shadow: 0 0 60px rgba(0,255,204,0.5), inset 0 0 50px rgba(255,0,170,0.25);
+      backdrop-filter: blur(12px);
+      margin-bottom: 60px;
+    }
+
+    /* Sound row with inline download */
+    .sound-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .sound-btn {
+      background: rgba(0,0,0,0.6);
       border: 2px solid #00ffcc;
-      border-radius: 16px;
-      overflow: hidden;
-      height: 100%;
-      box-shadow: 0 0 25px rgba(0, 255, 204, 0.3),
-                  inset 0 0 25px rgba(255, 0, 170, 0.15);
-      transition: all 0.4s ease;
-      backdrop-filter: blur(8px);
+      color: #00ffcc;
+      padding: 1rem 1.5rem;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      flex-grow: 1;
+      text-align: left;
     }
-    .card:hover {
-      transform: translateY(-12px) scale(1.02);
-      box-shadow: 0 0 40px rgba(0, 255, 204, 0.6),
-                  inset 0 0 40px rgba(255, 0, 170, 0.3);
-      border-color: #ff00aa;
+    .sound-btn:hover {
+      background: #00ffcc;
+      color: #000;
+      transform: scale(1.05);
+      box-shadow: 0 0 30px #00ffcc;
     }
-    .card h3 {
-      color: #f0f0f0 !important;
-      text-shadow: 0 0 15px #00ffcc;
-      font-size: 1.55rem;
+    .sound-btn.playing {
+      background: #ff00aa;
+      color: #fff;
+      box-shadow: 0 0 50px #ff00aa;
+      animation: pulse 0.6s infinite alternate;
     }
-    .card-body p {
-      color: #f0f0f0 !important;
-      line-height: 1.7;
+
+    .download-btn {
+      background: rgba(0,0,0,0.6);
+      border: 2px solid #00ffcc;
+      color: #00ffcc;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+    }
+    .download-btn:hover {
+      background: #00ffcc;
+      color: #000;
+      transform: scale(1.15);
+      box-shadow: 0 0 30px #00ffcc;
     }
   </style>
 </head>
 <body>
   <div id="nav-placeholder"></div>
 
-  <!-- VIDEO TRANSITION OVERLAY -->
+  <!-- VIDEO TRANSITION OVERLAY – 50% SOUND -->
   <div id="transition-overlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:9999;display:none;overflow:hidden;background:#000;">
-    <video id="forward-video" playsinline preload="auto" style="width:100%;height:100%;object-fit:cover;"></video>
-    <video id="reverse-video" playsinline preload="auto" style="width:100%;height:100%;object-fit:cover;display:none;"></video>
+    <video id="forward-video" playsinline style="width:100%;height:100%;object-fit:cover;"></video>
+    <video id="reverse-video" playsinline style="width:100%;height:100%;object-fit:cover;display:none;"></video>
   </div>
 
   <div class="content-overlay">
     <div class="content" id="main-content">
-      <div class="hero-music">
+      <!-- Doors -->
+      <div class="hero-chimes">
         <img id="saloon-doors-back"
              src="/img/moonsaloon/saloon-doors-nav.png"
              class="doors"
-             data-link="index.html"
-             data-score="100"
-             data-max-hits="1"
-             alt="Back to Saloon">
+             alt="Back to Moon Saloon">
       </div>
 
-      <div class="container py-5" id="music-grid">
-        <div class="row g-4">
-          <!-- All your music cards are here unchanged -->
-          <!-- Crazy Arms, Uber, Too Drunk, Worst Enemy, Road To Texas, Country Paradise, Live Video -->
-          <!-- (same as before) -->
+      <!-- Tesla Chime Prop -->
+      <img src="/img/moonsaloon/Tesla-Chime-nav.png" id="chime-prop" class="tesla-chime-prop" alt="Tesla Chime">
+
+      <!-- Main Chimes Block -->
+      <div class="container">
+        <div class="chime-block">
+          <h2 class="text-center mb-4" style="color:#00ffcc; text-shadow:0 0 30px #00ffcc;">🔊 LOCK CHIMES FOR TESLA</h2>
+          <p class="text-center mb-5">Click ▶️ to preview • Click ↓ to download. Rename any file to <strong>lockchime.wav</strong> for your Tesla.</p>
+
+          <div class="row g-3" id="chimes-grid">
+            <!-- Populated by JS -->
+          </div>
         </div>
-        <div class="text-center mt-5">
-          <p class="lead">More tracks coming soon—stay tuned for bayou-fresh drops.</p>
-        </div>
+      </div>
+
+      <!-- Tesla Referral Block -->
+      <div class="referral-block" onclick="window.open('https://www.tesla.com/referral/lance680518','_blank')">
+        <div class="tesla-t">T</div>
+        <h4 style="margin:0; font-weight:900;">REFER A FRIEND</h4>
+        <p style="margin:8px 0 0; font-size:1.1rem;">Get 1,000 Free Supercharger Miles + they get 1,000 too.</p>
+        <small style="opacity:0.9;">lance680518</small>
       </div>
     </div>
   </div>
@@ -108,44 +161,103 @@
   <script src="script.js"></script>
 
   <script>
+    const chimes = [
+      { name: "Crazy Arms Steel Solo", file: "sounds/LockChime.wav" },
+      { name: "Star Trek Red Alert", file: "sounds/REDALERT.wav" },
+      { name: "Lance Jesus in Sleep", file: "sounds/jesus.wav" },
+      { name: "Multiple Ricochets", file: "sounds/multiple-ricochets.mp3" },
+      { name: "Ricochet 1", file: "sounds/ricochet-1.mp3" },
+      { name: "Ricochet 2", file: "sounds/ricochet-2.mp3" },
+      { name: "Technology Meme", file: "sounds/technology.wav" },
+      { name: "Wayputa – Call of the Gringo", file: "sounds/wayputa.wav" }
+    ];
+
+    function createChimeButton(chime) {
+      const row = document.createElement('div');
+      row.className = 'sound-row col-12 col-md-5';
+
+      // Play Button
+      const playBtn = document.createElement('button');
+      playBtn.className = 'sound-btn';
+      playBtn.innerHTML = `▶️ ${chime.name}`;
+      playBtn.onclick = () => playChime(playBtn, chime.file);
+
+      // Download Button
+      const downloadBtn = document.createElement('a');
+      downloadBtn.href = chime.file;
+      downloadBtn.download = chime.file.split('/').pop();
+      downloadBtn.className = 'download-btn';
+      downloadBtn.innerHTML = '↓';
+      downloadBtn.title = 'Download this chime';
+
+      row.appendChild(playBtn);
+      row.appendChild(downloadBtn);
+      return row;
+    }
+
+    function playChime(btn, file) {
+      const audio = new Audio(file);
+      audio.volume = 0.5;
+      audio.play();
+      btn.classList.add('playing');
+      setTimeout(() => btn.classList.remove('playing'), 1200);
+      createParticles(btn);
+    }
+
+    function createParticles(btn) {
+      for (let i = 0; i < 18; i++) {
+        const p = document.createElement('div');
+        p.style.position = 'fixed';
+        p.style.width = '6px';
+        p.style.height = '6px';
+        p.style.background = Math.random() > 0.5 ? '#00ffcc' : '#ff00aa';
+        p.style.borderRadius = '50%';
+        p.style.left = (btn.getBoundingClientRect().left + Math.random()*btn.offsetWidth) + 'px';
+        p.style.top = (btn.getBoundingClientRect().top + 30) + 'px';
+        p.style.zIndex = '99999';
+        p.style.pointerEvents = 'none';
+        document.body.appendChild(p);
+
+        const angle = Math.random() * Math.PI * 2;
+        const vel = 3 + Math.random() * 5;
+        let x = 0, y = 0;
+
+        const anim = setInterval(() => {
+          x += Math.cos(angle) * vel;
+          y += Math.sin(angle) * vel - 1.5;
+          p.style.transform = `translate(${x}px, ${y}px)`;
+          p.style.opacity = 1 - (Math.abs(y)/200);
+          if (p.style.opacity <= 0) {
+            clearInterval(anim);
+            p.remove();
+          }
+        }, 16);
+      }
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
+      const grid = document.getElementById('chimes-grid');
+      chimes.forEach(chime => grid.appendChild(createChimeButton(chime)));
+
+      // VIDEO TRANSITIONS
       const overlay = document.getElementById('transition-overlay');
       const forwardVideo = document.getElementById('forward-video');
       const reverseVideo = document.getElementById('reverse-video');
       const content = document.getElementById('main-content');
 
-      forwardVideo.src = '/video/music-and-video-transition.mp4';
-      reverseVideo.src = '/video/music-and-video-reverse.mp4';
+      forwardVideo.src = '/video/chines-video-transition.mp4';
+      reverseVideo.src = '/video/chines-video-reverse.mp4';
 
-      // Always start transition on load/refresh
       overlay.style.display = 'block';
       forwardVideo.style.display = 'block';
-
-      let videoStarted = false;
-
-      // Try to play as soon as possible
-      forwardVideo.oncanplaythrough = () => {
-        if (videoStarted) return;
-        videoStarted = true;
-        forwardVideo.volume = 0.5;
-        forwardVideo.play().catch(() => {});
-      };
-
-      // Strong safety net for refresh + slow mobile
-      setTimeout(() => {
-        if (!videoStarted) {
-          videoStarted = true;
-          overlay.style.display = 'none';
-          content.classList.add('show');
-        }
-      }, 1400);   // 1.4 seconds max black screen
+      forwardVideo.volume = 0.5;
+      forwardVideo.play().catch(() => {});
 
       forwardVideo.onended = () => {
         overlay.style.display = 'none';
         content.classList.add('show');
       };
 
-      // Reverse transition (unchanged)
       document.getElementById('saloon-doors-back').addEventListener('click', (e) => {
         e.preventDefault();
         overlay.style.display = 'block';
@@ -155,9 +267,15 @@
         reverseVideo.volume = 0.5;
         reverseVideo.play().catch(() => {});
 
-        reverseVideo.onended = () => {
-          window.location.href = 'index.html';
-        };
+        reverseVideo.onended = () => window.location.href = 'index.html';
+      });
+
+      // Clickable Tesla Chime prop
+      document.getElementById('chime-prop').addEventListener('click', () => {
+        const audio = new Audio('sounds/LockChime.wav');
+        audio.volume = 0.6;
+        audio.play();
+        createParticles(document.getElementById('chime-prop'));
       });
     });
   </script>
