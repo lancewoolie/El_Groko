@@ -108,24 +108,31 @@
       object-fit: cover;
     }
 
-    /* ====================== MOBILE ONLY – ICONS SHIFTED +200px RIGHT ====================== */
+    /* ====================== MOBILE ONLY TWEAKS ====================== */
     @media (max-width: 768px) {
       .hero { padding-top: 62px !important; }
 
+      /* HUD smaller height */
       #game-hud {
         top: 8px;
-        padding: 6px 14px;
-        gap: 10px;
-        font-size: 0.78rem;
+        padding: 5px 12px;
+        gap: 8px;
+        font-size: 0.75rem;
         border-radius: 40px;
-        min-height: 42px;
+        min-height: 38px;
       }
-      #health-bar { width: 80px; height: 8px; }
+      #health-bar { width: 75px; height: 7px; }
 
-      /* ALL ICONS: 10% smaller + 200px right shift on mobile only */
+      /* ALL ICONS: 10% smaller + specific shifts on mobile only */
       .moonsaloon-prop {
-        transform: scale(0.9) translateX(200px) !important;
+        transform: scale(0.9) !important;
       }
+
+      /* Music & Video icon left 200px */
+      #music-video-neon { transform: scale(0.9) translateX(-200px) !important; }
+
+      /* Chimes icon down 100px + left 100px */
+      #tesla-chime-prop { transform: scale(0.9) translate(-100px, 100px) !important; }
     }
   </style>
 </head>
