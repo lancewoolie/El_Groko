@@ -58,7 +58,7 @@
                   inset 0 0 40px rgba(255, 0, 170, 0.3);
       border-color: #ff00aa;
     }
-    /* OFF-WHITE TITLES (as requested) */
+    /* OFF-WHITE TITLES */
     .card h3 {
       color: #f0f0f0 !important;
       text-shadow: 0 0 15px #00ffcc;
@@ -189,7 +189,7 @@
   <script src="script.js"></script>
 
   <script>
-    // VIDEO TRANSITION SYSTEM – waits until ready + 50% sound
+    // MOBILE-SAFE VIDEO TRANSITION – no freeze on refresh
     document.addEventListener('DOMContentLoaded', () => {
       const overlay = document.getElementById('transition-overlay');
       const forwardVideo = document.getElementById('forward-video');
@@ -202,16 +202,30 @@
       overlay.style.display = 'block';
       forwardVideo.style.display = 'block';
 
+      let started = false;
+
       forwardVideo.oncanplaythrough = () => {
+        if (started) return;
+        started = true;
         forwardVideo.volume = 0.5;
         forwardVideo.play().catch(() => {});
       };
+
+      // Safety timeout – prevents freeze on refresh / slow mobile
+      setTimeout(() => {
+        if (!started) {
+          started = true;
+          overlay.style.display = 'none';
+          content.classList.add('show');
+        }
+      }, 1600);
 
       forwardVideo.onended = () => {
         overlay.style.display = 'none';
         content.classList.add('show');
       };
 
+      // Reverse transition
       document.getElementById('saloon-doors-back').addEventListener('click', (e) => {
         e.preventDefault();
         overlay.style.display = 'block';
