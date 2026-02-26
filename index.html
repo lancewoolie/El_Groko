@@ -25,6 +25,7 @@
       padding-top: 92px;
       margin: 0 !important;
     }
+
     /* === OPTIMIZED MOBILE HUD (much smaller, no more blocking view) === */
     #game-hud {
       position: absolute;
@@ -77,26 +78,7 @@
       cursor: pointer;
       transition: all 0.2s;
     }
-   
-    /* Mobile HUD – compact & clean */
-    @media (max-width: 768px) {
-      .hero { padding-top: 62px !important; }
-     
-      #game-hud {
-        top: 8px;
-        padding: 6px 14px;
-        gap: 12px;
-        font-size: 0.82rem;
-        border-radius: 40px;
-      }
-     
-      #health-bar { width: 95px; height: 9px; }
-     
-      #restart-btn {
-        padding: 5px 14px;
-        font-size: 0.78rem;
-      }
-    }
+
     #saloon-svg {
       position: absolute; top:0; left:0;
       width: 100% !important; height: 100% !important;
@@ -108,7 +90,8 @@
       cursor: crosshair;
       transition: filter 0.12s ease, transform 0.2s ease;
     }
-    /* Video Transition Layer – plays every single time (no sessionStorage limit) */
+
+    /* Video Transition Layer */
     #transition-overlay {
       position: fixed;
       top: 0; left: 0;
@@ -128,13 +111,44 @@
     }
    
     #raccoon-subscribe:hover { transform: translateX(14px) scale(1.08) !important; }
+
+    /* ====================== MOBILE ONLY TWEAKS ====================== */
+    @media (max-width: 768px) {
+      .hero { padding-top: 62px !important; }
+
+      /* Decrease HUD height by 50% */
+      #game-hud {
+        top: 8px;
+        padding: 6px 14px;
+        gap: 10px;
+        font-size: 0.78rem;
+        border-radius: 40px;
+        height: auto;
+        min-height: 42px;
+      }
+      #health-bar { width: 80px; height: 8px; }
+
+      /* Icon position tweaks on mobile only */
+      #cowboy-hat-merch { x: 605 !important; }     /* merch +50px right */
+      #hourglass-origins { x: 636 !important; }    /* origins +50px right */
+
+      #raccoon-subscribe { x: 729 !important; }    /* raccoon +60px right */
+
+      #music-video-neon { x: 1039 !important; }    /* music left -50px */
+
+      #holo-calendar-events { x: 790 !important; } /* events +50px right */
+      #contact-earth-trophy { x: 932 !important; } /* contact +50px right */
+
+      /* Lower chimes icon 75px */
+      #tesla-chime-prop { y: 103 !important; }
+    }
   </style>
 </head>
 <body>
   <div id="nav-placeholder"></div>
  
   <section class="hero">
-    <!-- Game HUD (now small & clean on mobile) -->
+    <!-- Game HUD -->
     <div id="game-hud">
       <div class="hud-item">SCORE <span id="score-value">000000</span></div>
       <div class="hud-item">HEALTH
@@ -143,8 +157,9 @@
       <div class="hud-item">TIMER <span id="lunar-timer">30</span></div>
       <button id="restart-btn" onclick="location.reload()">RESTART GAME</button>
     </div>
+
     <svg id="saloon-svg" width="100%" height="100%" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
-      <!-- NEW TESLA CHIME PROP – 50% SIZE, STILL PERFECTLY CENTERED AT TOP -->
+      <!-- Tesla Chime (50% size) -->
       <image id="tesla-chime-prop" 
              href="/img/moonsaloon/Tesla-Chime-nav.png" 
              x="862.5" y="28" 
@@ -154,7 +169,7 @@
              data-score="350" 
              data-max-hits="1" />
 
-      <!-- Slightly raised bottom icons so they never sit below the lunar horizon on mobile -->
+      <!-- Other icons -->
       <image id="hourglass-origins" href="/img/moonsaloon/hourglass-origins-nav.png" x="586" y="662" width="179" height="245" class="moonsaloon-prop" data-link="origins.html" data-score="125" data-max-hits="1" />
       <image id="holo-calendar-events" href="/img/moonsaloon/holo-calendar-events-nav.png" x="740" y="731" width="175" height="193" class="moonsaloon-prop" data-link="events.html" data-score="150" data-max-hits="1" />
       <image id="cowboy-hat-merch" href="/img/moonsaloon/cowboy-hat-merch-nav.png" x="555" y="331" width="314" height="280" class="moonsaloon-prop" data-link="merch.html" data-score="150" data-max-hits="1" />
@@ -164,9 +179,8 @@
     </svg>
   </section>
 
-  <!-- VIDEO TRANSITION LAYER (plays every time – session rule removed) -->
+  <!-- VIDEO TRANSITION LAYER -->
   <div id="transition-overlay">
-    <!-- Forward = entering subpage, Reverse = returning to saloon -->
     <video id="forward-video" class="transition-video" muted playsinline></video>
     <video id="reverse-video" class="transition-video" muted playsinline></video>
   </div>
@@ -177,13 +191,14 @@
   <script src="script.js"></script>
 
   <script>
-    // VIDEO TRANSITION SYSTEM – no sessionStorage, plays every single time
     document.addEventListener('DOMContentLoaded', () => {
       const overlay = document.getElementById('transition-overlay');
       const forwardVideo = document.getElementById('forward-video');
       const reverseVideo = document.getElementById('reverse-video');
+
       forwardVideo.src = '/videos/moon-saloon-transition-forward.mp4';
       reverseVideo.src = '/videos/moon-saloon-transition-reverse.mp4';
+
       window.playSaloonReturnTransition = () => {
         overlay.style.display = 'block';
         forwardVideo.style.display = 'none';
