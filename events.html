@@ -182,7 +182,7 @@
       { date: '07/04/2024', eventName: 'Too Drunk release', venue: '', fullVenue: '', city: '', time: '12:00 AM', description: 'Release party for Too Drunk single.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/TooDrunkmenu.jpg', imageLink: 'https://www.facebook.com/lancewooliemusic/events', isUpcoming: false }
     ];
 
-    const currentDate = new Date('2025-10-07');
+    const currentDate = new Date();   // DYNAMIC – uses real today's date
 
     function generateUpcomingCard(event) {
       return `
@@ -221,7 +221,7 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      // Populate events
+      // Populate events with dynamic date
       const sortedEvents = eventsData.sort((a, b) => new Date(b.date) - new Date(a.date));
       const upcomingEvents = sortedEvents.filter(e => new Date(e.date) > currentDate && e.isUpcoming);
       const pastEvents = sortedEvents.filter(e => new Date(e.date) <= currentDate);
