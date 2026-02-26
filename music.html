@@ -58,7 +58,6 @@
                   inset 0 0 40px rgba(255, 0, 170, 0.3);
       border-color: #ff00aa;
     }
-    /* OFF-WHITE TITLES */
     .card h3 {
       color: #f0f0f0 !important;
       text-shadow: 0 0 15px #00ffcc;
@@ -81,7 +80,6 @@
 
   <div class="content-overlay">
     <div class="content" id="main-content">
-      <!-- Doors only -->
       <div class="hero-music">
         <img id="saloon-doors-back"
              src="/img/moonsaloon/saloon-doors-nav.png"
@@ -189,7 +187,7 @@
   <script src="script.js"></script>
 
   <script>
-    // ROBUST MOBILE TRANSITION – forward starts muted, strong safety timeout
+    // MOBILE-ROBUST VIDEO TRANSITION (forward starts muted)
     document.addEventListener('DOMContentLoaded', () => {
       const overlay = document.getElementById('transition-overlay');
       const forwardVideo = document.getElementById('forward-video');
@@ -207,12 +205,12 @@
       forwardVideo.oncanplaythrough = () => {
         if (started) return;
         started = true;
-        forwardVideo.muted = true;   // muted for mobile autoplay
+        forwardVideo.muted = true;     // MUTED for mobile autoplay
         forwardVideo.volume = 0.5;
         forwardVideo.play().catch(() => {});
       };
 
-      // HARD SAFETY – content ALWAYS shows after max 1.6 seconds
+      // HARD SAFETY – content ALWAYS shows (max 1.6 seconds black screen)
       setTimeout(() => {
         if (!started) {
           started = true;
