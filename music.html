@@ -58,6 +58,12 @@
                   inset 0 0 40px rgba(255, 0, 170, 0.3);
       border-color: #ff00aa;
     }
+    /* OFF-WHITE TITLES (as requested) */
+    .card h3 {
+      color: #f0f0f0 !important;
+      text-shadow: 0 0 15px #00ffcc;
+      font-size: 1.55rem;
+    }
     .card-body p {
       color: #f0f0f0 !important;
       line-height: 1.7;
@@ -183,7 +189,7 @@
   <script src="script.js"></script>
 
   <script>
-    // IMPROVED VIDEO TRANSITION – waits until video is ready (no black flash)
+    // VIDEO TRANSITION SYSTEM – waits until ready + 50% sound
     document.addEventListener('DOMContentLoaded', () => {
       const overlay = document.getElementById('transition-overlay');
       const forwardVideo = document.getElementById('forward-video');
@@ -193,11 +199,9 @@
       forwardVideo.src = '/video/music-and-video-transition.mp4';
       reverseVideo.src = '/video/music-and-video-reverse.mp4';
 
-      // Show overlay immediately
       overlay.style.display = 'block';
       forwardVideo.style.display = 'block';
 
-      // Wait until video is fully buffered and ready to play smoothly
       forwardVideo.oncanplaythrough = () => {
         forwardVideo.volume = 0.5;
         forwardVideo.play().catch(() => {});
@@ -208,7 +212,6 @@
         content.classList.add('show');
       };
 
-      // Reverse transition on doors click
       document.getElementById('saloon-doors-back').addEventListener('click', (e) => {
         e.preventDefault();
         overlay.style.display = 'block';
