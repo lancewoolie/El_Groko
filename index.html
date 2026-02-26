@@ -9,183 +9,66 @@
   <link rel="stylesheet" href="style.css">
   <style>
     html, body {
-      margin:0 !important;
-      padding:0 !important;
-      width:100% !important;
-      height:100% !important;
-      overflow:hidden;
+      margin:0 !important; padding:0 !important; width:100% !important; height:100% !important; overflow:hidden;
     }
-   
     .hero {
-      height: 100vh !important;
-      width: 100vw !important;
+      height: 100vh !important; width: 100vw !important;
       background: url('/img/moonsaloon/moon-saloon-base-wide.jpg?v=3') center/cover no-repeat fixed !important;
-      position: relative;
-      overflow: hidden;
-      padding-top: 92px;
-      margin: 0 !important;
+      position: relative; overflow: hidden; padding-top: 92px; margin: 0 !important;
     }
-
-    #game-hud {
-      position: absolute;
-      top: 14px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 100;
-      background: rgba(0,0,0,0.85);
-      border: 2px solid #00ff9d;
-      border-radius: 50px;
-      padding: 9px 22px;
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      color: #00ff9d;
-      font-family: 'Georgia', serif;
-      box-shadow: 0 0 30px rgba(0,255,157,0.6);
-      backdrop-filter: blur(10px);
-    }
-   
-    #game-hud .hud-item {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      white-space: nowrap;
-    }
-   
-    #health-bar {
-      width: 130px;
-      height: 12px;
-      background: #111;
-      border: 1px solid #00ff9d;
-      border-radius: 999px;
-      overflow: hidden;
-    }
-   
-    #health-progress {
-      height: 100%;
-      background: linear-gradient(90deg, #00ff9d, #39ff14);
-      transition: width 0.4s ease;
-    }
-   
-    #restart-btn {
-      background: #ffd700;
-      color: #000;
-      border: none;
-      padding: 7px 20px;
-      border-radius: 30px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    #saloon-svg {
-      position: absolute; top:0; left:0;
-      width: 100% !important; height: 100% !important;
-      z-index: 2; pointer-events: none;
-    }
-   
-    #saloon-svg .moonsaloon-prop {
-      pointer-events: auto;
-      cursor: crosshair;
-      transition: filter 0.12s ease, transform 0.2s ease;
-    }
-
     #transition-overlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: 9999;
-      pointer-events: none;
-      display: none;
-      overflow: hidden;
-      background: #000;
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: 9999; pointer-events: none; display: none; overflow: hidden; background: #000;
     }
-   
     .transition-video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+      width: 100%; height: 100%; object-fit: cover;
     }
-
-    /* ====================== MOBILE ONLY TWEAKS ====================== */
     @media (max-width: 768px) {
       .hero { padding-top: 62px !important; }
-
-      /* HUD smaller height */
-      #game-hud {
-        top: 8px;
-        padding: 5px 12px;
-        gap: 8px;
-        font-size: 0.75rem;
-        border-radius: 40px;
-        min-height: 38px;
-      }
-      #health-bar { width: 75px; height: 7px; }
-
-      /* ALL ICONS 10% SMALLER ON MOBILE */
-      .moonsaloon-prop {
-        transform: scale(0.9) !important;
-      }
-
-      /* Music icon right 150px on mobile */
+      .moonsaloon-prop { transform: scale(0.9) !important; }
       #music-video-neon { transform: scale(0.9) translateX(150px) !important; }
-
-      /* Chimes down 75px + right 100px on mobile */
       #tesla-chime-prop { transform: scale(0.9) translate(100px, 75px) !important; }
-
-      /* Origins, Raccoon, Events, Contact right 250px on mobile only */
-      #hourglass-origins { transform: scale(0.9) translateX(250px) !important; }
-      #raccoon-subscribe { transform: scale(0.9) translateX(250px) !important; }
-      #holo-calendar-events { transform: scale(0.9) translateX(250px) !important; }
-      #contact-earth-trophy { transform: scale(0.9) translateX(250px) !important; }
+      #hourglass-origins, #raccoon-subscribe, #holo-calendar-events, #contact-earth-trophy {
+        transform: scale(0.9) translateX(250px) !important;
+      }
     }
   </style>
 </head>
 <body>
   <div id="nav-placeholder"></div>
- 
   <section class="hero">
-    <div id="game-hud">
-      <div class="hud-item">SCORE <span id="score-value">000000</span></div>
-      <div class="hud-item">HEALTH
-        <div id="health-bar"><div id="health-progress"></div></div>
-      </div>
-      <div class="hud-item">TIMER <span id="lunar-timer">30</span></div>
-      <button id="restart-btn" onclick="location.reload()">RESTART GAME</button>
-    </div>
-
     <svg id="saloon-svg" width="100%" height="100%" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
       <!-- Tesla Chime -->
-      <image id="tesla-chime-prop" href="/img/moonsaloon/Tesla-Chime-nav.png" x="862.5" y="28" width="195" height="132.5" class="moonsaloon-prop" data-link="chimes.html" data-score="350" data-max-hits="1" />
-
-      <!-- Origins - moved up 30px globally -->
-      <image id="hourglass-origins" href="/img/moonsaloon/hourglass-origins-nav.png" x="586" y="707" width="179" height="245" class="moonsaloon-prop" data-link="origins.html" data-score="125" data-max-hits="1" />
-
-      <!-- Events - moved up 30px globally -->
-      <image id="holo-calendar-events" href="/img/moonsaloon/holo-calendar-events-nav.png" x="740" y="776" width="175" height="193" class="moonsaloon-prop" data-link="events.html" data-score="150" data-max-hits="1" />
-
+      <image id="tesla-chime-prop" href="/img/moonsaloon/Tesla-Chime-nav.png" x="862.5" y="28" width="195" height="132.5" class="moonsaloon-prop"
+             data-link="chimes.html" data-score="350" data-max-hits="1" data-forward-video="/video/chimes-video-transition.mp4" />
+      <!-- Origins -->
+      <image id="hourglass-origins" href="/img/moonsaloon/hourglass-origins-nav.png" x="586" y="707" width="179" height="245" class="moonsaloon-prop"
+             data-link="origins.html" data-score="125" data-max-hits="1" data-forward-video="/video/origins-video-transition.mp4" />
+      <!-- Events -->
+      <image id="holo-calendar-events" href="/img/moonsaloon/holo-calendar-events-nav.png" x="740" y="776" width="175" height="193" class="moonsaloon-prop"
+             data-link="events.html" data-score="150" data-max-hits="1" data-forward-video="/video/events-video-transition.mp4" />
       <!-- Merch -->
-      <image id="cowboy-hat-merch" href="/img/moonsaloon/cowboy-hat-merch-nav.png" x="555" y="331" width="314" height="280" class="moonsaloon-prop" data-link="merch.html" data-score="150" data-max-hits="1" />
-
+      <image id="cowboy-hat-merch" href="/img/moonsaloon/cowboy-hat-merch-nav.png" x="555" y="331" width="314" height="280" class="moonsaloon-prop"
+             data-link="merch.html" data-score="150" data-max-hits="1" data-forward-video="/video/merch-video-transition.mp4" />
       <!-- Music -->
-      <image id="music-video-neon" href="/img/moonsaloon/music-video-neon-nav.png" x="1089" y="474" width="205" height="158" class="moonsaloon-prop" data-link="music.html" data-score="175" data-max-hits="1" />
-
-      <!-- Raccoon -->
-      <image id="raccoon-subscribe" href="/img/moonsaloon/raccoon-subscribe-nav.png" x="669" y="617" width="132" height="165" class="moonsaloon-prop" data-link="friends.html" data-score="500" data-max-hits="1" />
-
-      <!-- Contact - moved up 30px globally -->
-      <image id="contact-earth-trophy" href="/img/moonsaloon/contact-earth-trophy-nav.png" x="882" y="747" width="199" height="178" class="moonsaloon-prop" data-link="contact.html" data-score="200" data-max-hits="1" />
+      <image id="music-video-neon" href="/img/moonsaloon/music-video-neon-nav.png" x="1089" y="474" width="205" height="158" class="moonsaloon-prop"
+             data-link="music.html" data-score="175" data-max-hits="1" data-forward-video="/video/music-and-video-transition.mp4" />
+      <!-- Raccoon / Friends -->
+      <image id="raccoon-subscribe" href="/img/moonsaloon/raccoon-subscribe-nav.png" x="669" y="617" width="132" height="165" class="moonsaloon-prop"
+             data-link="friends.html" data-score="500" data-max-hits="1" data-forward-video="/video/friends-video-transition.mp4" />
+      <!-- Contact -->
+      <image id="contact-earth-trophy" href="/img/moonsaloon/contact-earth-trophy-nav.png" x="882" y="747" width="199" height="178" class="moonsaloon-prop"
+             data-link="contact.html" data-score="200" data-max-hits="1" data-forward-video="/video/contact-video-transition.mp4" />
     </svg>
   </section>
 
+  <!-- TRANSITION OVERLAY (used by index for forward + all sub-pages for reverse) -->
   <div id="transition-overlay">
-    <video id="forward-video" class="transition-video" muted playsinline></video>
-    <video id="reverse-video" class="transition-video" muted playsinline></video>
+    <video id="forward-video" class="transition-video" playsinline preload="auto"></video>
+    <video id="reverse-video" class="transition-video" playsinline preload="auto" style="display:none;"></video>
   </div>
 
   <div class="pointingjs"></div>
-
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
 </body>
