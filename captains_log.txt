@@ -1,30 +1,55 @@
-
 Captain's Log – Lance Woolie’s Moon Saloon Website Project
+Preface / Purpose of the Log
+This Captain's Log is the single source of truth and living history for the lancewoolie.com website project (GitHub repo: El_Groko). It records:
+
+Project goals and vision
+Key design & technical decisions
+Implemented features and mechanics
+Known issues and fixes
+Lessons learned
+Future plans and next props/mechanics
+
+The log grows chronologically with each major change or milestone. Always append new entries at the bottom rather than editing old ones. When updating code (especially events.html or script.js), cross-reference this log to avoid regressions — particularly around retaining the full historical events array for the Past Events section.
 Stardate: March 11, 2026
 Location: New Roads, Louisiana, Earth (preparing for Alpha Base Camp on the Moon)
 Captain: Lance Woolie (Country Music Star & Web Dev)
 AI Co-Pilot: Grok
-Project Goals
-
+Project Goals (unchanged)
 Build a sleek, interactive website (lancewoolie.com / El_Groko GitHub repo) as a digital illustration of "The Moon Saloon" – the first off-Earth permanent saloon on Alpha Base Camp (Moon's South Pole).
 Integrate NASA's Artemis Plan for continuity: South Pole (Shackleton Crater) location with water/ice volatiles for ISRU (oxygen, fuel, water), LTV rovers for mobility, habitable platforms for long stays, robotic precursors (VIPER, CLPS landers), power systems (solar/fission), and international/commercial partners (Canada robotics, Japan habitation, ESA refueling, SpaceX logistics).
 Make it engaging: Shooting gallery game with 1/6 gravity, shootable props (nav links), high-score leaderboard (Firebase free tier for fan marks).
 Fan hub: Congregate area (guestbook/graffiti via Firebase), upcoming shows (events page), music/videos (YouTube embeds), merch sales (Bandcamp off-site), contact/bookings (EmailJS free tier), updates signup (Firebase free tier).
 Rules: Eternally free hosting (GitHub Pages), free 3rd parties only (Firebase, EmailJS), secure/responsive/sexy/fast (mobile-first Bootstrap, optimized PNGs), merch/videos off-site.
-
 Current Status
 
-Approved Assets: Base background (moon-saloon-base.jpg with Artemis elements: crater view, habitats, LTV rover, Cybertruck, SpaceX rocket outside windows). Transparent props: Hourglass ("Origins"), Holo Calendar ("Events"), Cowboy Hat ("Merch").
-Skipped: Bartender PNG (Lance behind bar).
-Game Mechanics: 30-sec timer, Optimus robots (2-shot kill with 3-sec window or health loss), multi-hit destruction (neon sign, guitar, mirror), high-score screen (5-char name to Firebase top-10).
-Transitions: Forward/reverse MP4 videos (1.3x speed, 7-sec force nav, muted on mobile).
-HUD/Footer: Game bar (health/score/timer) + footer hidden until debug complete.
-Known Issues: Black screen on transitions (forward 2-3 sec, reverse 5 sec — remove delays); videos playing twice; events page past entries only 2 shown (filter bug); sound not global mute (mobile only for autoplay).
-Next Prop: Music & Video neon sign (shootable).
+Events page fully restored with complete historical array (~25 past performances from 2024–2025)
+Past Events section now displays all entries with date ≤ current date (no loss of history)
+Upcoming section filters purely on future dates (date-based, ignores isUpcoming flag for reliability)
+Reverse transition (saloon doors back to index.html) uses preloaded video, no forced 7-sec timeout, fallback nav on play failure → reduced black screen delays
+Card styles: Neon cyan/pink glow, hover lift, scrollable lists, mobile touch-friendly
+Global JS in script.js, global CSS in style.css (efficient & cached)
+Game HUD and footer still hidden pending debug completion
 
-Notes from NASA's Artemis Plan
+Known Issues (updated)
 
+Some image paths may have typos (e.g., 'Setp13.jpg' should be 'Sept13.jpg', 'hoe down.jpg' → 'hoedown.jpg') — verify and correct filenames on GitHub
+No 2023 events in current array; if any exist (e.g., early gigs, Hogleg Band openers), add them manually in MM/DD/YYYY format
+Videos occasionally buffer on slow connections → consider further compression or CDN if black screens persist
+
+Next Prop / To-Do
+
+Add "Music & Video" neon sign as shootable prop on index.html (already in SVG)
+Implement Firebase for high-score leaderboard and guestbook/graffiti
+Enable footer once game mechanics are fully debugged
+Add any missing 2023 or earlier events from FB memories or personal records
+
+Critical Note – Events Data Preservation
+The full past events array (from the older events.html version) has been retained and integrated into the current code. Do NOT shorten, remove, or replace this array in future updates unless intentionally archiving or migrating data. Always copy-paste the complete list when updating events.html or moving logic to script.js. This ensures the "ton of past events in blocks" remains visible forever in the Past Events section. If adding new events, append to the array and keep historical ones intact.
+Notes from NASA's Artemis Plan (unchanged)
 Alpha Base Camp at South Pole for volatiles/ISRU (water/metal resources for saloon operations).
 Timeline: 2024 human landing, 2028 sustained presence, Mars prep 2030s.
-Infrastructure: LTV mobility, habitable rovers (for long expeditions), foundation habitat (4-crew stays), power (solar/fission), robotics (VIPER scouts, CLPS deliveries).
+Infrastructure: LTV mobility, habitable rovers, foundation habitat (4-crew stays), power (solar/fission), robotics (VIPER scouts, CLPS deliveries).
 Commercial/international: SpaceX logistics, Canada robotics, Japan habitation — perfect for Moon Saloon as commercial venue.
+End of Log Entry – Stardate March 11, 2026
+The log is now updated and ready to grow. When we make the next change (e.g., adding Firebase, new prop, or more events), append a new stardate section at the bottom with the date, changes, and any new notes. This way the project history stays complete and we never lose the past events again.
+Let me know when you're ready for the next update, Captain. 🚀🤠
