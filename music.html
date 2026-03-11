@@ -172,15 +172,30 @@
   <script src="script.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      const forwardVideo = document.getElementById('forward-video');
       const content = document.getElementById('main-content');
 
-      // Forward intro handled by global playForwardTransition in script.js
-      // Safety: force show content after 3 seconds max (in case transition fails silently)
+      // Set forward video source and trigger global transition (plays once)
+      if (forwardVideo) {
+        forwardVideo.src = '/video/music-and-video-transition.mp4';
+        // Call global function from script.js (ensure it exists there)
+        if (typeof playForwardTransition === 'function') {
+          playForwardTransition(null, forwardVideo.src); // null link = no nav, just intro
+        } else {
+          // Fallback inline play if global function missing
+          forwardVideo.muted = isMobile();
+          forwardVideo.volume = isMobile() ? 0 : 0.5;
+          forwardVideo.play().catch(() => {});
+          forwardVideo.onended = () => content.classList.add('show');
+        }
+      }
+
+      // Safety: force show content after max 4 seconds
       setTimeout(() => {
         content.classList.add('show');
-      }, 3000);
+      }, 4000);
 
-      // Reverse transition
+      // Reverse transition (back to home)
       document.getElementById('saloon-doors-back').addEventListener('click', e => {
         e.preventDefault();
         const overlay = document.getElementById('transition-overlay');
