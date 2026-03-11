@@ -1,1 +1,30 @@
 
+Captain's Log – Lance Woolie’s Moon Saloon Website Project
+Stardate: March 11, 2026
+Location: New Roads, Louisiana, Earth (preparing for Alpha Base Camp on the Moon)
+Captain: Lance Woolie (Country Music Star & Web Dev)
+AI Co-Pilot: Grok
+Project Goals
+
+Build a sleek, interactive website (lancewoolie.com / El_Groko GitHub repo) as a digital illustration of "The Moon Saloon" – the first off-Earth permanent saloon on Alpha Base Camp (Moon's South Pole).
+Integrate NASA's Artemis Plan for continuity: South Pole (Shackleton Crater) location with water/ice volatiles for ISRU (oxygen, fuel, water), LTV rovers for mobility, habitable platforms for long stays, robotic precursors (VIPER, CLPS landers), power systems (solar/fission), and international/commercial partners (Canada robotics, Japan habitation, ESA refueling, SpaceX logistics).
+Make it engaging: Shooting gallery game with 1/6 gravity, shootable props (nav links), high-score leaderboard (Firebase free tier for fan marks).
+Fan hub: Congregate area (guestbook/graffiti via Firebase), upcoming shows (events page), music/videos (YouTube embeds), merch sales (Bandcamp off-site), contact/bookings (EmailJS free tier), updates signup (Firebase free tier).
+Rules: Eternally free hosting (GitHub Pages), free 3rd parties only (Firebase, EmailJS), secure/responsive/sexy/fast (mobile-first Bootstrap, optimized PNGs), merch/videos off-site.
+
+Current Status
+
+Approved Assets: Base background (moon-saloon-base.jpg with Artemis elements: crater view, habitats, LTV rover, Cybertruck, SpaceX rocket outside windows). Transparent props: Hourglass ("Origins"), Holo Calendar ("Events"), Cowboy Hat ("Merch").
+Skipped: Bartender PNG (Lance behind bar).
+Game Mechanics: 30-sec timer, Optimus robots (2-shot kill with 3-sec window or health loss), multi-hit destruction (neon sign, guitar, mirror), high-score screen (5-char name to Firebase top-10).
+Transitions: Forward/reverse MP4 videos (1.3x speed, 7-sec force nav, muted on mobile).
+HUD/Footer: Game bar (health/score/timer) + footer hidden until debug complete.
+Known Issues: Black screen on transitions (forward 2-3 sec, reverse 5 sec — remove delays); videos playing twice; events page past entries only 2 shown (filter bug); sound not global mute (mobile only for autoplay).
+Next Prop: Music & Video neon sign (shootable).
+
+Notes from NASA's Artemis Plan
+
+Alpha Base Camp at South Pole for volatiles/ISRU (water/metal resources for saloon operations).
+Timeline: 2024 human landing, 2028 sustained presence, Mars prep 2030s.
+Infrastructure: LTV mobility, habitable rovers (for long expeditions), foundation habitat (4-crew stays), power (solar/fission), robotics (VIPER scouts, CLPS deliveries).
+Commercial/international: SpaceX logistics, Canada robotics, Japan habitation — perfect for Moon Saloon as commercial venue.
