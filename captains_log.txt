@@ -53,3 +53,27 @@ Commercial/international: SpaceX logistics, Canada robotics, Japan habitation �
 End of Log Entry – Stardate March 11, 2026
 The log is now updated and ready to grow. When we make the next change (e.g., adding Firebase, new prop, or more events), append a new stardate section at the bottom with the date, changes, and any new notes. This way the project history stays complete and we never lose the past events again.
 Let me know when you're ready for the next update, Captain. 🚀🤠
+Captain's Log Update (Append this new entry at the bottom)
+Stardate: March 11, 2026 – Evening (Post-Fix)
+Location: New Roads, Louisiana, Earth
+Captain: Lance Woolie
+AI Co-Pilot: Grok
+Changes & Fixes
+
+Fixed forward transition videos playing twice on merch, origins, and contact pages (caused by duplicate play calls during buffering/oncanplaythrough). Solution: Added global transitionInProgress guard in script.js + single-play logic.
+Made merch page card design global:
+Darker blue-black backgrounds, thicker neon borders with pink hover shift
+White/off-white text with cyan glow on titles
+Stronger outer/inner glows, more rounded corners
+Price tags, new-release badges, centered layout
+Applied to events.html cards and will propagate to origins/contact/music pages next
+
+Updated Captain's Log note: Global Card Design — All sub-pages should now use the "sexy merch block" style (dark bg, neon borders, glow hover, off-white text) for consistency. Do not revert to lighter cards without discussion.
+
+Next To-Do
+
+Apply global card style to origins.html, contact.html, music.html
+Test all transitions (forward/reverse) on mobile/desktop
+Optimize large images (Crazy Arms, etc.) if load times increase
+
+End of Log Entry
