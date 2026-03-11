@@ -1,3 +1,4 @@
+
 // ====================== MOON SALOON script.js – DEPARTURE MODEL ======================
 const clickSounds = [new Audio('sounds/ricochet-1.mp3'), new Audio('sounds/ricochet-2.mp3')];
 clickSounds.forEach(sound => { sound.preload = 'auto'; sound.volume = 0.85; });
