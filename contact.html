@@ -24,12 +24,10 @@
     }
     .content.show { opacity: 1; }
     .content-overlay {
-      background: rgba(0, 15, 40, 0.18);
+      background: url('/img/moonsaloon/contact-base-bg.jpg') center/cover no-repeat fixed !important;
       min-height: 100vh;
       padding-top: 90px;
     }
-
-    /* HERO – Doors LEFT of Title */
     .hero-contact {
       display: flex;
       align-items: center;
@@ -45,45 +43,23 @@
       transition: transform 0.3s ease;
     }
     .hero-contact .doors:hover { transform: scale(1.08); }
-    .hero-contact .title-area {
-      text-align: left;
-    }
+    .hero-contact .title-area { text-align: left; }
     .hero-contact h1 {
       font-size: 3.2rem;
       color: #00ffcc;
       text-shadow: 0 0 20px #00ffcc, 0 0 40px #ff00aa;
       margin: 0;
     }
-
-    /* Off-white titles in blocks */
-    .card h3, .card h5, .card-title {
-      color: #f0f0f0 !important;
-      text-shadow: 0 0 15px #00ffcc;
+    /* SEXY FORMS – white text labels */
+    .form-label {
+      color: #ffffff !important;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
     }
-
-    /* SEXY FORMS */
-    .card {
-      background: rgba(10, 25, 50, 0.75);
-      border: 2px solid #00ffcc;
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 0 40px rgba(0,255,204,0.4),
-                  inset 0 0 30px rgba(255,0,170,0.2);
-      transition: all 0.4s ease;
-      backdrop-filter: blur(12px);
-    }
-    .card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 0 60px rgba(0,255,204,0.6),
-                  inset 0 0 40px rgba(255,0,170,0.4);
-      border-color: #ff00aa;
-    }
-
-    /* Neon glowing inputs */
-    .form-control {
+    .form-control, .form-control:focus {
       background: rgba(0,0,0,0.6) !important;
       border: 2px solid #00ffcc;
-      color: #f0f0f0;
+      color: #ffffff;
       border-radius: 12px;
       padding: 14px 18px;
       font-size: 1.05rem;
@@ -94,11 +70,8 @@
       box-shadow: 0 0 25px #ff00aa;
       background: rgba(0,0,0,0.8) !important;
       color: #fff;
-      outline: none;
     }
-
-    /* Sexy buttons */
-    .btn-gold, .btn-success {
+    .btn-gold {
       background: linear-gradient(90deg, #ffd700, #ffaa00);
       color: #000;
       font-weight: bold;
@@ -109,33 +82,37 @@
       text-transform: uppercase;
       letter-spacing: 1px;
     }
-    .btn-gold:hover, .btn-success:hover {
+    .btn-gold:hover {
       transform: scale(1.08);
       box-shadow: 0 0 40px #ff00aa;
       background: linear-gradient(90deg, #ff00aa, #ffd700);
     }
-
     .success-message {
       color: #00ffcc;
       text-align: center;
       margin-top: 15px;
       font-weight: bold;
       text-shadow: 0 0 15px #00ffcc;
+      display: none;
+    }
+    .error-message {
+      color: #ff6b6b;
+      text-align: center;
+      margin-top: 10px;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
   <div id="nav-placeholder"></div>
 
-  <!-- VIDEO TRANSITION OVERLAY – MOBILE-SAFE -->
-  <div id="transition-overlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:9999;display:none;overflow:hidden;background:#000;">
-    <video id="forward-video" playsinline preload="auto" style="width:100%;height:100%;object-fit:cover;"></video>
-    <video id="reverse-video" playsinline preload="auto" style="width:100%;height:100%;object-fit:cover;display:none;"></video>
+  <div id="transition-overlay">
+    <video id="forward-video" class="transition-video" playsinline preload="auto"></video>
+    <video id="reverse-video" class="transition-video" playsinline preload="auto"></video>
   </div>
 
   <div class="content-overlay">
     <div class="content" id="main-content">
-      <!-- HERO – Doors LEFT of Title -->
       <div class="hero-contact">
         <img id="saloon-doors-back"
              src="/img/moonsaloon/saloon-doors-nav.png"
@@ -154,6 +131,7 @@
             <p class="text-center mb-3">Get first dibs on swamp-side shows, early track drops, and bayou insider vibes.</p>
             <form id="newsletter-form" class="row g-3 justify-content-center">
               <div class="col-md-6">
+                <label for="signup-email" class="form-label">Email</label>
                 <input type="email" class="form-control" id="signup-email" placeholder="your@bayou.com" required>
               </div>
               <div class="col-md-6 d-flex align-items-end">
@@ -189,25 +167,26 @@
           </div>
         </div>
 
-        <!-- General Inquiries Form -->
+        <!-- General Inquiries Form (fixed labels + white text) -->
         <div class="card mb-5">
           <div class="card-body">
             <h3 class="card-title text-center mb-4">General Inquiries</h3>
             <form id="contact-form">
-              <div class="mb-3">
+              <div class="mb-4">
                 <label for="name" class="form-label">Name</label>
                 <input type="text" class="form-control" id="name" required maxlength="100">
               </div>
-              <div class="mb-3">
+              <div class="mb-4">
                 <label for="email" class="form-label">Email</label>
                 <input type="email" class="form-control" id="email" required>
               </div>
-              <div class="mb-3">
+              <div class="mb-4">
                 <label for="message" class="form-label">Message</label>
                 <textarea class="form-control" id="message" rows="5" required maxlength="1000"></textarea>
               </div>
               <button type="submit" class="btn btn-gold w-100">Send Message</button>
               <div id="contact-success" class="success-message">Message sent — bayou reply incoming!</div>
+              <div id="contact-error" class="error-message"></div>
             </form>
           </div>
         </div>
@@ -231,7 +210,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
 
-  <!-- Firebase & EmailJS (unchanged) -->
+  <!-- Firebase (newsletter) -->
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
     import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
@@ -251,6 +230,8 @@
     window.collection = collection;
     window.serverTimestamp = serverTimestamp;
   </script>
+
+  <!-- EmailJS -->
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script type="text/javascript">
     (function() {
@@ -258,64 +239,68 @@
     })();
   </script>
 
-  <!-- Form handling (unchanged) -->
+  <!-- Form handling -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const sanitizeInput = (str) => str.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '').replace(/<\/?[^>]+(>|$)/g, '').trim();
 
+      // Newsletter (Firebase)
       const newsletterForm = document.getElementById('newsletter-form');
       if (newsletterForm) {
         newsletterForm.addEventListener('submit', async (e) => {
           e.preventDefault();
-          let email = sanitizeInput(document.getElementById('signup-email').value);
-          if (!email || !/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email)) {
+          const email = sanitizeInput(document.getElementById('signup-email').value);
+          if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
             alert('Valid email required.');
             return;
           }
           try {
-            await window.addDoc(window.collection(window.db, 'subscribers'), {
+            await addDoc(collection(db, 'subscribers'), {
               email,
               type: 'newsletter',
-              timestamp: window.serverTimestamp()
+              timestamp: serverTimestamp()
             });
             document.getElementById('newsletter-success').style.display = 'block';
             newsletterForm.reset();
-          } catch (error) {
-            alert('Signup snag — try again or email directly.');
+          } catch (err) {
+            console.error('Newsletter error:', err);
+            alert('Signup snag — try again or email lancewoolie@gmail.com directly.');
           }
         });
       }
 
+      // General Contact (EmailJS to lancewoolie@gmail.com)
       const contactForm = document.getElementById('contact-form');
       if (contactForm) {
         contactForm.addEventListener('submit', async (e) => {
           e.preventDefault();
-          let name = sanitizeInput(document.getElementById('name').value);
-          let email = sanitizeInput(document.getElementById('email').value);
-          let message = sanitizeInput(document.getElementById('message').value);
-          if (!name || !email || !message || !/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email)) {
-            alert('Fill it right (name, valid email, message).');
+          const name = sanitizeInput(document.getElementById('name').value);
+          const email = sanitizeInput(document.getElementById('email').value);
+          const message = sanitizeInput(document.getElementById('message').value);
+
+          if (!name || !email || !message || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            document.getElementById('contact-error').textContent = 'Please fill all fields with valid info.';
             return;
           }
+
           try {
             await emailjs.send('service_n08jdhv', 'template_of9jflr', {
               from_name: name,
               from_email: email,
-              message: message
+              message: message,
+              to_email: 'lancewoolie@gmail.com'  // Explicit target
             });
             document.getElementById('contact-success').style.display = 'block';
+            document.getElementById('contact-error').textContent = '';
             contactForm.reset();
-          } catch (error) {
-            alert('Send hiccup — try again or email dougdeutschpr1956@gmail.com directly.');
+          } catch (err) {
+            console.error('EmailJS error:', err);
+            document.getElementById('contact-error').textContent = 'Send hiccup — try again or email lancewoolie@gmail.com directly.';
           }
         });
       }
-    });
-  </script>
 
-  <!-- VIDEO TRANSITION SYSTEM – MOBILE-SAFE + FAST -->
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
+      // Transition video (forward on load, reverse on click)
       const overlay = document.getElementById('transition-overlay');
       const forwardVideo = document.getElementById('forward-video');
       const reverseVideo = document.getElementById('reverse-video');
@@ -327,39 +312,29 @@
       overlay.style.display = 'block';
       forwardVideo.style.display = 'block';
 
-      let started = false;
-      forwardVideo.oncanplaythrough = () => {
-        if (started) return;
-        started = true;
-        forwardVideo.volume = 0.5;
-        forwardVideo.play().catch(() => {});
-      };
-
-      // Safety timeout for slow mobile connections
-      setTimeout(() => {
-        if (!started) {
-          overlay.style.display = 'none';
-          content.classList.add('show');
-        }
-      }, 1800);
+      forwardVideo.muted = isMobile(); // Define isMobile() in script.js or inline
+      forwardVideo.volume = isMobile() ? 0 : 0.5;
+      forwardVideo.play().catch(err => console.error('Forward play error:', err));
 
       forwardVideo.onended = () => {
         overlay.style.display = 'none';
         content.classList.add('show');
       };
 
-      document.getElementById('saloon-doors-back').addEventListener('click', (e) => {
+      setTimeout(() => {
+        overlay.style.display = 'none';
+        content.classList.add('show');
+      }, 5000); // Safety
+
+      document.getElementById('saloon-doors-back').addEventListener('click', e => {
         e.preventDefault();
         overlay.style.display = 'block';
         forwardVideo.style.display = 'none';
         reverseVideo.style.display = 'block';
         reverseVideo.currentTime = 0;
         reverseVideo.volume = 0.5;
-        reverseVideo.play().catch(() => {});
-
-        reverseVideo.onended = () => {
-          window.location.href = 'index.html';
-        };
+        reverseVideo.play().catch(() => window.location.href = 'index.html');
+        reverseVideo.onended = () => window.location.href = 'index.html';
       });
     });
   </script>
