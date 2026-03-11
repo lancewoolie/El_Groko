@@ -170,54 +170,70 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const forwardVideo = document.getElementById('forward-video');
-      const content = document.getElementById('main-content');
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const overlay = document.getElementById('transition-overlay');
+    const forwardVideo = document.getElementById('forward-video');
+    const reverseVideo = document.getElementById('reverse-video');
+    const content = document.getElementById('main-content');
 
-      // Set forward video source and trigger global transition (plays once)
-      if (forwardVideo) {
-        forwardVideo.src = '/video/music-and-video-transition.mp4';
-        // Call global function from script.js (ensure it exists there)
-        if (typeof playForwardTransition === 'function') {
-          playForwardTransition(null, forwardVideo.src); // null link = no nav, just intro
-        } else {
-          // Fallback inline play if global function missing
-          forwardVideo.muted = isMobile();
-          forwardVideo.volume = isMobile() ? 0 : 0.5;
-          forwardVideo.play().catch(() => {});
-          forwardVideo.onended = () => content.classList.add('show');
-        }
-      }
+    console.log('Music page loaded - starting forward transition');
 
-      // Safety: force show content after max 4 seconds
-      setTimeout(() => {
+    // Set sources
+    forwardVideo.src = '/video/music-and-video-transition.mp4';
+    reverseVideo.src = '/video/music-and-video-reverse.mp4';
+
+    // Force visibility
+    overlay.style.display = 'block';
+    forwardVideo.style.display = 'block';
+    forwardVideo.style.opacity = '1';
+
+    // Play forward (muted on mobile)
+    forwardVideo.muted = isMobile(); // Use your isMobile() from script.js or inline: /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+    forwardVideo.volume = isMobile() ? 0 : 0.5;
+    forwardVideo.currentTime = 0;
+
+    console.log('Attempting to play forward video:', forwardVideo.src);
+
+    forwardVideo.play()
+      .then(() => {
+        console.log('Forward video started playing');
+      })
+      .catch(err => {
+        console.error('Play failed:', err);
+        // Fallback: show content anyway
         content.classList.add('show');
-      }, 4000);
-
-      // Reverse transition (back to home)
-      document.getElementById('saloon-doors-back').addEventListener('click', e => {
-        e.preventDefault();
-        const overlay = document.getElementById('transition-overlay');
-        const reverseVideo = document.getElementById('reverse-video');
-        const forwardVideo = document.getElementById('forward-video');
-
-        forwardVideo.style.display = 'none';
-        reverseVideo.style.display = 'block';
-        reverseVideo.src = '/video/music-and-video-reverse.mp4';
-        reverseVideo.currentTime = 0;
-        reverseVideo.volume = 0.5;
-        overlay.style.display = 'block';
-
-        reverseVideo.play().catch(() => {
-          window.location.href = 'index.html';
-        });
-
-        reverseVideo.onended = () => {
-          window.location.href = 'index.html';
-        };
+        overlay.style.display = 'none';
       });
+
+    // When video ends → hide overlay, show content
+    forwardVideo.onended = () => {
+      console.log('Forward video ended');
+      overlay.style.display = 'none';
+      content.classList.add('show');
+    };
+
+    // Safety timeout: force show content after 5 seconds max
+    setTimeout(() => {
+      console.log('Safety timeout - forcing content visible');
+      content.classList.add('show');
+      overlay.style.display = 'none';
+    }, 5000);
+
+    // Reverse transition (back to index)
+    document.getElementById('saloon-doors-back').addEventListener('click', e => {
+      e.preventDefault();
+      overlay.style.display = 'block';
+      forwardVideo.style.display = 'none';
+      reverseVideo.style.display = 'block';
+      reverseVideo.currentTime = 0;
+      reverseVideo.volume = 0.5;
+      reverseVideo.play().catch(err => console.error('Reverse play failed:', err));
+      reverseVideo.onended = () => {
+        window.location.href = 'index.html';
+      };
     });
-  </script>
+  });
+</script>
 </body>
 </html>
