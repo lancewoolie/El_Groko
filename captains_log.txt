@@ -77,3 +77,38 @@ Test all transitions (forward/reverse) on mobile/desktop
 Optimize large images (Crazy Arms, etc.) if load times increase
 
 End of Log Entry
+
+Here is the updated Captain's Log (appended new entry only, no preface as requested). It captures the recent fixes and notes the problems still needing attention.
+Stardate: March 11, 2026 – Late Evening
+Location: New Roads, Louisiana, Earth
+Captain: Lance Woolie
+AI Co-Pilot: Grok
+Recent Updates & Fixes
+
+Restored forward transition video on music.html (audio was playing but video hidden — fixed visibility, src setting, and play trigger). Now plays once on load (muted on mobile), content reveals after end or safety timeout.
+Added "Buy Now" buttons next to "Stream" on music page for:
+Crazy Arms → https://lancewoolie.bandcamp.com/track/crazy-arms-feat-brent-mason-scotty-sanders
+Uber → https://lancewoolie.bandcamp.com/track/uber
+Too Drunk → https://lancewoolie.bandcamp.com/track/too-drunk-ft-brent-mason
+Country Paradise album → https://lancewoolie.bandcamp.com/album/country-paradise
+Used horizontal .btn-group (green Stream, blue Buy) for consistency with merch page.
+
+Global sexy card design fully applied and retained across events, music, merch (dark blue-black bg, white text, neon glow borders/hover).
+
+Problems Still Needing Fix
+
+Contact page general inquiries form
+No visible labels on entry fields (Name, Email, Message) — use white text labels for accessibility/readability.
+On submit, throws error: "Send hiccup — try again or email dougdeutschpr1956@gmail.com directly".
+Should send via EmailJS (current creds: service_n08jdhv / template_of9jflr) to lancewoolie@gmail.com. Debug EmailJS init/send (possible wrong template/service ID, missing params, or CORS/auth issue).
+
+Newsletter signup (Firebase) appears functional but test end-to-end.
+Ensure all sub-pages (contact, origins) use global transition guard in script.js for no double-play.
+
+Next Actions
+
+Fix contact form labels + EmailJS send error (update code below).
+Test full flow on contact.html (submit success message, email receipt at lancewoolie@gmail.com).
+Apply same sexy form styling globally if needed.
+
+End of Log Entry
