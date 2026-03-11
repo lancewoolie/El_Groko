@@ -1,22 +1,78 @@
+/* ====================== GLOBAL MOON SALOON STYLES ====================== */
+
 body {
   background-color: #0b1426;
   color: #E0E0E0;
   font-family: 'Georgia', serif;
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
 }
-.hero {
-  height: 100vh !important;
-  background: url('/img/moonsaloon/moon-saloon-base.jpg') center/cover no-repeat fixed;
-  position: relative;
+
+.navbar {
+  background: rgba(0, 0, 0, 0.85) !important;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid #00ffcc44;
+}
+
+.navbar-brand img {
+  height: 32px;
+  margin-right: 8px;
+}
+
+.nav-link {
+  color: #ddd !important;
+  transition: color 0.3s;
+}
+
+.nav-link:hover, .nav-link.active {
+  color: #00ffcc !important;
+  text-shadow: 0 0 10px #00ffcc;
+}
+
+/* Score & Health HUD in navbar */
+.score-header {
+  font-family: 'Courier New', monospace;
+}
+
+.health-bar {
+  width: 110px;
+  height: 16px;
+  background: #111;
+  border: 2px solid #00ffcc;
+  border-radius: 10px;
   overflow: hidden;
+  margin: 0 12px;
 }
-.props-container {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 5;
+
+#health-progress {
+  height: 100%;
+  background: #00ffcc;
+  transition: width 0.6s ease, background-color 0.6s ease;
 }
+
+.score-display {
+  color: #ffd700;
+  font-weight: bold;
+}
+
+.score-zero   { color: #888; }
+.score-low    { color: #ff9800; }
+.score-mid    { color: #ffd700; }
+.score-high   { color: #ff4500; }
+.score-max    { color: #00ffff; text-shadow: 0 0 10px #00ffff; }
+
+.updated {
+  animation: pulse 0.5s ease;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+/* Props (shootable nav items) */
 .moonsaloon-prop {
   position: absolute;
   pointer-events: auto;
@@ -25,67 +81,70 @@ body {
   transition: filter 0.12s ease, transform 0.2s ease;
   z-index: 6;
 }
+
 .moonsaloon-prop:hover {
   filter: brightness(1.4) saturate(2) drop-shadow(0 0 18px #00ffcc);
   transform: scale(1.06) rotate(2deg);
 }
+
 .moonsaloon-prop.hit {
   filter: brightness(2.2) saturate(2.5) hue-rotate(15deg);
   transform: scale(1.14) rotate(5deg);
 }
+
 .moonsaloon-prop.destroyed {
   opacity: 0.25;
   filter: grayscale(0.9);
   pointer-events: none;
 }
-#game-hud {
-  display: none !important; /* HUD hidden globally as requested */
-  position: absolute;
-  top: 18px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 88%;
-  max-width: 1100px;
-  background: rgba(11,20,38,0.92);
-  border: 3px solid #00ffcc;
-  border-radius: 50px;
-  padding: 10px 25px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  box-shadow: 0 0 35px rgba(0,255,204,0.5);
-  z-index: 25;
-  font-family: 'Courier New', monospace;
-  font-size: 1.05rem;
-}
-#game-hud .hud-item { color: #00ffcc; font-weight: bold; }
-#score-value { color: #ffd700; }
-#health-bar { width:110px; height:16px; background:#111; border:2px solid #00ffcc; border-radius:10px; overflow:hidden; margin:0 12px; }
-#health-progress { height:100%; background:#00ffcc; transition:width 0.6s ease; }
-#lunar-timer { color:#00ffcc; font-size:1.35rem; }
-#restart-btn {
-  display:none;
-  background:#ffd700;
-  color:#001f3f;
-  border:none;
-  padding:6px 22px;
-  border-radius:30px;
-  font-weight:bold;
-  cursor:pointer;
-}
-.tight-footer {
-  background:#001f3f !important;
-  position:fixed !important;
-  bottom:0 !important;
-  left:0 !important;
-  right:0 !important;
-  width:100% !important;
-  z-index:1001 !important;
-  border-top:1px solid #0074D9;
-}
+
+/* Transition overlay */
 #transition-overlay {
-  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-  z-index: 9999; pointer-events: none; display: none; overflow: hidden; background: #000;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  pointer-events: none;
+  display: none;
+  overflow: hidden;
+  background: #000;
 }
-.transition-video { width: 100%; height: 100%; object-fit: cover; }
-/* All your other styles (cards, carousel, interactive-dot, sub-dot, etc.) go here exactly as before */
+
+.transition-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Footer (hidden until game debug complete) */
+.tight-footer {
+  background: #001f3f !important;
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  z-index: 1001 !important;
+  border-top: 1px solid #0074D9;
+}
+
+.cowboy-hat-icon {
+  font-size: 2rem;
+  cursor: pointer;
+  transition: transform 0.5s;
+}
+
+.cowboy-hat-icon:hover {
+  transform: rotate(360deg);
+}
+
+/* Events page specific (for consistency if inline styles removed later) */
+.events-page .card {
+  transition: all 0.4s ease;
+}
+
+.events-page .card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 0 30px rgba(0, 255, 204, 0.5);
+}
