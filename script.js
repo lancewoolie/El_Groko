@@ -398,7 +398,7 @@ function generateFooter() {
 document.addEventListener('DOMContentLoaded', () => {
   score = parseInt(sessionStorage.getItem('score')) || 0;
   generateNav();
-  generateFooter();
+  // Footer is hidden via CSS – no generateFooter() call needed until re-enabled
   scoreEl = document.getElementById('score-value');
   if (scoreEl) {
     const displayText = score.toString().padStart(6, '0');
@@ -410,14 +410,11 @@ document.addEventListener('DOMContentLoaded', () => {
     else scoreEl.classList.add('score-max');
   }
   setTimeout(() => { initHealthBar(); updateScore(0); }, 200);
-
   const forwardVideo = document.getElementById('forward-video');
   const overlay = document.getElementById('transition-overlay');
-
   // Preload on load/refresh (once)
   forwardVideo.preload = 'auto';
   forwardVideo.load(); // Start buffering early
-
   const saloonSVG = document.getElementById('saloon-svg');
   if (saloonSVG) { // INDEX ONLY
     document.querySelectorAll('.moonsaloon-prop').forEach(prop => {
