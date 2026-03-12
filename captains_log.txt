@@ -112,3 +112,24 @@ Test full flow on contact.html (submit success message, email receipt at lancewo
 Apply same sexy form styling globally if needed.
 
 End of Log Entry
+
+Stardate: March 11, 2026 – Night
+Location: New Roads, Louisiana, Earth
+Captain: Lance Woolie
+AI Co-Pilot: Grok
+Recent Updates & Fixes
+
+Contact page forms improved readability:
+All fields now have visible white bold labels (no disappearing/floating labels)
+Added clear, readable placeholder text in soft cyan-gray (e.g., "Your Name", "somebody@example.com", "Say something — you'll probably get a response quickly")
+Newsletter and general inquiry forms now use consistent, accessible styling
+
+Transition video on contact page confirmed working (forward on load, reverse on doors click)
+
+Problems Still Open / Next
+
+General inquiries form submit still shows "Send hiccup" error (EmailJS to lancewoolie@gmail.com). Likely template/service ID mismatch or param issue — needs console debug + possible EmailJS dashboard check.
+Test full contact form submission end-to-end (success message + actual email receipt).
+
+End of Log Entry
+Let me know what the console says on submit or if you want to move to origins page next! 🤠
