@@ -16,12 +16,7 @@
       margin: 0;
       padding-bottom: 100px;
     }
-    .content {
-      position: relative;
-      z-index: 1;
-      opacity: 0;
-      transition: opacity 1.2s ease;
-    }
+    .content { position: relative; z-index: 1; opacity: 0; transition: opacity 1.2s ease; }
     .content.show { opacity: 1; }
     .content-overlay {
       background: url('/img/moonsaloon/contact-base-bg.jpg') center/cover no-repeat fixed !important;
@@ -50,11 +45,17 @@
       text-shadow: 0 0 20px #00ffcc, 0 0 40px #ff00aa;
       margin: 0;
     }
-    /* SEXY FORMS – white text labels */
+    /* Labels always visible, white, bold */
     .form-label {
       color: #ffffff !important;
       font-weight: bold;
       margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+    /* Placeholders readable on dark bg */
+    .form-control::placeholder {
+      color: #a0c0ff !important; /* soft cyan-gray */
+      opacity: 0.9 !important;
     }
     .form-control, .form-control:focus {
       background: rgba(0,0,0,0.6) !important;
@@ -69,7 +70,6 @@
       border-color: #ff00aa;
       box-shadow: 0 0 25px #ff00aa;
       background: rgba(0,0,0,0.8) !important;
-      color: #fff;
     }
     .btn-gold {
       background: linear-gradient(90deg, #ffd700, #ffaa00);
@@ -131,8 +131,8 @@
             <p class="text-center mb-3">Get first dibs on swamp-side shows, early track drops, and bayou insider vibes.</p>
             <form id="newsletter-form" class="row g-3 justify-content-center">
               <div class="col-md-6">
-                <label for="signup-email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="signup-email" placeholder="your@bayou.com" required>
+                <label for="signup-email" class="form-label">Your Email</label>
+                <input type="email" class="form-control" id="signup-email" placeholder="somebody@example.com" required>
               </div>
               <div class="col-md-6 d-flex align-items-end">
                 <button type="submit" class="btn btn-gold w-100">Do it. Sign Up</button>
@@ -167,22 +167,22 @@
           </div>
         </div>
 
-        <!-- General Inquiries Form (fixed labels + white text) -->
+        <!-- General Inquiries Form (now with visible white labels + placeholders) -->
         <div class="card mb-5">
           <div class="card-body">
             <h3 class="card-title text-center mb-4">General Inquiries</h3>
             <form id="contact-form">
               <div class="mb-4">
-                <label for="name" class="form-label">Name</label>
-                <input type="text" class="form-control" id="name" required maxlength="100">
+                <label for="name" class="form-label">Your Name</label>
+                <input type="text" class="form-control" id="name" placeholder="What's your name?" required maxlength="100">
               </div>
               <div class="mb-4">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" required>
+                <label for="email" class="form-label">Your Email</label>
+                <input type="email" class="form-control" id="email" placeholder="somebody@example.com" required>
               </div>
               <div class="mb-4">
-                <label for="message" class="form-label">Message</label>
-                <textarea class="form-control" id="message" rows="5" required maxlength="1000"></textarea>
+                <label for="message" class="form-label">Your Message</label>
+                <textarea class="form-control" id="message" rows="5" placeholder="Say something — you'll probably get a response quickly" required maxlength="1000"></textarea>
               </div>
               <button type="submit" class="btn btn-gold w-100">Send Message</button>
               <div id="contact-success" class="success-message">Message sent — bayou reply incoming!</div>
@@ -288,7 +288,7 @@
               from_name: name,
               from_email: email,
               message: message,
-              to_email: 'lancewoolie@gmail.com'  // Explicit target
+              to_email: 'lancewoolie@gmail.com'
             });
             document.getElementById('contact-success').style.display = 'block';
             document.getElementById('contact-error').textContent = '';
@@ -300,7 +300,7 @@
         });
       }
 
-      // Transition video (forward on load, reverse on click)
+      // Transition video
       const overlay = document.getElementById('transition-overlay');
       const forwardVideo = document.getElementById('forward-video');
       const reverseVideo = document.getElementById('reverse-video');
@@ -312,8 +312,8 @@
       overlay.style.display = 'block';
       forwardVideo.style.display = 'block';
 
-      forwardVideo.muted = isMobile(); // Define isMobile() in script.js or inline
-      forwardVideo.volume = isMobile() ? 0 : 0.5;
+      forwardVideo.muted = /Mobi|Android/i.test(navigator.userAgent);
+      forwardVideo.volume = forwardVideo.muted ? 0 : 0.5;
       forwardVideo.play().catch(err => console.error('Forward play error:', err));
 
       forwardVideo.onended = () => {
@@ -324,7 +324,7 @@
       setTimeout(() => {
         overlay.style.display = 'none';
         content.classList.add('show');
-      }, 5000); // Safety
+      }, 5000);
 
       document.getElementById('saloon-doors-back').addEventListener('click', e => {
         e.preventDefault();
