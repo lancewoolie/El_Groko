@@ -45,16 +45,14 @@
       text-shadow: 0 0 20px #00ffcc, 0 0 40px #ff00aa;
       margin: 0;
     }
-    /* Labels always visible, white, bold */
     .form-label {
       color: #ffffff !important;
       font-weight: bold;
       margin-bottom: 0.5rem;
       font-size: 1.1rem;
     }
-    /* Placeholders readable on dark bg */
     .form-control::placeholder {
-      color: #a0c0ff !important; /* soft cyan-gray */
+      color: #a0c0ff !important;
       opacity: 0.9 !important;
     }
     .form-control, .form-control:focus {
@@ -167,7 +165,7 @@
           </div>
         </div>
 
-        <!-- General Inquiries Form (now with visible white labels + placeholders) -->
+        <!-- General Inquiries Form -->
         <div class="card mb-5">
           <div class="card-body">
             <h3 class="card-title text-center mb-4">General Inquiries</h3>
@@ -269,7 +267,7 @@
         });
       }
 
-      // General Contact (EmailJS to lancewoolie@gmail.com)
+      // General Contact (EmailJS – cleaned, no to_email, debug logs)
       const contactForm = document.getElementById('contact-form');
       if (contactForm) {
         contactForm.addEventListener('submit', async (e) => {
@@ -284,23 +282,27 @@
           }
 
           try {
-            await emailjs.send('service_n08jdhv', 'template_of9jflr', {
+            console.log('Attempting EmailJS send:', { from_name: name, from_email: email, message });
+            const response = await emailjs.send('service_n08jdhv', 'template_of9jflr', {
               from_name: name,
               from_email: email,
-              message: message,
-              to_email: 'lancewoolie@gmail.com'
+              message: message
             });
+            console.log('EmailJS success:', response.status, response.text);
             document.getElementById('contact-success').style.display = 'block';
             document.getElementById('contact-error').textContent = '';
             contactForm.reset();
           } catch (err) {
             console.error('EmailJS error:', err);
-            document.getElementById('contact-error').textContent = 'Send hiccup — try again or email lancewoolie@gmail.com directly.';
+            let errMsg = 'Send hiccup — try again or email lancewoolie@gmail.com directly.';
+            if (err.status) errMsg += ` (Status ${err.status})`;
+            if (err.text) errMsg += ` - ${err.text}`;
+            document.getElementById('contact-error').textContent = errMsg;
           }
         });
       }
 
-      // Transition video
+      // Transition video (unchanged)
       const overlay = document.getElementById('transition-overlay');
       const forwardVideo = document.getElementById('forward-video');
       const reverseVideo = document.getElementById('reverse-video');
