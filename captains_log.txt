@@ -1,28 +1,24 @@
 Captain's Log – Lance Woolie’s Moon Saloon Website Project
 Main Scope
-Single-source living history for lancewoolie.com (El_Groko GitHub repo) — a digital Moon Saloon at Shackleton Crater (Artemis South Pole base).
-Goals: interactive shooting gallery (1/6g props, Firebase scores), fan hub (guestbook/graffiti, events, YouTube, Bandcamp merch, EmailJS contact, Firebase signup).
-Rules: eternal free GitHub Pages hosting, free services only, secure/mobile-first Bootstrap, optimized assets, off-site merch/videos.
-Core: global script.js + style.css, transition videos (forward entry / reverse exit), sexy neon card design (dark blue-black bg, white text, cyan/pink glow borders/hover).
-Chronological Changes, Issues & Fixes
-Stardate: March 11, 2026 – Initial Baseline
+Digital Moon Saloon at Shackleton Crater (Artemis South Pole base) on lancewoolie.com (El_Groko GitHub repo).
+Engagement: 1/6g shooting gallery (shootable nav props, Firebase leaderboard).
+Fan hub: Firebase guestbook/graffiti & newsletter subscribers, events page, YouTube embeds, Bandcamp merch, EmailJS contact/bookings.
+Core: global script.js + style.css, forward/reverse transition videos, sexy neon card design (dark blue-black bg, white text, thick cyan → pink hover borders, glow lift/scale).
+Chronological Changes, Fixes & Issues
+March 11, 2026 – Baseline
 
-Project goals & Artemis integration documented
-Index saloon with shootable SVG props (score + forward transitions)
-Events page with historical array (~25 entries 2024–2025)
-Past events filter (date ≤ current), upcoming (future dates only)
-Global card style locked: dark bg, white/off-white text, thick neon borders → pink hover, glow lift/scale
+Index: shootable SVG props (Tesla Chime, Hourglass Origins, Holo Calendar, Cowboy Hat Merch, Music/Video Neon, Raccoon Subscribe, Contact Trophy) with score + forward transitions
+Events: historical array (~25 entries 2024–2025), date-based upcoming/past filters, scrollable grid cards
+Global sexy card style locked: dark bg, white/off-white text, thick neon borders → pink hover, glow lift/scale
 Transition system: forward intro on sub-pages, reverse on saloon doors back, preloaded, no forced timeouts, fallback nav
 
-Stardate: March 11, 2026 – Evening (Post-Fix)
-Changes & Fixes
+March 11, 2026 – Evening
 
 Fixed forward videos playing twice (merch, origins, contact) → global transitionInProgress guard + single play call in script.js
-Made merch card design global: darker blue-black bg, thicker cyan borders with pink hover shift, stronger glows, rounded corners, price tags, new-release badges
+Merch card design made global: darker blue-black bg, thicker cyan borders → pink hover shift, stronger glows, rounded corners, price tags, new-release badges
 Applied global sexy cards to events, music, merch (consistent dark readable style)
 
-Stardate: March 11, 2026 – Late Evening
-Changes & Fixes
+March 11, 2026 – Late Evening
 
 Restored forward transition visibility on music.html (audio played but video hidden) → explicit src, forced display/opacity, safety timeout
 Added "Buy Now" buttons next to "Stream" on music page (Bandcamp links):
@@ -30,21 +26,20 @@ Crazy Arms → https://lancewoolie.bandcamp.com/track/crazy-arms-feat-brent-maso
 Uber → https://lancewoolie.bandcamp.com/track/uber
 Too Drunk → https://lancewoolie.bandcamp.com/track/too-drunk-ft-brent-mason
 Country Paradise album → https://lancewoolie.bandcamp.com/album/country-paradise
+
 Used horizontal .btn-group (green Stream, blue Buy) matching merch style
 
-
-Stardate: March 11, 2026 – Night
-Changes & Fixes
+March 11, 2026 – Night
 
 Contact page forms readability overhaul:
-All fields now have visible bold white labels (no floating/disappearing)
-Added clear soft cyan-gray placeholders:
+Visible bold white labels on all fields (no floating/disappearing)
+Clear soft cyan-gray placeholders:
 Name: "What's your name?"
 Email: "somebody@example.com"
 Message: "Say something — you'll probably get a response quickly"
 
-Newsletter & general inquiry forms now consistent & accessible
 
+Newsletter & general inquiry forms now consistent & accessible
 Transition video on contact confirmed (forward on load, reverse on doors)
 
 Current Open Issues
@@ -52,22 +47,34 @@ Current Open Issues
 Contact general inquiries form submit fails ("Send hiccup")
 EmailJS (service_n08jdhv / template_of9jflr) not delivering to lancewoolie@gmail.com
 Likely: template/service ID mismatch, missing to_email param, auth/CORS issue
-Needs console debug + EmailJS dashboard verification
 
-Newsletter signup (Firebase) functional — needs full end-to-end test (entry + receipt)
-Missing 2023 events — add if records exist
-Optimize large images (e.g., Crazy Arms) if load times slow
+Newsletter signup (Firebase) functional — needs end-to-end test (entry + receipt confirmation)
+No 2023 events in array — add if records exist
+Optimize large images (Crazy Arms etc.) if load times slow
 Enable footer & full game HUD post-debug
-Implement Firebase leaderboard & guestbook/graffiti
+Implement Firebase high-score leaderboard & guestbook/graffiti
 
 Critical Standing Rules
 
-Events array preservation — full historical list (~25 entries) must stay intact in events.html/script.js. Append only; never shorten/remove past items.
-Global card style — all sub-pages use sexy merch cards (dark bg, white text, neon cyan/pink glow). Do not revert without explicit discussion.
+Hosting & Services
+Eternal free hosting: GitHub Pages only
+Free services only: Firebase (subscriber storage, guestbook/graffiti, leaderboard), EmailJS (all sent form emails to lancewoolie@gmail.com)
+
+Security
+High-security check on each rebuilding session with Grok (review code diffs, keys, credentials, potential regressions)
+
+Events Data Preservation
+Full historical array (~25 entries) must remain intact in events.html/script.js. Append only; never shorten/remove past items
+
+Global Card Style
+All sub-pages use sexy merch cards (dark blue-black bg, white text, neon cyan/pink glow). Do not revert without explicit discussion
+
 
 Next Actions
 
-Debug/fix EmailJS on contact form (console logs, template params, creds check)
-Test complete contact submission (success + email at lancewoolie@gmail.com)
-Apply transition guard to origins/contact if any double-play remains
+Debug/fix EmailJS on contact form (console logs, template/service check)
+Test full contact submission (success + email at lancewoolie@gmail.com)
+Apply transition guard to any remaining pages (origins/contact)
 Add missing early events if available
+
+End of Log – Stardate March 11, 2026
