@@ -60,6 +60,12 @@
     }
     #upcoming-list::-webkit-scrollbar, #past-list::-webkit-scrollbar { width: 8px; }
     #upcoming-list::-webkit-scrollbar-thumb, #past-list::-webkit-scrollbar-thumb { background: #00ffcc; border-radius: 10px; }
+
+    /* FIX: Lighter, more visible date/venue text */
+    .card-text small {
+      color: #e0e0e0 !important;
+      font-weight: 500;
+    }
   </style>
 </head>
 <body>
@@ -129,7 +135,7 @@
     ];
 
     const currentDate = new Date();
-    currentDate.setHours(0, 0, 0, 0);   // Reset time so we only compare dates
+    currentDate.setHours(0, 0, 0, 0);
 
     function generateUpcomingCard(event) {
       return `
@@ -141,7 +147,7 @@
             <div class="card-body">
               <h5 class="card-title">${event.eventName}</h5>
               <p class="card-text">${event.description}</p>
-              <p class="card-text"><small class="text-muted">${event.date} - ${event.time} @ ${event.venue || event.city || 'Various'}</small></p>
+              <p class="card-text"><small>${event.date} - ${event.time} @ ${event.venue || event.city || 'Various'}</small></p>
               <a href="${event.tickets}" class="btn btn-success w-100 mt-2" target="_blank">Tickets / More Info</a>
             </div>
           </div>
@@ -157,7 +163,7 @@
             <div class="card-body">
               <h5 class="card-title">${event.eventName}</h5>
               <p class="card-text">${event.description}</p>
-              <p class="card-text"><small class="text-muted">${event.date} - ${event.time} @ ${event.venue || event.city || 'Various'}</small></p>
+              <p class="card-text"><small>${event.date} - ${event.time} @ ${event.venue || event.city || 'Various'}</small></p>
             </div>
           </div>
         </div>
@@ -178,7 +184,7 @@
         ? pastEvents.map(generatePastCard).join('') 
         : '<p class="text-center lead mt-5">No past events to display yet.</p>';
 
-      // === FIXED Saloon Doors Back Button ===
+      // Saloon doors reverse transition
       const doorsBack = document.getElementById('saloon-doors-back');
       if (doorsBack) {
         doorsBack.addEventListener('click', (e) => {
