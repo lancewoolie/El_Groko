@@ -61,7 +61,7 @@
         </div>
       </div>
 
-      <!-- Dashboard Content -->
+      <!-- Dashboard -->
       <div id="dashboard-content" style="display: none;">
         <div class="admin-card">
           <h2>Captain's Log Archive</h2>
@@ -76,7 +76,7 @@
 
         <div class="admin-card">
           <h2>Visitor Demographics</h2>
-          <div id="stats-placeholder">Demographics data coming soon.</div>
+          <div id="stats-placeholder">Demographics tracking coming soon.</div>
         </div>
       </div>
     </div>
@@ -90,7 +90,7 @@
           <h5 class="modal-title">Add New Log Entry</h5>
         </div>
         <div class="modal-body">
-          <input type="text" id="new-log-title" class="form-control mb-3" placeholder="Title (e.g. March 17, 2026 - Keyhole Added)">
+          <input type="text" id="new-log-title" class="form-control mb-3" placeholder="Title">
           <textarea id="new-log-content" class="form-control" rows="12" placeholder="Paste full log entry here..."></textarea>
         </div>
         <div class="modal-footer">
@@ -105,7 +105,7 @@
   <script src="script.js"></script>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
     import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -121,15 +121,30 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
+    // Auto-check if already logged in
+    onAuthStateChanged(auth, (user) => {
+      if (user && user.uid === "lNRpsSjHaub5CxnT2otZhWuXyvr2") {
+        document.getElementById('loginModal').style.display = 'none';
+        document.getElementById('dashboard-content').style.display = 'block';
+        loadCaptainsLog();
+      }
+    });
+
     async function attemptLogin() {
       const email = document.getElementById('admin-email').value.trim();
       const password = document.getElementById('admin-password').value.trim();
 
       try {
-        await signInWithEmailAndPassword(auth, email, password);
-        bootstrap.Modal.getInstance(document.getElementById('loginModal')).hide();
-        document.getElementById('dashboard-content').style.display = 'block';
-        loadCaptainsLog();
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        if (user.uid === "lNRpsSjHaub5CxnT2otZhWuXyvr2") {
+          bootstrap.Modal.getInstance(document.getElementById('loginModal')).hide();
+          document.getElementById('dashboard-content').style.display = 'block';
+          loadCaptainsLog();
+        } else {
+          alert("Access Denied - Not authorized admin.");
+        }
       } catch (error) {
         alert("Login failed: " + error.message);
       }
@@ -137,6 +152,8 @@
 
     async function loadCaptainsLog() {
       const container = document.getElementById('log-summary');
+      container.innerHTML = 'Loading Captain\'s Log...';
+
       try {
         const q = query(collection(db, "captainsLog"), orderBy("order", "asc"));
         const snapshot = await getDocs(q);
@@ -166,23 +183,23 @@
       const content = document.getElementById('new-log-content').value.trim();
 
       if (!title || !content) {
-        alert("Title and content required.");
+        alert("Title and content are required.");
         return;
       }
 
       try {
         await addDoc(collection(db, "captainsLog"), {
-          stardate: new Date().toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' }),
+          stardate: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
           title: title,
           content: content,
           timestamp: serverTimestamp(),
           order: Date.now()
         });
-        alert("✅ Log entry saved!");
+        alert("✅ New log entry saved!");
         bootstrap.Modal.getInstance(document.getElementById('addLogModal')).hide();
         loadCaptainsLog();
       } catch (err) {
-        alert("Error: " + err.message);
+        alert("Error saving: " + err.message);
       }
     }
 
