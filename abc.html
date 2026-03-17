@@ -9,16 +9,8 @@
   <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/png" href="img/LanceWoolieHeadonly.png">
   <style>
-    body {
-      background: url('/img/moonsaloon/moonsurface.jpg') center/cover no-repeat fixed !important;
-      color: #e0e0e0;
-      font-family: 'Georgia', serif;
-    }
-    .content-overlay {
-      background: rgba(0, 0, 0, 0.7);
-      min-height: 100vh;
-      padding-top: 90px;
-    }
+    body { background: url('/img/moonsaloon/moonsurface.jpg') center/cover no-repeat fixed !important; color: #e0e0e0; font-family: 'Georgia', serif; }
+    .content-overlay { background: rgba(0, 0, 0, 0.7); min-height: 100vh; padding-top: 90px; }
     .admin-card {
       background: rgba(10, 20, 50, 0.9);
       border: 3px solid #00ffcc;
@@ -26,17 +18,17 @@
       padding: 2rem;
       margin-bottom: 2rem;
       box-shadow: 0 0 50px rgba(0, 255, 204, 0.7);
+      position: relative;
     }
-    .admin-card h2 {
-      color: #00ffcc;
-      text-shadow: 0 0 25px #00ffcc;
+    .admin-card h2 { color: #00ffcc; text-shadow: 0 0 25px #00ffcc; }
+    .add-log-btn {
+      position: absolute; top: 20px; right: 20px;
+      background: #ff00aa; color: white; border: none; padding: 8px 16px;
+      border-radius: 8px; cursor: pointer;
     }
     .log-entry {
-      background: rgba(0, 0, 0, 0.5);
-      border-left: 5px solid #ff00aa;
-      padding: 1.2rem;
-      margin-bottom: 1rem;
-      border-radius: 0 8px 8px 0;
+      background: rgba(0,0,0,0.5); border-left: 5px solid #ff00aa;
+      padding: 1.2rem; margin-bottom: 1rem; border-radius: 0 8px 8px 0;
       cursor: pointer;
     }
     .log-entry:hover { background: rgba(0,0,0,0.7); }
@@ -56,39 +48,54 @@
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content bg-dark text-light" style="border: 3px solid #00ffcc;">
             <div class="modal-header border-0">
-              <h5 class="modal-title">Alpha Base Camp Access</h5>
-              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+              <h5 class="modal-title">🔑 Alpha Base Camp Access</h5>
             </div>
             <div class="modal-body">
-              <input type="email" id="admin-email" class="form-control mb-3" placeholder="Admin Email" value="lancewoolie@gmail.com">
+              <input type="email" id="admin-email" class="form-control mb-3" placeholder="Email" value="lancewoolie@gmail.com">
               <input type="password" id="admin-password" class="form-control" placeholder="Password">
             </div>
             <div class="modal-footer border-0">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-              <button type="button" class="btn btn-success" onclick="attemptLogin()">Enter Base Camp</button>
+              <button type="button" class="btn btn-success w-100" onclick="attemptLogin()">Enter Base Camp</button>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Main Dashboard Content (hidden until login) -->
+      <!-- Dashboard Content -->
       <div id="dashboard-content" style="display: none;">
-        <!-- Captain's Log -->
         <div class="admin-card">
           <h2>Captain's Log Archive</h2>
+          <button class="add-log-btn" onclick="showAddLogModal()">+ Add New Log</button>
           <div id="log-summary">Loading entries...</div>
         </div>
 
-        <!-- Firebase Activity -->
         <div class="admin-card">
           <h2>Recent Firebase Activity</h2>
-          <div id="activity-placeholder">Loading subscribers and messages...</div>
+          <div id="activity-placeholder">Loading activity...</div>
         </div>
 
-        <!-- Demographics / Stats -->
         <div class="admin-card">
           <h2>Visitor Demographics</h2>
-          <div id="stats-placeholder">Demographics data will appear here once tracking is active.</div>
+          <div id="stats-placeholder">Demographics data coming soon.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add New Log Modal -->
+  <div class="modal fade" id="addLogModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content bg-dark text-light">
+        <div class="modal-header">
+          <h5 class="modal-title">Add New Log Entry</h5>
+        </div>
+        <div class="modal-body">
+          <input type="text" id="new-log-title" class="form-control mb-3" placeholder="Title (e.g. March 17, 2026 - Keyhole Added)">
+          <textarea id="new-log-content" class="form-control" rows="12" placeholder="Paste full log entry here..."></textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-success" onclick="saveNewLog()">Save Entry</button>
         </div>
       </div>
     </div>
@@ -98,7 +105,8 @@
   <script src="script.js"></script>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, collection, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAJQMdogiDwB0oLf2I_Jp-6NSLTDcXvVcQ",
@@ -110,20 +118,20 @@
     };
 
     const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
     const db = getFirestore(app);
 
-    // Simple hardcoded password for now (we can improve later)
-    const ADMIN_PASSWORD = "moon2026";   // ← Change this to whatever you want
-
-    function attemptLogin() {
+    async function attemptLogin() {
+      const email = document.getElementById('admin-email').value.trim();
       const password = document.getElementById('admin-password').value.trim();
-      if (password === ADMIN_PASSWORD) {
-        document.getElementById('loginModal').querySelector('.btn-close').click(); // close modal
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        bootstrap.Modal.getInstance(document.getElementById('loginModal')).hide();
         document.getElementById('dashboard-content').style.display = 'block';
         loadCaptainsLog();
-        loadActivity();
-      } else {
-        alert("Access Denied — Incorrect Password");
+      } catch (error) {
+        alert("Login failed: " + error.message);
       }
     }
 
@@ -147,15 +155,40 @@
       }
     }
 
-    function loadActivity() {
-      document.getElementById('activity-placeholder').innerHTML = 
-        'Recent subscribers and contact messages will appear here.<br><small>(Feature coming next)</small>';
+    function showAddLogModal() {
+      document.getElementById('new-log-title').value = '';
+      document.getElementById('new-log-content').value = '';
+      new bootstrap.Modal(document.getElementById('addLogModal')).show();
     }
 
-    // Show login modal when page loads
+    async function saveNewLog() {
+      const title = document.getElementById('new-log-title').value.trim();
+      const content = document.getElementById('new-log-content').value.trim();
+
+      if (!title || !content) {
+        alert("Title and content required.");
+        return;
+      }
+
+      try {
+        await addDoc(collection(db, "captainsLog"), {
+          stardate: new Date().toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' }),
+          title: title,
+          content: content,
+          timestamp: serverTimestamp(),
+          order: Date.now()
+        });
+        alert("✅ Log entry saved!");
+        bootstrap.Modal.getInstance(document.getElementById('addLogModal')).hide();
+        loadCaptainsLog();
+      } catch (err) {
+        alert("Error: " + err.message);
+      }
+    }
+
+    // Show login modal on load
     document.addEventListener('DOMContentLoaded', () => {
-      const modal = new bootstrap.Modal(document.getElementById('loginModal'));
-      modal.show();
+      new bootstrap.Modal(document.getElementById('loginModal')).show();
     });
   </script>
 </body>
