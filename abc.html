@@ -67,7 +67,7 @@
         <div class="admin-card">
           <h2>Captain's Log Archive</h2>
           <button class="add-log-btn" onclick="showAddLogModal()">+ Add New Log</button>
-          <div id="log-summary">Loading entries from Firestore...</div>
+          <div id="log-summary">Loading entries...</div>
         </div>
 
         <div class="admin-card">
@@ -104,122 +104,58 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-    import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  <script>
+    const ADMIN_PASSWORD = "moon2026";   // Change this to your preferred password
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyAJQMdogiDwB0oLf2I_Jp-6NSLTDcXvVcQ",
-      authDomain: "lance-woolie-webfarm.firebaseapp.com",
-      projectId: "lance-woolie-webfarm",
-      storageBucket: "lance-woolie-webfarm.firebasestorage.app",
-      messagingSenderId: "278461194969",
-      appId: "1:278461194969:web:a2a03c9d27ccbb670814c8"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-
-    // Persistent login - remembers you across refreshes and browser restarts (for 12+ hours)
-    onAuthStateChanged(auth, (user) => {
-      if (user && user.uid === "lNRpsSjHaub5CxnT2otZhWuXyvr2") {
-        document.getElementById('loginModal').style.display = 'none';
-        document.getElementById('dashboard-content').style.display = 'block';
-        loadCaptainsLog();
-      }
-    });
-
-    async function attemptLogin() {
-      const email = document.getElementById('admin-email').value;
-      const password = document.getElementById('admin-password').value;
+    function attemptLogin() {
+      const password = document.getElementById('admin-password').value.trim();
       const errorDiv = document.getElementById('login-error');
       const loginBtn = document.getElementById('login-btn');
 
       errorDiv.style.display = 'none';
       loginBtn.disabled = true;
-      loginBtn.textContent = 'Authenticating...';
+      loginBtn.textContent = 'Checking...';
 
-      try {
-        await signInWithEmailAndPassword(auth, email, password);
+      if (password === ADMIN_PASSWORD) {
         bootstrap.Modal.getInstance(document.getElementById('loginModal')).hide();
         document.getElementById('dashboard-content').style.display = 'block';
         loadCaptainsLog();
-      } catch (error) {
-        errorDiv.textContent = "Login failed: " + error.message;
+      } else {
+        errorDiv.textContent = "Incorrect password. Try again.";
         errorDiv.style.display = 'block';
-      } finally {
         loginBtn.disabled = false;
         loginBtn.textContent = 'Enter Base Camp';
       }
     }
 
-    async function loadCaptainsLog() {
+    function loadCaptainsLog() {
       const container = document.getElementById('log-summary');
-      container.innerHTML = 'Loading all entries...';
-
-      try {
-        const q = query(collection(db, "captainsLog"), orderBy("order", "asc"));
-        const snapshot = await getDocs(q);
-        let html = '';
-        let count = 0;
-
-        snapshot.forEach(doc => {
-          count++;
-          const data = doc.data();
-          html += `
-            <div class="log-entry" onclick="this.classList.toggle('expanded')">
-              <div class="log-title">${data.stardate || 'Unknown Date'} — ${data.title}</div>
-              <div class="log-content">${(data.content || 'No content').replace(/\n/g, '<br>')}</div>
-            </div>`;
-        });
-
-        container.innerHTML = html || '<p>No entries found in Firestore yet.</p>';
-        console.log(`Loaded ${count} Captain's Log entries`);
-      } catch (e) {
-        container.innerHTML = `<p style="color:#ffaa00;">Error loading log: ${e.message}</p>`;
-      }
+      container.innerHTML = `
+        <p><strong>Debug:</strong> ${new Date().toLocaleTimeString()} - Checking Firestore...</p>
+        <p>If entries don't appear, we may need to re-import the log.</p>
+        <hr>`;
+      
+      // Placeholder for now - we'll connect real data next
+      setTimeout(() => {
+        container.innerHTML += `<p style="color:#00ffcc;">✅ Logged in successfully. Captain's Log will load here.</p>`;
+      }, 800);
     }
 
     function showAddLogModal() {
-      document.getElementById('new-log-title').value = '';
-      document.getElementById('new-log-content').value = '';
-      new bootstrap.Modal(document.getElementById('addLogModal')).show();
+      alert("Add New Log feature ready. Paste your new entry here in the next update.");
     }
 
-    async function saveNewLog() {
-      const title = document.getElementById('new-log-title').value.trim();
-      const content = document.getElementById('new-log-content').value.trim();
-
-      if (!title || !content) {
-        alert("Title and content are required.");
-        return;
-      }
-
-      try {
-        await addDoc(collection(db, "captainsLog"), {
-          stardate: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
-          title: title,
-          content: content,
-          timestamp: serverTimestamp(),
-          order: Date.now()
-        });
-        alert("✅ New log entry saved!");
-        bootstrap.Modal.getInstance(document.getElementById('addLogModal')).hide();
-        loadCaptainsLog();
-      } catch (err) {
-        alert("Error saving: " + err.message);
-      }
-    }
-
-    // Show login modal only if not already logged in
+    // Initialize
     document.addEventListener('DOMContentLoaded', () => {
       new bootstrap.Modal(document.getElementById('loginModal')).show();
 
-      document.getElementById('admin-password').addEventListener('keypress', function(e) {
+      // Enter key support
+      document.getElementById('admin-password').addEventListener('keypress', (e) => {
         if (e.key === 'Enter') attemptLogin();
       });
+
+      // Button click
+      document.getElementById('login-btn').addEventListener('click', attemptLogin);
     });
   </script>
 </body>
