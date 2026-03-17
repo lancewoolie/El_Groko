@@ -3,115 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Captain's Log Importer</title>
-  <link href="https://fonts.googleapis.com/css2?family=Georgia&display=swap" rel="stylesheet">
+  <title>Button Test</title>
   <style>
-    body {
-      background: #0a0f1f;
-      color: #00ffcc;
-      font-family: 'Georgia', serif;
-      margin: 0;
-      padding: 40px;
-      line-height: 1.6;
-    }
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      background: rgba(10, 20, 50, 0.9);
-      padding: 40px;
-      border: 3px solid #00ffcc;
-      border-radius: 15px;
-      box-shadow: 0 0 60px rgba(0, 255, 204, 0.4);
-    }
-    h1 { color: #ff00aa; text-align: center; }
-    textarea {
-      width: 100%;
-      height: 500px;
-      background: #0a1a3a;
-      color: #e0e0e0;
-      border: 2px solid #00ffcc;
-      padding: 15px;
-      font-family: monospace;
-      font-size: 15px;
-    }
-    button {
-      margin-top: 20px;
-      padding: 15px 40px;
-      font-size: 1.2rem;
-      background: #ff00aa;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      width: 100%;
-    }
-    button:hover { background: #00ffcc; color: #000; }
-    #status {
-      margin-top: 20px;
-      padding: 15px;
-      border-radius: 8px;
-      min-height: 120px;
-      white-space: pre-wrap;
-      background: #000;
-    }
-    .success { color: #00ffcc; }
-    .error { color: #ff3366; }
+    body { background: #0a0f1f; color: #00ffcc; font-family: Georgia, serif; padding: 40px; }
+    .container { max-width: 800px; margin: 0 auto; background: rgba(10,20,50,0.9); padding: 40px; border: 3px solid #00ffcc; border-radius: 15px; }
+    button { padding: 20px 40px; font-size: 1.5rem; background: #ff00aa; color: white; border: none; border-radius: 10px; cursor: pointer; }
+    button:hover { background: #00ffcc; color: black; }
+    #status { margin-top: 30px; padding: 20px; background: #000; min-height: 100px; }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>🚀 Captain's Log Importer</h1>
-    <p>Paste the full log below and click the button.</p>
-
-    <textarea id="logInput" placeholder="Paste entire captains_log.txt content here..."></textarea>
+    <h1>Button Test Page</h1>
+    <p>Click the button below. If you see "Button clicked!" then the button works.</p>
     
-    <button onclick="startMigration()">MIGRATE TO FIRESTORE NOW</button>
+    <button onclick="testButton()">TEST BUTTON - CLICK ME</button>
 
-    <div id="status">Click the button to begin...</div>
+    <div id="status">Waiting for button click...</div>
   </div>
 
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-
   <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyAJQMdogiDwB0oLf2I_Jp-6NSLTDcXvVcQ",
-      authDomain: "lance-woolie-webfarm.firebaseapp.com",
-      projectId: "lance-woolie-webfarm",
-      storageBucket: "lance-woolie-webfarm.firebasestorage.app",
-      messagingSenderId: "278461194969",
-      appId: "1:278461194969:web:a2a03c9d27ccbb670814c8"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-
-    async function startMigration() {
-      const statusEl = document.getElementById('status');
-      const logText = document.getElementById('logInput').value.trim();
-
-      if (!logText) {
-        statusEl.innerHTML = '<span class="error">❌ Please paste the log text first.</span>';
-        return;
-      }
-
-      statusEl.innerHTML = '<span class="success">🚀 Starting migration... Please wait.</span><br>';
-
-      const entries = logText.split(/March \d{1,2}, 2026 – /).filter(e => e.trim().length > 0);
-
-      for (let i = 0; i < entries.length; i++) {
-        const entry = entries[i].trim();
-        const titleMatch = entry.match(/^(.*?)\n/);
-        const title = titleMatch ? titleMatch[1].trim() : `Log Entry ${i + 1}`;
-
-        try {
-          await db.collection("captainsLog").add({
-            stardate: "March 11, 2026",
-            title: title,
-            content: "March 11, 2026 – " + entry,
-            timestamp: new Date(),
-            order: i
-          });
-          statusEl.innerHTML += `<span class="success">✅ Imported: ${title}</span><br>`;
-        } catch (err) {
-          statusEl.innerHTML += `<span class="error">❌ Failed ${title}: ${err.message
+    function testButton() {
+      document.getElementById('status').innerHTML = '<span style="color:#00ffcc">✅ Button clicked successfully!<br><br>If you see this, the button works.<br>The problem is with Firebase loading.</span>';
+      console.log("Button clicked - JavaScript is working");
+    }
+  </script>
+</body>
+</html>
