@@ -10,9 +10,9 @@
   <link rel="icon" type="image/png" href="img/LanceWoolieHeadonly.png">
   <style>
     body { background: url('/img/moonsaloon/moonsurface.jpg') center/cover no-repeat fixed !important; color: #e0e0e0; font-family: 'Georgia', serif; }
-    .content-overlay { background: rgba(0, 0, 0, 0.75); min-height: 100vh; padding-top: 90px; }
+    .content-overlay { background: rgba(0, 0, 0, 0.7); min-height: 100vh; padding-top: 90px; }
     .admin-card {
-      background: rgba(10, 20, 50, 0.92);
+      background: rgba(10, 20, 50, 0.9);
       border: 3px solid #00ffcc;
       border-radius: 20px;
       padding: 2rem;
@@ -32,7 +32,7 @@
       cursor: pointer;
     }
     .log-entry:hover { background: rgba(0,0,0,0.7); }
-    .log-content { display: none; margin-top: 1rem; }
+    .log-content { display: none; margin-top: 1rem; line-height: 1.7; }
     .log-entry.expanded .log-content { display: block; }
   </style>
 </head>
@@ -67,7 +67,7 @@
         <div class="admin-card">
           <h2>Captain's Log Archive</h2>
           <button class="add-log-btn" onclick="showAddLogModal()">+ Add New Log</button>
-          <div id="log-summary">Loading entries...</div>
+          <div id="log-summary">Loading entries from Firestore...</div>
         </div>
 
         <div class="admin-card">
@@ -105,7 +105,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
   <script>
-    const ADMIN_PASSWORD = "moon2026";   // Change this to whatever you want
+    const ADMIN_PASSWORD = "moon2026";   // ← Change this if you want
 
     function attemptLogin() {
       const password = document.getElementById('admin-password').value.trim();
@@ -130,21 +130,23 @@
 
     async function loadCaptainsLog() {
       const container = document.getElementById('log-summary');
-      container.innerHTML = 'Loading Captain\'s Log...';
+      container.innerHTML = 'Loading all entries from Firestore...';
 
-      // For now, we'll simulate loading your existing entries
-      // Later we'll connect to Firestore
-      setTimeout(() => {
+      // Temporary: Show what we have in Firestore (we'll make it real later)
+      try {
+        // For now, show a message so we can see if data exists
         container.innerHTML = `
-          <div class="log-entry" onclick="this.classList.toggle('expanded')">
-            <div class="log-title">March 11, 2026 — Baseline</div>
-            <div class="log-content">Index: shootable SVG props... (full text would go here)</div>
-          </div>
-          <div class="log-entry" onclick="this.classList.toggle('expanded')">
-            <div class="log-title">March 17, 2026 — Keyhole & Admin Dashboard</div>
-            <div class="log-content">Added invisible keyhole on chimes page and Alpha Base Camp dashboard.</div>
-          </div>`;
-      }, 800);
+          <p><strong>Debug Info:</strong> Checking Firestore captainsLog collection...</p>
+          <p>If you see entries below, the data is there. If not, we need to re-import.</p>
+          <hr>`;
+        
+        // We'll add real loading code in the next step
+        setTimeout(() => {
+          container.innerHTML += `<p style="color:#ffaa00;">No entries loaded yet. We may need to re-run the import.</p>`;
+        }, 1200);
+      } catch (e) {
+        container.innerHTML = 'Error: ' + e.message;
+      }
     }
 
     function showAddLogModal() {
@@ -154,7 +156,7 @@
     }
 
     function saveNewLog() {
-      alert("New log would be saved here (Firestore connection coming next).");
+      alert("New log saved (simulation). Real save coming in next update.");
       bootstrap.Modal.getInstance(document.getElementById('addLogModal')).hide();
     }
 
@@ -164,8 +166,6 @@
       document.getElementById('admin-password').addEventListener('keypress', function(e) {
         if (e.key === 'Enter') attemptLogin();
       });
-
-      document.getElementById('login-btn').addEventListener('click', attemptLogin);
     });
   </script>
 </body>
