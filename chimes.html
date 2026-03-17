@@ -137,16 +137,22 @@
       text-shadow: 0 0 25px #000;
     }
 
-    /* INVISIBLE KEYHOLE - Bottom Left */
+    /* VISIBLE BUT DISCREET KEYHOLE - Bottom Left */
     #secret-keyhole {
       position: absolute;
-      bottom: 40px;
+      bottom: 35px;
       left: 40px;
-      width: 80px;
-      height: 80px;
+      font-size: 28px;
+      color: #111;
+      font-weight: bold;
       z-index: 100;
       cursor: pointer;
-      opacity: 0.02; /* almost invisible */
+      user-select: none;
+      text-shadow: 0 0 8px rgba(0,0,0,0.8);
+      transition: color 0.2s;
+    }
+    #secret-keyhole:hover {
+      color: #333;
     }
   </style>
 </head>
@@ -189,8 +195,8 @@
         <small>lance680518</small>
       </div>
 
-      <!-- INVISIBLE KEYHOLE - Bottom Left -->
-      <div id="secret-keyhole" title="Admin Access"></div>
+      <!-- VISIBLE KEYHOLE - Bottom Left -->
+      <div id="secret-keyhole">**</div>
     </div>
   </div>
 
@@ -237,7 +243,6 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      // Populate chimes
       const grid = document.getElementById('chimes-grid');
       chimes.forEach(chime => grid.appendChild(createChimeButton(chime)));
 
@@ -287,7 +292,7 @@
         reverseVideo.onended = () => window.location.href = 'index.html';
       });
 
-      // INVISIBLE KEYHOLE - Bottom Left → Go to Alpha Base Camp
+      // KEYHOLE CLICK → Alpha Base Camp
       document.getElementById('secret-keyhole').addEventListener('click', () => {
         window.location.href = 'abc.html';
       });
