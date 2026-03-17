@@ -15,23 +15,21 @@
       font-family: 'Georgia', serif;
     }
     .content-overlay {
-      background: rgba(0, 0, 0, 0.65);
+      background: rgba(0, 0, 0, 0.7);
       min-height: 100vh;
       padding-top: 90px;
     }
     .admin-card {
-      background: rgba(10, 20, 50, 0.88);
+      background: rgba(10, 20, 50, 0.9);
       border: 3px solid #00ffcc;
       border-radius: 20px;
       padding: 2rem;
       margin-bottom: 2rem;
-      box-shadow: 0 0 50px rgba(0, 255, 204, 0.7),
-                  inset 0 0 40px rgba(255, 0, 170, 0.4);
+      box-shadow: 0 0 50px rgba(0, 255, 204, 0.7);
     }
     .admin-card h2 {
       color: #00ffcc;
       text-shadow: 0 0 25px #00ffcc;
-      margin-bottom: 1.5rem;
     }
     .log-entry {
       background: rgba(0, 0, 0, 0.5);
@@ -40,34 +38,10 @@
       margin-bottom: 1rem;
       border-radius: 0 8px 8px 0;
       cursor: pointer;
-      transition: all 0.3s ease;
     }
-    .log-entry:hover {
-      background: rgba(0, 0, 0, 0.7);
-      transform: translateX(8px);
-    }
-    .log-title {
-      color: #00ffcc;
-      font-weight: bold;
-      margin-bottom: 0.5rem;
-    }
-    .log-content {
-      display: none;
-      margin-top: 1rem;
-      line-height: 1.7;
-      color: #ddd;
-    }
-    .log-entry.expanded .log-content {
-      display: block;
-    }
-    .expand-icon {
-      float: right;
-      font-size: 1.4rem;
-      transition: transform 0.3s;
-    }
-    .log-entry.expanded .expand-icon {
-      transform: rotate(180deg);
-    }
+    .log-entry:hover { background: rgba(0,0,0,0.7); }
+    .log-content { display: none; margin-top: 1rem; }
+    .log-entry.expanded .log-content { display: block; }
   </style>
 </head>
 <body>
@@ -77,21 +51,45 @@
     <div class="container py-5">
       <h1 class="text-center mb-5" style="color:#ff00aa; text-shadow: 0 0 40px #ff00aa;">ALPHA BASE CAMP</h1>
 
-      <!-- Recent Captain's Log -->
-      <div class="admin-card">
-        <h2>Captain's Log Archive</h2>
-        <div id="log-summary">Loading entries from Firestore...</div>
+      <!-- Login Modal -->
+      <div class="modal fade" id="loginModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content bg-dark text-light" style="border: 3px solid #00ffcc;">
+            <div class="modal-header border-0">
+              <h5 class="modal-title">Alpha Base Camp Access</h5>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+              <input type="email" id="admin-email" class="form-control mb-3" placeholder="Admin Email" value="lancewoolie@gmail.com">
+              <input type="password" id="admin-password" class="form-control" placeholder="Password">
+            </div>
+            <div class="modal-footer border-0">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="button" class="btn btn-success" onclick="attemptLogin()">Enter Base Camp</button>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <!-- Placeholder Sections -->
-      <div class="admin-card">
-        <h2>Visitor Demographics & Stats</h2>
-        <div id="stats-placeholder">Tracking data will appear here once enabled.</div>
-      </div>
+      <!-- Main Dashboard Content (hidden until login) -->
+      <div id="dashboard-content" style="display: none;">
+        <!-- Captain's Log -->
+        <div class="admin-card">
+          <h2>Captain's Log Archive</h2>
+          <div id="log-summary">Loading entries...</div>
+        </div>
 
-      <div class="admin-card">
-        <h2>Recent Firebase Activity</h2>
-        <div id="activity-placeholder">Subscribers and messages will appear here.</div>
+        <!-- Firebase Activity -->
+        <div class="admin-card">
+          <h2>Recent Firebase Activity</h2>
+          <div id="activity-placeholder">Loading subscribers and messages...</div>
+        </div>
+
+        <!-- Demographics / Stats -->
+        <div class="admin-card">
+          <h2>Visitor Demographics</h2>
+          <div id="stats-placeholder">Demographics data will appear here once tracking is active.</div>
+        </div>
       </div>
     </div>
   </div>
@@ -100,7 +98,7 @@
   <script src="script.js"></script>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAJQMdogiDwB0oLf2I_Jp-6NSLTDcXvVcQ",
@@ -114,37 +112,51 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
+    // Simple hardcoded password for now (we can improve later)
+    const ADMIN_PASSWORD = "moon2026";   // ← Change this to whatever you want
+
+    function attemptLogin() {
+      const password = document.getElementById('admin-password').value.trim();
+      if (password === ADMIN_PASSWORD) {
+        document.getElementById('loginModal').querySelector('.btn-close').click(); // close modal
+        document.getElementById('dashboard-content').style.display = 'block';
+        loadCaptainsLog();
+        loadActivity();
+      } else {
+        alert("Access Denied — Incorrect Password");
+      }
+    }
+
     async function loadCaptainsLog() {
       const container = document.getElementById('log-summary');
-      container.innerHTML = 'Loading Captain\'s Log...';
-
       try {
         const q = query(collection(db, "captainsLog"), orderBy("order", "asc"));
         const snapshot = await getDocs(q);
-
         let html = '';
-
         snapshot.forEach(doc => {
           const data = doc.data();
           html += `
             <div class="log-entry" onclick="this.classList.toggle('expanded')">
-              <div class="log-title">
-                ${data.stardate} — ${data.title}
-                <span class="expand-icon">▼</span>
-              </div>
-              <div class="log-content">
-                ${data.content.replace(/\n/g, '<br>')}
-              </div>
+              <div class="log-title">${data.stardate} — ${data.title}</div>
+              <div class="log-content">${data.content.replace(/\n/g, '<br>')}</div>
             </div>`;
         });
-
-        container.innerHTML = html || '<p>No entries found yet.</p>';
+        container.innerHTML = html || 'No entries found.';
       } catch (e) {
-        container.innerHTML = `<p style="color:#ff3366;">Error loading log: ${e.message}</p>`;
+        container.innerHTML = 'Error loading log.';
       }
     }
 
-    document.addEventListener('DOMContentLoaded', loadCaptainsLog);
+    function loadActivity() {
+      document.getElementById('activity-placeholder').innerHTML = 
+        'Recent subscribers and contact messages will appear here.<br><small>(Feature coming next)</small>';
+    }
+
+    // Show login modal when page loads
+    document.addEventListener('DOMContentLoaded', () => {
+      const modal = new bootstrap.Modal(document.getElementById('loginModal'));
+      modal.show();
+    });
   </script>
 </body>
 </html>
