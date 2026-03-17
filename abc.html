@@ -51,7 +51,7 @@
               <h5 class="modal-title">🔒 Alpha Base Camp Security Checkpoint</h5>
             </div>
             <div class="modal-body">
-              <input type="email" id="admin-email" class="form-control mb-3" value="lancewoolie@gmail.com" readonly>
+              <input type="email" id="admin-email" class="form-control mb-3" placeholder="lancewoolie@gmail.com">
               <input type="password" id="admin-password" class="form-control" placeholder="Password">
               <div id="login-error" class="text-danger mt-2" style="display:none;"></div>
             </div>
@@ -62,7 +62,7 @@
         </div>
       </div>
 
-      <!-- Dashboard -->
+      <!-- Dashboard Content -->
       <div id="dashboard-content" style="display: none;">
         <div class="admin-card">
           <h2>Captain's Log Archive</h2>
@@ -105,9 +105,10 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
   <script>
-    const ADMIN_PASSWORD = "moon2026";   // Change this to your preferred password
+    const ADMIN_PASSWORD = "moon2026";   // ← Change this to your preferred password
 
     function attemptLogin() {
+      const email = document.getElementById('admin-email').value.trim();
       const password = document.getElementById('admin-password').value.trim();
       const errorDiv = document.getElementById('login-error');
       const loginBtn = document.getElementById('login-btn');
@@ -117,11 +118,13 @@
       loginBtn.textContent = 'Checking...';
 
       if (password === ADMIN_PASSWORD) {
+        // Save login state
+        localStorage.setItem('alphaBaseCampLoggedIn', 'true');
         bootstrap.Modal.getInstance(document.getElementById('loginModal')).hide();
         document.getElementById('dashboard-content').style.display = 'block';
         loadCaptainsLog();
       } else {
-        errorDiv.textContent = "Incorrect password. Try again.";
+        errorDiv.textContent = "Incorrect password.";
         errorDiv.style.display = 'block';
         loginBtn.disabled = false;
         loginBtn.textContent = 'Enter Base Camp';
@@ -130,31 +133,35 @@
 
     function loadCaptainsLog() {
       const container = document.getElementById('log-summary');
-      container.innerHTML = `
-        <p><strong>Debug:</strong> ${new Date().toLocaleTimeString()} - Checking Firestore...</p>
-        <p>If entries don't appear, we may need to re-import the log.</p>
-        <hr>`;
-      
-      // Placeholder for now - we'll connect real data next
+      container.innerHTML = 'Loading Captain\'s Log entries...';
+
+      // For now using placeholder - we'll connect real Firestore soon
       setTimeout(() => {
-        container.innerHTML += `<p style="color:#00ffcc;">✅ Logged in successfully. Captain's Log will load here.</p>`;
+        container.innerHTML = `
+          <p style="color:#00ffcc;">✅ Logged in successfully.</p>
+          <p>Your Captain's Log entries will appear here.</p>
+          <p>If entries are missing, we can re-import them in the next step.</p>`;
       }, 800);
     }
 
     function showAddLogModal() {
-      alert("Add New Log feature ready. Paste your new entry here in the next update.");
+      alert("Add New Log feature is ready.\n\nWe'll connect it to Firestore in the next update.");
     }
 
-    // Initialize
+    // Check if already logged in (remembers you for the session)
     document.addEventListener('DOMContentLoaded', () => {
-      new bootstrap.Modal(document.getElementById('loginModal')).show();
+      if (localStorage.getItem('alphaBaseCampLoggedIn') === 'true') {
+        document.getElementById('dashboard-content').style.display = 'block';
+        loadCaptainsLog();
+      } else {
+        new bootstrap.Modal(document.getElementById('loginModal')).show();
+      }
 
       // Enter key support
       document.getElementById('admin-password').addEventListener('keypress', (e) => {
         if (e.key === 'Enter') attemptLogin();
       });
 
-      // Button click
       document.getElementById('login-btn').addEventListener('click', attemptLogin);
     });
   </script>
