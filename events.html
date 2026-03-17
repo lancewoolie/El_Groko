@@ -93,11 +93,12 @@
       </div>
     </div>
   </div>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
   <script>
     const eventsData = [
-      { date: '03/20/2026', eventName: "Lance Woolie Live", venue: 'Big J's Side Porch', fullVenue: '', city: 'Clinton, LA', time: '6pm', description: "Lance & JJ live at Big Js", tickets: 'https://www.facebook.com/events/1615279446373852', imageSrc: 'img/March20th2026WEB.jpg', imageLink: 'https://www.facebook.com/events/1615279446373852', isUpcoming: true },
+      { date: '03/20/2026', eventName: "Lance Woolie Live", venue: 'Big J's Side Porch', fullVenue: '', city: 'Clinton, LA', time: '6pm', description: "Lance & JJ live at Big Js", tickets: 'https://www.facebook.com/events/1615279446373852', imageSrc: 'img/March20th2026WEB.jpg', imageLink: 'https://www.facebook.com/events/1615279446373852', isUpcoming: true }
       { date: '09/13/2025', eventName: 'Court To Table Baton Rouge Presents Lance Woolie w/ Shane Reid', venue: '7477 Burbank Dr', fullVenue: '7477 Burbank Dr', city: 'Baton Rouge, LA 70820', time: '11:00 PM', description: 'A night of music and mingling with special guest Shane Reid.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/Setp13.jpg', imageLink: 'https://www.facebook.com/lancewooliemusic/events', isUpcoming: true },
       { date: '09/05/2025', eventName: 'Court To Table Baton Rouge Presents Lance Woolie w/ Earl Wheeler III', venue: '7477 Burbank Dr', fullVenue: '7477 Burbank Dr', city: 'Baton Rouge, LA 70820', time: '11:00 PM', description: 'Court to Table series featuring Earl Wheeler III.', tickets: 'https://www.facebook.com/events/2788495294681182', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/Sept5th.jpg', imageLink: 'https://www.facebook.com/events/2788495294681182', isUpcoming: true },
       { date: '06/21/2025', eventName: 'Art Night HOEDOWN', venue: '456 N Donmoor Ave', fullVenue: '456 N Donmoor Ave', city: 'Baton Rouge, LA 70806', time: '11:00 PM', description: 'Hoedown at Art Night with live performances.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/hoe down.jpg', imageLink: 'https://www.facebook.com/lancewooliemusic/events', isUpcoming: false },
@@ -125,24 +126,25 @@
       { date: '07/07/2024', eventName: 'Jim\'s Bar Presents Lance Woolie', venue: '7913 Park St', fullVenue: '7913 Park St', city: 'Ventress, LA 70783', time: '08:00 PM', description: 'Another night at Jim\'s.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/JimsBarPresents.jpg', imageLink: 'https://www.facebook.com/lancewooliemusic/events', isUpcoming: false },
       { date: '07/04/2024', eventName: 'Too Drunk release', venue: '', fullVenue: '', city: '', time: '12:00 AM', description: 'Release party for Too Drunk single.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/TooDrunkmenu.jpg', imageLink: 'https://www.facebook.com/lancewooliemusic/events', isUpcoming: false }
     ];
+
     const currentDate = new Date();
+
     function generateUpcomingCard(event) {
       return `
         <div class="col-md-6 col-lg-4 mb-4">
           <div class="card h-100">
-            <a href="${event.imageLink || event.tickets}" target="_blank">
-              <img src="${event.imageSrc}" class="card-img-top" alt="${event.eventName}">
-            </a>
+            <img src="${event.imageSrc}" class="card-img-top" alt="${event.eventName}">
             <div class="card-body">
               <h5 class="card-title">${event.eventName}</h5>
               <p class="card-text">${event.description}</p>
               <p class="card-text"><small class="text-muted">${event.date} - ${event.time} @ ${event.fullVenue || event.venue || event.city || 'Various'}</small></p>
-              ${event.tickets ? `<a href="${event.tickets}" class="btn btn-success w-100 mt-2" target="_blank">Tickets / More Info</a>` : '<small class="text-muted">Tickets TBA</small>'}
+              ${event.tickets ? `<a href="${event.tickets}" class="btn btn-success w-100 mt-2" target="_blank">Tickets</a>` : '<small class="text-muted">Tickets TBA</small>'}
             </div>
           </div>
         </div>
       `;
     }
+
     function generatePastCard(event) {
       return `
         <div class="col-md-6 col-lg-4 mb-4">
@@ -158,31 +160,38 @@
         </div>
       `;
     }
+
     document.addEventListener('DOMContentLoaded', () => {
       const sortedEvents = eventsData.sort((a, b) => new Date(b.date) - new Date(a.date));
       const upcomingEvents = sortedEvents.filter(e => new Date(e.date) > currentDate);
       const pastEvents = sortedEvents.filter(e => new Date(e.date) <= currentDate);
-      document.getElementById('upcoming-list').innerHTML = upcomingEvents.length
-        ? upcomingEvents.map(generateUpcomingCard).join('')
+
+      document.getElementById('upcoming-list').innerHTML = upcomingEvents.length 
+        ? upcomingEvents.map(generateUpcomingCard).join('') 
         : '<p class="text-center lead mt-5">No upcoming events scheduled right now. Check back soon!</p>';
-      document.getElementById('past-list').innerHTML = pastEvents.length
-        ? pastEvents.map(generatePastCard).join('')
+
+      document.getElementById('past-list').innerHTML = pastEvents.length 
+        ? pastEvents.map(generatePastCard).join('') 
         : '<p class="text-center lead mt-5">No past events to display yet.</p>';
+
       // Reverse transition back to home
       document.getElementById('saloon-doors-back').addEventListener('click', e => {
         e.preventDefault();
         const overlay = document.getElementById('transition-overlay');
         const reverseVideo = document.getElementById('reverse-video');
         const forwardVideo = document.getElementById('forward-video');
+
         forwardVideo.style.display = 'none';
         reverseVideo.style.display = 'block';
         reverseVideo.src = '/video/events-video-reverse.mp4';
         reverseVideo.currentTime = 0;
         reverseVideo.volume = 0.5;
         overlay.style.display = 'block';
+
         reverseVideo.play().catch(() => {
           window.location.href = 'index.html';
         });
+
         reverseVideo.onended = () => {
           window.location.href = 'index.html';
         };
