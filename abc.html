@@ -10,9 +10,9 @@
   <link rel="icon" type="image/png" href="img/LanceWoolieHeadonly.png">
   <style>
     body { background: url('/img/moonsaloon/moonsurface.jpg') center/cover no-repeat fixed !important; color: #e0e0e0; font-family: 'Georgia', serif; }
-    .content-overlay { background: rgba(0, 0, 0, 0.7); min-height: 100vh; padding-top: 90px; }
+    .content-overlay { background: rgba(0, 0, 0, 0.75); min-height: 100vh; padding-top: 90px; }
     .admin-card {
-      background: rgba(10, 20, 50, 0.9);
+      background: rgba(10, 20, 50, 0.92);
       border: 3px solid #00ffcc;
       border-radius: 20px;
       padding: 2rem;
@@ -52,7 +52,7 @@
             </div>
             <div class="modal-body">
               <input type="email" id="admin-email" class="form-control mb-3" value="lancewoolie@gmail.com" readonly>
-              <input type="password" id="admin-password" class="form-control" placeholder="Password" autocomplete="current-password">
+              <input type="password" id="admin-password" class="form-control" placeholder="Password">
               <div id="login-error" class="text-danger mt-2" style="display:none;"></div>
             </div>
             <div class="modal-footer border-0">
@@ -62,7 +62,7 @@
         </div>
       </div>
 
-      <!-- Dashboard Content -->
+      <!-- Dashboard -->
       <div id="dashboard-content" style="display: none;">
         <div class="admin-card">
           <h2>Captain's Log Archive</h2>
@@ -104,57 +104,25 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-    import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  <script>
+    const ADMIN_PASSWORD = "moon2026";   // Change this to whatever you want
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyAJQMdogiDwB0oLf2I_Jp-6NSLTDcXvVcQ",
-      authDomain: "lance-woolie-webfarm.firebaseapp.com",
-      projectId: "lance-woolie-webfarm",
-      storageBucket: "lance-woolie-webfarm.firebasestorage.app",
-      messagingSenderId: "278461194969",
-      appId: "1:278461194969:web:a2a03c9d27ccbb670814c8"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-
-    // Auto-check if already logged in
-    onAuthStateChanged(auth, (user) => {
-      if (user && user.uid === "lNRpsSjHaub5CxnT2otZhWuXyvr2") {
-        document.getElementById('loginModal').style.display = 'none';
-        document.getElementById('dashboard-content').style.display = 'block';
-        loadCaptainsLog();
-      }
-    });
-
-    async function attemptLogin() {
-      const email = document.getElementById('admin-email').value;
-      const password = document.getElementById('admin-password').value;
+    function attemptLogin() {
+      const password = document.getElementById('admin-password').value.trim();
       const errorDiv = document.getElementById('login-error');
       const loginBtn = document.getElementById('login-btn');
 
       errorDiv.style.display = 'none';
       loginBtn.disabled = true;
-      loginBtn.textContent = 'Authenticating...';
+      loginBtn.textContent = 'Checking...';
 
-      try {
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
-        if (userCredential.user.uid === "lNRpsSjHaub5CxnT2otZhWuXyvr2") {
-          bootstrap.Modal.getInstance(document.getElementById('loginModal')).hide();
-          document.getElementById('dashboard-content').style.display = 'block';
-          loadCaptainsLog();
-        } else {
-          errorDiv.textContent = "Access Denied - Not authorized admin.";
-          errorDiv.style.display = 'block';
-        }
-      } catch (error) {
-        errorDiv.textContent = "Login failed: " + error.message;
+      if (password === ADMIN_PASSWORD) {
+        bootstrap.Modal.getInstance(document.getElementById('loginModal')).hide();
+        document.getElementById('dashboard-content').style.display = 'block';
+        loadCaptainsLog();
+      } else {
+        errorDiv.textContent = "Incorrect password.";
         errorDiv.style.display = 'block';
-      } finally {
         loginBtn.disabled = false;
         loginBtn.textContent = 'Enter Base Camp';
       }
@@ -164,22 +132,19 @@
       const container = document.getElementById('log-summary');
       container.innerHTML = 'Loading Captain\'s Log...';
 
-      try {
-        const q = query(collection(db, "captainsLog"), orderBy("order", "asc"));
-        const snapshot = await getDocs(q);
-        let html = '';
-        snapshot.forEach(doc => {
-          const data = doc.data();
-          html += `
-            <div class="log-entry" onclick="this.classList.toggle('expanded')">
-              <div class="log-title">${data.stardate} — ${data.title}</div>
-              <div class="log-content">${data.content.replace(/\n/g, '<br>')}</div>
-            </div>`;
-        });
-        container.innerHTML = html || 'No entries found.';
-      } catch (e) {
-        container.innerHTML = 'Error loading log.';
-      }
+      // For now, we'll simulate loading your existing entries
+      // Later we'll connect to Firestore
+      setTimeout(() => {
+        container.innerHTML = `
+          <div class="log-entry" onclick="this.classList.toggle('expanded')">
+            <div class="log-title">March 11, 2026 — Baseline</div>
+            <div class="log-content">Index: shootable SVG props... (full text would go here)</div>
+          </div>
+          <div class="log-entry" onclick="this.classList.toggle('expanded')">
+            <div class="log-title">March 17, 2026 — Keyhole & Admin Dashboard</div>
+            <div class="log-content">Added invisible keyhole on chimes page and Alpha Base Camp dashboard.</div>
+          </div>`;
+      }, 800);
     }
 
     function showAddLogModal() {
@@ -188,38 +153,19 @@
       new bootstrap.Modal(document.getElementById('addLogModal')).show();
     }
 
-    async function saveNewLog() {
-      const title = document.getElementById('new-log-title').value.trim();
-      const content = document.getElementById('new-log-content').value.trim();
-
-      if (!title || !content) {
-        alert("Title and content are required.");
-        return;
-      }
-
-      try {
-        await addDoc(collection(db, "captainsLog"), {
-          stardate: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
-          title: title,
-          content: content,
-          timestamp: serverTimestamp(),
-          order: Date.now()
-        });
-        alert("✅ New log entry saved successfully!");
-        bootstrap.Modal.getInstance(document.getElementById('addLogModal')).hide();
-        loadCaptainsLog();
-      } catch (err) {
-        alert("Error saving: " + err.message);
-      }
+    function saveNewLog() {
+      alert("New log would be saved here (Firestore connection coming next).");
+      bootstrap.Modal.getInstance(document.getElementById('addLogModal')).hide();
     }
 
-    // Show login modal on load + Enter key support
     document.addEventListener('DOMContentLoaded', () => {
       new bootstrap.Modal(document.getElementById('loginModal')).show();
 
       document.getElementById('admin-password').addEventListener('keypress', function(e) {
         if (e.key === 'Enter') attemptLogin();
       });
+
+      document.getElementById('login-btn').addEventListener('click', attemptLogin);
     });
   </script>
 </body>
