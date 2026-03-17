@@ -90,11 +90,10 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content bg-dark text-light" style="border: 3px solid #00ffcc;">
         <div class="modal-header border-0">
-          <h5 class="modal-title">Add New Grok-Generated Log Entry</h5>
+          <h5 class="modal-title">Add New Grok-Generated Log</h5>
         </div>
         <div class="modal-body">
           <textarea id="new-log-content" class="form-control" rows="16" placeholder="Paste the full Grok-generated Captain's Log here..."></textarea>
-          <small class="text-muted mt-2">Title and date will be added automatically.</small>
         </div>
         <div class="modal-footer border-0">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -107,7 +106,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
   <script>
-    const ADMIN_PASSWORD = "moon2026";   // Change this anytime you want
+    const ADMIN_PASSWORD = "moon2026";
 
     function attemptLogin() {
       const email = document.getElementById('admin-email').value.trim();
@@ -134,7 +133,7 @@
 
     async function loadCaptainsLog() {
       const container = document.getElementById('log-summary');
-      container.innerHTML = 'Loading entries from Firestore...';
+      container.innerHTML = 'Loading entries...';
 
       try {
         const response = await fetch(
@@ -147,6 +146,12 @@
         const documents = data.documents || [];
 
         let html = '';
+        documents.sort((a, b) => {
+          const orderA = a.fields.order ? parseInt(a.fields.order.integerValue) : 0;
+          const orderB = b.fields.order ? parseInt(b.fields.order.integerValue) : 0;
+          return orderB - orderA; // newest first
+        });
+
         documents.forEach(doc => {
           const fields = doc.fields || {};
           const title = fields.title ? fields.title.stringValue : 'Untitled';
@@ -160,9 +165,9 @@
             </div>`;
         });
 
-        container.innerHTML = html || '<p>No entries found in Firestore.</p>';
+        container.innerHTML = html || '<p>No entries found.</p>';
       } catch (e) {
-        container.innerHTML = `<p style="color:#ffaa00;">Could not load entries yet.<br>${e.message}</p>`;
+        container.innerHTML = `<p style="color:#ffaa00;">Could not load entries.<br>${e.message}</p>`;
       }
     }
 
@@ -179,7 +184,7 @@
       });
 
       navigator.clipboard.writeText(text).then(() => {
-        alert("✅ All logs copied to clipboard!\nPaste them here for me to review.");
+        alert("✅ All logs copied! Paste them here for me.");
       });
     }
 
@@ -190,9 +195,8 @@
 
     async function saveNewLog() {
       const content = document.getElementById('new-log-content').value.trim();
-
       if (!content) {
-        alert("Please paste the log entry.");
+        alert("Please paste the log content.");
         return;
       }
 
@@ -214,15 +218,14 @@
           }
         );
 
-        alert("✅ New Grok-generated log saved to Firestore!");
+        alert("✅ New Grok log saved!");
         bootstrap.Modal.getInstance(document.getElementById('addLogModal')).hide();
         loadCaptainsLog();
       } catch (err) {
-        alert("Error saving log: " + err.message);
+        alert("Error: " + err.message);
       }
     }
 
-    // Remember login
     document.addEventListener('DOMContentLoaded', () => {
       if (localStorage.getItem('alphaBaseCampLoggedIn') === 'true') {
         document.getElementById('dashboard-content').style.display = 'block';
