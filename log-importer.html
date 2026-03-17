@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Captain's Log Importer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Georgia&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: #0a0f1f;
+      color: #00ffcc;
+      font-family: 'Georgia', serif;
+      margin: 0;
+      padding: 40px;
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: rgba(10, 20, 50, 0.85);
+      padding: 40px;
+      border: 3px solid #00ffcc;
+      border-radius: 15px;
+      box-shadow: 0 0 60px rgba(0, 255, 204, 0.4);
+    }
+    h1 { color: #ff00aa; text-align: center; }
+    textarea {
+      width: 100%;
+      height: 500px;
+      background: #0a1a3a;
+      color: #e0e0e0;
+      border: 2px solid #00ffcc;
+      padding: 15px;
+      font-family: monospace;
+      font-size: 15px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 15px 40px;
+      font-size: 1.2rem;
+      background: #ff00aa;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover { background: #00ffcc; color: #000; }
+    #status {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 8px;
+      min-height: 100px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🚀 Captain's Log Migrator</h1>
+    <p>Paste the entire current captains_log.txt content below and click Import.</p>
+
+    <textarea id="logInput" placeholder="Paste full log here..."></textarea>
+    
+    <button onclick="startMigration()">MIGRATE TO FIRESTORE</button>
+
+    <div id="status"></div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAJQMdogiDwB0oLf2I_Jp-6NSLTDcXvVcQ",
+      authDomain: "lance-woolie-webfarm.firebaseapp.com",
+      projectId: "lance-woolie-webfarm",
+      storageBucket: "lance-woolie-webfarm.firebasestorage.app",
+      messagingSenderId: "278461194969",
+      appId: "1:278461194969:web:a2a03c9d27ccbb670814c8",
+      measurementId: "G-D734JL7BFR"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function startMigration() {
+      const status = document.getElementById('status');
+      const logText = document.getElementById('logInput').value.trim();
+
+      if (!logText) {
+        status.innerHTML = '<span style="color:red">❌ Please paste the log text first.</span>';
+        return;
+      }
+
+      status.innerHTML = '🚀 Starting migration...<br>';
+
+      const entries = logText.split(/March \d{1,2}, 2026 – /).filter(e => e.trim().length > 0);
+
+      for (let i = 0; i < entries.length; i++) {
+        const entry = entries[i];
+        const titleMatch = entry.match(/^(.*?)\n/);
+        const title = titleMatch ? titleMatch[1].trim() : `Log Entry ${i + 1}`;
+
+        try {
+          await addDoc(collection(db, "captainsLog"), {
+            stardate: "March 11, 2026",
+            title: title,
+            content: "March 11, 2026 – " + entry.trim(),
+            timestamp: serverTimestamp(),
+            order: i
+          });
+          status.innerHTML += `✅ Imported: ${title}<br>`;
+        } catch (err) {
+          status.innerHTML += `❌ Failed ${title}: ${err.message}<br>`;
+        }
+      }
+
+      status.innerHTML += '<br><strong style="color:#00ffcc">Migration complete! Check Firestore → captainsLog collection.</strong>';
+    }
+  </script>
+</body>
+</html>
