@@ -17,7 +17,7 @@
     .container {
       max-width: 900px;
       margin: 0 auto;
-      background: rgba(10, 20, 50, 0.85);
+      background: rgba(10, 20, 50, 0.9);
       padding: 40px;
       border: 3px solid #00ffcc;
       border-radius: 15px;
@@ -43,80 +43,75 @@
       border: none;
       border-radius: 8px;
       cursor: pointer;
+      width: 100%;
     }
     button:hover { background: #00ffcc; color: #000; }
     #status {
       margin-top: 20px;
       padding: 15px;
       border-radius: 8px;
-      min-height: 100px;
+      min-height: 120px;
       white-space: pre-wrap;
+      background: #000;
     }
+    .success { color: #00ffcc; }
+    .error { color: #ff3366; }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>🚀 Captain's Log Migrator</h1>
-    <p>Paste the entire current captains_log.txt content below and click Import.</p>
+    <h1>🚀 Captain's Log Importer</h1>
+    <p>Paste the full log below and click the button.</p>
 
-    <textarea id="logInput" placeholder="Paste full log here..."></textarea>
+    <textarea id="logInput" placeholder="Paste entire captains_log.txt content here..."></textarea>
     
-    <button onclick="startMigration()">MIGRATE TO FIRESTORE</button>
+    <button onclick="startMigration()">MIGRATE TO FIRESTORE NOW</button>
 
-    <div id="status"></div>
+    <div id="status">Click the button to begin...</div>
   </div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
+  <script>
     const firebaseConfig = {
       apiKey: "AIzaSyAJQMdogiDwB0oLf2I_Jp-6NSLTDcXvVcQ",
       authDomain: "lance-woolie-webfarm.firebaseapp.com",
       projectId: "lance-woolie-webfarm",
       storageBucket: "lance-woolie-webfarm.firebasestorage.app",
       messagingSenderId: "278461194969",
-      appId: "1:278461194969:web:a2a03c9d27ccbb670814c8",
-      measurementId: "G-D734JL7BFR"
+      appId: "1:278461194969:web:a2a03c9d27ccbb670814c8"
     };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
     async function startMigration() {
-      const status = document.getElementById('status');
+      const statusEl = document.getElementById('status');
       const logText = document.getElementById('logInput').value.trim();
 
       if (!logText) {
-        status.innerHTML = '<span style="color:red">❌ Please paste the log text first.</span>';
+        statusEl.innerHTML = '<span class="error">❌ Please paste the log text first.</span>';
         return;
       }
 
-      status.innerHTML = '🚀 Starting migration...<br>';
+      statusEl.innerHTML = '<span class="success">🚀 Starting migration... Please wait.</span><br>';
 
       const entries = logText.split(/March \d{1,2}, 2026 – /).filter(e => e.trim().length > 0);
 
       for (let i = 0; i < entries.length; i++) {
-        const entry = entries[i];
+        const entry = entries[i].trim();
         const titleMatch = entry.match(/^(.*?)\n/);
         const title = titleMatch ? titleMatch[1].trim() : `Log Entry ${i + 1}`;
 
         try {
-          await addDoc(collection(db, "captainsLog"), {
+          await db.collection("captainsLog").add({
             stardate: "March 11, 2026",
             title: title,
-            content: "March 11, 2026 – " + entry.trim(),
-            timestamp: serverTimestamp(),
+            content: "March 11, 2026 – " + entry,
+            timestamp: new Date(),
             order: i
           });
-          status.innerHTML += `✅ Imported: ${title}<br>`;
+          statusEl.innerHTML += `<span class="success">✅ Imported: ${title}</span><br>`;
         } catch (err) {
-          status.innerHTML += `❌ Failed ${title}: ${err.message}<br>`;
-        }
-      }
-
-      status.innerHTML += '<br><strong style="color:#00ffcc">Migration complete! Check Firestore → captainsLog collection.</strong>';
-    }
-  </script>
-</body>
-</html>
+          statusEl.innerHTML += `<span class="error">❌ Failed ${title}: ${err.message
