@@ -48,7 +48,7 @@
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content bg-dark text-light" style="border: 3px solid #00ffcc;">
             <div class="modal-header border-0">
-              <h5 class="modal-title">🔑 Alpha Base Camp Access</h5>
+              <h5 class="modal-title">🔒 Alpha Base Camp Security Checkpoint</h5>
             </div>
             <div class="modal-body">
               <input type="email" id="admin-email" class="form-control mb-3" value="lancewoolie@gmail.com" readonly>
@@ -139,7 +139,7 @@
 
       errorDiv.style.display = 'none';
       loginBtn.disabled = true;
-      loginBtn.textContent = 'Logging in...';
+      loginBtn.textContent = 'Authenticating...';
 
       try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
@@ -148,7 +148,7 @@
           document.getElementById('dashboard-content').style.display = 'block';
           loadCaptainsLog();
         } else {
-          errorDiv.textContent = "Access Denied - Not authorized.";
+          errorDiv.textContent = "Access Denied - Not authorized admin.";
           errorDiv.style.display = 'block';
         }
       } catch (error) {
@@ -205,7 +205,7 @@
           timestamp: serverTimestamp(),
           order: Date.now()
         });
-        alert("✅ New log entry saved!");
+        alert("✅ New log entry saved successfully!");
         bootstrap.Modal.getInstance(document.getElementById('addLogModal')).hide();
         loadCaptainsLog();
       } catch (err) {
@@ -213,11 +213,10 @@
       }
     }
 
-    // Show login modal on load
+    // Show login modal on load + Enter key support
     document.addEventListener('DOMContentLoaded', () => {
       new bootstrap.Modal(document.getElementById('loginModal')).show();
 
-      // Allow pressing Enter in password field to submit
       document.getElementById('admin-password').addEventListener('keypress', function(e) {
         if (e.key === 'Enter') attemptLogin();
       });
