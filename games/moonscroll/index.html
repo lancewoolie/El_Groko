@@ -31,10 +31,12 @@
 
         let player, cursors, lasers, obstacles, score = 0;
         let scoreText;
+        let bg1, bg2;
 
         function create() {
-            // Background
-            this.add.rectangle(600, 400, 1200, 800, 0x111122);
+            // Visible scrolling background
+            bg1 = this.add.tileSprite(600, 400, 1200, 800, 'moonSurface' || '__MISSING').setAlpha(0.9);
+            bg2 = this.add.tileSprite(600, 400, 1200, 800, 'moonSurface' || '__MISSING').setAlpha(0.5).setScale(1.4);
 
             // Cyberbeast facing back-to-front
             player = this.add.text(600, 650, '[X]', { fontSize: '90px' }).setOrigin(0.5);
@@ -49,16 +51,13 @@
 
             cursors = this.input.keyboard.createCursorKeys();
 
-            // Spawn bots slowly and safely
-            this.time.addEvent({ delay: 1800, callback: spawnBot, callbackScope: this, loop: true });
+            // Spawn bots slowly
+            this.time.addEvent({ delay: 1600, callback: spawnBot, callbackScope: this, loop: true });
 
             this.physics.add.collider(lasers, obstacles, hitBot, null, this);
             this.physics.add.collider(player, obstacles, () => this.scene.restart());
 
-            // Mouse movement
             this.input.on('pointermove', p => this.physics.moveTo(player, p.worldX, p.worldY, 520));
-
-            // Click controls
             this.input.on('pointerdown', (pointer) => {
                 if (pointer.leftButtonDown()) shootNormal.call(this);
                 if (pointer.rightButtonDown()) shootSpread.call(this);
@@ -66,6 +65,10 @@
         }
 
         function update() {
+            // Background scroll
+            bg1.tilePositionY -= 1.8;
+            bg2.tilePositionY -= 0.9;
+
             // Keyboard backup
             if (cursors.left.isDown) player.body.velocity.x = -400;
             if (cursors.right.isDown) player.body.velocity.x = 400;
@@ -78,7 +81,10 @@
             lasers.getChildren().forEach(l => { if (l.y < -50) l.destroy(); });
             obstacles.getChildren().forEach(o => { if (o.y > 850) o.destroy(); });
 
-            score += 1;
+            // Score only increases when player is active
+            if (player.body.velocity.x !== 0 || player.body.velocity.y !== 0 || Math.random() < 0.3) {
+                score += 0.5;
+            }
             scoreText.setText('SCORE: ' + String(Math.floor(score)).padStart(6, '0'));
         }
 
@@ -93,19 +99,16 @@
             const baseY = player.y - 70;
             const spread = 160;
 
-            // Left \
             const l = lasers.create(player.x - 28, baseY, '__MISSING');
             l.setVelocity(-spread, -1050);
             l.setScale(0.55);
             l.setTint(0x00ffff);
 
-            // Center |
             const c = lasers.create(player.x, baseY, '__MISSING');
             c.setVelocityY(-1150);
             c.setScale(0.55);
             c.setTint(0x00ffff);
 
-            // Right /
             const r = lasers.create(player.x + 28, baseY, '__MISSING');
             r.setVelocity(spread, -1050);
             r.setScale(0.55);
@@ -118,18 +121,18 @@
             bot.setScale(1.3);
             bot.setVelocityY(95);
 
-            // Simple organic movement
+            const emoji = this.add.text(0, 0, Phaser.Math.RND.pick(['🚀','🪐','🌑','☄️']), { fontSize: '65px' }).setOrigin(0.5);
+            bot.add(emoji);
+
+            // Gentle independent movement
             this.tweens.add({
                 targets: bot,
-                x: x + Phaser.Math.Between(-120, 120),
-                duration: 2400,
+                x: x + Phaser.Math.Between(-100, 100),
+                duration: 2800,
                 yoyo: true,
                 repeat: -1,
                 ease: 'Sine.easeInOut'
             });
-
-            const emoji = this.add.text(0, 0, Phaser.Math.RND.pick(['🚀','🪐','🌑','☄️']), { fontSize: '65px' }).setOrigin(0.5);
-            bot.add(emoji);
         }
 
         function hitBot(laser, bot) {
@@ -137,7 +140,7 @@
             bot.destroy();
 
             this.add.particles(bot.x, bot.y, '__MISSING', {
-                speed: { min: 80, max: 280 },
+                speed: { min: 80, max: 250 },
                 scale: { start: 1, end: 0 },
                 lifespan: 800,
                 quantity: 25,
