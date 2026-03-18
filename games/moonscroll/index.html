@@ -33,8 +33,10 @@
         let scoreText;
 
         function create() {
+            // Background
             this.add.rectangle(600, 400, 1200, 800, 0x111133);
 
+            // Cyberbeast - facing back to front
             player = this.add.text(600, 650, '[X]', { fontSize: '90px' }).setOrigin(0.5);
             this.physics.add.existing(player);
             player.body.setCollideWorldBounds(true);
@@ -47,8 +49,8 @@
 
             cursors = this.input.keyboard.createCursorKeys();
 
-            // Very slow spawn rate to prevent freezing
-            this.time.addEvent({ delay: 2200, callback: spawnBot, callbackScope: this, loop: true });
+            // Very conservative spawn rate to prevent freezing
+            this.time.addEvent({ delay: 2400, callback: spawnBot, callbackScope: this, loop: true });
 
             this.physics.add.collider(lasers, obstacles, hitBot, null, this);
             this.physics.add.collider(player, obstacles, () => this.scene.restart());
@@ -58,6 +60,7 @@
         }
 
         function update() {
+            // Keyboard backup
             if (cursors.left.isDown) player.body.velocity.x = -400;
             if (cursors.right.isDown) player.body.velocity.x = 400;
             if (cursors.up.isDown) player.body.velocity.y = -400;
@@ -74,9 +77,10 @@
         }
 
         function shootNormal() {
+            // Primary weapon: single vertical "|" projectile
             const laser = lasers.create(player.x, player.y - 70, '__MISSING');
             laser.setVelocityY(-1200);
-            laser.setScale(0.8);
+            laser.setScale(0.7);
             laser.setTint(0x00ffff);
         }
 
@@ -86,14 +90,14 @@
             bot.setScale(1.2);
             bot.setVelocityY(80);
 
-            const emoji = this.add.text(0, 0, Phaser.Math.RND.pick(['🚀','🪐','🌑','☄️']), { fontSize: '68px' }).setOrigin(0.5);
+            const emoji = this.add.text(0, 0, Phaser.Math.RND.pick(['🚀','🪐','🌑','☄️']), { fontSize: '65px' }).setOrigin(0.5);
             bot.add(emoji);
 
             // Very light movement
             this.tweens.add({
                 targets: bot,
-                x: x + Phaser.Math.Between(-90, 90),
-                duration: 3200,
+                x: x + Phaser.Math.Between(-80, 80),
+                duration: 3400,
                 yoyo: true,
                 repeat: -1,
                 ease: 'Sine.easeInOut'
@@ -105,7 +109,7 @@
             bot.destroy();
 
             this.add.particles(bot.x, bot.y, '__MISSING', {
-                speed: { min: 100, max: 280 },
+                speed: { min: 80, max: 220 },
                 scale: { start: 1, end: 0 },
                 lifespan: 700,
                 quantity: 20,
