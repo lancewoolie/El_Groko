@@ -63,7 +63,7 @@
     }
     .hero-origins .doors:hover { transform: scale(1.08); }
 
-    /* Tighter Crew Roster */
+    /* Crew Roster */
     .crew-roster {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
@@ -105,7 +105,20 @@
       font-style: italic;
     }
 
-    /* Tighter Transmission Cards */
+    /* Special Guest Styling */
+    .member-card.guest {
+      border: 3px solid #ff99cc;
+      box-shadow: 0 0 30px rgba(255, 153, 204, 0.5);
+      transform: scale(0.92);
+    }
+    .member-card.guest:hover {
+      box-shadow: 0 0 50px rgba(255, 0, 170, 0.7);
+    }
+    .member-card.guest .tagline {
+      color: #ffccdd;
+    }
+
+    /* Transmission Cards */
     .transmission-card {
       background: rgba(10, 20, 50, 0.92);
       border: 3px solid #00ffcc;
@@ -316,31 +329,9 @@
         images: []
       },
       {
-        id: "boogie",
-        name: "Jonathon \"Boogie\" Long",
-        tagline: "Blues-Rock Guitar Shredder • King of the Blues",
-        img: "img/bandmembers/Boogie.jpg",
-        bio: `
-          <div class="bio-section">
-            <h4>Baton Rouge Blues Fire</h4>
-            <p>Started guitar at age 6 in a Southern Baptist church. Performing professionally by age 10. Left high school at 14 to tour. Won Guitar Center’s King of the Blues in 2011 (national title, $25k, Gibson Les Paul, and more).</p>
-          </div>
-          <div class="bio-section">
-            <h4>Festival & Stage Destroyer</h4>
-            <p>Regular at New Orleans Jazz & Heritage Festival (Blues Tent, 15+ years). Shared stages with B.B. King, ZZ Top, Joe Bonamassa, Gov’t Mule, Dr. John, and more. Albums charted Billboard Top 10 Blues.</p>
-          </div>
-          <div class="bio-section">
-            <h4>Moon Saloon Connection</h4>
-            <p>Joined Lance Woolie onstage for a fiery "Little Wing" at The Texas Club in June 2025. Pure Louisiana guitar energy fueling the Saloon.</p>
-          </div>
-          <div class="fact-pill">2011 King of the Blues • Louisiana Music Hall of Fame • JazzFest regular • Courage in the Chaos (2026)</div>
-        `,
-        images: []
-      },
-      {
         id: "shane",
         name: "Shane Ried",
-        tagline: "Original Hogleg Band • Guitar & Vocals",
+        tagline: "Original Hogleg Band • Plays \"Little Wing\" live",
         img: "img/bandmembers/ShaneReid.jpg",
         bio: `
           <div class="bio-section">
@@ -348,10 +339,10 @@
             <p>Key original member alongside Lance Woolie. Brought raw energy and guitar firepower to the early Moon Saloon sound.</p>
           </div>
           <div class="bio-section">
-            <h4>Classic Lineup Moments</h4>
-            <p>Part of the original Hogleg Band that recorded and performed the early country catalog that built the foundation for everything that followed.</p>
+            <h4>Live Performer</h4>
+            <p>Plays "Little Wing" live with Lance Woolie. Part of the classic Hogleg Band lineup that helped build the foundation of the project.</p>
           </div>
-          <div class="fact-pill">Original Hogleg Band guitarist • Early Moon Saloon architect</div>
+          <div class="fact-pill">Original Hogleg Band guitarist • Live "Little Wing" performer</div>
         `,
         images: ["img/bandmembers/OriginalHOGLEGBANDchris&shane.png"]
       },
@@ -382,6 +373,25 @@
           <div class="fact-pill">Co-producer • Multi-instrumentalist</div>
         `,
         images: []
+      },
+      {
+        id: "boogie",
+        name: "Jonathon \"Boogie\" Long",
+        tagline: "Special Guest • Played \"Little Wing\" on the album",
+        img: "img/bandmembers/Boogie.jpg",
+        isGuest: true,
+        bio: `
+          <div class="bio-section">
+            <h4>Special Guest on Album</h4>
+            <p>World-class blues-rock guitarist who recorded the guitar solo for "Little Wing" on Lance Woolie’s album.</p>
+          </div>
+          <div class="bio-section">
+            <h4>About Boogie Long</h4>
+            <p>2011 Guitar Center King of the Blues winner, frequent New Orleans Jazz & Heritage Festival performer, and Louisiana Music Hall of Fame inductee.</p>
+          </div>
+          <div class="fact-pill">Special Guest • Studio "Little Wing" guitarist</div>
+        `,
+        images: []
       }
     ];
 
@@ -389,8 +399,9 @@
       const container = document.getElementById('crew-roster');
       let html = '';
       crew.forEach(member => {
+        const guestClass = member.isGuest ? ' guest' : '';
         html += `
-          <div class="member-card" onclick="scrollToMember('${member.id}')">
+          <div class="member-card${guestClass}" onclick="scrollToMember('${member.id}')">
             <img src="${member.img}" alt="${member.name}">
             <h5>${member.name}</h5>
             <div class="tagline">${member.tagline}</div>
