@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Moon Scroll</title>
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.70.0/dist/phaser.min.js"></script>
     <style>
@@ -30,15 +30,13 @@
         const game = new Phaser.Game(config);
 
         let player, cursors, lasers, obstacles, score = 0;
-        let scoreText, comboText;
-        let combo = 0, lastKillTime = 0;
-        let shake = 0;
+        let scoreText;
 
         function create() {
             // Background
-            this.add.rectangle(600, 400, 1200, 800, 0x0a0a1f);
+            this.add.rectangle(600, 400, 1200, 800, 0x111122);
 
-            // Cyberbeast - facing back to front (top-down)
+            // Cyberbeast facing back-to-front
             player = this.add.text(600, 650, '[X]', { fontSize: '90px' }).setOrigin(0.5);
             this.physics.add.existing(player);
             player.body.setCollideWorldBounds(true);
@@ -48,17 +46,17 @@
             obstacles = this.physics.add.group();
 
             scoreText = this.add.text(30, 20, 'SCORE: 000000', { fontSize: '36px', color: '#00ffff', stroke: '#ff00ff', strokeThickness: 8 });
-            comboText = this.add.text(600, 100, '', { fontSize: '70px', color: '#ffff00', stroke: '#ff00ff', strokeThickness: 12 }).setOrigin(0.5).setAlpha(0);
 
             cursors = this.input.keyboard.createCursorKeys();
 
-            this.time.addEvent({ delay: 1400, callback: spawnBot, callbackScope: this, loop: true });
+            // Spawn bots slowly and safely
+            this.time.addEvent({ delay: 1800, callback: spawnBot, callbackScope: this, loop: true });
 
             this.physics.add.collider(lasers, obstacles, hitBot, null, this);
             this.physics.add.collider(player, obstacles, () => this.scene.restart());
 
             // Mouse movement
-            this.input.on('pointermove', p => this.physics.moveTo(player, p.worldX, p.worldY, 550));
+            this.input.on('pointermove', p => this.physics.moveTo(player, p.worldX, p.worldY, 520));
 
             // Click controls
             this.input.on('pointerdown', (pointer) => {
@@ -68,11 +66,6 @@
         }
 
         function update() {
-            if (shake > 0) {
-                this.cameras.main.shake(50, shake);
-                shake *= 0.9;
-            }
-
             // Keyboard backup
             if (cursors.left.isDown) player.body.velocity.x = -400;
             if (cursors.right.isDown) player.body.velocity.x = 400;
@@ -81,7 +74,8 @@
 
             if (Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE))) shootNormal.call(this);
 
-            lasers.getChildren().forEach(l => { if (l.y < 0) l.destroy(); });
+            // Safe cleanup
+            lasers.getChildren().forEach(l => { if (l.y < -50) l.destroy(); });
             obstacles.getChildren().forEach(o => { if (o.y > 850) o.destroy(); });
 
             score += 1;
@@ -90,4 +84,66 @@
 
         function shootNormal() {
             const laser = lasers.create(player.x, player.y - 70, '__MISSING');
-            laser.setVelocityY(-110
+            laser.setVelocityY(-1100);
+            laser.setScale(0.6);
+            laser.setTint(0x00ffff);
+        }
+
+        function shootSpread() {
+            const baseY = player.y - 70;
+            const spread = 160;
+
+            // Left \
+            const l = lasers.create(player.x - 28, baseY, '__MISSING');
+            l.setVelocity(-spread, -1050);
+            l.setScale(0.55);
+            l.setTint(0x00ffff);
+
+            // Center |
+            const c = lasers.create(player.x, baseY, '__MISSING');
+            c.setVelocityY(-1150);
+            c.setScale(0.55);
+            c.setTint(0x00ffff);
+
+            // Right /
+            const r = lasers.create(player.x + 28, baseY, '__MISSING');
+            r.setVelocity(spread, -1050);
+            r.setScale(0.55);
+            r.setTint(0x00ffff);
+        }
+
+        function spawnBot() {
+            const x = Phaser.Math.Between(150, 1050);
+            const bot = obstacles.create(x, -50, '__MISSING');
+            bot.setScale(1.3);
+            bot.setVelocityY(95);
+
+            // Simple organic movement
+            this.tweens.add({
+                targets: bot,
+                x: x + Phaser.Math.Between(-120, 120),
+                duration: 2400,
+                yoyo: true,
+                repeat: -1,
+                ease: 'Sine.easeInOut'
+            });
+
+            const emoji = this.add.text(0, 0, Phaser.Math.RND.pick(['🚀','🪐','🌑','☄️']), { fontSize: '65px' }).setOrigin(0.5);
+            bot.add(emoji);
+        }
+
+        function hitBot(laser, bot) {
+            laser.destroy();
+            bot.destroy();
+
+            this.add.particles(bot.x, bot.y, '__MISSING', {
+                speed: { min: 80, max: 280 },
+                scale: { start: 1, end: 0 },
+                lifespan: 800,
+                quantity: 25,
+                tint: 0xff00ff
+            });
+        }
+    </script>
+</body>
+</html>
