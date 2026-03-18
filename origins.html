@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Origins - Lance Woolie’s Moon Saloon</title>
+  <title>Origins - Grokipedia Lite | Lance Woolie’s Moon Saloon</title>
   <link href="https://fonts.googleapis.com/css2?family=Georgia&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
@@ -15,26 +15,17 @@
       font-family: 'Georgia', serif;
       margin: 0;
       padding-bottom: 100px;
-      touch-action: manipulation;
     }
-    .content {
-      position: relative;
-      z-index: 1;
-      opacity: 0;
-      transition: opacity 1.2s ease;
-    }
-    .content.show { opacity: 1; }
     .content-overlay {
-      background: url('/img/moonsaloon/origins-base-bg.jpg') center/cover no-repeat fixed !important; /* FALLBACK BG */
+      background: rgba(0, 0, 0, 0.75);
       min-height: 100vh;
       padding-top: 90px;
     }
-    /* HERO – Doors only (top-left, no title) */
     .hero-origins {
       display: flex;
       align-items: center;
       justify-content: flex-start;
-      padding: 30px 0 50px;
+      padding: 30px 0 40px;
       gap: 40px;
     }
     .hero-origins .doors {
@@ -45,63 +36,126 @@
     }
     .hero-origins .doors:hover { transform: scale(1.08); }
 
-    /* Holographic Rectangle */
-    .holo-box {
-      background: rgba(10, 25, 50, 0.68);
+    /* Crew Roster - abc.html style glowing cards */
+    .crew-roster {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+    .member-card {
+      background: rgba(10, 20, 50, 0.92);
+      border: 3px solid #00ffcc;
+      border-radius: 20px;
+      padding: 1rem;
+      text-align: center;
+      box-shadow: 0 0 40px rgba(0, 255, 204, 0.6);
+      transition: all 0.4s ease;
+      cursor: pointer;
+    }
+    .member-card:hover {
+      transform: translateY(-8px) scale(1.04);
+      box-shadow: 0 0 60px rgba(255, 0, 170, 0.8);
+      border-color: #ff00aa;
+    }
+    .member-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 2px solid #00ffcc;
+      margin-bottom: 1rem;
+    }
+    .member-card h5 {
+      color: #00ffcc;
+      text-shadow: 0 0 15px #00ffcc;
+      margin-bottom: 0.3rem;
+    }
+    .member-card .tagline {
+      font-size: 0.95rem;
+      color: #ff99cc;
+      font-style: italic;
+    }
+
+    /* Transmission Blocks - sexy floating style */
+    .transmission-card {
+      background: rgba(10, 20, 50, 0.92);
       border: 3px solid #00ffcc;
       border-radius: 24px;
-      padding: 3.5rem;
-      margin: -60px auto 40px;
-      max-width: 1500px;
-      max-height: 72vh;
-      overflow-y: auto;
-      box-shadow: 0 0 60px rgba(0, 255, 204, 0.5),
-                  inset 0 0 50px rgba(255, 0, 170, 0.25);
-      backdrop-filter: blur(12px);
-      scrollbar-width: thin;
-      scrollbar-color: #00ffcc #112233;
+      padding: 2rem;
+      margin-bottom: 2.5rem;
+      box-shadow: 0 0 50px rgba(0, 255, 204, 0.7);
+      transition: all 0.4s ease;
+      overflow: hidden;
     }
-    .holo-box::-webkit-scrollbar { width: 10px; }
-    .holo-box::-webkit-scrollbar-thumb { background: #00ffcc; border-radius: 10px; }
-
-    .holo-section {
-      margin-bottom: 4rem;
-      padding-bottom: 3rem;
-      border-bottom: 1px dashed rgba(0, 255, 204, 0.4);
+    .transmission-card:hover {
+      box-shadow: 0 0 70px rgba(255, 0, 170, 0.6);
     }
-    .holo-section:last-child { border-bottom: none; }
-    
-    /* OFF-WHITE TITLES */
-    .holo-section h3 {
-      color: #f0f0f0 !important;
-      text-shadow: 0 0 25px #00ffcc;
-      font-size: 2.1rem;
-      margin-bottom: 1.4rem;
-    }
-    .holo-section p {
-      color: #f0f0f0;
-      line-height: 1.95;
-      font-size: 1.28rem;
-    }
-    .thumb-carousel {
+    .transmission-header {
       display: flex;
-      gap: 20px;
-      overflow-x: auto;
-      padding: 20px 0;
-    }
-    .thumb-img {
-      width: 200px;
-      height: 200px;
-      object-fit: cover;
-      border-radius: 16px;
-      border: 3px solid #00ffcc;
+      align-items: center;
+      gap: 1.5rem;
       cursor: pointer;
-      flex-shrink: 0;
-      transition: all 0.3s ease;
     }
-    .thumb-img:hover {
+    .transmission-header img {
+      width: 90px;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid #00ffcc;
+      flex-shrink: 0;
+    }
+    .transmission-header h3 {
+      color: #f0f0f0;
+      text-shadow: 0 0 20px #00ffcc;
+      margin: 0;
+      flex-grow: 1;
+    }
+    .expand-btn {
+      background: #ff00aa;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .expand-btn:hover {
+      background: #ff66cc;
       transform: scale(1.08);
-      box-shadow: 0 0 35px #00ffcc;
+    }
+    .transmission-body {
+      display: none;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px dashed rgba(0, 255, 204, 0.5);
+      line-height: 1.85;
+    }
+    .transmission-card.expanded .transmission-body {
+      display: block;
+    }
+    .transmission-card.expanded .expand-btn {
+      background: #00ffcc;
+      color: #112233;
+    }
+    .bio-section {
+      margin-bottom: 2rem;
+    }
+    .bio-section h4 {
+      color: #00ffcc;
+      text-shadow: 0 0 15px #00ffcc;
+      margin-bottom: 0.8rem;
+    }
+    .fact-pill {
+      display: inline-block;
+      background: rgba(255, 0, 170, 0.2);
+      border: 1px solid #ff00aa;
+      color: #ffccdd;
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 0.95rem;
+      margin: 6px 4px 6px 0;
     }
   </style>
 </head>
@@ -116,17 +170,24 @@
 
   <div class="content-overlay">
     <div class="content" id="main-content">
-      <!-- HERO – Doors only (top-left, no title) -->
-      <div class="hero-origins">
-        <img id="saloon-doors-back"
-             src="/img/moonsaloon/saloon-doors-nav.png"
-             class="doors"
-             alt="Back to Saloon">
+      <!-- HERO -->
+      <div class="hero-origins container">
+        <img id="saloon-doors-back" src="/img/moonsaloon/saloon-doors-nav.png" class="doors" alt="Back to Saloon">
+        <div class="flex-grow-1 text-center">
+          <h1 style="color:#ff00aa; text-shadow: 0 0 50px #ff00aa; font-size: 3.2rem; margin:0;">GROKIPEDIA LITE</h1>
+          <p style="color:#00ffcc; font-size:1.4rem; margin:0;">Origins Transmissions • Shackleton Crater Archive</p>
+        </div>
       </div>
 
-      <!-- Holographic Rectangle -->
-      <div class="container py-5">
-        <div class="holo-box" id="holo-box">
+      <div class="container py-4">
+        <!-- CREW ROSTER -->
+        <h2 class="text-center mb-4" style="color:#00ffcc; text-shadow:0 0 30px #00ffcc;">THE CREW OF THE MOON SALOON</h2>
+        <div class="crew-roster" id="crew-roster">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- TRANSMISSION BLOCKS -->
+        <div id="transmissions-container">
           <!-- Populated by JS -->
         </div>
       </div>
@@ -137,52 +198,189 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
-
-  <!-- FULL BIO DATA & LOGIC -->
   <script>
-    const bioSections = [
-      { year: "2025", title: "The Whole Two Dollars Era", content: "Lance is almost 2 years into production of his record \"The Whole Two Dollars\". He has released a couple singles from this album \"Too Drunk\" and Uber, both featuring Brent Mason. Brent has been a Godsend and a great friend and colleague on this album.", images: ["img/bandmembers/Brent Mason LIVE.png"] },
-      { year: "2022", title: "Country Paradise Album", content: "Lance co-produced the album Hogleg Band - Country Paradise with local legends Brian Brignac, Corban Barnes, and Chris Roberts — a labor of love weaving scars and triumphs into raw, reflective songs.", images: ["img/bandmembers/BrianBrignac_TabBenoit.png", "img/bandmembers/CORBANGEETAR&Keys.png", "img/bandmembers/chrisroberts_atbrians.png", "img/bandmembers/lance_shane_fatcats.png", "img/COUNTRY-PARADISE-scaled.jpg"] },
-      { year: "2006", title: "Colombia Years & Emma's Birth", content: "Lance's daughter, Emma, was born in Ibagué, Colombia, as an American citizen born abroad — a profound anchor in his evolving world.", images: ["img/Vert4Sad.jpg"] },
-      { year: "2005", title: "Hurricane Katrina & El Colombian Dream", content: "Hurricane Katrina devastated New Orleans. That year, Lance acted as \"El Gringo\" in the feature film El Colombian Dream.", images: ["img/Vert2websitesidebar.jpg"] },
-      { year: "2001", title: "LSU & Information Systems", content: "In 2000, Lance transferred to Louisiana State University, initially majoring in Veterinary Medicine but switching to Information Systems & Decision Sciences.", images: ["img/COUCHLance.jpg"] },
-      { year: "1999", title: "Juvenile Detention & Angola Band", content: "While serving time, during \"Fun Day\", Warden Lawrence Gorham heard about Lance's guitar skills and had him perform with the Angola Travelin’ Band.", images: ["img/WHITETRASH3.jpg"] },
-      { year: "1979", title: "Birth & Early Years", content: "Lance was born in the Baton Rouge Police Department Headquarters on July 3, 1979 at 3:33 am, and forged his path through shadows of loss, shades of truth, and FAFO grit.", images: [] }
+    // ====================== CREW DATA ======================
+    const crew = [
+      {
+        id: "lance",
+        name: "Lance Woolie",
+        tagline: "Captain • Founder • Swamp-Country Troubadour",
+        img: "img/bandmembers/LanceWoolie-main.jpg", // replace with your best clean portrait
+        bio: `
+          <div class="bio-section">
+            <h4>Early Transmissions</h4>
+            <p>Born July 3, 1979 at 3:33 a.m. in Baton Rouge, Louisiana. Survived 17 schools, juvenile detention at Jetson Correctional Center, and emerged playing guitar with the Angola Travelin’ Band.</p>
+          </div>
+          <div class="bio-section">
+            <h4>Colombia Chapter & Rebirth</h4>
+            <p>Acted as "El Gringo" in the 2005 film <em>El Colombian Dream</em>. Daughter Emma born in Ibagué. Returned to Louisiana roots and rebuilt his country sound.</p>
+          </div>
+          <div class="bio-section">
+            <h4>Moon Saloon Era</h4>
+            <p>Formed Hogleg Band → solo artist. Releasing <em>The Whole Two Dollars</em> with Nashville-caliber players. Radio personality as "El Gringo" on Walton & Johnson and 105.3 FREE FM.</p>
+          </div>
+          <div class="fact-pill">17 schools • Angola Band survivor • Colombia film star • Forthcoming album 2026</div>
+        `,
+        images: ["img/bandmembers/Brent Mason LIVE.png", "img/COUNTRY-PARADISE-scaled.jpg"] // add more of yours
+      },
+      {
+        id: "brent",
+        name: "Brent Mason",
+        tagline: "12× ACM Guitarist of the Year • Most Recorded Guitarist in History",
+        img: "img/bandmembers/Brent Mason LIVE.png",
+        bio: `
+          <div class="bio-section">
+            <h4>Legend from Ohio to Nashville</h4>
+            <p>Self-taught from age 5. Moved to Nashville in 1977. Discovered by Chet Atkins. Became the go-to session guitarist for over 1,000 albums.</p>
+          </div>
+          <div class="bio-section">
+            <h4>Awards & Sound</h4>
+            <p>Grammy for "Cluster Pluck" • 12 ACM Guitarist of the Year • 2 CMA Musician of the Year. Signature Telecaster twang and hybrid picking.</p>
+          </div>
+          <div class="bio-section">
+            <h4>Moon Saloon Connection</h4>
+            <p>Laid down monster guitar on "Too Drunk", "Uber", "Worst Enemy", and "Crazy Arms". A Godsend collaborator and friend to Lance Woolie.</p>
+          </div>
+          <div class="fact-pill">Grammy Winner • 12× ACM • Played with Strait, Jones, Paisley, Reba & more</div>
+        `,
+        images: ["img/bandmembers/Brent Mason LIVE.png"]
+      },
+      {
+        id: "brian",
+        name: "Brian Brignac",
+        tagline: "Drummer • Producer • Brignac Lane Studios",
+        img: "img/bandmembers/BrianBrignac_TabBenoit.png",
+        bio: `
+          <div class="bio-section">
+            <h4>Louisiana Powerhouse</h4>
+            <p>From Gonzales/St. Amant area. Longtime drummer for Sonny Landreth (20+ years). Owns Brignac Lane Studios in St. Amant.</p>
+          </div>
+          <div class="bio-section">
+            <h4>Credits That Shake the Bayou</h4>
+            <p>Worked with Fats Domino, Jimmy Buffett, Tab Benoit, Jo-el Sonnier (Grammy album), Wayne Toups, Warren Storm, and many more. Engineered/produced national and regional projects.</p>
+          </div>
+          <div class="bio-section">
+            <h4>Moon Saloon Connection</h4>
+            <p>Co-produced Lance Woolie’s <em>Country Paradise</em> album with Hogleg Band — raw, reflective, and full of scars and triumphs.</p>
+          </div>
+          <div class="fact-pill">Sonny Landreth drummer • Studio owner • Grammy-nominated engineer</div>
+        `,
+        images: ["img/bandmembers/BrianBrignac_TabBenoit.png", "img/bandmembers/lance_shane_fatcats.png"]
+      },
+      {
+        id: "boogie",
+        name: "Jonathon \"Boogie\" Long",
+        tagline: "Guitarist • Louisiana Blues-Rock Fire",
+        img: "img/bandmembers/BoogieLong.jpg", // update with your image
+        bio: `<p>Powerful slide and lead guitarist. Shared the stage with Lance Woolie for a fiery “Little Wing” at The Texas Club in June 2025.</p>`,
+        images: []
+      },
+      {
+        id: "tank",
+        name: "Tank Viavatine",
+        tagline: "M35 Abrams is the Big Guns",
+        img: "img/bandmembers/TANk.jpg",
+        bio: `
+          <div class="bio-section">
+            <h4>Heavy Low-End Destroyer</h4>
+            <p>Bass monster known for thunderous grooves and funk/slap mastery. Longtime Louisiana scene veteran bringing unstoppable bottom end to the Moon Saloon.</p>
+          </div>
+          <div class="fact-pill">Uptown Funk loops • Slap & pop specialist • Big Guns on bass</div>
+        `,
+        images: []
+      },
+      {
+        id: "scotty",
+        name: "Scotty Sanders",
+        tagline: "Pedal Steel Sorcerer",
+        img: "img/bandmembers/ScottySanders.jpg", // update
+        bio: `<p>Elite pedal steel guitarist. Delivered the weeping, soaring steel on Lance Woolie’s “Crazy Arms” alongside Brent Mason.</p>`,
+        images: []
+      },
+      // Add Corban Barnes and Zach Blackwell similarly when you have images/taglines
+      {
+        id: "corban",
+        name: "Corban Barnes",
+        tagline: "Multi-Instrumentalist • Country Paradise Co-Producer",
+        img: "img/bandmembers/CORBANGEETAR&Keys.png",
+        bio: `<p>Key contributor to <em>Country Paradise</em>. Versatile player and co-producer with Lance and Brian Brignac.</p>`,
+        images: []
+      },
+      {
+        id: "zach",
+        name: "Zach Blackwell",
+        tagline: "Drummer • Live Fire",
+        img: "img/bandmembers/ZachBlackwell.jpg", // update
+        bio: `<p>Powerful drummer keeping the Moon Saloon rhythm locked tight.</p>`,
+        images: []
+      }
     ];
 
-    function createSection(section) {
-      let imagesHTML = '';
-      if (section.images && section.images.length) {
-        imagesHTML = `<div class="thumb-carousel mt-4">`;
-        section.images.forEach(src => {
-          imagesHTML += `<img class="thumb-img" src="${src}" onclick="openModal('${src}')" alt="${section.year}">`;
-        });
-        imagesHTML += `</div>`;
+    // Render Crew Roster
+    function renderCrew() {
+      const container = document.getElementById('crew-roster');
+      let html = '';
+      crew.forEach(member => {
+        html += `
+          <div class="member-card" onclick="scrollToMember('${member.id}')">
+            <img src="${member.img}" alt="${member.name}">
+            <h5>${member.name}</h5>
+            <div class="tagline">${member.tagline}</div>
+          </div>`;
+      });
+      container.innerHTML = html;
+    }
+
+    // Render Transmission Blocks
+    function renderTransmissions() {
+      const container = document.getElementById('transmissions-container');
+      let html = '';
+      crew.forEach(member => {
+        html += `
+          <div class="transmission-card" id="block-${member.id}">
+            <div class="transmission-header" onclick="toggleTransmission('${member.id}')">
+              <img src="${member.img}" alt="${member.name}">
+              <h3>${member.name} <span style="font-size:1.1rem; color:#ff99cc;">— ${member.tagline}</span></h3>
+              <button class="expand-btn">OPEN TRANSMISSION</button>
+            </div>
+            <div class="transmission-body">
+              ${member.bio}
+              ${member.images && member.images.length ? `
+                <div class="thumb-carousel mt-4">
+                  ${member.images.map(src => `<img class="thumb-img" src="${src}" onclick="openModal('${src}')" alt="${member.name}">`).join('')}
+                </div>` : ''}
+            </div>
+          </div>`;
+      });
+      container.innerHTML = html;
+    }
+
+    function toggleTransmission(id) {
+      const card = document.getElementById(`block-${id}`);
+      card.classList.toggle('expanded');
+    }
+
+    function scrollToMember(id) {
+      const block = document.getElementById(`block-${id}`);
+      if (block) {
+        block.scrollIntoView({ behavior: "smooth", block: "center" });
+        // Auto-expand on click from roster
+        setTimeout(() => block.classList.add('expanded'), 600);
       }
-      return `
-        <div class="holo-section">
-          <h3>${section.year} — ${section.title}</h3>
-          <p>${section.content}</p>
-          ${imagesHTML}
-        </div>
-      `;
     }
 
     function openModal(src) {
       const modal = document.createElement('div');
       modal.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); display:flex; align-items:center; justify-content:center; z-index:10002;';
-      modal.innerHTML = `<img src="${src}" style="max-width:90%; max-height:90%; border-radius:16px; box-shadow:0 0 50px #00ffcc;" onclick="this.parentElement.remove()">`;
+      modal.innerHTML = `<img src="${src}" style="max-width:92%; max-height:92%; border-radius:16px; box-shadow:0 0 60px #00ffcc;" onclick="this.parentElement.remove()">`;
       document.body.appendChild(modal);
     }
 
+    // ====================== TRANSITIONS ======================
     document.addEventListener('DOMContentLoaded', () => {
-      // Populate holographic bio box
-      const box = document.getElementById('holo-box');
-      let html = '';
-      bioSections.forEach(section => html += createSection(section));
-      box.innerHTML = html;
+      renderCrew();
+      renderTransmissions();
 
-      // ROBUST MOBILE TRANSITION
       const overlay = document.getElementById('transition-overlay');
       const forwardVideo = document.getElementById('forward-video');
       const reverseVideo = document.getElementById('reverse-video');
@@ -195,16 +393,14 @@
       forwardVideo.style.display = 'block';
 
       let started = false;
-
       forwardVideo.oncanplaythrough = () => {
         if (started) return;
         started = true;
-        forwardVideo.muted = true;     // MUTED for mobile autoplay
+        forwardVideo.muted = true;
         forwardVideo.volume = 0.5;
         forwardVideo.play().catch(() => {});
       };
 
-      // HARD SAFETY – content ALWAYS shows
       setTimeout(() => {
         if (!started) {
           started = true;
@@ -218,7 +414,7 @@
         content.classList.add('show');
       };
 
-      // Reverse transition (user click = sound allowed)
+      // Reverse transition
       document.getElementById('saloon-doors-back').addEventListener('click', (e) => {
         e.preventDefault();
         overlay.style.display = 'block';
@@ -227,10 +423,7 @@
         reverseVideo.currentTime = 0;
         reverseVideo.volume = 0.5;
         reverseVideo.play().catch(() => {});
-
-        reverseVideo.onended = () => {
-          window.location.href = 'index.html';
-        };
+        reverseVideo.onended = () => window.location.href = 'index.html';
       });
     });
   </script>
