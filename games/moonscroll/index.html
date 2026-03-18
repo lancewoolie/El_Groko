@@ -42,15 +42,13 @@
         let bg1, bg2;
         let combo = 0, lastKillTime = 0;
         let tripleShot = false, tripleTimer = 0;
-        let specialLevel = 1;   // 1, 2, or 3
-        let gameOverText = null;
+        let specialLevel = 1;
         let shakeIntensity = 0;
 
         function preload() {
             this.load.image('cyberbeast', 'https://i.imgur.com/8zqZf0J.png');
             this.load.image('moonSurface', 'https://i.imgur.com/3XzK9pL.jpg');
             this.load.image('laser', 'https://i.imgur.com/0XwZf0J.png');
-            this.load.image('obstacle', 'https://i.imgur.com/5fQjK8p.png');
             this.load.image('pickup', 'https://i.imgur.com/0XwZf0J.png');
             this.load.image('powerup', 'https://i.imgur.com/0XwZf0J.png');
         }
@@ -77,9 +75,9 @@
 
             cursors = this.input.keyboard.createCursorKeys();
 
-            // Sky Force style waves
-            this.time.addEvent({ delay: 1200, callback: spawnWave, callbackScope: this, loop: true });
-            this.time.addEvent({ delay: 16000, callback: spawnPowerup, callbackScope: this, loop: true });
+            // Slower, sparser waves
+            this.time.addEvent({ delay: 1800, callback: spawnWave, callbackScope: this, loop: true });
+            this.time.addEvent({ delay: 18000, callback: spawnPowerup, callbackScope: this, loop: true });
 
             this.physics.add.collider(lasers, obstacles, hitMoonbug, null, this);
             this.physics.add.overlap(player, pickups, collectPickup, null, this);
@@ -101,8 +99,8 @@
             bg2.tilePositionY -= 0.8;
 
             if (shakeIntensity > 0) {
-                this.cameras.main.shake(80, shakeIntensity);
-                shakeIntensity *= 0.9;
+                this.cameras.main.shake(60, shakeIntensity);
+                shakeIntensity *= 0.85;
             }
 
             const speed = 380;
@@ -137,87 +135,79 @@
         }
 
         function fireSpecialWeapon() {
-            if (specialLevel === 0) return;
-
-            const width = specialLevel * 1.8;
-            const speed = 1400 + specialLevel * 200;
-
             const special = lasers.get(player.x, player.y - 100);
             if (special) {
-                special.setActive(true).setVisible(true).setVelocityY(-speed).setScale(width).setTint(0xffff00);
+                special.setActive(true).setVisible(true).setVelocityY(-1600).setScale(2.2 + specialLevel * 0.6).setTint(0xffff00);
             }
-
-            // Big explosion effect
-            shakeIntensity = 0.012 * specialLevel;
-            this.add.particles(player.x, player.y - 200, 'laser', {
-                speed: {min:200, max:500}, scale:{start:2.5,end:0}, lifespan:900, quantity:60, tint:0xffff00
-            });
+            shakeIntensity = 0.015;
         }
 
         function spawnWave() {
-            const type = Phaser.Math.Between(1, 4);
-            const startX = Phaser.Math.Between(200, 900);
+            const waveType = Phaser.Math.Between(1, 4);
+            const startX = Phaser.Math.Between(180, 920);
 
-            if (type === 1) { // Straight line
-                for (let i = 0; i < 6; i++) {
-                    spawnSingleBug(startX + i*70, -50 - i*20, 0.6);
+            if (waveType === 1) { // Sparse straight line
+                for (let i = 0; i < 4; i++) spawnSingleBug(startX + i*110, -80 - i*40, '🚀');
+            } else if (waveType === 2) { // Wide V
+                spawnSingleBug(startX - 140, -100, '🪐');
+                spawnSingleBug(startX - 70, -140, '🪐');
+                spawnSingleBug(startX, -160, '🪐');
+                spawnSingleBug(startX + 70, -140, '🪐');
+                spawnSingleBug(startX + 140, -100, '🪐');
+            } else if (waveType === 3) { // Diagonal pairs
+                for (let i = 0; i < 3; i++) {
+                    spawnSingleBug(startX + i*90, -80 - i*50, '🌑');
+                    spawnSingleBug(startX + 180 + i*90, -120 - i*50, '🌑');
                 }
-            } else if (type === 2) { // V formation
+            } else { // Small circling group
                 for (let i = 0; i < 5; i++) {
-                    spawnSingleBug(startX + (i-2)*80, -60 - Math.abs(i-2)*30, 0.65);
-                }
-            } else if (type === 3) { // Diagonal sweep
-                for (let i = 0; i < 5; i++) {
-                    const bug = spawnSingleBug(startX + i*60, -80 - i*25, 0.7);
-                    bug.setVelocityX(80);
-                }
-            } else { // Circle group
-                for (let i = 0; i < 8; i++) {
-                    const angle = i * (Math.PI * 2 / 8);
-                    const bug = spawnSingleBug(startX + Math.cos(angle)*120, -100 + Math.sin(angle)*60, 0.55);
+                    spawnSingleBug(startX + Math.cos(i*1.3)*90, -100 + Math.sin(i*1.3)*50, '☄️');
                 }
             }
         }
 
-        function spawnSingleBug(x, y, scale) {
+        function spawnSingleBug(x, y, emoji) {
             const bug = obstacles.create(x, y, 'obstacle');
-            bug.setScale(scale).setTint(Phaser.Display.Color.RandomRGB(80, 255).color);
-            bug.setData('reward', scale > 0.8 ? 800 : 400);
-            bug.setVelocityY(130);
+            bug.setScale(1.2);
+            bug.setData('reward', 450);
+            bug.setVelocityY(85);           // 50% slower
+            bug.setText(emoji);             // Emoji as placeholder
+            bug.setTint(0x00ddff);
             return bug;
         }
 
         function hitMoonbug(laser, bug) {
             const x = bug.x, y = bug.y;
-            const baseReward = bug.getData('reward') || 400;
             const now = Date.now();
-            if (now - lastKillTime < 1100) combo++; else combo = 1;
+            if (now - lastKillTime < 1300) combo++; else combo = 1;
             lastKillTime = now;
 
-            const finalReward = Math.floor(baseReward * combo);
+            const finalReward = Math.floor(450 * combo);
 
             laser.destroy();
             bug.destroy();
 
-            shakeIntensity = 0.008;
+            shakeIntensity = 0.012;
 
-            const pointsText = this.add.text(x, y - 45, '+' + finalReward, { fontSize: '48px', color: '#00ffff', stroke: '#ffff00', strokeThickness: 10 }).setOrigin(0.5);
-            this.tweens.add({ targets: pointsText, alpha: 0, y: y - 150, duration: 1200 });
+            const pointsText = this.add.text(x, y - 40, '+' + finalReward, {
+                fontSize: '44px', color: '#00ffff', stroke: '#ffff00', strokeThickness: 10
+            }).setOrigin(0.5);
+            this.tweens.add({ targets: pointsText, alpha: 0, y: y - 130, duration: 1300 });
 
             if (combo > 2) {
                 comboText.setText(combo + 'x CHAIN!');
-                comboText.setAlpha(1).setScale(2.0);
-                this.tweens.add({ targets: comboText, alpha: 0, scale: 1, y: 60, duration: 1600 });
+                comboText.setAlpha(1).setScale(2);
+                this.tweens.add({ targets: comboText, alpha: 0, scale: 1, y: 60, duration: 1700 });
             }
 
-            this.add.particles(x, y, 'laser', { speed: {min:120,max:380}, scale:{start:1.6,end:0}, lifespan:1100, quantity:45, tint:0xff00ff });
+            this.add.particles(x, y, 'laser', { speed: {min:100,max:320}, scale:{start:1.4,end:0}, lifespan:1000, quantity:40, tint:0xff00ff });
 
             const pickup = pickups.create(x, y, 'pickup');
-            pickup.setVelocityY(70).setScale(1).setTint(0x00ffff).setData('value', finalReward);
+            pickup.setVelocityY(65).setScale(1).setTint(0x00ffff).setData('value', finalReward);
         }
 
         function collectPickup(player, pickup) {
-            score += pickup.getData('value') || 400;
+            score += pickup.getData('value') || 450;
             pickup.destroy();
         }
 
@@ -225,7 +215,7 @@
             powerup.destroy();
             specialLevel = Math.min(specialLevel + 1, 3);
             specialText.setText('SPECIAL: ' + specialLevel);
-            tripleShot = true; tripleTimer = 10;
+            tripleShot = true; tripleTimer = 12;
         }
 
         function triggerGameOver() {
