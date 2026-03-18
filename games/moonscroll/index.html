@@ -24,7 +24,263 @@
 
     <script>
         const config = {
+            type: Phaser.AUTO,<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Moon Scroll</title>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.70.0/dist/phaser.min.js"></script>
+    <style>
+        body { margin: 0; padding: 0; background: #0a0a1f; overflow: hidden; font-family: 'Courier New', monospace; touch-action: none; }
+        #game-container { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; }
+        h1 { position: absolute; top: 15px; left: 50%; transform: translateX(-50%); color: #00ffff; text-shadow: 0 0 20px #ff00ff, 0 0 40px #00ffff; font-size: 2.5rem; z-index: 10; margin: 0; pointer-events: none; }
+        button { position: absolute; top: 20px; right: 20px; padding: 12px 24px; background: rgba(0, 255, 255, 0.2); color: #00ffff; border: 3px solid #00ffff; font-size: 18px; cursor: pointer; z-index: 20; border-radius: 8px; }
+        #score, #highscore { position: absolute; top: 20px; color: #00ffff; font-size: 32px; z-index: 20; text-shadow: 0 0 10px #ff00ff; }
+        #score { left: 30px; }
+        #highscore { right: 30px; }
+    </style>
+</head>
+<body>
+    <h1>🌕 MOON SCROLL 🌕</h1>
+    <div id="score">SCORE: 000000</div>
+    <div id="highscore">HIGH: 000000</div>
+    <button id="fullscreen-btn">GO FULLSCREEN</button>
+    <div id="game-container"></div>
+
+    <script>
+        const config = {
             type: Phaser.AUTO,
+            width: 1200,
+            height: 800,
+            parent: 'game-container',
+            backgroundColor: '#0a0a1f',
+            scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
+            physics: { default: 'arcade', arcade: { debug: false } },
+            scene: { preload: preload, create: create, update: update }
+        };
+
+        let game = new Phaser.Game(config);
+        let player, cursors, lasers, obstacles, pickups, powerups, score = 0, highScore = 0;
+        let scoreText, highScoreText, comboText;
+        let bg1, bg2;
+        let combo = 0, lastKillTime = 0;
+        let tripleShot = false, tripleTimer = 0;
+        let gameOverText = null;
+
+        function loadHighScore() {
+            const saved = localStorage.getItem('moonscroll_highscore');
+            if (saved) highScore = parseInt(saved);
+        }
+
+        function saveHighScore(newScore) {
+            if (newScore > highScore) {
+                highScore = newScore;
+                localStorage.setItem('moonscroll_highscore', highScore);
+                highScoreText.setText('HIGH: ' + String(highScore).padStart(6, '0'));
+            }
+        }
+
+        function preload() {
+            this.load.image('cyberbeast', 'https://i.imgur.com/8zqZf0J.png');
+            this.load.image('moonSurface', 'https://i.imgur.com/3XzK9pL.jpg');
+            this.load.image('laser', 'https://i.imgur.com/0XwZf0J.png');
+            this.load.image('obstacle', 'https://i.imgur.com/5fQjK8p.png');
+            this.load.image('pickup', 'https://i.imgur.com/0XwZf0J.png');
+            this.load.image('powerup', 'https://i.imgur.com/0XwZf0J.png');
+        }
+
+        function create() {
+            loadHighScore();
+
+            bg1 = this.add.tileSprite(600, 400, 1200, 800, 'moonSurface').setAlpha(0.85);
+            bg2 = this.add.tileSprite(600, 400, 1200, 800, 'moonSurface').setAlpha(0.4).setScale(1.6);
+
+            player = this.physics.add.sprite(600, 650, 'cyberbeast');
+            player.setCollideWorldBounds(true);
+            player.setScale(0.85);
+            player.setDrag(600); // smooth mouse following
+
+            lasers = this.physics.add.group({ defaultKey: 'laser', maxSize: 60 });
+            obstacles = this.physics.add.group();
+            pickups = this.physics.add.group();
+            powerups = this.physics.add.group();
+
+            scoreText = this.add.text(30, 20, 'SCORE: 000000', { fontSize: '32px', color: '#00ffff', stroke: '#ff00ff', strokeThickness: 6 }).setScrollFactor(0);
+            highScoreText = this.add.text(750, 20, 'HIGH: ' + String(highScore).padStart(6, '0'), { fontSize: '32px', color: '#ff00ff', stroke: '#00ffff', strokeThickness: 4 }).setScrollFactor(0);
+
+            comboText = this.add.text(600, 110, '', { fontSize: '64px', color: '#ffff00', stroke: '#ff00ff', strokeThickness: 14 }).setOrigin(0.5).setScrollFactor(0).setAlpha(0);
+
+            cursors = this.input.keyboard.createCursorKeys();
+
+            this.time.addEvent({ delay: 850, callback: spawnMoonbug, callbackScope: this, loop: true });
+            this.time.addEvent({ delay: 12000, callback: spawnPowerup, callbackScope: this, loop: true });
+
+            this.physics.add.collider(lasers, obstacles, hitMoonbug, null, this);
+            this.physics.add.overlap(player, pickups, collectPickup, null, this);
+            this.physics.add.overlap(player, powerups, collectPowerup, null, this);
+            this.physics.add.collider(player, obstacles, triggerGameOver, null, this);
+
+            // Mouse movement + click controls
+            this.input.on('pointermove', (pointer) => {
+                // Smooth mouse following
+                this.physics.moveTo(player, pointer.worldX, pointer.worldY, 520);
+            });
+
+            this.input.on('pointerdown', (pointer) => {
+                if (pointer.leftButtonDown()) shootLaser.call(this);
+                if (pointer.rightButtonDown()) fireSpecialWeapon.call(this);
+            });
+
+            document.getElementById('fullscreen-btn').addEventListener('click', () => document.documentElement.requestFullscreen());
+        }
+
+        function update() {
+            bg1.tilePositionY -= 2.5;
+            bg2.tilePositionY -= 1.2;
+
+            // Keyboard fallback still works
+            const speed = 380;
+            if (cursors.left.isDown || this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A).isDown) player.body.velocity.x -= speed;
+            if (cursors.right.isDown || this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D).isDown) player.body.velocity.x += speed;
+            if (cursors.up.isDown || this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W).isDown) player.body.velocity.y -= speed;
+            if (cursors.down.isDown || this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S).isDown) player.body.velocity.y += speed;
+
+            if (Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE))) shootLaser.call(this);
+
+            if (tripleTimer > 0) {
+                tripleTimer -= 1/60;
+                if (tripleTimer <= 0) tripleShot = false;
+            }
+
+            // Cleanup
+            lasers.getChildren().forEach(l => { if (l.y < 0) l.destroy(); });
+            obstacles.getChildren().forEach(o => { if (o.y > 850) o.destroy(); });
+            pickups.getChildren().forEach(p => { if (p.y > 850) p.destroy(); });
+            powerups.getChildren().forEach(p => { if (p.y > 850) p.destroy(); });
+
+            score += 0.8;
+            scoreText.setText('SCORE: ' + String(Math.floor(score)).padStart(6, '0'));
+        }
+
+        function shootLaser() {
+            const baseY = player.y - 50;
+            if (tripleShot) {
+                lasers.get(player.x - 25, baseY)?.setActive(true).setVisible(true).setVelocity(-180, -920).setScale(0.25).setTint(0x00ffff);
+                lasers.get(player.x, baseY)?.setActive(true).setVisible(true).setVelocityY(-950).setScale(0.25).setTint(0x00ffff);
+                lasers.get(player.x + 25, baseY)?.setActive(true).setVisible(true).setVelocity(180, -920).setScale(0.25).setTint(0x00ffff);
+            } else {
+                const laser = lasers.get(player.x, baseY);
+                if (laser) laser.setActive(true).setVisible(true).setVelocityY(-950).setScale(0.25).setTint(0x00ffff);
+            }
+        }
+
+        function fireSpecialWeapon() {
+            const special = lasers.get(player.x, player.y - 80);
+            if (special) {
+                special.setActive(true).setVisible(true).setVelocityY(-1400).setScale(2.2).setTint(0xffff00);
+                this.add.particles(player.x, player.y - 220, 'laser', {
+                    speed: {min:120, max:350}, scale:{start:1.8,end:0}, lifespan:700, quantity:45, tint:0xffff00
+                });
+            }
+        }
+
+        function spawnMoonbug() {
+            const x = Phaser.Math.Between(140, 1060);
+            const roll = Phaser.Math.Between(1, 100);
+            let bug = obstacles.create(x, -80, 'obstacle');
+
+            if (roll <= 45) {
+                bug.setScale(0.45).setTint(0x00ff88).setData('reward', 200);
+                bug.setVelocityY(210);
+            } else if (roll <= 80) {
+                bug.setScale(0.7).setTint(0xffaa00).setData('reward', 500);
+                bug.setVelocityY(155);
+            } else {
+                bug.setScale(1.05).setTint(0xff0088).setData('reward', 1200);
+                bug.setVelocityY(95);
+            }
+
+            // Slow elegant arcs - Skyforce style (easy to track)
+            this.tweens.add({
+                targets: bug,
+                x: x + Phaser.Math.Between(-220, 220),
+                duration: 1850,
+                yoyo: true,
+                repeat: -1,
+                ease: 'Sine.easeInOut'
+            });
+        }
+
+        function spawnPowerup() {
+            const pu = powerups.create(Phaser.Math.Between(180, 1020), -80, 'powerup');
+            pu.setVelocityY(90).setScale(1.2).setTint(0xffff00);
+        }
+
+        function hitMoonbug(laser, bug) {
+            const x = bug.x, y = bug.y;
+            const baseReward = bug.getData('reward') || 300;
+            const now = Date.now();
+            if (now - lastKillTime < 1200) combo++; else combo = 1;
+            lastKillTime = now;
+
+            const finalReward = Math.floor(baseReward * combo);
+
+            laser.destroy();
+            bug.destroy();
+
+            // Visible points on kill
+            const pointsText = this.add.text(x, y - 50, '+' + finalReward, {
+                fontSize: '46px', color: '#00ffff', stroke: '#ffff00', strokeThickness: 12
+            }).setOrigin(0.5);
+            this.tweens.add({ targets: pointsText, alpha: 0, y: y - 145, duration: 1350 });
+
+            // Combo popup
+            if (combo > 1) {
+                comboText.setText(combo + 'x CHAIN!');
+                comboText.setAlpha(1).setScale(1.9);
+                this.tweens.add({ targets: comboText, alpha: 0, scale: 1, y: 65, duration: 1900 });
+            }
+
+            this.add.particles(x, y, 'laser', { speed: {min:90,max:250}, scale:{start:1.2,end:0}, lifespan:1000, quantity:35, tint:0xff00ff });
+
+            const pickup = pickups.create(x, y, 'pickup');
+            pickup.setVelocityY(75).setScale(0.95).setTint(0x00ffff).setData('value', finalReward);
+        }
+
+        function collectPickup(player, pickup) {
+            const value = pickup.getData('value') || 300;
+            pickup.destroy();
+            score += value;
+        }
+
+        function collectPowerup(player, powerup) {
+            powerup.destroy();
+            tripleShot = true; tripleTimer = 12;
+            const txt = this.add.text(600, 200, 'TRIPLE SHOT!', {fontSize:'54px', color:'#ffff00', stroke:'#ff00ff', strokeThickness:14}).setOrigin(0.5).setScrollFactor(0);
+            this.tweens.add({targets:txt, alpha:0, y:120, duration:2600});
+        }
+
+        function triggerGameOver() {
+            this.scene.pause();
+            saveHighScore(Math.floor(score));
+
+            gameOverText = this.add.text(600, 300, 'CRASHED ON THE MOON!\nFINAL SCORE: ' + Math.floor(score) +
+                '\n\nPRESS R TO RESTART', {
+                fontSize: '48px', color: '#ff00ff', align: 'center', stroke: '#000000', strokeThickness: 10
+            }).setOrigin(0.5).setScrollFactor(0);
+
+            this.input.keyboard.once('keydown-R', () => location.reload());
+        }
+
+        window.onload = () => {
+            const hs = document.getElementById('highscore');
+            const saved = localStorage.getItem('moonscroll_highscore');
+            if (saved) hs.textContent = 'HIGH: ' + String(saved).padStart(6, '0');
+        };
+    </script>
+</body>
+</html>
             width: 1200,
             height: 800,
             parent: 'game-container',
