@@ -21,6 +21,33 @@
       min-height: 100vh;
       padding-top: 90px;
     }
+
+    /* GROKIpediaLite Tab */
+    .grokipedia-tab {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 10000;
+      background: rgba(10, 20, 50, 0.85);
+      border: 2px solid #00ffcc;
+      color: #ff00aa;
+      padding: 6px 18px;
+      border-radius: 30px 0 30px 30px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      box-shadow: 0 0 25px rgba(0, 255, 204, 0.6);
+      transition: all 0.3s ease;
+      pointer-events: none;
+    }
+    .grokipedia-tab:hover {
+      border-color: #ff00aa;
+      color: #00ffcc;
+      box-shadow: 0 0 35px rgba(255, 0, 170, 0.8);
+      transform: scale(1.05);
+    }
+
     .hero-origins {
       display: flex;
       align-items: center;
@@ -36,18 +63,18 @@
     }
     .hero-origins .doors:hover { transform: scale(1.08); }
 
-    /* Crew Roster */
+    /* Tighter Crew Roster */
     .crew-roster {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 1.5rem;
-      margin-bottom: 3rem;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 1.2rem;
+      margin-bottom: 2.5rem;
     }
     .member-card {
       background: rgba(10, 20, 50, 0.92);
       border: 3px solid #00ffcc;
       border-radius: 20px;
-      padding: 1rem;
+      padding: 0.9rem;
       text-align: center;
       box-shadow: 0 0 40px rgba(0, 255, 204, 0.6);
       transition: all 0.4s ease;
@@ -60,30 +87,31 @@
     }
     .member-card img {
       width: 100%;
-      height: 180px;
+      height: 165px;
       object-fit: cover;
       border-radius: 12px;
       border: 2px solid #00ffcc;
-      margin-bottom: 1rem;
+      margin-bottom: 0.8rem;
     }
     .member-card h5 {
       color: #00ffcc;
       text-shadow: 0 0 15px #00ffcc;
       margin-bottom: 0.3rem;
+      font-size: 1.05rem;
     }
     .member-card .tagline {
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       color: #ff99cc;
       font-style: italic;
     }
 
-    /* Transmission Cards */
+    /* Tighter Transmission Cards */
     .transmission-card {
       background: rgba(10, 20, 50, 0.92);
       border: 3px solid #00ffcc;
       border-radius: 24px;
-      padding: 2rem;
-      margin-bottom: 2.5rem;
+      padding: 1.6rem;
+      margin-bottom: 1.8rem;
       box-shadow: 0 0 50px rgba(0, 255, 204, 0.7);
       transition: all 0.4s ease;
       overflow: hidden;
@@ -94,12 +122,12 @@
     .transmission-header {
       display: flex;
       align-items: center;
-      gap: 1.5rem;
+      gap: 1.2rem;
       cursor: pointer;
     }
     .transmission-header img {
-      width: 90px;
-      height: 90px;
+      width: 80px;
+      height: 80px;
       object-fit: cover;
       border-radius: 50%;
       border: 3px solid #00ffcc;
@@ -110,16 +138,18 @@
       text-shadow: 0 0 20px #00ffcc;
       margin: 0;
       flex-grow: 1;
+      font-size: 1.35rem;
     }
     .expand-btn {
       background: #ff00aa;
       color: white;
       border: none;
-      padding: 10px 20px;
+      padding: 9px 18px;
       border-radius: 8px;
       font-weight: bold;
       cursor: pointer;
       transition: all 0.3s;
+      font-size: 0.95rem;
     }
     .expand-btn:hover {
       background: #ff66cc;
@@ -127,10 +157,10 @@
     }
     .transmission-body {
       display: none;
-      margin-top: 2rem;
-      padding-top: 1.5rem;
+      margin-top: 1.8rem;
+      padding-top: 1.4rem;
       border-top: 1px dashed rgba(0, 255, 204, 0.5);
-      line-height: 1.85;
+      line-height: 1.8;
     }
     .transmission-card.expanded .transmission-body {
       display: block;
@@ -140,12 +170,12 @@
       color: #112233;
     }
     .bio-section {
-      margin-bottom: 2rem;
+      margin-bottom: 1.6rem;
     }
     .bio-section h4 {
       color: #00ffcc;
       text-shadow: 0 0 15px #00ffcc;
-      margin-bottom: 0.8rem;
+      margin-bottom: 0.7rem;
     }
     .fact-pill {
       display: inline-block;
@@ -154,13 +184,36 @@
       color: #ffccdd;
       padding: 4px 14px;
       border-radius: 20px;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       margin: 6px 4px 6px 0;
+    }
+    .thumb-carousel {
+      display: flex;
+      gap: 15px;
+      overflow-x: auto;
+      padding: 15px 0;
+    }
+    .thumb-img {
+      width: 180px;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 2px solid #00ffcc;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all 0.3s ease;
+    }
+    .thumb-img:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 35px #00ffcc;
     }
   </style>
 </head>
 <body>
   <div id="nav-placeholder"></div>
+
+  <!-- GROKIpediaLite MINI APP TAB -->
+  <div class="grokipedia-tab">GROKIpediaLite</div>
 
   <!-- VIDEO TRANSITION OVERLAY -->
   <div id="transition-overlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:9999;display:none;overflow:hidden;background:#000;">
@@ -208,7 +261,7 @@
           </div>
           <div class="bio-section">
             <h4>Education, Colombia, and Rebirth</h4>
-            <p>Studied at Southern University then transferred to LSU (Pre-Vet to Information Systems). Moved to Bogotá, Colombia in 2004 after his Christian album <em>Let It Ride</em>. Acted as "El Gringo" (Correo Gringo) in the 2005 psychedelic film <em>El Colombian Dream</em>. Daughter Emma born in Ibagué in 2006. Returned to Louisiana after Hurricane Katrina.</p>
+            <p>Studied at Southern University then transferred to LSU (Pre-Vet to Information Systems). Moved to Bogotá, Colombia in 2004 after his Christian album <em>Let It Ride</em>. Acted as "El Gringo" in the 2005 psychedelic film <em>El Colombian Dream</em>. Daughter Emma born in Ibagué in 2006. Returned to Louisiana after Hurricane Katrina.</p>
           </div>
           <div class="bio-section">
             <h4>Radio & Country Comeback</h4>
@@ -266,7 +319,7 @@
         id: "boogie",
         name: "Jonathon \"Boogie\" Long",
         tagline: "Blues-Rock Guitar Shredder • King of the Blues",
-        img: "img/bandmembers/BoogieLong.jpg",   <!-- Update with your best photo when ready -->
+        img: "img/bandmembers/Boogie.jpg",
         bio: `
           <div class="bio-section">
             <h4>Baton Rouge Blues Fire</h4>
@@ -283,6 +336,24 @@
           <div class="fact-pill">2011 King of the Blues • Louisiana Music Hall of Fame • JazzFest regular • Courage in the Chaos (2026)</div>
         `,
         images: []
+      },
+      {
+        id: "shane",
+        name: "Shane Ried",
+        tagline: "Original Hogleg Band • Guitar & Vocals",
+        img: "img/bandmembers/ShaneReid.jpg",
+        bio: `
+          <div class="bio-section">
+            <h4>Founding Member of Hogleg Band</h4>
+            <p>Key original member alongside Lance Woolie. Brought raw energy and guitar firepower to the early Moon Saloon sound.</p>
+          </div>
+          <div class="bio-section">
+            <h4>Classic Lineup Moments</h4>
+            <p>Part of the original Hogleg Band that recorded and performed the early country catalog that built the foundation for everything that followed.</p>
+          </div>
+          <div class="fact-pill">Original Hogleg Band guitarist • Early Moon Saloon architect</div>
+        `,
+        images: ["img/bandmembers/OriginalHOGLEGBANDchris&shane.png"]
       },
       {
         id: "tank",
@@ -332,15 +403,23 @@
       const container = document.getElementById('transmissions-container');
       let html = '';
       crew.forEach(member => {
+        let extraImages = '';
+        if (member.images && member.images.length) {
+          extraImages = `
+            <div class="thumb-carousel mt-3">
+              ${member.images.map(src => `<img class="thumb-img" src="${src}" onclick="openModal('${src}')" alt="${member.name}">`).join('')}
+            </div>`;
+        }
         html += `
           <div class="transmission-card" id="block-${member.id}">
             <div class="transmission-header" onclick="toggleTransmission('${member.id}')">
               <img src="${member.img}" alt="${member.name}">
-              <h3>${member.name} <span style="font-size:1.1rem; color:#ff99cc;">— ${member.tagline}</span></h3>
+              <h3>${member.name} <span style="font-size:1.05rem; color:#ff99cc;">— ${member.tagline}</span></h3>
               <button class="expand-btn">OPEN TRANSMISSION</button>
             </div>
             <div class="transmission-body">
               ${member.bio}
+              ${extraImages}
             </div>
           </div>`;
       });
@@ -356,8 +435,15 @@
       const block = document.getElementById(`block-${id}`);
       if (block) {
         block.scrollIntoView({ behavior: "smooth", block: "center" });
-        setTimeout(() => block.classList.add('expanded'), 600);
+        setTimeout(() => block.classList.add('expanded'), 500);
       }
+    }
+
+    function openModal(src) {
+      const modal = document.createElement('div');
+      modal.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); display:flex; align-items:center; justify-content:center; z-index:10002;';
+      modal.innerHTML = `<img src="${src}" style="max-width:92%; max-height:92%; border-radius:16px; box-shadow:0 0 60px #00ffcc;" onclick="this.parentElement.remove()">`;
+      document.body.appendChild(modal);
     }
 
     // Video Transitions
@@ -391,7 +477,7 @@
           overlay.style.display = 'none';
           content.classList.add('show');
         }
-      }, 1600);
+      }, 1400);
 
       forwardVideo.onended = () => {
         overlay.style.display = 'none';
