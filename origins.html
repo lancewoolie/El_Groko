@@ -257,7 +257,21 @@
         tagline: "Captain • Founder • Swamp-Country Troubadour",
         img: "img/bandmembers/lance_too_drunk_bts_recordstore.png",
         grammys: 0,
-        bio: `... (Lance full bio unchanged) ...`,
+        bio: `
+          <div class="bio-section">
+            <h4>Baton Rouge Roots & Early Transmissions</h4>
+            <p>Born July 3, 1979 at 3:33 a.m. in Baton Rouge, Louisiana. Attended 17 schools amid family struggles and undiagnosed ADHD. At 17, a nonviolent juvenile arrest led to 2+ years at Jetson Correctional Center for Youth, where he rediscovered music performing with the Angola Travelin’ Band and leading worship.</p>
+          </div>
+          <div class="bio-section">
+            <h4>Education, Colombia, and Rebirth</h4>
+            <p>Studied at Southern University then transferred to LSU (Pre-Vet to Information Systems). Moved to Bogotá, Colombia in 2004 after his Christian album <em>Let It Ride</em>. Acted as "El Gringo" in the 2005 psychedelic film <em>El Colombian Dream</em>. Daughter Emma born in Ibagué in 2006. Returned to Louisiana after Hurricane Katrina.</p>
+          </div>
+          <div class="bio-section">
+            <h4>Radio & Country Comeback</h4>
+            <p>Created over 500 comedy songs as "El Gringo" for the Walton & Johnson show starting ~2016. In 2020, during COVID, shifted to serious country with Hogleg Band. Co-produced <em>Country Paradise</em> with Brian Brignac, Corban Barnes, and Chris Roberts. Rebranded solo and is finishing <em>The Whole Two Dollars</em> with elite Nashville players.</p>
+          </div>
+          <div class="fact-pill">Born in old Woman's Hospital • Angola Band performer • El Gringo radio legend • Forthcoming album 2026</div>
+        `,
         images: []
       },
       {
@@ -266,7 +280,21 @@
         tagline: "12× ACM Guitarist of the Year • Most Recorded Guitarist in History",
         img: "img/bandmembers/Brent Mason LIVE.png",
         grammys: 1,
-        bio: `... (Brent full bio unchanged) ...`,
+        bio: `
+          <div class="bio-section">
+            <h4>Nashville Session Legend</h4>
+            <p>Self-taught from age 5 in Ohio. Moved to Nashville late 1970s. Discovered by Chet Atkins. Played on over 1,000 albums for George Strait, Alan Jackson, Shania Twain, Brad Paisley, and many more.</p>
+          </div>
+          <div class="bio-section">
+            <h4>Awards & Signature Sound</h4>
+            <p>Grammy winner ("Cluster Pluck"), 12× ACM Guitarist of the Year, 2× CMA Musician of the Year, Musicians Hall of Fame inductee. Famous for hybrid picking, chicken-pickin', and Telecaster twang.</p>
+          </div>
+          <div class="bio-section">
+            <h4>Moon Saloon Connection</h4>
+            <p>Laid down iconic guitar on Lance Woolie’s "Too Drunk", "Uber", "Worst Enemy", and more. A Godsend collaborator bringing world-class tone to the Shackleton Crater sound.</p>
+          </div>
+          <div class="fact-pill">Grammy Winner • 12× ACM • Chet Atkins mentee • Telecaster master</div>
+        `,
         images: []
       },
       {
@@ -275,7 +303,21 @@
         tagline: "Drummer • Producer • Brignac Lane Studios",
         img: "img/bandmembers/BrianBrignac_TabBenoit.png",
         grammys: 1,
-        bio: `... (Brian full bio unchanged) ...`,
+        bio: `
+          <div class="bio-section">
+            <h4>Louisiana Rhythm Powerhouse</h4>
+            <p>From the Gonzales/St. Amant area. Started drums at 15. Studied music education at LSU. Longtime drummer for Sonny Landreth (20+ years), appearing on Grammy-nominated albums and Eric Clapton’s Crossroads Festival.</p>
+          </div>
+          <div class="bio-section">
+            <h4>Studio & Production Legend</h4>
+            <p>Owns Brignac Lane Studios. Engineered/produced for Jo-el Sonnier (Grammy-winning album), Wayne Toups, Warren Storm, Tab Benoit, and many more. Grammy-nominated engineering work.</p>
+          </div>
+          <div class="bio-section">
+            <h4>Moon Saloon Connection</h4>
+            <p>Co-produced Lance Woolie’s <em>Country Paradise</em> album with Hogleg Band — raw, reflective Southern storytelling full of scars and triumphs.</p>
+          </div>
+          <div class="fact-pill">Sonny Landreth drummer 20+ years • Brignac Lane Studios owner • Grammy Winner</div>
+        `,
         images: []
       },
       {
@@ -307,7 +349,13 @@
         tagline: "M35 Abrams is the Big Guns",
         img: "img/bandmembers/TANk.jpg",
         grammys: 0,
-        bio: `... (Tank bio unchanged) ...`,
+        bio: `
+          <div class="bio-section">
+            <h4>Heavy Low-End Destroyer</h4>
+            <p>Bass monster bringing thunderous grooves and funk/slap mastery to the Louisiana scene. Delivers unstoppable bottom end that shakes the Moon Saloon floor.</p>
+          </div>
+          <div class="fact-pill">Uptown Funk loops • Slap & pop specialist • Big Guns on bass</div>
+        `,
         images: []
       },
       {
@@ -316,7 +364,13 @@
         tagline: "Multi-Instrumentalist • Country Paradise Co-Producer",
         img: "img/bandmembers/CORBANGEETAR&Keys.png",
         grammys: 0,
-        bio: `... (Corban bio unchanged) ...`,
+        bio: `
+          <div class="bio-section">
+            <h4>Versatile Louisiana Player</h4>
+            <p>Key contributor on keys, guitar, and production for Lance Woolie’s <em>Country Paradise</em> album alongside Brian Brignac and Chris Roberts.</p>
+          </div>
+          <div class="fact-pill">Co-producer • Multi-instrumentalist</div>
+        `,
         images: []
       },
       {
@@ -326,128 +380,13 @@
         img: "img/bandmembers/Boogie.jpg",
         grammys: 0,
         isGuest: true,
-        bio: `... (Boogie bio unchanged) ...`,
-        images: []
-      }
-    ];
-
-    // === Render Functions (unchanged except for Shane's new bio) ===
-    function renderCrew() {
-      const container = document.getElementById('crew-roster');
-      let html = '';
-      crew.forEach(member => {
-        const guestClass = member.isGuest ? ' guest' : '';
-        html += `
-          <div class="member-card${guestClass}" onclick="scrollToMember('${member.id}')">
-            <img src="${member.img}" alt="${member.name}">
-            <h5>${member.name}</h5>
-            <div class="tagline">${member.tagline}</div>
-          </div>`;
-      });
-      container.innerHTML = html;
-    }
-
-    function renderTransmissions() {
-      const container = document.getElementById('transmissions-container');
-      let html = '';
-      crew.forEach(member => {
-        const trophyHTML = member.grammys > 0 
-          ? `<div class="trophy-count">🏆${member.grammys}x</div>` 
-          : '';
-
-        let extraImages = '';
-        if (member.images && member.images.length) {
-          extraImages = `
-            <div class="thumb-carousel mt-3">
-              ${member.images.map(src => `<img class="thumb-img" src="${src}" onclick="openModal('${src}')" alt="${member.name}">`).join('')}
-            </div>`;
-        }
-
-        html += `
-          <div class="transmission-card" id="block-${member.id}">
-            <div class="transmission-header" onclick="toggleTransmission('${member.id}')">
-              <img src="${member.img}" alt="${member.name}">
-              <h3>${member.name} <span style="font-size:1.05rem; color:#ff99cc;">— ${member.tagline}</span></h3>
-              <button class="expand-btn">OPEN TRANSMISSION</button>
-              ${trophyHTML}
-            </div>
-            <div class="transmission-body">
-              ${member.bio}
-              ${extraImages}
-            </div>
-          </div>`;
-      });
-      container.innerHTML = html;
-    }
-
-    function toggleTransmission(id) {
-      const card = document.getElementById(`block-${id}`);
-      card.classList.toggle('expanded');
-    }
-
-    function scrollToMember(id) {
-      const block = document.getElementById(`block-${id}`);
-      if (block) {
-        block.scrollIntoView({ behavior: "smooth", block: "center" });
-        setTimeout(() => block.classList.add('expanded'), 500);
-      }
-    }
-
-    function openModal(src) {
-      const modal = document.createElement('div');
-      modal.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); display:flex; align-items:center; justify-content:center; z-index:10002;';
-      modal.innerHTML = `<img src="${src}" style="max-width:92%; max-height:92%; border-radius:16px; box-shadow:0 0 60px #00ffcc;" onclick="this.parentElement.remove()">`;
-      document.body.appendChild(modal);
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      renderCrew();
-      renderTransmissions();
-
-      const overlay = document.getElementById('transition-overlay');
-      const forwardVideo = document.getElementById('forward-video');
-      const reverseVideo = document.getElementById('reverse-video');
-      const content = document.getElementById('main-content');
-
-      forwardVideo.src = '/video/origins-video-transition.mp4';
-      reverseVideo.src = '/video/origins-video-reverse.mp4';
-
-      overlay.style.display = 'block';
-      forwardVideo.style.display = 'block';
-
-      let started = false;
-      forwardVideo.oncanplaythrough = () => {
-        if (started) return;
-        started = true;
-        forwardVideo.muted = true;
-        forwardVideo.volume = 0.5;
-        forwardVideo.play().catch(() => {});
-      };
-
-      setTimeout(() => {
-        if (!started) {
-          started = true;
-          overlay.style.display = 'none';
-          content.classList.add('show');
-        }
-      }, 1400);
-
-      forwardVideo.onended = () => {
-        overlay.style.display = 'none';
-        content.classList.add('show');
-      };
-
-      document.getElementById('saloon-doors-back').addEventListener('click', (e) => {
-        e.preventDefault();
-        overlay.style.display = 'block';
-        forwardVideo.style.display = 'none';
-        reverseVideo.style.display = 'block';
-        reverseVideo.currentTime = 0;
-        reverseVideo.volume = 0.5;
-        reverseVideo.play().catch(() => {});
-        reverseVideo.onended = () => window.location.href = 'index.html';
-      });
-    });
-  </script>
-</body>
-</html>
+        bio: `
+          <div class="bio-section">
+            <h4>Special Guest on Album</h4>
+            <p>World-class blues-rock guitarist who recorded the guitar solo for "Little Wing" on Lance Woolie’s album.</p>
+          </div>
+          <div class="bio-section">
+            <h4>About Boogie Long</h4>
+            <p>2011 Guitar Center King of the Blues winner, frequent New Orleans Jazz & Heritage Festival performer, and Louisiana Music Hall of Fame inductee.</p>
+          </div>
+          <div class="fact-pill">Special Guest •
