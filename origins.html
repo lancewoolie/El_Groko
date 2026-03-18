@@ -36,7 +36,7 @@
     }
     .hero-origins .doors:hover { transform: scale(1.08); }
 
-    /* Crew Roster - abc.html style glowing cards */
+    /* Crew Roster */
     .crew-roster {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -77,7 +77,7 @@
       font-style: italic;
     }
 
-    /* Transmission Blocks - sexy floating style */
+    /* Transmission Cards */
     .transmission-card {
       background: rgba(10, 20, 50, 0.92);
       border: 3px solid #00ffcc;
@@ -182,14 +182,10 @@
       <div class="container py-4">
         <!-- CREW ROSTER -->
         <h2 class="text-center mb-4" style="color:#00ffcc; text-shadow:0 0 30px #00ffcc;">THE CREW OF THE MOON SALOON</h2>
-        <div class="crew-roster" id="crew-roster">
-          <!-- Populated by JS -->
-        </div>
+        <div class="crew-roster" id="crew-roster"></div>
 
         <!-- TRANSMISSION BLOCKS -->
-        <div id="transmissions-container">
-          <!-- Populated by JS -->
-        </div>
+        <div id="transmissions-container"></div>
       </div>
     </div>
   </div>
@@ -199,29 +195,28 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
   <script>
-    // ====================== CREW DATA ======================
     const crew = [
       {
         id: "lance",
         name: "Lance Woolie",
         tagline: "Captain • Founder • Swamp-Country Troubadour",
-        img: "img/bandmembers/LanceWoolie-main.jpg", // replace with your best clean portrait
+        img: "img/bandmembers/lance_too_drunk_bts_recordstore.png",
         bio: `
           <div class="bio-section">
-            <h4>Early Transmissions</h4>
-            <p>Born July 3, 1979 at 3:33 a.m. in Baton Rouge, Louisiana. Survived 17 schools, juvenile detention at Jetson Correctional Center, and emerged playing guitar with the Angola Travelin’ Band.</p>
+            <h4>Baton Rouge Roots & Early Transmissions</h4>
+            <p>Born July 3, 1979 at 3:33 a.m. in Baton Rouge, Louisiana. Attended 17 schools amid family struggles and undiagnosed ADHD. At 17, a nonviolent juvenile arrest led to 2+ years at Jetson Correctional Center for Youth, where he rediscovered music performing with the Angola Travelin’ Band and leading worship.</p>
           </div>
           <div class="bio-section">
-            <h4>Colombia Chapter & Rebirth</h4>
-            <p>Acted as "El Gringo" in the 2005 film <em>El Colombian Dream</em>. Daughter Emma born in Ibagué. Returned to Louisiana roots and rebuilt his country sound.</p>
+            <h4>Education, Colombia, and Rebirth</h4>
+            <p>Studied at Southern University then transferred to LSU (Pre-Vet to Information Systems). Moved to Bogotá, Colombia in 2004 after his Christian album <em>Let It Ride</em>. Acted as "El Gringo" (Correo Gringo) in the 2005 psychedelic film <em>El Colombian Dream</em>. Daughter Emma born in Ibagué in 2006. Returned to Louisiana after Hurricane Katrina.</p>
           </div>
           <div class="bio-section">
-            <h4>Moon Saloon Era</h4>
-            <p>Formed Hogleg Band → solo artist. Releasing <em>The Whole Two Dollars</em> with Nashville-caliber players. Radio personality as "El Gringo" on Walton & Johnson and 105.3 FREE FM.</p>
+            <h4>Radio & Country Comeback</h4>
+            <p>Created over 500 comedy songs as "El Gringo" for the Walton & Johnson show starting ~2016. In 2020, during COVID, shifted to serious country with Hogleg Band. Co-produced <em>Country Paradise</em> with Brian Brignac, Corban Barnes, and Chris Roberts. Rebranded solo and is finishing <em>The Whole Two Dollars</em> with elite Nashville players.</p>
           </div>
-          <div class="fact-pill">17 schools • Angola Band survivor • Colombia film star • Forthcoming album 2026</div>
+          <div class="fact-pill">Born in old Woman's Hospital • Angola Band performer • El Gringo radio legend • Forthcoming album 2026</div>
         `,
-        images: ["img/bandmembers/Brent Mason LIVE.png", "img/COUNTRY-PARADISE-scaled.jpg"] // add more of yours
+        images: []
       },
       {
         id: "brent",
@@ -230,20 +225,20 @@
         img: "img/bandmembers/Brent Mason LIVE.png",
         bio: `
           <div class="bio-section">
-            <h4>Legend from Ohio to Nashville</h4>
-            <p>Self-taught from age 5. Moved to Nashville in 1977. Discovered by Chet Atkins. Became the go-to session guitarist for over 1,000 albums.</p>
+            <h4>Nashville Session Legend</h4>
+            <p>Self-taught from age 5 in Ohio. Moved to Nashville late 1970s. Discovered by Chet Atkins. Played on over 1,000 albums for George Strait, Alan Jackson, Shania Twain, Brad Paisley, and many more.</p>
           </div>
           <div class="bio-section">
-            <h4>Awards & Sound</h4>
-            <p>Grammy for "Cluster Pluck" • 12 ACM Guitarist of the Year • 2 CMA Musician of the Year. Signature Telecaster twang and hybrid picking.</p>
+            <h4>Awards & Signature Sound</h4>
+            <p>Grammy winner ("Cluster Pluck"), 12× ACM Guitarist of the Year, 2× CMA Musician of the Year, Musicians Hall of Fame inductee. Famous for hybrid picking, chicken-pickin', and Telecaster twang.</p>
           </div>
           <div class="bio-section">
             <h4>Moon Saloon Connection</h4>
-            <p>Laid down monster guitar on "Too Drunk", "Uber", "Worst Enemy", and "Crazy Arms". A Godsend collaborator and friend to Lance Woolie.</p>
+            <p>Laid down iconic guitar on Lance Woolie’s "Too Drunk", "Uber", "Worst Enemy", and more. A Godsend collaborator bringing world-class tone to the Shackleton Crater sound.</p>
           </div>
-          <div class="fact-pill">Grammy Winner • 12× ACM • Played with Strait, Jones, Paisley, Reba & more</div>
+          <div class="fact-pill">Grammy Winner • 12× ACM • Chet Atkins mentee • Telecaster master</div>
         `,
-        images: ["img/bandmembers/Brent Mason LIVE.png"]
+        images: []
       },
       {
         id: "brian",
@@ -252,27 +247,41 @@
         img: "img/bandmembers/BrianBrignac_TabBenoit.png",
         bio: `
           <div class="bio-section">
-            <h4>Louisiana Powerhouse</h4>
-            <p>From Gonzales/St. Amant area. Longtime drummer for Sonny Landreth (20+ years). Owns Brignac Lane Studios in St. Amant.</p>
+            <h4>Louisiana Rhythm Powerhouse</h4>
+            <p>From the Gonzales/St. Amant area. Started drums at 15. Studied music education at LSU. Longtime drummer for Sonny Landreth (20+ years), appearing on Grammy-nominated albums and Eric Clapton’s Crossroads Festival.</p>
           </div>
           <div class="bio-section">
-            <h4>Credits That Shake the Bayou</h4>
-            <p>Worked with Fats Domino, Jimmy Buffett, Tab Benoit, Jo-el Sonnier (Grammy album), Wayne Toups, Warren Storm, and many more. Engineered/produced national and regional projects.</p>
+            <h4>Studio & Production Legend</h4>
+            <p>Owns Brignac Lane Studios. Engineered/produced for Jo-el Sonnier (Grammy-winning album), Wayne Toups, Warren Storm, Tab Benoit, and many more. Grammy-nominated engineering work.</p>
           </div>
           <div class="bio-section">
             <h4>Moon Saloon Connection</h4>
-            <p>Co-produced Lance Woolie’s <em>Country Paradise</em> album with Hogleg Band — raw, reflective, and full of scars and triumphs.</p>
+            <p>Co-produced Lance Woolie’s <em>Country Paradise</em> album with Hogleg Band — raw, reflective Southern storytelling full of scars and triumphs.</p>
           </div>
-          <div class="fact-pill">Sonny Landreth drummer • Studio owner • Grammy-nominated engineer</div>
+          <div class="fact-pill">Sonny Landreth drummer 20+ years • Brignac Lane Studios owner • Grammy-nominated engineer</div>
         `,
-        images: ["img/bandmembers/BrianBrignac_TabBenoit.png", "img/bandmembers/lance_shane_fatcats.png"]
+        images: []
       },
       {
         id: "boogie",
         name: "Jonathon \"Boogie\" Long",
-        tagline: "Guitarist • Louisiana Blues-Rock Fire",
-        img: "img/bandmembers/BoogieLong.jpg", // update with your image
-        bio: `<p>Powerful slide and lead guitarist. Shared the stage with Lance Woolie for a fiery “Little Wing” at The Texas Club in June 2025.</p>`,
+        tagline: "Blues-Rock Guitar Shredder • King of the Blues",
+        img: "img/bandmembers/BoogieLong.jpg",   <!-- Update with your best photo when ready -->
+        bio: `
+          <div class="bio-section">
+            <h4>Baton Rouge Blues Fire</h4>
+            <p>Started guitar at age 6 in a Southern Baptist church. Performing professionally by age 10. Left high school at 14 to tour. Won Guitar Center’s King of the Blues in 2011 (national title, $25k, Gibson Les Paul, and more).</p>
+          </div>
+          <div class="bio-section">
+            <h4>Festival & Stage Destroyer</h4>
+            <p>Regular at New Orleans Jazz & Heritage Festival (Blues Tent, 15+ years). Shared stages with B.B. King, ZZ Top, Joe Bonamassa, Gov’t Mule, Dr. John, and more. Albums charted Billboard Top 10 Blues.</p>
+          </div>
+          <div class="bio-section">
+            <h4>Moon Saloon Connection</h4>
+            <p>Joined Lance Woolie onstage for a fiery "Little Wing" at The Texas Club in June 2025. Pure Louisiana guitar energy fueling the Saloon.</p>
+          </div>
+          <div class="fact-pill">2011 King of the Blues • Louisiana Music Hall of Fame • JazzFest regular • Courage in the Chaos (2026)</div>
+        `,
         images: []
       },
       {
@@ -283,40 +292,28 @@
         bio: `
           <div class="bio-section">
             <h4>Heavy Low-End Destroyer</h4>
-            <p>Bass monster known for thunderous grooves and funk/slap mastery. Longtime Louisiana scene veteran bringing unstoppable bottom end to the Moon Saloon.</p>
+            <p>Bass monster bringing thunderous grooves and funk/slap mastery to the Louisiana scene. Delivers unstoppable bottom end that shakes the Moon Saloon floor.</p>
           </div>
           <div class="fact-pill">Uptown Funk loops • Slap & pop specialist • Big Guns on bass</div>
         `,
         images: []
       },
       {
-        id: "scotty",
-        name: "Scotty Sanders",
-        tagline: "Pedal Steel Sorcerer",
-        img: "img/bandmembers/ScottySanders.jpg", // update
-        bio: `<p>Elite pedal steel guitarist. Delivered the weeping, soaring steel on Lance Woolie’s “Crazy Arms” alongside Brent Mason.</p>`,
-        images: []
-      },
-      // Add Corban Barnes and Zach Blackwell similarly when you have images/taglines
-      {
         id: "corban",
         name: "Corban Barnes",
         tagline: "Multi-Instrumentalist • Country Paradise Co-Producer",
         img: "img/bandmembers/CORBANGEETAR&Keys.png",
-        bio: `<p>Key contributor to <em>Country Paradise</em>. Versatile player and co-producer with Lance and Brian Brignac.</p>`,
-        images: []
-      },
-      {
-        id: "zach",
-        name: "Zach Blackwell",
-        tagline: "Drummer • Live Fire",
-        img: "img/bandmembers/ZachBlackwell.jpg", // update
-        bio: `<p>Powerful drummer keeping the Moon Saloon rhythm locked tight.</p>`,
+        bio: `
+          <div class="bio-section">
+            <h4>Versatile Louisiana Player</h4>
+            <p>Key contributor on keys, guitar, and production for Lance Woolie’s <em>Country Paradise</em> album alongside Brian Brignac and Chris Roberts.</p>
+          </div>
+          <div class="fact-pill">Co-producer • Multi-instrumentalist</div>
+        `,
         images: []
       }
     ];
 
-    // Render Crew Roster
     function renderCrew() {
       const container = document.getElementById('crew-roster');
       let html = '';
@@ -331,7 +328,6 @@
       container.innerHTML = html;
     }
 
-    // Render Transmission Blocks
     function renderTransmissions() {
       const container = document.getElementById('transmissions-container');
       let html = '';
@@ -345,10 +341,6 @@
             </div>
             <div class="transmission-body">
               ${member.bio}
-              ${member.images && member.images.length ? `
-                <div class="thumb-carousel mt-4">
-                  ${member.images.map(src => `<img class="thumb-img" src="${src}" onclick="openModal('${src}')" alt="${member.name}">`).join('')}
-                </div>` : ''}
             </div>
           </div>`;
       });
@@ -364,19 +356,11 @@
       const block = document.getElementById(`block-${id}`);
       if (block) {
         block.scrollIntoView({ behavior: "smooth", block: "center" });
-        // Auto-expand on click from roster
         setTimeout(() => block.classList.add('expanded'), 600);
       }
     }
 
-    function openModal(src) {
-      const modal = document.createElement('div');
-      modal.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); display:flex; align-items:center; justify-content:center; z-index:10002;';
-      modal.innerHTML = `<img src="${src}" style="max-width:92%; max-height:92%; border-radius:16px; box-shadow:0 0 60px #00ffcc;" onclick="this.parentElement.remove()">`;
-      document.body.appendChild(modal);
-    }
-
-    // ====================== TRANSITIONS ======================
+    // Video Transitions
     document.addEventListener('DOMContentLoaded', () => {
       renderCrew();
       renderTransmissions();
@@ -414,7 +398,6 @@
         content.classList.add('show');
       };
 
-      // Reverse transition
       document.getElementById('saloon-doors-back').addEventListener('click', (e) => {
         e.preventDefault();
         overlay.style.display = 'block';
