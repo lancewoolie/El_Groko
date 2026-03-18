@@ -6,15 +6,65 @@
     <title>Moon Scroll</title>
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.70.0/dist/phaser.min.js"></script>
     <style>
-        body { margin:0; padding:0; background:#0a0a1f; overflow:hidden; font-family:'Courier New', monospace; }
+        body { margin:0; padding:0; background:#0a0a1f; overflow:hidden; }
         #game { width:100vw; height:100vh; }
-        h1 { position:absolute; top:15px; left:50%; transform:translateX(-50%); color:#00ffff; text-shadow:0 0 30px #ff00ff; font-size:2.8rem; z-index:10; }
+        h1 { position:absolute; top:15px; left:50%; transform:translateX(-50%); color:#00ffff; text-shadow:0 0 30px #ff00ff; font-size:2.5rem; z-index:10; }
     </style>
 </head>
 <body>
     <h1>🌕 MOON SCROLL 🌕</h1>
     <div id="game"></div>
 
-    <script src="main.js"></script>
+    <script>
+        const config = {
+            type: Phaser.AUTO,
+            width: 1200,
+            height: 800,
+            parent: 'game',
+            backgroundColor: '#0a0a1f',
+            scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
+            physics: { default: 'arcade', arcade: { debug: false } },
+            scene: { create: create, update: update }
+        };
+
+        new Phaser.Game(config);
+
+        function create() {
+            this.add.rectangle(600, 400, 1200, 800, 0x111133);
+
+            const player = this.add.text(600, 650, '[X]', { fontSize: '90px' }).setOrigin(0.5);
+            this.physics.add.existing(player);
+            player.body.setCollideWorldBounds(true);
+
+            const obstacles = this.physics.add.group();
+
+            // Spawn one bot immediately, then every 3 seconds
+            spawnBot.call(this, obstacles);
+            this.time.addEvent({ delay: 3000, callback: () => spawnBot.call(this, obstacles), loop: true });
+
+            this.input.on('pointermove', p => this.physics.moveTo(player, p.worldX, p.worldY, 500));
+        }
+
+        function update() {}
+
+        function spawnBot(obstacles) {
+            const x = Phaser.Math.Between(200, 1000);
+            const bot = obstacles.create(x, -60, '__MISSING');
+            bot.setScale(1.2);
+            bot.setVelocityY(90);
+
+            const emoji = this.add.text(0, 0, '🚀', { fontSize: '70px' }).setOrigin(0.5);
+            bot.add(emoji);
+
+            this.tweens.add({
+                targets: bot,
+                x: x + Phaser.Math.Between(-100, 100),
+                duration: 2500,
+                yoyo: true,
+                repeat: -1,
+                ease: 'Sine.easeInOut'
+            });
+        }
+    </script>
 </body>
 </html>
