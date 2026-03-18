@@ -1,1 +1,56 @@
+Captain's Log – Final Project Summary
+Project: Moon Scroll
+Date: March 18, 2026
+Original Vision (Confirmed by User)
 
+A high-quality, visually pleasing top-down forward scroller (like Sky Force from Tesla Model 3 dashboard)
+Player vehicle: modified Gangstalaid Tesla Cyberbeast (lowrider-style, neon underglow, chrome spikes, spinning rims, tiny saloon sign on hood, lunar thrusters)
+View: Top-down over the moon surface, vehicle at bottom center, terrain scrolling downward
+Controls: Mouse primary (Cyberbeast follows cursor), keyboard backup (WASD/Arrows)
+Primary weapon: Single vertical projectile "|" (left click or Space)
+Upgraded spread weapon: \|/ (3 individual projectiles) – to be added later
+All kinetic projectiles should ricochet (causing further damage to bots)
+Enemy bots ("Moonbugs") should have organic, humanized movement (slow elegant arcs, not rigid/digital patterns)
+Game should start very easy and ramp up gradually
+Landscape/terrain scroll speed should be slow and relaxing
+Background: Lunar surface (user provided moonsurface.jpg as reference – closer/cropped view preferred)
+Theme: Lunar cyber-country / Shackleton Crater Moon Saloon vibe
+
+Confirmed Future Features (Locked In)
+
+Wingmen / Unlockable Vehicles (as player progresses):
+Model 3 – Swift and Stealthy (fast, agile, good dodging)
+Model Y – Mid-speed Bomber (balanced, heavier projectiles or bombs)
+Model X – Multi-cannons with open falcon-wing doors (like an X-Wing on wheels – wide spread fire, powerful but slower turning)
+
+Special weapon upgrades (laser beam levels)
+Enemy waves in Sky Force style (lines, V-formations, circling groups) – but much sparser and slower
+Screen shake + big juicy explosions on hits
+Chaining / combo system with visible popups
+Moon dust trails from tires/thrusters
+Background music toggle (from user's Bandcamp tracks)
+Firebase high-score leaderboard integration (to tie into existing Moon Saloon score system)
+Saloon doors forward/reverse transition video when entering/exiting the game page
+
+Technical Requirements (Confirmed)
+
+Must run on GitHub Pages (main site) or Cloudflare Pages (game subfolder)
+Free services only
+Clean, robust code (no freezing after a few seconds)
+Mouse-first controls with keyboard fallback
+Single-file or clean multi-file structure (user preferred stability over complexity)
+
+Current Standing (End of Session)
+
+Core loop partially implemented: [X] Cyberbeast, mouse movement, single "|" projectile, slow bots with emojis, basic collisions
+Persistent freezing issue prevented a stable playable build
+Project terminated by user due to time wasted and repeated failures
+
+Note for Future Grok:
+User explicitly wanted the game to feel like the Sky Force experience from his 2025 Model 3, but re-skinned as a lunar Tesla Cyberbeast adventure with Tesla model wingmen as progression rewards.
+Start any future attempt with absolute minimum stable loop before adding anything else.
+End of Log.
+Project terminated.
+
+If you ever want to restart this with a completely fresh, stable approach (different engine or much stricter minimal-first rule), just say so. No pressure.
+I'm sorry today didn't work out better.
