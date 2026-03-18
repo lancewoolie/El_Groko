@@ -6,9 +6,9 @@
     <title>Moon Scroll</title>
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.70.0/dist/phaser.min.js"></script>
     <style>
-        body { margin:0; padding:0; background:#0a0a1f; overflow:hidden; }
+        body { margin:0; padding:0; background:#0a0a1f; overflow:hidden; font-family:'Courier New', monospace; }
         #game { width:100vw; height:100vh; }
-        h1 { position:absolute; top:15px; left:50%; transform:translateX(-50%); color:#00ffff; text-shadow:0 0 30px #ff00ff; font-size:2.5rem; z-index:10; }
+        h1 { position:absolute; top:15px; left:50%; transform:translateX(-50%); color:#00ffff; text-shadow:0 0 30px #ff00ff; font-size:2.8rem; z-index:10; }
     </style>
 </head>
 <body>
@@ -30,41 +30,62 @@
         new Phaser.Game(config);
 
         function create() {
-            this.add.rectangle(600, 400, 1200, 800, 0x111133);
+            // Background
+            this.add.rectangle(600, 400, 1200, 800, 0x0a0a2a);
 
+            // Cyberbeast
             const player = this.add.text(600, 650, '[X]', { fontSize: '90px' }).setOrigin(0.5);
             this.physics.add.existing(player);
             player.body.setCollideWorldBounds(true);
+            player.body.setDrag(800);
 
+            const lasers = this.physics.add.group();
             const obstacles = this.physics.add.group();
 
-            // Spawn one bot immediately, then every 3 seconds
-            spawnBot.call(this, obstacles);
-            this.time.addEvent({ delay: 3000, callback: () => spawnBot.call(this, obstacles), loop: true });
+            this.add.text(30, 20, 'SCORE: 000000', { fontSize: '36px', color: '#00ffff', stroke: '#ff00ff', strokeThickness: 8 });
 
-            this.input.on('pointermove', p => this.physics.moveTo(player, p.worldX, p.worldY, 500));
+            // Mouse movement
+            this.input.on('pointermove', p => this.physics.moveTo(player, p.worldX, p.worldY, 520));
+
+            // Left click = single "|" projectile
+            this.input.on('pointerdown', () => {
+                const laser = lasers.create(player.x, player.y - 70, '__MISSING');
+                laser.setVelocityY(-1100);
+                laser.setScale(0.7);
+                laser.setTint(0x00ffff);
+            });
+
+            // Spawn bots slowly
+            this.time.addEvent({
+                delay: 2200,
+                callback: () => {
+                    const x = Phaser.Math.Between(180, 1020);
+                    const bot = obstacles.create(x, -60, '__MISSING');
+                    bot.setScale(1.2);
+                    bot.setVelocityY(85);
+
+                    const emoji = this.add.text(0, 0, Phaser.Math.RND.pick(['🚀','🪐','🌑','☄️']), { fontSize: '65px' }).setOrigin(0.5);
+                    bot.add(emoji);
+
+                    this.tweens.add({
+                        targets: bot,
+                        x: x + Phaser.Math.Between(-90, 90),
+                        duration: 3000,
+                        yoyo: true,
+                        repeat: -1,
+                        ease: 'Sine.easeInOut'
+                    });
+                },
+                loop: true
+            });
+
+            this.physics.add.collider(lasers, obstacles, (laser, bot) => {
+                laser.destroy();
+                bot.destroy();
+            });
         }
 
         function update() {}
-
-        function spawnBot(obstacles) {
-            const x = Phaser.Math.Between(200, 1000);
-            const bot = obstacles.create(x, -60, '__MISSING');
-            bot.setScale(1.2);
-            bot.setVelocityY(90);
-
-            const emoji = this.add.text(0, 0, '🚀', { fontSize: '70px' }).setOrigin(0.5);
-            bot.add(emoji);
-
-            this.tweens.add({
-                targets: bot,
-                x: x + Phaser.Math.Between(-100, 100),
-                duration: 2500,
-                yoyo: true,
-                repeat: -1,
-                ease: 'Sine.easeInOut'
-            });
-        }
     </script>
 </body>
 </html>
