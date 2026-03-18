@@ -35,8 +35,7 @@
         };
 
         let game = new Phaser.Game(config);
-        let player, cursors, lasers, obstacles, turrets, turretBullets, pickups, powerups;
-        let score = 0, highScore = 0;
+        let player, cursors, lasers, obstacles, pickups, powerups, score = 0, highScore = 0;
         let scoreText, highScoreText, comboText;
         let bg1, bg2;
         let combo = 0, lastKillTime = 0;
@@ -63,7 +62,6 @@
             this.load.image('obstacle', 'https://i.imgur.com/5fQjK8p.png');
             this.load.image('pickup', 'https://i.imgur.com/0XwZf0J.png');
             this.load.image('powerup', 'https://i.imgur.com/0XwZf0J.png');
-            this.load.image('turret', 'https://i.imgur.com/5fQjK8p.png'); // reuse for now
         }
 
         function create() {
@@ -78,35 +76,31 @@
             player.setDrag(400);
 
             lasers = this.physics.add.group({ defaultKey: 'laser', maxSize: 60 });
-            obstacles = this.physics.add.group();      // moving Moonbugs
-            turrets = this.physics.add.group();        // stationary turrets
-            turretBullets = this.physics.add.group();  // slow turret shots
+            obstacles = this.physics.add.group();
             pickups = this.physics.add.group();
             powerups = this.physics.add.group();
 
             scoreText = this.add.text(30, 20, 'SCORE: 000000', { fontSize: '32px', color: '#00ffff', stroke: '#ff00ff', strokeThickness: 6 }).setScrollFactor(0);
             highScoreText = this.add.text(750, 20, 'HIGH: ' + String(highScore).padStart(6, '0'), { fontSize: '32px', color: '#ff00ff', stroke: '#00ffff', strokeThickness: 4 }).setScrollFactor(0);
 
-            comboText = this.add.text(600, 120, '', { fontSize: '58px', color: '#ffff00', stroke: '#ff00ff', strokeThickness: 12 }).setOrigin(0.5).setScrollFactor(0).setAlpha(0);
+            comboText = this.add.text(600, 110, '', { fontSize: '64px', color: '#ffff00', stroke: '#ff00ff', strokeThickness: 14 }).setOrigin(0.5).setScrollFactor(0).setAlpha(0);
 
             cursors = this.input.keyboard.createCursorKeys();
 
-            // Spawners
+            // Spawn bots every 850ms
             this.time.addEvent({ delay: 850, callback: spawnMoonbug, callbackScope: this, loop: true });
-            this.time.addEvent({ delay: 9000, callback: spawnLineSwarm, callbackScope: this, loop: true });
-            this.time.addEvent({ delay: 14000, callback: spawnTurret, callbackScope: this, loop: true });
             this.time.addEvent({ delay: 12000, callback: spawnPowerup, callbackScope: this, loop: true });
 
-            // Collisions
             this.physics.add.collider(lasers, obstacles, hitMoonbug, null, this);
-            this.physics.add.collider(lasers, turrets, hitTurret, null, this);
-            this.physics.add.collider(player, turretBullets, hitByTurret, null, this);
             this.physics.add.overlap(player, pickups, collectPickup, null, this);
             this.physics.add.overlap(player, powerups, collectPowerup, null, this);
             this.physics.add.collider(player, obstacles, triggerGameOver, null, this);
-            this.physics.add.collider(player, turrets, triggerGameOver, null, this);
 
-            this.input.on('pointerdown', shootLaser, this);
+            // Mouse controls
+            this.input.on('pointerdown', (pointer) => {
+                if (pointer.leftButtonDown()) shootLaser.call(this);           // Left click = normal fire
+                if (pointer.rightButtonDown()) fireSpecialWeapon.call(this);   // Right click = special weapon
+            });
 
             document.getElementById('fullscreen-btn').addEventListener('click', () => document.documentElement.requestFullscreen());
         }
@@ -132,9 +126,7 @@
 
             // Cleanup
             lasers.getChildren().forEach(l => { if (l.y < 0) l.destroy(); });
-            turretBullets.getChildren().forEach(b => { if (b.y > 850) b.destroy(); });
             obstacles.getChildren().forEach(o => { if (o.y > 850) o.destroy(); });
-            turrets.getChildren().forEach(t => { if (t.y > 850) t.destroy(); });
             pickups.getChildren().forEach(p => { if (p.y > 850) p.destroy(); });
             powerups.getChildren().forEach(p => { if (p.y > 850) p.destroy(); });
 
@@ -154,59 +146,59 @@
             }
         }
 
+        function fireSpecialWeapon() {
+            // Special weapon: powerful vertical mega-laser that clears a wide column
+            const special = lasers.get(player.x, player.y - 80);
+            if (special) {
+                special.setActive(true).setVisible(true);
+                special.setVelocityY(-1200);
+                special.setScale(1.8); // big and powerful
+                special.setTint(0xffff00);
+                // Extra damage effect
+                this.add.particles(player.x, player.y - 200, 'laser', {
+                    speed: {min:100, max:300}, scale:{start:1.5, end:0}, lifespan:600, quantity:40, tint:0xffff00
+                });
+            }
+        }
+
         function spawnMoonbug() {
-            const x = Phaser.Math.Between(120, 1080);
+            const x = Phaser.Math.Between(140, 1060);
             const roll = Phaser.Math.Between(1, 100);
             let bug = obstacles.create(x, -80, 'obstacle');
 
-            if (roll <= 45) { // Small – fast straight + tiny wiggle
-                bug.setScale(0.45).setTint(0x00ff88).setData('reward', 200).setData('type', 'small');
-                bug.setVelocityY(220);
-                this.tweens.add({ targets: bug, x: x + 60, duration: 380, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
-            } else if (roll <= 80) { // Medium – straight down (no wiggle)
-                bug.setScale(0.7).setTint(0xffaa00).setData('reward', 500).setData('type', 'medium');
+            if (roll <= 45) { // Small
+                bug.setScale(0.45).setTint(0x00ff88).setData('reward', 200);
+                bug.setVelocityY(210);
+            } else if (roll <= 80) { // Medium
+                bug.setScale(0.7).setTint(0xffaa00).setData('reward', 500);
                 bug.setVelocityY(155);
-            } else { // LARGE Elite – slow big slow wiggle (easier to hit now)
-                bug.setScale(1.05).setTint(0xff0088).setData('reward', 1200).setData('type', 'large');
+            } else { // Large Elite
+                bug.setScale(1.05).setTint(0xff0088).setData('reward', 1200);
                 bug.setVelocityY(95);
-                this.tweens.add({ targets: bug, x: x + 180, duration: 1400, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
             }
-        }
 
-        function spawnLineSwarm() {
-            const startX = Phaser.Math.Between(180, 820);
-            for (let i = 0; i < 5; i++) {
-                const bug = obstacles.create(startX + i * 65, -60 - i * 25, 'obstacle');
-                bug.setScale(0.65).setTint(0xffaa00).setData('reward', 550).setData('type', 'swarm');
-                bug.setVelocityY(180);
-            }
-        }
-
-        function spawnTurret() {
-            const x = Phaser.Math.Between(120, 1080);
-            const turret = turrets.create(x, -80, 'turret');
-            turret.setScale(0.9).setTint(0x8800ff).setData('reward', 2000);
-            turret.setVelocityY(45); // very slow "landscape" movement
-
-            // Turret shoots every 2.2 seconds
-            this.time.addEvent({
-                delay: 2200,
-                callback: () => {
-                    if (turret.active) {
-                        const bullet = turretBullets.create(turret.x, turret.y + 30, 'laser');
-                        bullet.setScale(0.4).setTint(0xff0000).setVelocityY(280);
-                    }
-                },
-                callbackScope: this,
-                loop: true
+            // SLOW elegant arcs (Skyforce style – easy to track)
+            this.tweens.add({
+                targets: bug,
+                x: x + 240,
+                duration: 1600,
+                yoyo: true,
+                repeat: -1,
+                ease: 'Sine.easeInOut'
             });
+        }
+
+        function spawnPowerup() {
+            const pu = powerups.create(Phaser.Math.Between(180, 1020), -80, 'powerup');
+            pu.setVelocityY(90).setScale(1.2).setTint(0xffff00);
         }
 
         function hitMoonbug(laser, bug) {
             const x = bug.x, y = bug.y;
             const baseReward = bug.getData('reward') || 300;
             const now = Date.now();
-            if (now - lastKillTime < 750) combo++; else combo = 1;
+
+            if (now - lastKillTime < 1200) combo++; else combo = 1; // longer combo window
             lastKillTime = now;
 
             const finalReward = Math.floor(baseReward * combo);
@@ -214,37 +206,23 @@
             laser.destroy();
             bug.destroy();
 
-            // Points on kill
-            const pointsText = this.add.text(x, y - 45, '+' + finalReward, { fontSize: '42px', color: '#00ffff', stroke: '#ffff00', strokeThickness: 10 }).setOrigin(0.5);
-            this.tweens.add({ targets: pointsText, alpha: 0, y: y - 130, duration: 1100 });
+            // BIG visible points on kill
+            const pointsText = this.add.text(x, y - 50, '+' + finalReward, {
+                fontSize: '46px', color: '#00ffff', stroke: '#ffff00', strokeThickness: 12
+            }).setOrigin(0.5);
+            this.tweens.add({ targets: pointsText, alpha: 0, y: y - 140, duration: 1300 });
 
-            // Combo FX
+            // Stronger combo popup
             if (combo > 1) {
-                comboText.setText(combo + 'x MOON CHAIN!');
-                comboText.setAlpha(1).setScale(1.6);
-                this.tweens.add({ targets: comboText, alpha: 0, scale: 1, y: 80, duration: 1600 });
+                comboText.setText(combo + 'x CHAIN!');
+                comboText.setAlpha(1).setScale(1.8);
+                this.tweens.add({ targets: comboText, alpha: 0, scale: 1, y: 70, duration: 1800 });
             }
 
-            this.add.particles(x, y, 'laser', { speed: {min:80,max:230}, scale:{start:1,end:0}, lifespan:900, quantity:30, tint:0xff00ff });
+            this.add.particles(x, y, 'laser', { speed: {min:80,max:240}, scale:{start:1.1,end:0}, lifespan:950, quantity:32, tint:0xff00ff });
 
             const pickup = pickups.create(x, y, 'pickup');
-            pickup.setVelocityY(75).setScale(0.9).setTint(0x00ffff).setData('value', finalReward);
-        }
-
-        function hitTurret(laser, turret) {
-            const x = turret.x, y = turret.y;
-            laser.destroy();
-            turret.destroy();
-
-            this.add.particles(x, y, 'laser', { speed: {min:100,max:260}, scale:{start:1.2,end:0}, lifespan:1000, quantity:35, tint:0xff00ff });
-
-            const pickup = pickups.create(x, y, 'pickup');
-            pickup.setVelocityY(60).setScale(1.1).setTint(0x00ffff).setData('value', 2000);
-        }
-
-        function hitByTurret(player, bullet) {
-            bullet.destroy();
-            triggerGameOver.call(this);
+            pickup.setVelocityY(75).setScale(0.95).setTint(0x00ffff).setData('value', finalReward);
         }
 
         function collectPickup(player, pickup) {
@@ -255,9 +233,9 @@
 
         function collectPowerup(player, powerup) {
             powerup.destroy();
-            tripleShot = true; tripleTimer = 10;
-            const txt = this.add.text(600, 220, 'TRIPLE SHOT!', {fontSize:'52px', color:'#ffff00', stroke:'#ff00ff', strokeThickness:12}).setOrigin(0.5).setScrollFactor(0);
-            this.tweens.add({targets:txt, alpha:0, y:140, duration:2400});
+            tripleShot = true; tripleTimer = 12;
+            const txt = this.add.text(600, 200, 'TRIPLE SHOT!', {fontSize:'54px', color:'#ffff00', stroke:'#ff00ff', strokeThickness:14}).setOrigin(0.5).setScrollFactor(0);
+            this.tweens.add({targets:txt, alpha:0, y:120, duration:2600});
         }
 
         function triggerGameOver() {
@@ -269,10 +247,9 @@
                 fontSize: '48px', color: '#ff00ff', align: 'center', stroke: '#000000', strokeThickness: 10
             }).setOrigin(0.5).setScrollFactor(0);
 
-            // FIXED R restart - uses scene.restart() for clean reset
-            const restartKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
-            restartKey.once('down', () => {
-                this.scene.restart();
+            // 100% reliable restart
+            this.input.keyboard.once('keydown-R', () => {
+                location.reload();
             });
         }
 
