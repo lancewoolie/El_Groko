@@ -75,8 +75,8 @@
 
             cursors = this.input.keyboard.createCursorKeys();
 
-            // Slower, sparser waves
-            this.time.addEvent({ delay: 1800, callback: spawnWave, callbackScope: this, loop: true });
+            // Sparser + slower waves
+            this.time.addEvent({ delay: 1600, callback: spawnWave, callbackScope: this, loop: true });
             this.time.addEvent({ delay: 18000, callback: spawnPowerup, callbackScope: this, loop: true });
 
             this.physics.add.collider(lasers, obstacles, hitMoonbug, null, this);
@@ -84,7 +84,11 @@
             this.physics.add.overlap(player, powerups, collectPowerup, null, this);
             this.physics.add.collider(player, obstacles, triggerGameOver, null, this);
 
-            this.input.on('pointermove', (pointer) => this.physics.moveTo(player, pointer.worldX, pointer.worldY, 520));
+            // Mouse movement (restored + smooth)
+            this.input.on('pointermove', (pointer) => {
+                this.physics.moveTo(player, pointer.worldX, pointer.worldY, 520);
+            });
+
             this.input.on('pointerdown', (pointer) => {
                 if (pointer.leftButtonDown()) shootLaser.call(this);
                 if (pointer.rightButtonDown()) fireSpecialWeapon.call(this);
@@ -144,35 +148,43 @@
 
         function spawnWave() {
             const waveType = Phaser.Math.Between(1, 4);
-            const startX = Phaser.Math.Between(180, 920);
+            const startX = Phaser.Math.Between(200, 900);
 
-            if (waveType === 1) { // Sparse straight line
-                for (let i = 0; i < 4; i++) spawnSingleBug(startX + i*110, -80 - i*40, '🚀');
-            } else if (waveType === 2) { // Wide V
-                spawnSingleBug(startX - 140, -100, '🪐');
-                spawnSingleBug(startX - 70, -140, '🪐');
-                spawnSingleBug(startX, -160, '🪐');
-                spawnSingleBug(startX + 70, -140, '🪐');
-                spawnSingleBug(startX + 140, -100, '🪐');
+            if (waveType === 1) { // Sparse line
+                for (let i = 0; i < 4; i++) spawnSingleBug(startX + i*130, -80 - i*45);
+            } else if (waveType === 2) { // Loose V
+                spawnSingleBug(startX - 120, -110);
+                spawnSingleBug(startX - 60, -150);
+                spawnSingleBug(startX, -170);
+                spawnSingleBug(startX + 60, -150);
+                spawnSingleBug(startX + 120, -110);
             } else if (waveType === 3) { // Diagonal pairs
-                for (let i = 0; i < 3; i++) {
-                    spawnSingleBug(startX + i*90, -80 - i*50, '🌑');
-                    spawnSingleBug(startX + 180 + i*90, -120 - i*50, '🌑');
+                for (let i = 0; i < 4; i++) {
+                    spawnSingleBug(startX + i*80, -70 - i*40);
                 }
-            } else { // Small circling group
+            } else { // Loose scattered group
                 for (let i = 0; i < 5; i++) {
-                    spawnSingleBug(startX + Math.cos(i*1.3)*90, -100 + Math.sin(i*1.3)*50, '☄️');
+                    spawnSingleBug(startX + Phaser.Math.Between(-140, 140), -90 - i*30);
                 }
             }
         }
 
-        function spawnSingleBug(x, y, emoji) {
+        function spawnSingleBug(x, y) {
             const bug = obstacles.create(x, y, 'obstacle');
-            bug.setScale(1.2);
+            bug.setScale(1.1);
             bug.setData('reward', 450);
-            bug.setVelocityY(85);           // 50% slower
-            bug.setText(emoji);             // Emoji as placeholder
-            bug.setTint(0x00ddff);
+            bug.setVelocityY(80);                    // Slowed down
+
+            // Organic, humanized movement (slight random curves)
+            this.tweens.add({
+                targets: bug,
+                x: x + Phaser.Math.Between(-180, 180),
+                duration: Phaser.Math.Between(1600, 2400),
+                yoyo: true,
+                repeat: -1,
+                ease: 'Sine.easeInOut'
+            });
+
             return bug;
         }
 
@@ -189,21 +201,21 @@
 
             shakeIntensity = 0.012;
 
-            const pointsText = this.add.text(x, y - 40, '+' + finalReward, {
-                fontSize: '44px', color: '#00ffff', stroke: '#ffff00', strokeThickness: 10
+            const pointsText = this.add.text(x, y - 45, '+' + finalReward, {
+                fontSize: '46px', color: '#00ffff', stroke: '#ffff00', strokeThickness: 10
             }).setOrigin(0.5);
-            this.tweens.add({ targets: pointsText, alpha: 0, y: y - 130, duration: 1300 });
+            this.tweens.add({ targets: pointsText, alpha: 0, y: y - 140, duration: 1300 });
 
             if (combo > 2) {
                 comboText.setText(combo + 'x CHAIN!');
-                comboText.setAlpha(1).setScale(2);
-                this.tweens.add({ targets: comboText, alpha: 0, scale: 1, y: 60, duration: 1700 });
+                comboText.setAlpha(1).setScale(2.0);
+                this.tweens.add({ targets: comboText, alpha: 0, scale: 1, y: 65, duration: 1700 });
             }
 
-            this.add.particles(x, y, 'laser', { speed: {min:100,max:320}, scale:{start:1.4,end:0}, lifespan:1000, quantity:40, tint:0xff00ff });
+            this.add.particles(x, y, 'laser', { speed: {min:100,max:320}, scale:{start:1.4,end:0}, lifespan:1000, quantity:38, tint:0xff00ff });
 
             const pickup = pickups.create(x, y, 'pickup');
-            pickup.setVelocityY(65).setScale(1).setTint(0x00ffff).setData('value', finalReward);
+            pickup.setVelocityY(70).setScale(1).setTint(0x00ffff).setData('value', finalReward);
         }
 
         function collectPickup(player, pickup) {
