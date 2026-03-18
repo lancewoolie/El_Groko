@@ -46,23 +46,23 @@
         let shakeIntensity = 0;
 
         function preload() {
-            this.load.image('cyberbeast', 'https://i.imgur.com/8zqZf0J.png');
-            this.load.image('moonSurface', 'https://i.imgur.com/3XzK9pL.jpg');
-            this.load.image('laser', 'https://i.imgur.com/0XwZf0J.png');
-            this.load.image('pickup', 'https://i.imgur.com/0XwZf0J.png');
-            this.load.image('powerup', 'https://i.imgur.com/0XwZf0J.png');
+            // Use your real background if uploaded, otherwise fallback
+            this.load.image('moonSurface', 'assets/moonsurface.jpg');
+            // No external image links - using built-in shapes for player and enemies
         }
 
         function create() {
-            bg1 = this.add.tileSprite(600, 400, 1200, 800, 'moonSurface').setAlpha(0.85);
-            bg2 = this.add.tileSprite(600, 400, 1200, 800, 'moonSurface').setAlpha(0.4).setScale(1.6);
+            // Background
+            bg1 = this.add.tileSprite(600, 400, 1200, 800, 'moonSurface').setAlpha(0.9);
+            bg2 = this.add.tileSprite(600, 400, 1200, 800, 'moonSurface').setAlpha(0.5).setScale(1.5);
 
-            player = this.physics.add.sprite(600, 650, 'cyberbeast');
-            player.setCollideWorldBounds(true);
-            player.setScale(0.85);
-            player.setDrag(600);
+            // Player - Cyberbeast (using rectangle + emoji for now)
+            player = this.add.text(600, 650, '🚗', { fontSize: '80px' }).setOrigin(0.5);
+            this.physics.add.existing(player, false);
+            player.body.setCollideWorldBounds(true);
+            player.body.setDrag(600);
 
-            lasers = this.physics.add.group({ defaultKey: 'laser', maxSize: 80 });
+            lasers = this.physics.add.group();
             obstacles = this.physics.add.group();
             pickups = this.physics.add.group();
             powerups = this.physics.add.group();
@@ -75,7 +75,6 @@
 
             cursors = this.input.keyboard.createCursorKeys();
 
-            // Slower, sparser, and working waves
             this.time.addEvent({ delay: 1600, callback: spawnWave, callbackScope: this, loop: true });
             this.time.addEvent({ delay: 18000, callback: spawnPowerup, callbackScope: this, loop: true });
 
@@ -84,11 +83,7 @@
             this.physics.add.overlap(player, powerups, collectPowerup, null, this);
             this.physics.add.collider(player, obstacles, triggerGameOver, null, this);
 
-            // Mouse movement
-            this.input.on('pointermove', (pointer) => {
-                this.physics.moveTo(player, pointer.worldX, pointer.worldY, 520);
-            });
-
+            this.input.on('pointermove', (pointer) => this.physics.moveTo(player, pointer.worldX, pointer.worldY, 520));
             this.input.on('pointerdown', (pointer) => {
                 if (pointer.leftButtonDown()) shootLaser.call(this);
                 if (pointer.rightButtonDown()) fireSpecialWeapon.call(this);
@@ -107,7 +102,6 @@
                 shakeIntensity *= 0.85;
             }
 
-            // Keyboard fallback
             const speed = 380;
             if (cursors.left.isDown || this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A).isDown) player.body.velocity.x -= speed;
             if (cursors.right.isDown || this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D).isDown) player.body.velocity.x += speed;
@@ -128,55 +122,42 @@
         }
 
         function shootLaser() {
-            const baseY = player.y - 50;
-            if (tripleShot) {
-                lasers.get(player.x - 25, baseY)?.setActive(true).setVisible(true).setVelocity(-180, -920).setScale(0.25).setTint(0x00ffff);
-                lasers.get(player.x, baseY)?.setActive(true).setVisible(true).setVelocityY(-950).setScale(0.25).setTint(0x00ffff);
-                lasers.get(player.x + 25, baseY)?.setActive(true).setVisible(true).setVelocity(180, -920).setScale(0.25).setTint(0x00ffff);
-            } else {
-                const laser = lasers.get(player.x, baseY);
-                if (laser) laser.setActive(true).setVisible(true).setVelocityY(-950).setScale(0.25).setTint(0x00ffff);
-            }
+            const laser = lasers.create(player.x, player.y - 50, 'laser');
+            laser.setVelocityY(-950);
+            laser.setScale(0.25);
+            laser.setTint(0x00ffff);
         }
 
         function fireSpecialWeapon() {
-            const special = lasers.get(player.x, player.y - 100);
-            if (special) {
-                special.setActive(true).setVisible(true).setVelocityY(-1600).setScale(2.2 + specialLevel * 0.6).setTint(0xffff00);
-            }
+            const special = lasers.create(player.x, player.y - 100, 'laser');
+            special.setVelocityY(-1600);
+            special.setScale(2.8);
+            special.setTint(0xffff00);
             shakeIntensity = 0.015;
         }
 
         function spawnWave() {
-            const waveType = Phaser.Math.Between(1, 4);
+            const type = Phaser.Math.Between(1, 4);
             const startX = Phaser.Math.Between(200, 900);
 
-            if (waveType === 1) { // Sparse line
-                for (let i = 0; i < 4; i++) spawnSingleBug(startX + i*130, -80 - i*45);
-            } else if (waveType === 2) { // Loose V
-                spawnSingleBug(startX - 120, -110);
-                spawnSingleBug(startX - 60, -150);
-                spawnSingleBug(startX, -170);
-                spawnSingleBug(startX + 60, -150);
-                spawnSingleBug(startX + 120, -110);
-            } else if (waveType === 3) { // Diagonal
-                for (let i = 0; i < 4; i++) {
-                    spawnSingleBug(startX + i*90, -70 - i*40);
-                }
-            } else { // Scattered group
-                for (let i = 0; i < 5; i++) {
-                    spawnSingleBug(startX + Phaser.Math.Between(-140, 140), -90 - i*35);
-                }
-            }
+            if (type === 1) for (let i = 0; i < 4; i++) spawnSingleBug(startX + i*130, -80 - i*45, '🚀');
+            else if (type === 2) {
+                spawnSingleBug(startX - 120, -110, '🪐');
+                spawnSingleBug(startX - 60, -150, '🪐');
+                spawnSingleBug(startX, -170, '🪐');
+                spawnSingleBug(startX + 60, -150, '🪐');
+                spawnSingleBug(startX + 120, -110, '🪐');
+            } else if (type === 3) for (let i = 0; i < 4; i++) spawnSingleBug(startX + i*90, -70 - i*40, '🌑');
+            else for (let i = 0; i < 5; i++) spawnSingleBug(startX + Phaser.Math.Between(-140, 140), -90 - i*35, '☄️');
         }
 
-        function spawnSingleBug(x, y) {
-            const bug = obstacles.create(x, y, 'obstacle');
-            bug.setScale(1.1);
+        function spawnSingleBug(x, y, emoji) {
+            const bug = obstacles.create(x, y);
+            bug.setScale(1.2);
             bug.setData('reward', 450);
             bug.setVelocityY(85);
 
-            // Organic independent movement
+            // Organic movement
             this.tweens.add({
                 targets: bug,
                 x: x + Phaser.Math.Between(-160, 160),
@@ -185,6 +166,10 @@
                 repeat: -1,
                 ease: 'Sine.easeInOut'
             });
+
+            // Draw emoji on the bug
+            const text = this.add.text(0, 0, emoji, { fontSize: '60px' }).setOrigin(0.5);
+            bug.add(text);
 
             return bug;
         }
@@ -202,14 +187,13 @@
 
             shakeIntensity = 0.012;
 
-            const pointsText = this.add.text(x, y - 45, '+' + finalReward, {
-                fontSize: '46px', color: '#00ffff', stroke: '#ffff00', strokeThickness: 10
-            }).setOrigin(0.5);
-            this.tweens.add({ targets: pointsText, alpha: 0, y: y - 140, duration: 1300 });
+            this.add.text(x, y - 45, '+' + finalReward, { fontSize: '46px', color: '#00ffff', stroke: '#ffff00', strokeThickness: 10 }).setOrigin(0.5)
+                .setAlpha(1).setDepth(10);
+            this.tweens.add({ targets: this.children.list[this.children.length-1], alpha: 0, y: y - 140, duration: 1300 });
 
             if (combo > 2) {
                 comboText.setText(combo + 'x CHAIN!');
-                comboText.setAlpha(1).setScale(2.0);
+                comboText.setAlpha(1).setScale(2);
                 this.tweens.add({ targets: comboText, alpha: 0, scale: 1, y: 65, duration: 1700 });
             }
 
