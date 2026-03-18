@@ -35,12 +35,13 @@
         };
 
         let game = new Phaser.Game(config);
-        let player, cursors, lasers, obstacles, pickups, score = 0, highScore = 0;
-        let scoreText, highScoreText;
+        let player, cursors, lasers, obstacles, pickups, powerups, score = 0, highScore = 0;
+        let scoreText, highScoreText, comboText;
         let bg1, bg2;
+        let combo = 0, lastKillTime = 0;
+        let tripleShot = false, tripleTimer = 0;
         let gameOverText = null;
 
-        // Load high score from localStorage
         function loadHighScore() {
             const saved = localStorage.getItem('moonscroll_highscore');
             if (saved) highScore = parseInt(saved);
@@ -50,7 +51,7 @@
             if (newScore > highScore) {
                 highScore = newScore;
                 localStorage.setItem('moonscroll_highscore', highScore);
-                if (highScoreText) highScoreText.setText('HIGH: ' + String(highScore).padStart(6, '0'));
+                highScoreText.setText('HIGH: ' + String(highScore).padStart(6, '0'));
             }
         }
 
@@ -60,6 +61,7 @@
             this.load.image('laser', 'https://i.imgur.com/0XwZf0J.png');
             this.load.image('obstacle', 'https://i.imgur.com/5fQjK8p.png');
             this.load.image('pickup', 'https://i.imgur.com/0XwZf0J.png');
+            this.load.image('powerup', 'https://i.imgur.com/0XwZf0J.png'); // triple-shot icon
         }
 
         function create() {
@@ -73,19 +75,26 @@
             player.setScale(0.85);
             player.setDrag(400);
 
-            lasers = this.physics.add.group({ defaultKey: 'laser', maxSize: 40 });
+            lasers = this.physics.add.group({ defaultKey: 'laser', maxSize: 60 });
             obstacles = this.physics.add.group();
             pickups = this.physics.add.group();
+            powerups = this.physics.add.group();
 
             scoreText = this.add.text(30, 20, 'SCORE: 000000', { fontSize: '32px', color: '#00ffff', stroke: '#ff00ff', strokeThickness: 6 }).setScrollFactor(0);
             highScoreText = this.add.text(750, 20, 'HIGH: ' + String(highScore).padStart(6, '0'), { fontSize: '32px', color: '#ff00ff', stroke: '#00ffff', strokeThickness: 4 }).setScrollFactor(0);
 
+            comboText = this.add.text(600, 80, '', { fontSize: '42px', color: '#ffff00', stroke: '#ff00ff', strokeThickness: 8 }).setOrigin(0.5).setScrollFactor(0).setAlpha(0);
+
             cursors = this.input.keyboard.createCursorKeys();
 
-            this.time.addEvent({ delay: 900, callback: spawnObstacle, callbackScope: this, loop: true });
+            // Spawn regular bots
+            this.time.addEvent({ delay: 850, callback: spawnBot, callbackScope: this, loop: true });
+            // Rare weapon upgrade (every ~12 seconds)
+            this.time.addEvent({ delay: 12000, callback: spawnPowerup, callbackScope: this, loop: true });
 
-            this.physics.add.collider(lasers, obstacles, hitObstacle, null, this);
+            this.physics.add.collider(lasers, obstacles, hitBot, null, this);
             this.physics.add.overlap(player, pickups, collectPickup, null, this);
+            this.physics.add.overlap(player, powerups, collectPowerup, null, this);
             this.physics.add.collider(player, obstacles, triggerGameOver, null, this);
 
             this.input.on('pointerdown', shootLaser, this);
@@ -111,74 +120,44 @@
                 shootLaser.call(this);
             }
 
+            // Triple shot timer
+            if (tripleTimer > 0) {
+                tripleTimer -= 1/60;
+                if (tripleTimer <= 0) tripleShot = false;
+            }
+
             // Cleanup
             lasers.getChildren().forEach(l => { if (l.y < 0) l.destroy(); });
             obstacles.getChildren().forEach(o => { if (o.y > 850) o.destroy(); });
             pickups.getChildren().forEach(p => { if (p.y > 850) p.destroy(); });
+            powerups.getChildren().forEach(p => { if (p.y > 850) p.destroy(); });
 
             score += 0.8;
             scoreText.setText('SCORE: ' + String(Math.floor(score)).padStart(6, '0'));
         }
 
         function shootLaser() {
-            const laser = lasers.get(player.x, player.y - 50);
-            if (laser) {
-                laser.setActive(true).setVisible(true);
-                laser.setVelocityY(-950);
-                laser.setScale(0.7);
-                laser.setTint(0x00ffff);
+            const baseY = player.y - 50;
+            if (tripleShot) {
+                // Left shot
+                const l1 = lasers.get(player.x - 25, baseY);
+                if (l1) { l1.setActive(true).setVisible(true).setVelocity(-180, -920).setScale(0.25).setTint(0x00ffff); }
+                // Center
+                const l2 = lasers.get(player.x, baseY);
+                if (l2) { l2.setActive(true).setVisible(true).setVelocityY(-950).setScale(0.25).setTint(0x00ffff); }
+                // Right shot
+                const l3 = lasers.get(player.x + 25, baseY);
+                if (l3) { l3.setActive(true).setVisible(true).setVelocity(180, -920).setScale(0.25).setTint(0x00ffff); }
+            } else {
+                const laser = lasers.get(player.x, baseY);
+                if (laser) {
+                    laser.setActive(true).setVisible(true);
+                    laser.setVelocityY(-950);
+                    laser.setScale(0.25); // 25% size as requested
+                    laser.setTint(0x00ffff);
+                }
             }
         }
 
-        function spawnObstacle() {
-            const x = Phaser.Math.Between(80, 1120);
-            const obs = obstacles.create(x, -60, 'obstacle');
-            obs.setVelocityY(140 + Math.random() * 90);
-            obs.setScale(0.6 + Math.random() * 0.7);
-            obs.setTint(Phaser.Display.Color.RandomRGB(100, 255).color);
-        }
-
-        function hitObstacle(laser, obstacle) {
-            const x = obstacle.x, y = obstacle.y;
-            laser.destroy();
-            obstacle.destroy();
-
-            this.add.particles(x, y, 'laser', {
-                speed: { min: 80, max: 200 }, scale: { start: 1, end: 0 }, lifespan: 800, quantity: 25, tint: 0xff00ff
-            });
-
-            const pickup = pickups.create(x, y, 'pickup');
-            pickup.setVelocityY(80);
-            pickup.setScale(0.9);
-            pickup.setTint(0x00ffff);
-        }
-
-        function collectPickup(player, pickup) {
-            pickup.destroy();
-            score += 500;
-        }
-
-        function triggerGameOver() {
-            this.scene.pause();
-            saveHighScore(Math.floor(score));
-
-            gameOverText = this.add.text(600, 300, 'CRASHED ON THE MOON!\n\nFINAL SCORE: ' + Math.floor(score) + 
-                '\n\nPRESS R TO RESTART', {
-                fontSize: '48px', color: '#ff00ff', align: 'center', stroke: '#000000', strokeThickness: 8
-            }).setOrigin(0.5).setScrollFactor(0);
-
-            // Restart with R key
-            this.input.keyboard.once('keydown-R', () => {
-                location.reload();
-            });
-        }
-
-        // Initial high score display
-        window.onload = () => {
-            const hs = document.getElementById('highscore');
-            const saved = localStorage.getItem('moonscroll_highscore');
-            if (saved) hs.textContent = 'HIGH: ' + String(saved).padStart(6, '0');
-        };
-    </script>
-</body>
-</html>
+        function spawnBot() {
+            const x = Phaser.Math.Between(80, 
