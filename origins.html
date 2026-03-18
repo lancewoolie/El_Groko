@@ -22,7 +22,6 @@
       padding-top: 90px;
     }
 
-    /* GROKIpediaLite Tab */
     .grokipedia-tab {
       position: fixed;
       top: 20px;
@@ -389,4 +388,125 @@
             <h4>About Boogie Long</h4>
             <p>2011 Guitar Center King of the Blues winner, frequent New Orleans Jazz & Heritage Festival performer, and Louisiana Music Hall of Fame inductee.</p>
           </div>
-          <div class="fact-pill">Special Guest •
+          <div class="fact-pill">Special Guest • Studio "Little Wing" guitarist</div>
+        `,
+        images: []
+      }
+    ];
+
+    function renderCrew() {
+      const container = document.getElementById('crew-roster');
+      let html = '';
+      crew.forEach(member => {
+        const guestClass = member.isGuest ? ' guest' : '';
+        html += `
+          <div class="member-card${guestClass}" onclick="scrollToMember('${member.id}')">
+            <img src="${member.img}" alt="${member.name}">
+            <h5>${member.name}</h5>
+            <div class="tagline">${member.tagline}</div>
+          </div>`;
+      });
+      container.innerHTML = html;
+    }
+
+    function renderTransmissions() {
+      const container = document.getElementById('transmissions-container');
+      let html = '';
+      crew.forEach(member => {
+        const trophyHTML = member.grammys > 0 ? `<div class="trophy-count">🏆${member.grammys}x</div>` : '';
+
+        let extraImages = '';
+        if (member.images && member.images.length) {
+          extraImages = `<div class="thumb-carousel mt-3">
+            ${member.images.map(src => `<img class="thumb-img" src="${src}" onclick="openModal('${src}')" alt="${member.name}">`).join('')}
+          </div>`;
+        }
+
+        html += `
+          <div class="transmission-card" id="block-${member.id}">
+            <div class="transmission-header" onclick="toggleTransmission('${member.id}')">
+              <img src="${member.img}" alt="${member.name}">
+              <h3>${member.name} <span style="font-size:1.05rem; color:#ff99cc;">— ${member.tagline}</span></h3>
+              <button class="expand-btn">OPEN TRANSMISSION</button>
+              ${trophyHTML}
+            </div>
+            <div class="transmission-body">
+              ${member.bio}
+              ${extraImages}
+            </div>
+          </div>`;
+      });
+      container.innerHTML = html;
+    }
+
+    function toggleTransmission(id) {
+      const card = document.getElementById(`block-${id}`);
+      card.classList.toggle('expanded');
+    }
+
+    function scrollToMember(id) {
+      const block = document.getElementById(`block-${id}`);
+      if (block) {
+        block.scrollIntoView({ behavior: "smooth", block: "center" });
+        setTimeout(() => block.classList.add('expanded'), 500);
+      }
+    }
+
+    function openModal(src) {
+      const modal = document.createElement('div');
+      modal.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); display:flex; align-items:center; justify-content:center; z-index:10002;';
+      modal.innerHTML = `<img src="${src}" style="max-width:92%; max-height:92%; border-radius:16px; box-shadow:0 0 60px #00ffcc;" onclick="this.parentElement.remove()">`;
+      document.body.appendChild(modal);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderCrew();
+      renderTransmissions();
+
+      const overlay = document.getElementById('transition-overlay');
+      const forwardVideo = document.getElementById('forward-video');
+      const reverseVideo = document.getElementById('reverse-video');
+      const content = document.getElementById('main-content');
+
+      forwardVideo.src = '/video/origins-video-transition.mp4';
+      reverseVideo.src = '/video/origins-video-reverse.mp4';
+
+      overlay.style.display = 'block';
+      forwardVideo.style.display = 'block';
+
+      let started = false;
+      forwardVideo.oncanplaythrough = () => {
+        if (started) return;
+        started = true;
+        forwardVideo.muted = true;
+        forwardVideo.volume = 0.5;
+        forwardVideo.play().catch(() => {});
+      };
+
+      setTimeout(() => {
+        if (!started) {
+          started = true;
+          overlay.style.display = 'none';
+          content.classList.add('show');
+        }
+      }, 1400);
+
+      forwardVideo.onended = () => {
+        overlay.style.display = 'none';
+        content.classList.add('show');
+      };
+
+      document.getElementById('saloon-doors-back').addEventListener('click', (e) => {
+        e.preventDefault();
+        overlay.style.display = 'block';
+        forwardVideo.style.display = 'none';
+        reverseVideo.style.display = 'block';
+        reverseVideo.currentTime = 0;
+        reverseVideo.volume = 0.5;
+        reverseVideo.play().catch(() => {});
+        reverseVideo.onended = () => window.location.href = 'index.html';
+      });
+    });
+  </script>
+</body>
+</html>
