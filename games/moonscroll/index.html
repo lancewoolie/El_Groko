@@ -75,7 +75,7 @@
 
             cursors = this.input.keyboard.createCursorKeys();
 
-            // Sparser + slower waves
+            // Slower, sparser, and working waves
             this.time.addEvent({ delay: 1600, callback: spawnWave, callbackScope: this, loop: true });
             this.time.addEvent({ delay: 18000, callback: spawnPowerup, callbackScope: this, loop: true });
 
@@ -84,7 +84,7 @@
             this.physics.add.overlap(player, powerups, collectPowerup, null, this);
             this.physics.add.collider(player, obstacles, triggerGameOver, null, this);
 
-            // Mouse movement (restored + smooth)
+            // Mouse movement
             this.input.on('pointermove', (pointer) => {
                 this.physics.moveTo(player, pointer.worldX, pointer.worldY, 520);
             });
@@ -107,6 +107,7 @@
                 shakeIntensity *= 0.85;
             }
 
+            // Keyboard fallback
             const speed = 380;
             if (cursors.left.isDown || this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A).isDown) player.body.velocity.x -= speed;
             if (cursors.right.isDown || this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D).isDown) player.body.velocity.x += speed;
@@ -158,13 +159,13 @@
                 spawnSingleBug(startX, -170);
                 spawnSingleBug(startX + 60, -150);
                 spawnSingleBug(startX + 120, -110);
-            } else if (waveType === 3) { // Diagonal pairs
+            } else if (waveType === 3) { // Diagonal
                 for (let i = 0; i < 4; i++) {
-                    spawnSingleBug(startX + i*80, -70 - i*40);
+                    spawnSingleBug(startX + i*90, -70 - i*40);
                 }
-            } else { // Loose scattered group
+            } else { // Scattered group
                 for (let i = 0; i < 5; i++) {
-                    spawnSingleBug(startX + Phaser.Math.Between(-140, 140), -90 - i*30);
+                    spawnSingleBug(startX + Phaser.Math.Between(-140, 140), -90 - i*35);
                 }
             }
         }
@@ -173,13 +174,13 @@
             const bug = obstacles.create(x, y, 'obstacle');
             bug.setScale(1.1);
             bug.setData('reward', 450);
-            bug.setVelocityY(80);                    // Slowed down
+            bug.setVelocityY(85);
 
-            // Organic, humanized movement (slight random curves)
+            // Organic independent movement
             this.tweens.add({
                 targets: bug,
-                x: x + Phaser.Math.Between(-180, 180),
-                duration: Phaser.Math.Between(1600, 2400),
+                x: x + Phaser.Math.Between(-160, 160),
+                duration: Phaser.Math.Between(1800, 2600),
                 yoyo: true,
                 repeat: -1,
                 ease: 'Sine.easeInOut'
