@@ -31,14 +31,10 @@
 
         let player, cursors, lasers, obstacles, score = 0;
         let scoreText;
-        let bg1, bg2;
 
         function create() {
-            // Visible scrolling background
-            bg1 = this.add.tileSprite(600, 400, 1200, 800, 'moonSurface' || '__MISSING').setAlpha(0.9);
-            bg2 = this.add.tileSprite(600, 400, 1200, 800, 'moonSurface' || '__MISSING').setAlpha(0.5).setScale(1.4);
+            this.add.rectangle(600, 400, 1200, 800, 0x111133);
 
-            // Cyberbeast facing back-to-front
             player = this.add.text(600, 650, '[X]', { fontSize: '90px' }).setOrigin(0.5);
             this.physics.add.existing(player);
             player.body.setCollideWorldBounds(true);
@@ -51,25 +47,17 @@
 
             cursors = this.input.keyboard.createCursorKeys();
 
-            // Spawn bots slowly
-            this.time.addEvent({ delay: 1600, callback: spawnBot, callbackScope: this, loop: true });
+            // Very slow spawn rate to prevent freezing
+            this.time.addEvent({ delay: 2200, callback: spawnBot, callbackScope: this, loop: true });
 
             this.physics.add.collider(lasers, obstacles, hitBot, null, this);
             this.physics.add.collider(player, obstacles, () => this.scene.restart());
 
             this.input.on('pointermove', p => this.physics.moveTo(player, p.worldX, p.worldY, 520));
-            this.input.on('pointerdown', (pointer) => {
-                if (pointer.leftButtonDown()) shootNormal.call(this);
-                if (pointer.rightButtonDown()) shootSpread.call(this);
-            });
+            this.input.on('pointerdown', () => shootNormal.call(this));
         }
 
         function update() {
-            // Background scroll
-            bg1.tilePositionY -= 1.8;
-            bg2.tilePositionY -= 0.9;
-
-            // Keyboard backup
             if (cursors.left.isDown) player.body.velocity.x = -400;
             if (cursors.right.isDown) player.body.velocity.x = 400;
             if (cursors.up.isDown) player.body.velocity.y = -400;
@@ -77,58 +65,35 @@
 
             if (Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE))) shootNormal.call(this);
 
-            // Safe cleanup
-            lasers.getChildren().forEach(l => { if (l.y < -50) l.destroy(); });
-            obstacles.getChildren().forEach(o => { if (o.y > 850) o.destroy(); });
+            // Aggressive cleanup
+            lasers.getChildren().forEach(l => { if (l.y < -100) l.destroy(); });
+            obstacles.getChildren().forEach(o => { if (o.y > 900) o.destroy(); });
 
-            // Score only increases when player is active
-            if (player.body.velocity.x !== 0 || player.body.velocity.y !== 0 || Math.random() < 0.3) {
-                score += 0.5;
-            }
+            score += 0.5;
             scoreText.setText('SCORE: ' + String(Math.floor(score)).padStart(6, '0'));
         }
 
         function shootNormal() {
             const laser = lasers.create(player.x, player.y - 70, '__MISSING');
-            laser.setVelocityY(-1100);
-            laser.setScale(0.6);
+            laser.setVelocityY(-1200);
+            laser.setScale(0.8);
             laser.setTint(0x00ffff);
         }
 
-        function shootSpread() {
-            const baseY = player.y - 70;
-            const spread = 160;
-
-            const l = lasers.create(player.x - 28, baseY, '__MISSING');
-            l.setVelocity(-spread, -1050);
-            l.setScale(0.55);
-            l.setTint(0x00ffff);
-
-            const c = lasers.create(player.x, baseY, '__MISSING');
-            c.setVelocityY(-1150);
-            c.setScale(0.55);
-            c.setTint(0x00ffff);
-
-            const r = lasers.create(player.x + 28, baseY, '__MISSING');
-            r.setVelocity(spread, -1050);
-            r.setScale(0.55);
-            r.setTint(0x00ffff);
-        }
-
         function spawnBot() {
-            const x = Phaser.Math.Between(150, 1050);
-            const bot = obstacles.create(x, -50, '__MISSING');
-            bot.setScale(1.3);
-            bot.setVelocityY(95);
+            const x = Phaser.Math.Between(180, 1020);
+            const bot = obstacles.create(x, -60, '__MISSING');
+            bot.setScale(1.2);
+            bot.setVelocityY(80);
 
-            const emoji = this.add.text(0, 0, Phaser.Math.RND.pick(['🚀','🪐','🌑','☄️']), { fontSize: '65px' }).setOrigin(0.5);
+            const emoji = this.add.text(0, 0, Phaser.Math.RND.pick(['🚀','🪐','🌑','☄️']), { fontSize: '68px' }).setOrigin(0.5);
             bot.add(emoji);
 
-            // Gentle independent movement
+            // Very light movement
             this.tweens.add({
                 targets: bot,
-                x: x + Phaser.Math.Between(-100, 100),
-                duration: 2800,
+                x: x + Phaser.Math.Between(-90, 90),
+                duration: 3200,
                 yoyo: true,
                 repeat: -1,
                 ease: 'Sine.easeInOut'
@@ -140,10 +105,10 @@
             bot.destroy();
 
             this.add.particles(bot.x, bot.y, '__MISSING', {
-                speed: { min: 80, max: 250 },
+                speed: { min: 100, max: 280 },
                 scale: { start: 1, end: 0 },
-                lifespan: 800,
-                quantity: 25,
+                lifespan: 700,
+                quantity: 20,
                 tint: 0xff00ff
             });
         }
