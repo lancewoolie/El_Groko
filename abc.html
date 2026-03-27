@@ -44,8 +44,17 @@
     .log-entry:hover { background: rgba(0,0,0,0.7); }
     .log-content { display: none; margin-top: 1rem; line-height: 1.7; }
     .log-entry.expanded .log-content { display: block; }
-    table { width: 100%; border-collapse: collapse; margin-top: 1rem; background: rgba(0,0,0,0.4); }
-    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #00ffcc; }
+    table { 
+      width: 100%; 
+      border-collapse: collapse; 
+      margin-top: 1rem; 
+      background: rgba(0,0,0,0.4); 
+    }
+    th, td { 
+      padding: 12px; 
+      text-align: left; 
+      border-bottom: 1px solid #00ffcc; 
+    }
     th { color: #00ffcc; }
     .cadet-row:hover { background: rgba(0, 255, 204, 0.15); }
   </style>
@@ -90,7 +99,7 @@
             <span id="total-subscribers" style="font-size:1.3rem; color:#00ffcc;">Total Cadets: <strong>Loading...</strong></span>
             <button class="copy-cadets-btn" onclick="copyAllCadets()">Copy all cadets</button>
           </div>
-          <div id="subscribers-table">Loading recent subscribers...</div>
+          <div id="subscribers-table">Loading subscribers...</div>
         </div>
 
         <div class="admin-card">
@@ -151,7 +160,7 @@
       }
     }
 
-    // === ORIGINAL CAPTAIN'S LOG CODE (restored exactly) ===
+    // Captain's Log Archive (untouched - works as before)
     async function loadCaptainsLog() {
       const container = document.getElementById('log-summary');
       container.innerHTML = 'Loading entries...';
@@ -236,12 +245,12 @@
       }
     }
 
-    // === SUBSCRIBERS SECTION (safe version) ===
+    // Display ALL subscribers (newest first)
     async function loadSubscribers() {
       const tableDiv = document.getElementById('subscribers-table');
       const countSpan = document.getElementById('total-subscribers');
 
-      tableDiv.innerHTML = 'Loading cadets...';
+      tableDiv.innerHTML = 'Loading all cadets...';
       countSpan.innerHTML = 'Total Cadets: <strong>Loading...</strong>';
 
       try {
@@ -250,17 +259,29 @@
         );
 
         if (!res.ok) {
-          throw new Error("No subscribers yet (collection may be empty or not created)");
+          throw new Error("No subscribers collection yet — add some via the newsletter form.");
         }
 
         const data = await res.json();
         const docs = data.documents || [];
         const total = docs.length;
 
-        let html = `<table><thead><tr><th>Date</th><th>Email</th></tr></thead><tbody>`;
-        const recent = docs.slice(0, 5);
+        // Sort by timestamp descending (newest first) if timestamp exists
+        docs.sort((a, b) => {
+          const timeA = a.fields?.timestamp?.timestampValue ? new Date(a.fields.timestamp.timestampValue) : new Date(0);
+          const timeB = b.fields?.timestamp?.timestampValue ? new Date(b.fields.timestamp.timestampValue) : new Date(0);
+          return timeB - timeA;
+        });
 
-        recent.forEach(doc => {
+        let html = `
+          <table>
+            <thead>
+              <tr><th>Date</th><th>Email</th></tr>
+            </thead>
+            <tbody>
+        `;
+
+        docs.forEach(doc => {
           const f = doc.fields || {};
           const email = f.email ? f.email.stringValue : '—';
           const ts = f.timestamp ? new Date(f.timestamp.timestampValue).toLocaleDateString('en-US') : '—';
@@ -296,11 +317,11 @@
         await navigator.clipboard.writeText(emails.join(', '));
         alert(`✅ ${emails.length} cadet emails copied (comma-separated)!`);
       } catch (err) {
-        alert("Error: " + err.message + "\n\nMake sure you have subscribers in Firestore.");
+        alert("Error: " + err.message);
       }
     }
 
-    // Init
+    // Initialize
     document.addEventListener('DOMContentLoaded', () => {
       if (localStorage.getItem('alphaBaseCampLoggedIn') === 'true') {
         document.getElementById('dashboard-content').style.display = 'block';
