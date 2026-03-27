@@ -54,9 +54,22 @@
       padding: 12px; 
       text-align: left; 
       border-bottom: 1px solid #00ffcc; 
+      vertical-align: middle;
     }
     th { color: #00ffcc; }
     .cadet-row:hover { background: rgba(0, 255, 204, 0.15); }
+    .delete-btn {
+      background: none;
+      border: none;
+      color: #ff5555;
+      font-size: 1.3rem;
+      cursor: pointer;
+      padding: 4px 8px;
+    }
+    .delete-btn:hover {
+      color: #ff0000;
+      transform: scale(1.2);
+    }
   </style>
 </head>
 <body>
@@ -160,7 +173,7 @@
       }
     }
 
-    // Captain's Log Archive (untouched - works as before)
+    // Captain's Log Archive (unchanged)
     async function loadCaptainsLog() {
       const container = document.getElementById('log-summary');
       container.innerHTML = 'Loading entries...';
@@ -245,7 +258,7 @@
       }
     }
 
-    // Display ALL subscribers (newest first)
+    // Load ALL subscribers with Delete buttons
     async function loadSubscribers() {
       const tableDiv = document.getElementById('subscribers-table');
       const countSpan = document.getElementById('total-subscribers');
@@ -259,14 +272,14 @@
         );
 
         if (!res.ok) {
-          throw new Error("No subscribers collection yet — add some via the newsletter form.");
+          throw new Error("No subscribers collection yet.");
         }
 
         const data = await res.json();
-        const docs = data.documents || [];
+        let docs = data.documents || [];
         const total = docs.length;
 
-        // Sort by timestamp descending (newest first) if timestamp exists
+        // Sort newest first
         docs.sort((a, b) => {
           const timeA = a.fields?.timestamp?.timestampValue ? new Date(a.fields.timestamp.timestampValue) : new Date(0);
           const timeB = b.fields?.timestamp?.timestampValue ? new Date(b.fields.timestamp.timestampValue) : new Date(0);
@@ -276,16 +289,25 @@
         let html = `
           <table>
             <thead>
-              <tr><th>Date</th><th>Email</th></tr>
+              <tr><th>Date</th><th>Email</th><th>Action</th></tr>
             </thead>
             <tbody>
         `;
 
         docs.forEach(doc => {
+          const id = doc.name.split('/').pop(); // Extract document ID
           const f = doc.fields || {};
           const email = f.email ? f.email.stringValue : '—';
           const ts = f.timestamp ? new Date(f.timestamp.timestampValue).toLocaleDateString('en-US') : '—';
-          html += `<tr class="cadet-row"><td>${ts}</td><td>${email}</td></tr>`;
+
+          html += `
+            <tr class="cadet-row">
+              <td>${ts}</td>
+              <td>${email}</td>
+              <td>
+                <button class="delete-btn" onclick="deleteSubscriber('${id}', '${email.replace(/'/g, "\\'")}')">🗑️</button>
+              </td>
+            </tr>`;
         });
 
         html += '</tbody></table>';
@@ -299,12 +321,31 @@
       }
     }
 
+    // Delete a single subscriber
+    async function deleteSubscriber(docId, email) {
+      if (!confirm(`Delete cadet "${email}" permanently from Firebase?`)) {
+        return;
+      }
+
+      try {
+        await fetch(
+          `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/subscribers/${docId}?key=${FIREBASE_KEY}`,
+          { method: "DELETE" }
+        );
+
+        alert(`✅ Cadet "${email}" deleted successfully.`);
+        loadSubscribers(); // Refresh the table
+      } catch (err) {
+        alert("Delete failed: " + err.message);
+      }
+    }
+
     async function copyAllCadets() {
       try {
         const res = await fetch(
           `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/subscribers?key=${FIREBASE_KEY}`
         );
-        if (!res.ok) throw new Error("No subscribers found yet.");
+        if (!res.ok) throw new Error("No subscribers found.");
         const data = await res.json();
         const docs = data.documents || [];
 
