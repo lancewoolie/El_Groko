@@ -66,11 +66,25 @@
       font-size: 1.25rem;
       line-height: 1.8;
     }
+    /* Improved readability */
+    .text-muted, .small {
+      color: #e0e0e0 !important;
+      opacity: 0.95;
+    }
+    /* Honeypot - hidden but present */
+    .honeypot {
+      position: absolute;
+      left: -9999px;
+      top: -9999px;
+      opacity: 0;
+      height: 1px;
+      width: 1px;
+    }
   </style>
 </head>
 <body>
   <div id="nav-placeholder"></div>
-
+  
   <!-- VIDEO TRANSITION OVERLAY -->
   <div id="transition-overlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:9999;display:none;background:#000;">
     <video id="forward-video" playsinline preload="auto" style="width:100%;height:100%;object-fit:cover;display:none;"></video>
@@ -92,8 +106,17 @@
         <div class="friend-card">
           <h2>Welcome to the Friend Zone</h2>
           <p class="lead mt-4">Join the inner circle. Get first dibs on new drops, secret shows, and bayou insider vibes.</p>
-        
+       
           <form id="newsletter-form" class="row g-3 justify-content-center mt-4">
+            <!-- Honeypot Field (invisible to humans) -->
+            <input type="text" id="website_url" name="website_url" class="honeypot" autocomplete="off" tabindex="-1">
+
+            <div class="col-md-6">
+              <input type="text" class="form-control" id="first-name" placeholder="First Name" required>
+            </div>
+            <div class="col-md-6">
+              <input type="text" class="form-control" id="last-name" placeholder="Last Name" required>
+            </div>
             <div class="col-md-8">
               <input type="email" class="form-control" id="signup-email" placeholder="your@bayou.com" required>
             </div>
@@ -101,8 +124,11 @@
               <button type="submit" class="btn btn-success w-100">Do it. Join the Zone</button>
             </div>
           </form>
-          <div id="newsletter-success" class="success-message mt-3" style="display:none;">You're in the Friend Zone — exclusive twang incoming!</div>
-          <p class="text-center small mt-4 text-muted">Powered by Firebase — secure, no spam, ever.</p>
+
+          <div id="newsletter-success" class="success-message mt-3" style="display:none; color:#00ffcc;">
+            You're in the Friend Zone — exclusive twang incoming!
+          </div>
+          <p class="text-center small mt-4">Powered by Firebase — secure, no spam, ever.</p>
         </div>
       </div>
     </div>
@@ -134,31 +160,63 @@
     window.serverTimestamp = serverTimestamp;
   </script>
 
-  <!-- Newsletter Form -->
+  <!-- Newsletter Form with Security -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const newsletterForm = document.getElementById('newsletter-form');
-      if (newsletterForm) {
-        newsletterForm.addEventListener('submit', async (e) => {
-          e.preventDefault();
-          const email = document.getElementById('signup-email').value.trim();
-          if (!email || !/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email)) {
-            alert('Valid email required.');
-            return;
-          }
-          try {
-            await window.addDoc(window.collection(window.db, 'subscribers'), {
-              email,
-              type: 'friendzone',
-              timestamp: window.serverTimestamp()
-            });
-            document.getElementById('newsletter-success').style.display = 'block';
-            newsletterForm.reset();
-          } catch (error) {
-            alert('Signup snag — try again or email directly.');
-          }
-        });
-      }
+      if (!newsletterForm) return;
+
+      newsletterForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const firstName = document.getElementById('first-name').value.trim();
+        const lastName = document.getElementById('last-name').value.trim();
+        const email = document.getElementById('signup-email').value.trim();
+        const honeypot = document.getElementById('website_url').value.trim();
+
+        // 1. Honeypot check
+        if (honeypot !== '') {
+          console.log('Bot detected via honeypot');
+          return; // Silent fail for bots
+        }
+
+        // 2. Basic validation
+        if (!firstName || !lastName || !email) {
+          alert('Please fill in all fields.');
+          return;
+        }
+
+        // 3. Block obvious disposable / dotted / suspicious emails
+        const lowerEmail = email.toLowerCase();
+        if (
+          lowerEmail.includes('..') || 
+          (lowerEmail.match(/\./g) || []).length > 4 || // too many dots
+          lowerEmail.includes('grok') ||
+          lowerEmail.includes('temp') ||
+          lowerEmail.includes('disposable') ||
+          lowerEmail.match(/^[a-z]+\.[a-z]+\.[a-z]+@/) || // multiple dotted names
+          lowerEmail.length < 8
+        ) {
+          alert('Please use a valid personal email address.');
+          return;
+        }
+
+        try {
+          await window.addDoc(window.collection(window.db, 'subscribers'), {
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            type: 'friendzone',
+            timestamp: window.serverTimestamp()
+          });
+
+          document.getElementById('newsletter-success').style.display = 'block';
+          newsletterForm.reset();
+        } catch (error) {
+          console.error(error);
+          alert('Signup snag — try again or email directly.');
+        }
+      });
     });
   </script>
 
@@ -170,14 +228,12 @@
       const reverseVideo = document.getElementById('reverse-video');
       const content = document.getElementById('main-content');
 
-      // Preload both videos
       forwardVideo.src = '/video/subscribe-video-transition.mp4';
       reverseVideo.src = '/video/subscribe-video-reverse.mp4';
 
-      // === FORWARD TRANSITION ON PAGE LOAD ===
+      // Forward transition on load
       overlay.style.display = 'block';
       forwardVideo.style.display = 'block';
-
       let transitionStarted = false;
 
       forwardVideo.oncanplaythrough = () => {
@@ -185,10 +241,7 @@
         transitionStarted = true;
         forwardVideo.muted = true;
         forwardVideo.volume = 0.5;
-        forwardVideo.play().catch(err => {
-          console.warn('Forward video autoplay blocked:', err);
-          finishForwardTransition();
-        });
+        forwardVideo.play().catch(() => finishForwardTransition());
       };
 
       forwardVideo.onended = finishForwardTransition;
@@ -198,37 +251,25 @@
         content.classList.add('show');
       }
 
-      // Safety timeout
       setTimeout(() => {
-        if (!transitionStarted) {
-          finishForwardTransition();
-        }
+        if (!transitionStarted) finishForwardTransition();
       }, 1800);
 
-      // === REVERSE TRANSITION – SALOON DOORS ===
+      // Reverse transition
       const doorsBack = document.getElementById('saloon-doors-back');
       if (doorsBack) {
         doorsBack.addEventListener('click', (e) => {
           e.preventDefault();
-          console.log('Friends page: Reverse transition triggered');
-
           overlay.style.display = 'block';
           forwardVideo.style.display = 'none';
           reverseVideo.style.display = 'block';
           reverseVideo.currentTime = 0;
           reverseVideo.volume = 0.5;
-
           reverseVideo.play()
             .then(() => {
-              console.log('Reverse video playing');
-              reverseVideo.onended = () => {
-                window.location.href = 'index.html';
-              };
+              reverseVideo.onended = () => window.location.href = 'index.html';
             })
-            .catch(err => {
-              console.error('Reverse video failed:', err);
-              window.location.href = 'index.html';   // fallback
-            });
+            .catch(() => window.location.href = 'index.html');
         });
       }
     });
