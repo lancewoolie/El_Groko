@@ -258,7 +258,7 @@
       }
     }
 
-    // Load ALL subscribers with Delete buttons
+    // Load ALL subscribers with Name + Email + Delete
     async function loadSubscribers() {
       const tableDiv = document.getElementById('subscribers-table');
       const countSpan = document.getElementById('total-subscribers');
@@ -289,20 +289,31 @@
         let html = `
           <table>
             <thead>
-              <tr><th>Date</th><th>Email</th><th>Action</th></tr>
+              <tr>
+                <th>Date</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Action</th>
+              </tr>
             </thead>
             <tbody>
         `;
 
         docs.forEach(doc => {
-          const id = doc.name.split('/').pop(); // Extract document ID
+          const id = doc.name.split('/').pop(); // Document ID for deletion
           const f = doc.fields || {};
+          
+          const firstName = f.firstName ? f.firstName.stringValue : '';
+          const lastName = f.lastName ? f.lastName.stringValue : '';
+          const fullName = [firstName, lastName].filter(Boolean).join(' ') || '—';
+          
           const email = f.email ? f.email.stringValue : '—';
           const ts = f.timestamp ? new Date(f.timestamp.timestampValue).toLocaleDateString('en-US') : '—';
 
           html += `
             <tr class="cadet-row">
               <td>${ts}</td>
+              <td>${fullName}</td>
               <td>${email}</td>
               <td>
                 <button class="delete-btn" onclick="deleteSubscriber('${id}', '${email.replace(/'/g, "\\'")}')">🗑️</button>
@@ -321,9 +332,9 @@
       }
     }
 
-    // Delete a single subscriber
+    // Delete subscriber
     async function deleteSubscriber(docId, email) {
-      if (!confirm(`Delete cadet "${email}" permanently from Firebase?`)) {
+      if (!confirm(`Delete cadet "${email}" permanently?`)) {
         return;
       }
 
@@ -333,8 +344,8 @@
           { method: "DELETE" }
         );
 
-        alert(`✅ Cadet "${email}" deleted successfully.`);
-        loadSubscribers(); // Refresh the table
+        alert(`✅ "${email}" has been deleted.`);
+        loadSubscribers(); // Refresh table
       } catch (err) {
         alert("Delete failed: " + err.message);
       }
