@@ -183,7 +183,7 @@
       }
     }
 
-    // Updated Captain's Log Loader - Most Recent First + Preview from 2nd/3rd line
+    // ==================== CAPTAIN'S LOGS (NEW - sorted + preview) ====================
     async function loadCaptainsLog() {
       const container = document.getElementById('log-summary');
       container.innerHTML = 'Loading entries...';
@@ -192,13 +192,12 @@
         const response = await fetch(
           `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/captainsLog?key=${FIREBASE_KEY}`
         );
-
-        if (!response.ok) throw new Error("Failed to fetch logs");
+        if (!response.ok) throw new Error("Failed to fetch");
 
         const data = await response.json();
         let documents = data.documents || [];
 
-        // Sort by timestamp descending (most recent first)
+        // Most recent first
         documents.sort((a, b) => {
           const timeA = a.fields?.timestamp?.timestampValue ? new Date(a.fields.timestamp.timestampValue) : new Date(0);
           const timeB = b.fields?.timestamp?.timestampValue ? new Date(b.fields.timestamp.timestampValue) : new Date(0);
@@ -206,21 +205,18 @@
         });
 
         let html = '';
-
         documents.forEach(doc => {
           const fields = doc.fields || {};
           const title = fields.title ? fields.title.stringValue : 'Untitled';
           const stardate = fields.stardate ? fields.stardate.stringValue : 'Unknown Date';
           const fullContent = fields.content ? fields.content.stringValue : '';
 
-          // Split into lines and get a good preview (2nd or 3rd line)
-          const lines = fullContent.trim().split('\n').filter(line => line.trim() !== '');
+          const lines = fullContent.trim().split('\n').filter(l => l.trim() !== '');
           let preview = '';
-          if (lines.length >= 3) preview = lines[2].trim();           // prefer 3rd line
-          else if (lines.length >= 2) preview = lines[1].trim();      // fallback to 2nd
-          else if (lines.length >= 1) preview = lines[0].trim();      // last resort
+          if (lines.length >= 3) preview = lines[2].trim();
+          else if (lines.length >= 2) preview = lines[1].trim();
+          else if (lines.length >= 1) preview = lines[0].trim();
 
-          // Truncate preview if too long
           if (preview.length > 180) preview = preview.substring(0, 177) + '...';
 
           html += `
@@ -237,9 +233,6 @@
       }
     }
 
-    // Rest of your functions (copyAllLogs, showAddLogModal, saveNewLog, subscribers, delete, etc.) remain unchanged
-    // ... (I'll keep them identical to your current working version)
-
     function copyAllLogs() {
       const entries = document.querySelectorAll('.log-entry');
       let text = "=== CAPTAIN'S LOG ARCHIVE ===\n\n";
@@ -250,9 +243,7 @@
         text += `${content}\n\n`;
         text += "─".repeat(80) + "\n\n";
       });
-      navigator.clipboard.writeText(text).then(() => {
-        alert("✅ All logs copied! Paste them here for me.");
-      });
+      navigator.clipboard.writeText(text).then(() => alert("✅ All logs copied!"));
     }
 
     function showAddLogModal() {
@@ -262,10 +253,7 @@
 
     async function saveNewLog() {
       const content = document.getElementById('new-log-content').value.trim();
-      if (!content) {
-        alert("Please paste the log content.");
-        return;
-      }
+      if (!content) return alert("Please paste the log content.");
       try {
         await fetch(
           `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/captainsLog?key=${FIREBASE_KEY}`,
@@ -286,15 +274,75 @@
         alert("✅ New Grok log saved!");
         bootstrap.Modal.getInstance(document.getElementById('addLogModal')).hide();
         loadCaptainsLog();
-      } catch (err) {
-        alert("Error: " + err.message);
+      } catch (err) { alert("Error: " + err.message); }
+    }
+
+    // ==================== SUBSCRIBERS (FULLY RESTORED) ====================
+    async function loadSubscribers() {
+      const tableDiv = document.getElementById('subscribers-table');
+      const countSpan = document.getElementById('total-subscribers');
+      tableDiv.innerHTML = 'Loading all cadets...';
+      countSpan.innerHTML = 'Total Cadets: <strong>Loading...</strong>';
+
+      try {
+        const res = await fetch(`https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/subscribers?key=${FIREBASE_KEY}`);
+        if (!res.ok) throw new Error("No subscribers collection yet.");
+
+        const data = await res.json();
+        let docs = data.documents || [];
+        const total = docs.length;
+
+        docs.sort((a, b) => {
+          const timeA = a.fields?.timestamp?.timestampValue ? new Date(a.fields.timestamp.timestampValue) : new Date(0);
+          const timeB = b.fields?.timestamp?.timestampValue ? new Date(b.fields.timestamp.timestampValue) : new Date(0);
+          return timeB - timeA;
+        });
+
+        let html = `<table><thead><tr><th>Date</th><th>Name</th><th>Email</th><th>Action</th></tr></thead><tbody>`;
+        docs.forEach(doc => {
+          const id = doc.name.split('/').pop();
+          const f = doc.fields || {};
+          const firstName = f.firstName ? f.firstName.stringValue : '';
+          const lastName = f.lastName ? f.lastName.stringValue : '';
+          const fullName = [firstName, lastName].filter(Boolean).join(' ') || '—';
+          const email = f.email ? f.email.stringValue : '—';
+          const ts = f.timestamp ? new Date(f.timestamp.timestampValue).toLocaleDateString('en-US') : '—';
+
+          html += `<tr class="cadet-row"><td>${ts}</td><td>${fullName}</td><td>${email}</td><td><button class="delete-btn" onclick="deleteSubscriber('${id}', '${email.replace(/'/g, "\\'")}')">🗑️</button></td></tr>`;
+        });
+        html += '</tbody></table>';
+
+        tableDiv.innerHTML = html || '<p>No subscribers yet.</p>';
+        countSpan.innerHTML = `Total Cadets: <strong>${total}</strong>`;
+      } catch (e) {
+        tableDiv.innerHTML = `<p style="color:#ffaa00;">${e.message}</p>`;
+        countSpan.innerHTML = 'Total Cadets: <strong>0</strong>';
       }
     }
 
-    // (Subscribers functions - loadSubscribers, deleteSubscriber, copyAllCadets - remain exactly as in the previous version)
+    async function deleteSubscriber(docId, email) {
+      if (!confirm(`Delete cadet "${email}" permanently?`)) return;
+      try {
+        await fetch(`https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/subscribers/${docId}?key=${FIREBASE_KEY}`, { method: "DELETE" });
+        alert(`✅ "${email}" deleted.`);
+        loadSubscribers();
+      } catch (err) { alert("Delete failed: " + err.message); }
+    }
 
-    // ... [paste your existing subscribers code here if you want the full file - it's unchanged]
+    async function copyAllCadets() {
+      try {
+        const res = await fetch(`https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/subscribers?key=${FIREBASE_KEY}`);
+        if (!res.ok) throw new Error("No subscribers found.");
+        const data = await res.json();
+        const docs = data.documents || [];
+        const emails = docs.map(doc => doc.fields?.email?.stringValue).filter(Boolean);
+        if (emails.length === 0) return alert("No cadet emails found yet.");
+        await navigator.clipboard.writeText(emails.join(', '));
+        alert(`✅ ${emails.length} cadet emails copied (comma-separated)!`);
+      } catch (err) { alert("Error: " + err.message); }
+    }
 
+    // Initialize
     document.addEventListener('DOMContentLoaded', () => {
       if (localStorage.getItem('alphaBaseCampLoggedIn') === 'true') {
         document.getElementById('dashboard-content').style.display = 'block';
@@ -304,9 +352,7 @@
         new bootstrap.Modal(document.getElementById('loginModal')).show();
       }
 
-      document.getElementById('admin-password').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') attemptLogin();
-      });
+      document.getElementById('admin-password').addEventListener('keypress', (e) => { if (e.key === 'Enter') attemptLogin(); });
       document.getElementById('login-btn').addEventListener('click', attemptLogin);
     });
   </script>
