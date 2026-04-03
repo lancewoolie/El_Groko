@@ -37,7 +37,7 @@
       touch-action: manipulation;
     }
 
-    /* MINI NAV - Faster drop-in (1.5s delay) */
+    /* MINI NAV - Crazy bounce out */
     .mini-nav {
       position: fixed;
       top: 12px;
@@ -67,10 +67,10 @@
       transform: translateY(0);
     }
 
-    /* Bounce offscreen when returning to saloon */
+    /* CRAZY BOUNCE OUT - Much more dramatic */
     .mini-nav.bounce-out {
-      transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-      transform: translateY(-120px) scale(0.85);
+      transition: transform 0.55s cubic-bezier(0.68, -0.85, 0.32, 1.85) !important;
+      transform: translateY(-180px) scale(0.6) rotate(-8deg) !important;
     }
 
     .mini-nav img {
@@ -174,10 +174,10 @@
 </head>
 <body>
 
-  <!-- MINI NAV -->
+  <!-- MINI NAV - Raccoon removed because we are on the subscriber page -->
   <div class="mini-nav" id="mini-nav">
     <img src="/img/moonsaloon/saloon-doors-nav.png" class="doors" data-link="index.html" data-type="home" data-label="Moon Saloon">
-    <img src="/img/moonsaloon/raccoon-subscribe-nav.png" data-link="onlyfans.html" data-type="dest" data-label="Only Fans Zone">
+    <!-- Raccoon removed -->
     <img src="/img/moonsaloon/holo-calendar-events-nav.png" data-link="events.html" data-type="dest" data-label="Events">
     <img src="/img/moonsaloon/music-video-neon-nav.png" data-link="music.html" data-type="dest" data-label="Music & Video">
     <img src="/img/moonsaloon/cowboy-hat-merch-nav.png" data-link="merch.html" data-type="dest" data-label="Merch">
@@ -200,15 +200,9 @@
     
           <form id="newsletter-form" class="row g-3 justify-content-center mt-4">
             <input type="text" id="campo_extra" name="campo_extra" class="campo-extra" autocomplete="off" tabindex="-1">
-            <div class="col-md-6">
-              <input type="text" class="form-control" id="first-name" placeholder="First Name" required>
-            </div>
-            <div class="col-md-6">
-              <input type="text" class="form-control" id="last-name" placeholder="Last Name" required>
-            </div>
-            <div class="col-md-8">
-              <input type="email" class="form-control" id="signup-email" placeholder="your@bayou.com" required>
-            </div>
+            <div class="col-md-6"><input type="text" class="form-control" id="first-name" placeholder="First Name" required></div>
+            <div class="col-md-6"><input type="text" class="form-control" id="last-name" placeholder="Last Name" required></div>
+            <div class="col-md-8"><input type="email" class="form-control" id="signup-email" placeholder="your@bayou.com" required></div>
             <div class="col-md-4 d-flex align-items-end">
               <button type="submit" class="btn btn-success w-100">Do it. Join the Zone</button>
             </div>
@@ -260,10 +254,7 @@
         const email = document.getElementById('signup-email').value.trim();
         const honeypot = document.getElementById('campo_extra').value.trim();
 
-        if (honeypot !== '') {
-          console.log('Bot detected');
-          return;
-        }
+        if (honeypot !== '') { console.log('Bot detected'); return; }
 
         if (!firstName || !lastName || !email) {
           alert('Please fill in all fields.');
@@ -271,20 +262,16 @@
         }
 
         const lowerEmail = email.toLowerCase();
-        if (
-          lowerEmail.includes('..') || (lowerEmail.match(/\./g)||[]).length > 4 ||
-          lowerEmail.includes('grok') || lowerEmail.includes('temp') ||
-          lowerEmail.includes('disposable') || lowerEmail.length < 8
-        ) {
+        if (lowerEmail.includes('..') || (lowerEmail.match(/\./g)||[]).length > 4 ||
+            lowerEmail.includes('grok') || lowerEmail.includes('temp') ||
+            lowerEmail.includes('disposable') || lowerEmail.length < 8) {
           alert('Please use a valid personal email address.');
           return;
         }
 
         try {
           await window.addDoc(window.collection(window.db, 'subscribers'), {
-            firstName, lastName, email,
-            type: 'onlyfanszone',
-            timestamp: window.serverTimestamp()
+            firstName, lastName, email, type: 'onlyfanszone', timestamp: window.serverTimestamp()
           });
           document.getElementById('newsletter-success').style.display = 'block';
           newsletterForm.reset();
@@ -349,7 +336,7 @@
         e.preventDefault();
 
         if (type === 'home') {
-          // Bounce mini nav offscreen before reverse transition
+          // CRAZY BOUNCE OUT
           miniNav.classList.add('bounce-out');
 
           setTimeout(() => {
@@ -359,14 +346,11 @@
             reverseVideo.currentTime = 0;
             reverseVideo.volume = 0.5;
             reverseVideo.play()
-              .then(() => {
-                reverseVideo.onended = () => window.location.href = targetLink;
-              })
+              .then(() => { reverseVideo.onended = () => window.location.href = targetLink; })
               .catch(() => window.location.href = targetLink);
-          }, 450); // Give bounce time to finish
+          }, 520); // Slightly longer to let the crazy bounce finish
         } 
         else {
-          // Instant load to other destination pages
           window.location.href = targetLink;
         }
       });
