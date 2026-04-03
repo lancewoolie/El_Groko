@@ -37,7 +37,7 @@
       touch-action: manipulation;
     }
 
-    /* MINI NAV */
+    /* MINI NAV - Faster drop-in (1.5s delay) */
     .mini-nav {
       position: fixed;
       top: 12px;
@@ -53,6 +53,7 @@
       box-shadow: 0 0 30px rgba(0, 255, 204, 0.6),
                   inset 0 0 20px rgba(255, 0, 170, 0.3);
       backdrop-filter: blur(12px);
+      
       opacity: 0;
       visibility: hidden;
       transform: translateY(-80px);
@@ -64,6 +65,12 @@
       opacity: 1;
       visibility: visible;
       transform: translateY(0);
+    }
+
+    /* Bounce offscreen when returning to saloon */
+    .mini-nav.bounce-out {
+      transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+      transform: translateY(-120px) scale(0.85);
     }
 
     .mini-nav img {
@@ -154,7 +161,7 @@
       opacity: 0.95;
     }
 
-    /* Spanish Honeypot - Less obvious to AI */
+    /* Spanish Honeypot */
     .campo-extra {
       position: absolute;
       left: -9999px;
@@ -192,9 +199,7 @@
           <p class="lead mt-4">Join the inner circle. Get first dibs on new drops, secret shows, unreleased tracks, and bayou insider vibes.</p>
     
           <form id="newsletter-form" class="row g-3 justify-content-center mt-4">
-            <!-- Spanish Honeypot - Much less obvious to AI -->
             <input type="text" id="campo_extra" name="campo_extra" class="campo-extra" autocomplete="off" tabindex="-1">
-            
             <div class="col-md-6">
               <input type="text" class="form-control" id="first-name" placeholder="First Name" required>
             </div>
@@ -243,24 +248,21 @@
     window.serverTimestamp = serverTimestamp;
   </script>
 
-  <!-- Newsletter Form with Spanish Honeypot -->
+  <!-- Newsletter Form -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const newsletterForm = document.getElementById('newsletter-form');
       if (!newsletterForm) return;
-
       newsletterForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-
         const firstName = document.getElementById('first-name').value.trim();
         const lastName = document.getElementById('last-name').value.trim();
         const email = document.getElementById('signup-email').value.trim();
-        const honeypot = document.getElementById('campo_extra').value.trim();   // Spanish honeypot
+        const honeypot = document.getElementById('campo_extra').value.trim();
 
-        // Honeypot check
         if (honeypot !== '') {
           console.log('Bot detected');
-          return; // Silent block
+          return;
         }
 
         if (!firstName || !lastName || !email) {
@@ -324,15 +326,18 @@
         overlay.style.display = 'none';
         content.classList.add('show');
 
+        // Mini nav appears after 1.5 seconds
         setTimeout(() => {
           miniNav.classList.add('show');
-        }, 2250);
+        }, 1500);
       }
 
+      // Safety fallback
       setTimeout(() => {
         if (!miniNav.classList.contains('show')) miniNav.classList.add('show');
-      }, 6000);
+      }, 5000);
 
+      // Mini Nav Click Handler
       miniNav.addEventListener('click', (e) => {
         const img = e.target.closest('img');
         if (!img) return;
@@ -344,15 +349,24 @@
         e.preventDefault();
 
         if (type === 'home') {
-          overlay.style.display = 'block';
-          forwardVideo.style.display = 'none';
-          reverseVideo.style.display = 'block';
-          reverseVideo.currentTime = 0;
-          reverseVideo.volume = 0.5;
-          reverseVideo.play()
-            .then(() => { reverseVideo.onended = () => window.location.href = targetLink; })
-            .catch(() => window.location.href = targetLink);
-        } else {
+          // Bounce mini nav offscreen before reverse transition
+          miniNav.classList.add('bounce-out');
+
+          setTimeout(() => {
+            overlay.style.display = 'block';
+            forwardVideo.style.display = 'none';
+            reverseVideo.style.display = 'block';
+            reverseVideo.currentTime = 0;
+            reverseVideo.volume = 0.5;
+            reverseVideo.play()
+              .then(() => {
+                reverseVideo.onended = () => window.location.href = targetLink;
+              })
+              .catch(() => window.location.href = targetLink);
+          }, 450); // Give bounce time to finish
+        } 
+        else {
+          // Instant load to other destination pages
           window.location.href = targetLink;
         }
       });
