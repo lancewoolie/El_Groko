@@ -23,16 +23,17 @@
       touch-action: manipulation;
     }
 
-    /* MINI NAV - More visible position */
+    /* MINI NAV - CENTERED AT TOP */
     .mini-nav {
       position: fixed;
       top: 15px;
-      left: 45px;           /* Moved further right */
+      left: 50%;
+      transform: translateX(-50%);
       z-index: 10000;
       background: rgba(10, 15, 35, 0.95);
       border: 2px solid #00ffcc;
       border-radius: 50px;
-      padding: 10px 18px;
+      padding: 10px 20px;
       display: flex;
       align-items: center;
       gap: 12px;
@@ -44,16 +45,20 @@
       transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
-    .mini-nav.show { opacity: 1; visibility: visible; }
+    .mini-nav.show { 
+      opacity: 1; 
+      visibility: visible; 
+    }
 
-    /* Goofy intro + crazy bounce */
-    .mini-nav.intro-drop   { transform: translateY(-130px) rotate(-12deg); }
-    .mini-nav.intro-spin   { transform: translateY(-110px) rotate(28deg) scale(0.65); }
-    .mini-nav.intro-slide  { transform: translateX(-160px) translateY(-50px); }
+    /* Goofy randomized intro */
+    .mini-nav.intro-drop   { transform: translate(-50%, -130px) rotate(-12deg); }
+    .mini-nav.intro-spin   { transform: translate(-50%, -110px) rotate(28deg) scale(0.65); }
+    .mini-nav.intro-slide  { transform: translate(-50%, -50px) translateX(-160px); }
 
+    /* Crazy bounce out */
     .mini-nav.bounce-out {
       transition: transform 0.68s cubic-bezier(0.68, -1.4, 0.32, 2.3) !important;
-      transform: translateY(-240px) scale(0.35) rotate(32deg) !important;
+      transform: translate(-50%, -240px) scale(0.35) rotate(32deg) !important;
     }
 
     .mini-nav img {
@@ -69,12 +74,56 @@
       filter: drop-shadow(0 0 25px #ff00aa);
     }
 
-    /* Brighter sample text + sexier forms */
+    .mini-nav .doors {
+      width: 52px;
+      height: 46px;
+    }
+
+    /* Tooltip */
+    .mini-nav img::after {
+      content: attr(data-label);
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.85);
+      color: #00ffcc;
+      font-size: 0.78rem;
+      padding: 5px 12px;
+      border-radius: 6px;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      z-index: 10001;
+      border: 1px solid #00ffcc;
+      text-shadow: 0 0 8px #00ffcc;
+      margin-top: 8px;
+    }
+
+    .mini-nav img:hover::after {
+      opacity: 1;
+    }
+
+    .content { 
+      position: relative; 
+      z-index: 1; 
+      opacity: 0; 
+      transition: opacity 1.2s ease; 
+    }
+    .content.show { opacity: 1; }
+
+    .content-overlay {
+      background: url('/img/moonsaloon/contact-base-bg.jpg') center/cover no-repeat fixed !important;
+      min-height: 100vh;
+    }
+
+    /* Sexy tighter forms */
     .sexy-card {
       background: rgba(8, 18, 40, 0.92);
       border: 3px solid #00ffcc;
       border-radius: 24px;
-      padding: 2.2rem 1.8rem;
+      padding: 2rem 1.8rem;
       box-shadow: 0 0 60px rgba(0, 255, 204, 0.5),
                   inset 0 0 40px rgba(255, 0, 170, 0.3);
       backdrop-filter: blur(16px);
@@ -97,13 +146,13 @@
     }
 
     .form-control::placeholder {
-      color: #e0e0e0 !important;   /* Much brighter placeholder text */
-      opacity: 0.85 !important;
+      color: #f0f0f0 !important;   /* Brighter placeholder text */
+      opacity: 0.9 !important;
     }
 
     .form-control:focus {
       border-color: #ff00aa;
-      box-shadow: 0 0 0 4px rgba(255, 0, 170, 0.4);
+      box-shadow: 0 0 0 4px rgba(255,0,170,0.4);
       background: rgba(0,0,0,0.9) !important;
     }
 
@@ -142,7 +191,7 @@
 </head>
 <body>
 
-  <!-- MINI NAV - Contact icon removed -->
+  <!-- MINI NAV - CENTERED -->
   <div class="mini-nav" id="mini-nav">
     <img src="/img/moonsaloon/saloon-doors-nav.png" class="doors" data-link="index.html" data-type="home" data-label="Moon Saloon">
     <img src="/img/moonsaloon/raccoon-subscribe-nav.png" data-link="onlyfans.html" data-type="dest" data-label="Only Fans Zone">
@@ -234,7 +283,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
 
-  <!-- Firebase -->
+  <!-- Firebase + EmailJS + Mini Nav Logic -->
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
     import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
@@ -255,13 +304,11 @@
     window.serverTimestamp = serverTimestamp;
   </script>
 
-  <!-- EmailJS -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>
     emailjs.init("CHqNrS_37-ZHjibQR");
   </script>
 
-  <!-- Mini Nav + Forms -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const overlay = document.getElementById('transition-overlay');
@@ -295,7 +342,7 @@
         setTimeout(() => miniNav.classList.add('show'), 1500);
       }
 
-      // Crazy bounce on return to saloon
+      // Crazy bounce when returning to saloon
       miniNav.addEventListener('click', e => {
         const img = e.target.closest('img');
         if (!img) return;
@@ -320,7 +367,7 @@
         }
       });
 
-      // Newsletter form
+      // Newsletter
       const newsletterForm = document.getElementById('newsletter-form');
       if (newsletterForm) {
         newsletterForm.addEventListener('submit', async e => {
