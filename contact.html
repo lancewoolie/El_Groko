@@ -18,26 +18,26 @@
       color: #E0E0E0;
       font-family: 'Georgia', serif;
       margin: 0;
-      padding-top: 100px;
+      padding-top: 105px;
       padding-bottom: 80px;
       touch-action: manipulation;
     }
 
-    /* MINI NAV - Better visible position */
+    /* MINI NAV - More visible position */
     .mini-nav {
       position: fixed;
       top: 15px;
-      left: 40px;
+      left: 45px;           /* Moved further right */
       z-index: 10000;
-      background: rgba(10, 15, 35, 0.94);
+      background: rgba(10, 15, 35, 0.95);
       border: 2px solid #00ffcc;
       border-radius: 50px;
-      padding: 8px 15px;
+      padding: 10px 18px;
       display: flex;
       align-items: center;
-      gap: 10px;
-      box-shadow: 0 0 35px rgba(0, 255, 204, 0.7),
-                  inset 0 0 20px rgba(255, 0, 170, 0.4);
+      gap: 12px;
+      box-shadow: 0 0 40px rgba(0, 255, 204, 0.7),
+                  inset 0 0 25px rgba(255, 0, 170, 0.4);
       backdrop-filter: blur(14px);
       opacity: 0;
       visibility: hidden;
@@ -57,11 +57,11 @@
     }
 
     .mini-nav img {
-      width: 44px;
-      height: 44px;
+      width: 46px;
+      height: 46px;
       cursor: pointer;
       transition: all 0.3s ease;
-      filter: drop-shadow(0 0 8px #00ffcc);
+      filter: drop-shadow(0 0 10px #00ffcc);
     }
 
     .mini-nav img:hover {
@@ -69,23 +69,22 @@
       filter: drop-shadow(0 0 25px #ff00aa);
     }
 
-    /* Cleaner, tighter sexy cards */
+    /* Brighter sample text + sexier forms */
     .sexy-card {
       background: rgba(8, 18, 40, 0.92);
       border: 3px solid #00ffcc;
-      border-radius: 22px;
-      padding: 2rem 1.8rem;
-      margin-bottom: 2rem;
-      box-shadow: 0 0 55px rgba(0, 255, 204, 0.45),
-                  inset 0 0 35px rgba(255, 0, 170, 0.25);
+      border-radius: 24px;
+      padding: 2.2rem 1.8rem;
+      box-shadow: 0 0 60px rgba(0, 255, 204, 0.5),
+                  inset 0 0 40px rgba(255, 0, 170, 0.3);
       backdrop-filter: blur(16px);
     }
 
     .form-label {
       color: #ffffff !important;
       font-weight: bold;
-      font-size: 1.12rem;
-      margin-bottom: 6px;
+      font-size: 1.15rem;
+      margin-bottom: 8px;
     }
 
     .form-control {
@@ -93,13 +92,18 @@
       border: 2.5px solid #00ffcc;
       color: #ffffff;
       border-radius: 14px;
-      padding: 14px 18px;
-      font-size: 1.05rem;
+      padding: 15px 20px;
+      font-size: 1.08rem;
+    }
+
+    .form-control::placeholder {
+      color: #e0e0e0 !important;   /* Much brighter placeholder text */
+      opacity: 0.85 !important;
     }
 
     .form-control:focus {
       border-color: #ff00aa;
-      box-shadow: 0 0 0 4px rgba(255,0,170,0.35);
+      box-shadow: 0 0 0 4px rgba(255, 0, 170, 0.4);
       background: rgba(0,0,0,0.9) !important;
     }
 
@@ -109,36 +113,36 @@
       font-weight: bold;
       border: none;
       border-radius: 50px;
-      padding: 14px 30px;
-      font-size: 1.05rem;
+      padding: 15px 32px;
+      font-size: 1.1rem;
     }
 
     .btn-gold:hover {
       transform: scale(1.08);
-      box-shadow: 0 0 45px #ff00aa;
+      box-shadow: 0 0 50px #ff00aa;
       background: linear-gradient(90deg, #ff00aa, #ffd700);
     }
 
     .success-message {
       color: #00ffcc;
       text-align: center;
-      margin-top: 15px;
+      margin-top: 18px;
       font-weight: bold;
-      text-shadow: 0 0 15px #00ffcc;
+      text-shadow: 0 0 20px #00ffcc;
       display: none;
     }
 
     .error-message {
       color: #ff6b6b;
       text-align: center;
-      margin-top: 10px;
+      margin-top: 12px;
       font-weight: bold;
     }
   </style>
 </head>
 <body>
 
-  <!-- MINI NAV -->
+  <!-- MINI NAV - Contact icon removed -->
   <div class="mini-nav" id="mini-nav">
     <img src="/img/moonsaloon/saloon-doors-nav.png" class="doors" data-link="index.html" data-type="home" data-label="Moon Saloon">
     <img src="/img/moonsaloon/raccoon-subscribe-nav.png" data-link="onlyfans.html" data-type="dest" data-label="Only Fans Zone">
@@ -148,7 +152,7 @@
     <img src="/img/moonsaloon/hourglass-origins-nav.png" data-link="origins.html" data-type="dest" data-label="Origins">
   </div>
 
-  <!-- VIDEO TRANSITION -->
+  <!-- VIDEO TRANSITION OVERLAY -->
   <div id="transition-overlay">
     <video id="forward-video" class="transition-video" playsinline preload="auto"></video>
     <video id="reverse-video" class="transition-video" playsinline preload="auto"></video>
@@ -205,7 +209,7 @@
             </div>
             <div class="mb-4">
               <label for="message" class="form-label">Your Message</label>
-              <textarea class="form-control" id="message" rows="5" placeholder="Say something..." required></textarea>
+              <textarea class="form-control" id="message" rows="6" placeholder="Say something..." required></textarea>
             </div>
             <button type="submit" class="btn btn-gold w-100">Send Message</button>
             <div id="contact-success" class="success-message"></div>
@@ -230,7 +234,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
 
-  <!-- Firebase + EmailJS + Mini Nav -->
+  <!-- Firebase -->
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
     import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
@@ -251,11 +255,13 @@
     window.serverTimestamp = serverTimestamp;
   </script>
 
+  <!-- EmailJS -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>
     emailjs.init("CHqNrS_37-ZHjibQR");
   </script>
 
+  <!-- Mini Nav + Forms -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const overlay = document.getElementById('transition-overlay');
@@ -267,6 +273,7 @@
       forwardVideo.src = '/video/contact-video-transition.mp4';
       reverseVideo.src = '/video/contact-video-reverse.mp4';
 
+      // Random goofy intro
       const intros = ['intro-drop', 'intro-spin', 'intro-slide'];
       miniNav.classList.add(intros[Math.floor(Math.random()*intros.length)]);
 
@@ -288,6 +295,7 @@
         setTimeout(() => miniNav.classList.add('show'), 1500);
       }
 
+      // Crazy bounce on return to saloon
       miniNav.addEventListener('click', e => {
         const img = e.target.closest('img');
         if (!img) return;
@@ -312,36 +320,40 @@
         }
       });
 
-      // Newsletter
+      // Newsletter form
       const newsletterForm = document.getElementById('newsletter-form');
-      if (newsletterForm) newsletterForm.addEventListener('submit', async e => {
-        e.preventDefault();
-        const email = document.getElementById('signup-email').value.trim();
-        if (!email) return;
-        try {
-          await addDoc(collection(db, 'subscribers'), { email, type: 'newsletter', timestamp: serverTimestamp() });
-          document.getElementById('newsletter-success').style.display = 'block';
-          newsletterForm.reset();
-        } catch(err) { alert('Signup snag'); }
-      });
+      if (newsletterForm) {
+        newsletterForm.addEventListener('submit', async e => {
+          e.preventDefault();
+          const email = document.getElementById('signup-email').value.trim();
+          if (!email) return;
+          try {
+            await addDoc(collection(db, 'subscribers'), { email, type: 'newsletter', timestamp: serverTimestamp() });
+            document.getElementById('newsletter-success').style.display = 'block';
+            newsletterForm.reset();
+          } catch(err) { alert('Signup snag'); }
+        });
+      }
 
-      // Contact Form
+      // Contact form
       const contactForm = document.getElementById('contact-form');
-      if (contactForm) contactForm.addEventListener('submit', async e => {
-        e.preventDefault();
-        const name = document.getElementById('name').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const message = document.getElementById('message').value.trim();
-        if (!name || !email || !message) return;
+      if (contactForm) {
+        contactForm.addEventListener('submit', async e => {
+          e.preventDefault();
+          const name = document.getElementById('name').value.trim();
+          const email = document.getElementById('email').value.trim();
+          const message = document.getElementById('message').value.trim();
+          if (!name || !email || !message) return;
 
-        try {
-          await emailjs.send('service_n08jdhv', 'template_of9jflr', { from_name: name, from_email: email, message });
-          document.getElementById('contact-success').style.display = 'block';
-          contactForm.reset();
-        } catch(err) {
-          document.getElementById('contact-error').textContent = 'Send hiccup — try again or email lancewoolie@gmail.com';
-        }
-      });
+          try {
+            await emailjs.send('service_n08jdhv', 'template_of9jflr', { from_name: name, from_email: email, message });
+            document.getElementById('contact-success').style.display = 'block';
+            contactForm.reset();
+          } catch(err) {
+            document.getElementById('contact-error').textContent = 'Send hiccup — try again or email lancewoolie@gmail.com';
+          }
+        });
+      }
     });
   </script>
 </body>
