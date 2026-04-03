@@ -37,7 +37,7 @@
       touch-action: manipulation;
     }
 
-    /* MINI NAV - Drop-in with subtle bounce */
+    /* MINI NAV */
     .mini-nav {
       position: fixed;
       top: 12px;
@@ -53,7 +53,6 @@
       box-shadow: 0 0 30px rgba(0, 255, 204, 0.6),
                   inset 0 0 20px rgba(255, 0, 170, 0.3);
       backdrop-filter: blur(12px);
-      
       opacity: 0;
       visibility: hidden;
       transform: translateY(-80px);
@@ -155,7 +154,8 @@
       opacity: 0.95;
     }
 
-    .honeypot {
+    /* Spanish Honeypot - Less obvious to AI */
+    .campo-extra {
       position: absolute;
       left: -9999px;
       top: -9999px;
@@ -186,14 +186,15 @@
 
   <div class="content-overlay">
     <div class="content" id="main-content">
-      <!-- SEXY SUBSCRIBER CARD -->
       <div class="container py-5">
         <div class="friend-card">
           <h2>Welcome to the Only Fans Zone</h2>
           <p class="lead mt-4">Join the inner circle. Get first dibs on new drops, secret shows, unreleased tracks, and bayou insider vibes.</p>
     
           <form id="newsletter-form" class="row g-3 justify-content-center mt-4">
-            <input type="text" id="website_url" name="website_url" class="honeypot" autocomplete="off" tabindex="-1">
+            <!-- Spanish Honeypot - Much less obvious to AI -->
+            <input type="text" id="campo_extra" name="campo_extra" class="campo-extra" autocomplete="off" tabindex="-1">
+            
             <div class="col-md-6">
               <input type="text" class="form-control" id="first-name" placeholder="First Name" required>
             </div>
@@ -242,23 +243,31 @@
     window.serverTimestamp = serverTimestamp;
   </script>
 
-  <!-- Newsletter Form -->
+  <!-- Newsletter Form with Spanish Honeypot -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const newsletterForm = document.getElementById('newsletter-form');
       if (!newsletterForm) return;
+
       newsletterForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+
         const firstName = document.getElementById('first-name').value.trim();
         const lastName = document.getElementById('last-name').value.trim();
         const email = document.getElementById('signup-email').value.trim();
-        const honeypot = document.getElementById('website_url').value.trim();
+        const honeypot = document.getElementById('campo_extra').value.trim();   // Spanish honeypot
 
-        if (honeypot !== '') { console.log('Bot detected via honeypot'); return; }
+        // Honeypot check
+        if (honeypot !== '') {
+          console.log('Bot detected');
+          return; // Silent block
+        }
+
         if (!firstName || !lastName || !email) {
           alert('Please fill in all fields.');
           return;
         }
+
         const lowerEmail = email.toLowerCase();
         if (
           lowerEmail.includes('..') || (lowerEmail.match(/\./g)||[]).length > 4 ||
@@ -315,18 +324,15 @@
         overlay.style.display = 'none';
         content.classList.add('show');
 
-        // Show mini nav after 2.25 seconds (cut by 10%)
         setTimeout(() => {
           miniNav.classList.add('show');
         }, 2250);
       }
 
-      // Safety fallback
       setTimeout(() => {
         if (!miniNav.classList.contains('show')) miniNav.classList.add('show');
       }, 6000);
 
-      // Mini Nav Click Handler
       miniNav.addEventListener('click', (e) => {
         const img = e.target.closest('img');
         if (!img) return;
