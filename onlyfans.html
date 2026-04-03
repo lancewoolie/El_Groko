@@ -7,7 +7,7 @@
   <title>Only Fans Zone - Lance Woolie’s Moon Saloon</title>
   <meta name="description" content="Join Lance Woolie’s Only Fans Zone. Get first dibs on new drops, secret shows, unreleased tracks, and bayou insider vibes.">
 
-  <!-- Open Graph + Twitter (unchanged) -->
+  <!-- Open Graph / Facebook -->
   <meta property="og:title" content="Only Fans Zone - Lance Woolie’s Moon Saloon">
   <meta property="og:description" content="Join the inner circle. Get first dibs on new drops, secret shows, unreleased tracks, and bayou insider vibes.">
   <meta property="og:image" content="https://lancewoolie.com/img/onlyfans.jpg">
@@ -15,6 +15,7 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Lance Woolie’s Moon Saloon">
 
+  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Only Fans Zone - Lance Woolie’s Moon Saloon">
   <meta name="twitter:description" content="Join the inner circle. Get first dibs on new drops, secret shows, unreleased tracks, and bayou insider vibes.">
@@ -36,7 +37,7 @@
       touch-action: manipulation;
     }
 
-    /* MINI NAV - Drop-in with subtle bounce */
+    /* MINI NAV - Drop-in with subtle bounce (2.5s delay) */
     .mini-nav {
       position: fixed;
       top: 12px;
@@ -55,7 +56,7 @@
       
       opacity: 0;
       visibility: hidden;
-      transform: translateY(-80px);        /* Start way above */
+      transform: translateY(-80px);
       transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1), 
                   opacity 0.6s ease;
     }
@@ -63,7 +64,7 @@
     .mini-nav.show {
       opacity: 1;
       visibility: visible;
-      transform: translateY(0);            /* Drop down with bounce */
+      transform: translateY(0);
     }
 
     .mini-nav img {
@@ -109,6 +110,59 @@
     .mini-nav img:hover::after {
       opacity: 1;
     }
+
+    .content {
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      transition: opacity 1.2s ease;
+    }
+    .content.show { opacity: 1; }
+
+    .content-overlay {
+      background: url('/img/moonsaloon/friends-base-bg.jpg') center/cover no-repeat fixed !important;
+      min-height: 100vh;
+    }
+
+    /* SEXY SUBSCRIBER CARD - Fully Restored */
+    .friend-card {
+      background: rgba(10, 25, 50, 0.75);
+      border: 3px solid #00ffcc;
+      border-radius: 20px;
+      padding: 3rem;
+      max-width: 620px;
+      margin: 0 auto;
+      box-shadow: 0 0 50px rgba(0, 255, 204, 0.5),
+                  inset 0 0 40px rgba(255, 0, 170, 0.25);
+      backdrop-filter: blur(12px);
+      text-align: center;
+    }
+
+    .friend-card h2 {
+      color: #00ffcc;
+      text-shadow: 0 0 25px #00ffcc;
+      font-size: 2.4rem;
+    }
+
+    .friend-card p {
+      color: #f0f0f0;
+      font-size: 1.25rem;
+      line-height: 1.8;
+    }
+
+    .text-muted, .small {
+      color: #e0e0e0 !important;
+      opacity: 0.95;
+    }
+
+    .honeypot {
+      position: absolute;
+      left: -9999px;
+      top: -9999px;
+      opacity: 0;
+      height: 1px;
+      width: 1px;
+    }
   </style>
 </head>
 <body>
@@ -132,6 +186,7 @@
 
   <div class="content-overlay">
     <div class="content" id="main-content">
+      <!-- SEXY SUBSCRIBER CARD -->
       <div class="container py-5">
         <div class="friend-card">
           <h2>Welcome to the Only Fans Zone</h2>
@@ -139,9 +194,15 @@
     
           <form id="newsletter-form" class="row g-3 justify-content-center mt-4">
             <input type="text" id="website_url" name="website_url" class="honeypot" autocomplete="off" tabindex="-1">
-            <div class="col-md-6"><input type="text" class="form-control" id="first-name" placeholder="First Name" required></div>
-            <div class="col-md-6"><input type="text" class="form-control" id="last-name" placeholder="Last Name" required></div>
-            <div class="col-md-8"><input type="email" class="form-control" id="signup-email" placeholder="your@bayou.com" required></div>
+            <div class="col-md-6">
+              <input type="text" class="form-control" id="first-name" placeholder="First Name" required>
+            </div>
+            <div class="col-md-6">
+              <input type="text" class="form-control" id="last-name" placeholder="Last Name" required>
+            </div>
+            <div class="col-md-8">
+              <input type="email" class="form-control" id="signup-email" placeholder="your@bayou.com" required>
+            </div>
             <div class="col-md-4 d-flex align-items-end">
               <button type="submit" class="btn btn-success w-100">Do it. Join the Zone</button>
             </div>
@@ -160,11 +221,19 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
 
-  <!-- Firebase + Newsletter Form (same as before) -->
+  <!-- Firebase -->
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
     import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
-    const firebaseConfig = { /* your config */ };
+    const firebaseConfig = {
+      apiKey: "AIzaSyAJQMdogiDwB0oLf2I_Jp-6NSLTDcXvVcQ",
+      authDomain: "lance-woolie-webfarm.firebaseapp.com",
+      projectId: "lance-woolie-webfarm",
+      storageBucket: "lance-woolie-webfarm.firebasestorage.app",
+      messagingSenderId: "278461194969",
+      appId: "1:278461194969:web:a2a03c9d27ccbb670814c8",
+      measurementId: "G-D734JL7BFR"
+    };
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     window.db = db;
@@ -173,6 +242,50 @@
     window.serverTimestamp = serverTimestamp;
   </script>
 
+  <!-- Newsletter Form -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const newsletterForm = document.getElementById('newsletter-form');
+      if (!newsletterForm) return;
+      newsletterForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const firstName = document.getElementById('first-name').value.trim();
+        const lastName = document.getElementById('last-name').value.trim();
+        const email = document.getElementById('signup-email').value.trim();
+        const honeypot = document.getElementById('website_url').value.trim();
+
+        if (honeypot !== '') { console.log('Bot detected via honeypot'); return; }
+        if (!firstName || !lastName || !email) {
+          alert('Please fill in all fields.');
+          return;
+        }
+        const lowerEmail = email.toLowerCase();
+        if (
+          lowerEmail.includes('..') || (lowerEmail.match(/\./g)||[]).length > 4 ||
+          lowerEmail.includes('grok') || lowerEmail.includes('temp') ||
+          lowerEmail.includes('disposable') || lowerEmail.length < 8
+        ) {
+          alert('Please use a valid personal email address.');
+          return;
+        }
+
+        try {
+          await window.addDoc(window.collection(window.db, 'subscribers'), {
+            firstName, lastName, email,
+            type: 'onlyfanszone',
+            timestamp: window.serverTimestamp()
+          });
+          document.getElementById('newsletter-success').style.display = 'block';
+          newsletterForm.reset();
+        } catch (error) {
+          console.error(error);
+          alert('Signup snag — try again or email directly.');
+        }
+      });
+    });
+  </script>
+
+  <!-- MINI NAV + TRANSITION LOGIC -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const overlay = document.getElementById('transition-overlay');
@@ -186,7 +299,6 @@
 
       overlay.style.display = 'block';
       forwardVideo.style.display = 'block';
-
       let transitionStarted = false;
 
       forwardVideo.oncanplaythrough = () => {
@@ -203,18 +315,18 @@
         overlay.style.display = 'none';
         content.classList.add('show');
 
-        // Drop-in the mini nav 5 seconds after transition ends
+        // Show mini nav after 2.5 seconds (much snappier)
         setTimeout(() => {
           miniNav.classList.add('show');
-        }, 5000);
+        }, 2500);
       }
 
       // Safety fallback
       setTimeout(() => {
         if (!miniNav.classList.contains('show')) miniNav.classList.add('show');
-      }, 8000);
+      }, 6000);
 
-      // Click handler (same as before)
+      // Mini Nav Click Handler
       miniNav.addEventListener('click', (e) => {
         const img = e.target.closest('img');
         if (!img) return;
