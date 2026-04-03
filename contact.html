@@ -31,11 +31,11 @@
       touch-action: manipulation;
     }
 
-    /* MINI NAV - Better left positioning */
+    /* MINI NAV - Properly positioned */
     .mini-nav {
       position: fixed;
       top: 12px;
-      left: 30px;                    /* Fixed positioning */
+      left: 30px;
       z-index: 10000;
       background: rgba(10, 15, 35, 0.92);
       border: 2px solid #00ffcc;
@@ -110,12 +110,7 @@
       opacity: 1;
     }
 
-    .content {
-      position: relative;
-      z-index: 1;
-      opacity: 0;
-      transition: opacity 1.2s ease;
-    }
+    .content { position: relative; z-index: 1; opacity: 0; transition: opacity 1.2s ease; }
     .content.show { opacity: 1; }
 
     .content-overlay {
@@ -123,7 +118,7 @@
       min-height: 100vh;
     }
 
-    /* SEXY WHITE TITLE */
+    /* Sexy Title */
     .page-title {
       font-size: 3.4rem;
       color: #ffffff !important;
@@ -133,13 +128,13 @@
       letter-spacing: 1px;
     }
 
-    /* SEXY AF CONTACT FORM */
+    /* Sexy Form Cards */
     .sexy-card {
-      background: rgba(8, 18, 40, 0.85) !important;
+      background: rgba(8, 18, 40, 0.88) !important;
       border: 3px solid #00ffcc;
       border-radius: 24px;
       padding: 2.5rem;
-      box-shadow: 0 0 60px rgba(0, 255, 204, 0.4),
+      box-shadow: 0 0 60px rgba(0, 255, 204, 0.45),
                   inset 0 0 40px rgba(255, 0, 170, 0.25);
       backdrop-filter: blur(16px);
     }
@@ -152,7 +147,7 @@
     }
 
     .form-control {
-      background: rgba(0, 0, 0, 0.65) !important;
+      background: rgba(0, 0, 0, 0.7) !important;
       border: 2px solid #00ffcc;
       color: #ffffff;
       border-radius: 14px;
@@ -163,9 +158,8 @@
 
     .form-control:focus {
       border-color: #ff00aa;
-      box-shadow: 0 0 0 4px rgba(255, 0, 170, 0.3);
-      background: rgba(0, 0, 0, 0.85) !important;
-      transform: translateY(-2px);
+      box-shadow: 0 0 0 4px rgba(255, 0, 170, 0.35);
+      background: rgba(0, 0, 0, 0.9) !important;
     }
 
     .btn-gold {
@@ -177,12 +171,10 @@
       padding: 16px 32px;
       font-size: 1.1rem;
       transition: all 0.4s ease;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
     }
 
     .btn-gold:hover {
-      transform: scale(1.08) translateY(-2px);
+      transform: scale(1.08);
       box-shadow: 0 0 50px #ff00aa;
       background: linear-gradient(90deg, #ff00aa, #ffd700);
     }
@@ -231,7 +223,7 @@
 
       <div class="container py-5">
 
-        <!-- Newsletter -->
+        <!-- Newsletter Signup -->
         <div class="sexy-card mb-5">
           <div class="card-body">
             <h3 class="card-title text-center mb-4">Sign Up for Exclusive Events & Pre-Releases</h3>
@@ -316,12 +308,163 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
 
-  <!-- Firebase + EmailJS + Mini Nav Logic -->
-  <!-- (Same as previous version - Firebase, EmailJS init, form handling, goofy mini nav with crazy bounce) -->
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+    import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+    const firebaseConfig = {
+      apiKey: "AIzaSyAJQMdogiDwB0oLf2I_Jp-6NSLTDcXvVcQ",
+      authDomain: "lance-woolie-webfarm.firebaseapp.com",
+      projectId: "lance-woolie-webfarm",
+      storageBucket: "lance-woolie-webfarm.firebasestorage.app",
+      messagingSenderId: "278461194969",
+      appId: "1:278461194969:web:a2a03c9d27ccbb670814c8",
+      measurementId: "G-D734JL7BFR"
+    };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    window.db = db;
+    window.addDoc = addDoc;
+    window.collection = collection;
+    window.serverTimestamp = serverTimestamp;
+  </script>
 
+  <!-- EmailJS -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script type="text/javascript">
+    (function() {
+      emailjs.init("CHqNrS_37-ZHjibQR");
+    })();
+  </script>
+
+  <!-- Full Script with Goofy Mini Nav + Forms -->
   <script>
-    // ... (insert the full script from the previous contact.html version here - including randomized intro, crazy bounce-out, forms, etc.) ...
-    // I kept it short here for readability. Let me know if you need the complete script block pasted.
+    document.addEventListener('DOMContentLoaded', () => {
+      const overlay = document.getElementById('transition-overlay');
+      const forwardVideo = document.getElementById('forward-video');
+      const reverseVideo = document.getElementById('reverse-video');
+      const content = document.getElementById('main-content');
+      const miniNav = document.getElementById('mini-nav');
+
+      forwardVideo.src = '/video/contact-video-transition.mp4';
+      reverseVideo.src = '/video/contact-video-reverse.mp4';
+
+      // Random goofy intro
+      const introTypes = ['intro-drop', 'intro-spin', 'intro-slide'];
+      miniNav.classList.add(introTypes[Math.floor(Math.random() * introTypes.length)]);
+
+      overlay.style.display = 'block';
+      forwardVideo.style.display = 'block';
+
+      let transitionStarted = false;
+
+      forwardVideo.oncanplaythrough = () => {
+        if (transitionStarted) return;
+        transitionStarted = true;
+        forwardVideo.muted = true;
+        forwardVideo.volume = 0.5;
+        forwardVideo.play().catch(finishForwardTransition);
+      };
+
+      forwardVideo.onended = finishForwardTransition;
+
+      function finishForwardTransition() {
+        overlay.style.display = 'none';
+        content.classList.add('show');
+
+        setTimeout(() => {
+          miniNav.classList.add('show');
+        }, 1500);
+      }
+
+      setTimeout(() => {
+        if (!miniNav.classList.contains('show')) miniNav.classList.add('show');
+      }, 5000);
+
+      // Mini Nav Click - Crazy Bounce
+      miniNav.addEventListener('click', (e) => {
+        const img = e.target.closest('img');
+        if (!img) return;
+
+        const targetLink = img.getAttribute('data-link');
+        const type = img.getAttribute('data-type');
+
+        if (!targetLink) return;
+        e.preventDefault();
+
+        if (type === 'home') {
+          miniNav.classList.add('bounce-out');
+          setTimeout(() => {
+            overlay.style.display = 'block';
+            forwardVideo.style.display = 'none';
+            reverseVideo.style.display = 'block';
+            reverseVideo.currentTime = 0;
+            reverseVideo.volume = 0.5;
+            reverseVideo.play()
+              .then(() => { reverseVideo.onended = () => window.location.href = targetLink; })
+              .catch(() => window.location.href = targetLink);
+          }, 580);
+        } else {
+          window.location.href = targetLink;
+        }
+      });
+
+      // Form Handling (preserved)
+      const sanitizeInput = (str) => str.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '').replace(/<\/?[^>]+(>|$)/g, '').trim();
+
+      // Newsletter
+      const newsletterForm = document.getElementById('newsletter-form');
+      if (newsletterForm) {
+        newsletterForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const email = sanitizeInput(document.getElementById('signup-email').value);
+          if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            alert('Valid email required.');
+            return;
+          }
+          try {
+            await addDoc(collection(db, 'subscribers'), {
+              email, type: 'newsletter', timestamp: serverTimestamp()
+            });
+            document.getElementById('newsletter-success').style.display = 'block';
+            newsletterForm.reset();
+          } catch (err) {
+            console.error(err);
+            alert('Signup snag — try again or email lancewoolie@gmail.com directly.');
+          }
+        });
+      }
+
+      // Contact Form
+      const contactForm = document.getElementById('contact-form');
+      if (contactForm) {
+        contactForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const name = sanitizeInput(document.getElementById('name').value);
+          const email = sanitizeInput(document.getElementById('email').value);
+          const message = sanitizeInput(document.getElementById('message').value);
+
+          if (!name || !email || !message || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            document.getElementById('contact-error').textContent = 'Please fill all fields with valid info.';
+            return;
+          }
+
+          try {
+            await emailjs.send('service_n08jdhv', 'template_of9jflr', {
+              from_name: name,
+              from_email: email,
+              message: message
+            });
+            document.getElementById('contact-success').style.display = 'block';
+            document.getElementById('contact-error').textContent = '';
+            contactForm.reset();
+          } catch (err) {
+            console.error(err);
+            document.getElementById('contact-error').textContent = 'Send hiccup — try again or email lancewoolie@gmail.com directly.';
+          }
+        });
+      }
+    });
   </script>
 </body>
 </html>
