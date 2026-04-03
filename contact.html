@@ -19,25 +19,25 @@
       font-family: 'Georgia', serif;
       margin: 0;
       padding-top: 100px;
-      padding-bottom: 100px;
+      padding-bottom: 80px;
       touch-action: manipulation;
     }
 
-    /* MINI NAV - Fixed positioning so it's fully visible */
+    /* MINI NAV - Better visible position */
     .mini-nav {
       position: fixed;
       top: 15px;
-      left: 35px;                    /* Moved right + better padding */
+      left: 40px;
       z-index: 10000;
       background: rgba(10, 15, 35, 0.94);
       border: 2px solid #00ffcc;
       border-radius: 50px;
-      padding: 9px 18px;
+      padding: 8px 15px;
       display: flex;
       align-items: center;
-      gap: 12px;
-      box-shadow: 0 0 35px rgba(0, 255, 204, 0.65),
-                  inset 0 0 25px rgba(255, 0, 170, 0.35);
+      gap: 10px;
+      box-shadow: 0 0 35px rgba(0, 255, 204, 0.7),
+                  inset 0 0 20px rgba(255, 0, 170, 0.4);
       backdrop-filter: blur(14px);
       opacity: 0;
       visibility: hidden;
@@ -46,23 +46,22 @@
 
     .mini-nav.show { opacity: 1; visibility: visible; }
 
-    /* Goofy randomized intro */
+    /* Goofy intro + crazy bounce */
     .mini-nav.intro-drop   { transform: translateY(-130px) rotate(-12deg); }
     .mini-nav.intro-spin   { transform: translateY(-110px) rotate(28deg) scale(0.65); }
     .mini-nav.intro-slide  { transform: translateX(-160px) translateY(-50px); }
 
-    /* Crazy bounce out */
     .mini-nav.bounce-out {
       transition: transform 0.68s cubic-bezier(0.68, -1.4, 0.32, 2.3) !important;
       transform: translateY(-240px) scale(0.35) rotate(32deg) !important;
     }
 
     .mini-nav img {
-      width: 46px;
-      height: 46px;
+      width: 44px;
+      height: 44px;
       cursor: pointer;
       transition: all 0.3s ease;
-      filter: drop-shadow(0 0 10px #00ffcc);
+      filter: drop-shadow(0 0 8px #00ffcc);
     }
 
     .mini-nav img:hover {
@@ -70,48 +69,37 @@
       filter: drop-shadow(0 0 25px #ff00aa);
     }
 
-    /* Title */
-    .page-title {
-      font-size: 3.5rem;
-      color: #ffffff;
-      text-shadow: 0 0 30px #00ffcc, 0 0 60px #ff00aa;
-      margin-bottom: 40px;
-      text-align: center;
-      letter-spacing: 2px;
-    }
-
-    /* Sexy Forms */
+    /* Cleaner, tighter sexy cards */
     .sexy-card {
-      background: rgba(8, 18, 40, 0.9);
+      background: rgba(8, 18, 40, 0.92);
       border: 3px solid #00ffcc;
-      border-radius: 26px;
-      padding: 2.8rem 2.2rem;
-      box-shadow: 0 0 70px rgba(0, 255, 204, 0.5),
-                  inset 0 0 45px rgba(255, 0, 170, 0.3);
-      backdrop-filter: blur(18px);
+      border-radius: 22px;
+      padding: 2rem 1.8rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 0 55px rgba(0, 255, 204, 0.45),
+                  inset 0 0 35px rgba(255, 0, 170, 0.25);
+      backdrop-filter: blur(16px);
     }
 
     .form-label {
-      color: #ffffff;
+      color: #ffffff !important;
       font-weight: bold;
-      font-size: 1.18rem;
-      margin-bottom: 8px;
-      text-shadow: 0 0 12px #00ffcc;
+      font-size: 1.12rem;
+      margin-bottom: 6px;
     }
 
     .form-control {
       background: rgba(0,0,0,0.75) !important;
       border: 2.5px solid #00ffcc;
-      color: #fff;
-      border-radius: 16px;
-      padding: 15px 20px;
-      font-size: 1.08rem;
-      transition: all 0.4s ease;
+      color: #ffffff;
+      border-radius: 14px;
+      padding: 14px 18px;
+      font-size: 1.05rem;
     }
 
     .form-control:focus {
       border-color: #ff00aa;
-      box-shadow: 0 0 0 5px rgba(255, 0, 170, 0.4);
+      box-shadow: 0 0 0 4px rgba(255,0,170,0.35);
       background: rgba(0,0,0,0.9) !important;
     }
 
@@ -121,37 +109,36 @@
       font-weight: bold;
       border: none;
       border-radius: 50px;
-      padding: 16px 34px;
-      font-size: 1.12rem;
-      transition: all 0.4s ease;
+      padding: 14px 30px;
+      font-size: 1.05rem;
     }
 
     .btn-gold:hover {
-      transform: scale(1.1);
-      box-shadow: 0 0 55px #ff00aa;
+      transform: scale(1.08);
+      box-shadow: 0 0 45px #ff00aa;
       background: linear-gradient(90deg, #ff00aa, #ffd700);
     }
 
     .success-message {
       color: #00ffcc;
       text-align: center;
-      margin-top: 20px;
+      margin-top: 15px;
       font-weight: bold;
-      text-shadow: 0 0 20px #00ffcc;
+      text-shadow: 0 0 15px #00ffcc;
       display: none;
     }
 
     .error-message {
       color: #ff6b6b;
       text-align: center;
-      margin-top: 12px;
+      margin-top: 10px;
       font-weight: bold;
     }
   </style>
 </head>
 <body>
 
-  <!-- MINI NAV - Contact icon removed -->
+  <!-- MINI NAV -->
   <div class="mini-nav" id="mini-nav">
     <img src="/img/moonsaloon/saloon-doors-nav.png" class="doors" data-link="index.html" data-type="home" data-label="Moon Saloon">
     <img src="/img/moonsaloon/raccoon-subscribe-nav.png" data-link="onlyfans.html" data-type="dest" data-label="Only Fans Zone">
@@ -161,7 +148,7 @@
     <img src="/img/moonsaloon/hourglass-origins-nav.png" data-link="origins.html" data-type="dest" data-label="Origins">
   </div>
 
-  <!-- VIDEO TRANSITION OVERLAY -->
+  <!-- VIDEO TRANSITION -->
   <div id="transition-overlay">
     <video id="forward-video" class="transition-video" playsinline preload="auto"></video>
     <video id="reverse-video" class="transition-video" playsinline preload="auto"></video>
@@ -170,43 +157,35 @@
   <div class="content-overlay">
     <div class="content" id="main-content">
 
-      <div class="container py-4">
-        <h1 class="page-title">Contact the Saloon</h1>
-      </div>
-
       <div class="container py-5">
 
         <!-- Newsletter -->
-        <div class="sexy-card mb-5">
-          <div class="card-body text-center">
-            <h3 class="mb-3">Sign Up for Exclusive Events & Pre-Releases</h3>
-            <p class="mb-4">Get first dibs on swamp-side shows, early track drops, and bayou insider vibes.</p>
-            <form id="newsletter-form" class="row g-3 justify-content-center">
-              <div class="col-md-7">
-                <input type="email" class="form-control" id="signup-email" placeholder="somebody@example.com" required>
-              </div>
-              <div class="col-md-5">
-                <button type="submit" class="btn btn-gold w-100">Do it. Sign Up</button>
-              </div>
-            </form>
-            <div id="newsletter-success" class="success-message">You're in — exclusive twang incoming!</div>
-          </div>
+        <div class="sexy-card">
+          <form id="newsletter-form" class="row g-3 justify-content-center">
+            <div class="col-md-7">
+              <input type="email" class="form-control" id="signup-email" placeholder="somebody@example.com" required>
+            </div>
+            <div class="col-md-5">
+              <button type="submit" class="btn btn-gold w-100">Do it. Sign Up</button>
+            </div>
+          </form>
+          <div id="newsletter-success" class="success-message">You're in — exclusive twang incoming!</div>
         </div>
 
         <!-- Booking Agents -->
         <div class="row g-4 mb-5">
           <div class="col-md-6">
             <div class="sexy-card text-center h-100">
-              <img src="/img/MARATHON.png" alt="Marathon" style="height:160px; object-fit:contain; padding:20px;">
-              <h5>Artist Management</h5>
+              <img src="/img/MARATHON.png" alt="Marathon" style="height:140px; object-fit:contain; padding:15px;">
+              <h5 class="mt-2">Artist Management</h5>
               <p>Marathon Music Group</p>
               <a href="https://marathonmusicgroup.com/" class="btn btn-outline-light mt-2" target="_blank">Visit Site</a>
             </div>
           </div>
           <div class="col-md-6">
             <div class="sexy-card text-center h-100">
-              <img src="/img/Gilligan Music Group - FULL COLOR.jpg" alt="Gilligan" style="height:160px; object-fit:contain; padding:20px;">
-              <h5>Radio Promotion</h5>
+              <img src="/img/Gilligan Music Group - FULL COLOR.jpg" alt="Gilligan" style="height:140px; object-fit:contain; padding:15px;">
+              <h5 class="mt-2">Radio Promotion</h5>
               <p>David Gilligan</p>
               <a href="mailto:david@gilliganpromotions.com" class="btn btn-outline-light mt-2">Email David</a>
             </div>
@@ -215,26 +194,23 @@
 
         <!-- General Inquiries -->
         <div class="sexy-card">
-          <div class="card-body">
-            <h3 class="text-center mb-4">General Inquiries</h3>
-            <form id="contact-form">
-              <div class="mb-4">
-                <label for="name" class="form-label">Your Name</label>
-                <input type="text" class="form-control" id="name" placeholder="What's your name?" required>
-              </div>
-              <div class="mb-4">
-                <label for="email" class="form-label">Your Email</label>
-                <input type="email" class="form-control" id="email" placeholder="somebody@example.com" required>
-              </div>
-              <div class="mb-4">
-                <label for="message" class="form-label">Your Message</label>
-                <textarea class="form-control" id="message" rows="6" placeholder="Say something..." required></textarea>
-              </div>
-              <button type="submit" class="btn btn-gold w-100">Send Message</button>
-              <div id="contact-success" class="success-message"></div>
-              <div id="contact-error" class="error-message"></div>
-            </form>
-          </div>
+          <form id="contact-form">
+            <div class="mb-4">
+              <label for="name" class="form-label">Your Name</label>
+              <input type="text" class="form-control" id="name" placeholder="What's your name?" required>
+            </div>
+            <div class="mb-4">
+              <label for="email" class="form-label">Your Email</label>
+              <input type="email" class="form-control" id="email" placeholder="somebody@example.com" required>
+            </div>
+            <div class="mb-4">
+              <label for="message" class="form-label">Your Message</label>
+              <textarea class="form-control" id="message" rows="5" placeholder="Say something..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-gold w-100">Send Message</button>
+            <div id="contact-success" class="success-message"></div>
+            <div id="contact-error" class="error-message"></div>
+          </form>
         </div>
 
         <!-- Social -->
@@ -254,7 +230,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
 
-  <!-- Firebase + EmailJS + Mini Nav Logic -->
+  <!-- Firebase + EmailJS + Mini Nav -->
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
     import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
@@ -275,8 +251,8 @@
     window.serverTimestamp = serverTimestamp;
   </script>
 
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-  <script type="text/javascript">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>
     emailjs.init("CHqNrS_37-ZHjibQR");
   </script>
 
@@ -291,7 +267,6 @@
       forwardVideo.src = '/video/contact-video-transition.mp4';
       reverseVideo.src = '/video/contact-video-reverse.mp4';
 
-      // Random goofy intro
       const intros = ['intro-drop', 'intro-spin', 'intro-slide'];
       miniNav.classList.add(intros[Math.floor(Math.random()*intros.length)]);
 
@@ -303,7 +278,7 @@
         if (started) return;
         started = true;
         forwardVideo.muted = true;
-        forwardVideo.play().catch(() => finishTransition());
+        forwardVideo.play().catch(finishTransition);
       };
       forwardVideo.onended = finishTransition;
 
@@ -313,7 +288,6 @@
         setTimeout(() => miniNav.classList.add('show'), 1500);
       }
 
-      // Crazy bounce on return to saloon
       miniNav.addEventListener('click', e => {
         const img = e.target.closest('img');
         if (!img) return;
@@ -330,16 +304,15 @@
             reverseVideo.style.display = 'block';
             reverseVideo.currentTime = 0;
             reverseVideo.volume = 0.5;
-            reverseVideo.play().then(() => {
-              reverseVideo.onended = () => location.href = link;
-            }).catch(() => location.href = link);
+            reverseVideo.play().then(() => reverseVideo.onended = () => location.href = link)
+              .catch(() => location.href = link);
           }, 580);
         } else {
           location.href = link;
         }
       });
 
-      // Forms
+      // Newsletter
       const newsletterForm = document.getElementById('newsletter-form');
       if (newsletterForm) newsletterForm.addEventListener('submit', async e => {
         e.preventDefault();
@@ -352,6 +325,7 @@
         } catch(err) { alert('Signup snag'); }
       });
 
+      // Contact Form
       const contactForm = document.getElementById('contact-form');
       if (contactForm) contactForm.addEventListener('submit', async e => {
         e.preventDefault();
