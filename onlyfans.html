@@ -33,9 +33,49 @@
       color: #E0E0E0;
       font-family: 'Georgia', serif;
       margin: 0;
+      padding-top: 85px; /* Space for new mini nav */
       padding-bottom: 100px;
       touch-action: manipulation;
     }
+
+    /* NEW GLOBAL MINI NAV - Compact Elongated Pill */
+    .mini-nav {
+      position: fixed;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10000;
+      background: rgba(10, 15, 35, 0.92);
+      border: 2px solid #00ffcc;
+      border-radius: 50px;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 0 30px rgba(0, 255, 204, 0.6),
+                  inset 0 0 20px rgba(255, 0, 170, 0.3);
+      backdrop-filter: blur(12px);
+      max-width: 98%;
+    }
+
+    .mini-nav img {
+      width: 42px;
+      height: 42px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      filter: drop-shadow(0 0 8px #00ffcc);
+    }
+
+    .mini-nav img:hover {
+      transform: scale(1.15) translateY(-3px);
+      filter: drop-shadow(0 0 20px #ff00aa);
+    }
+
+    .mini-nav .doors {
+      width: 48px;
+      height: 42px;
+    }
+
     .content {
       position: relative;
       z-index: 1;
@@ -43,26 +83,12 @@
       transition: opacity 1.2s ease;
     }
     .content.show { opacity: 1; }
+
     .content-overlay {
       background: url('/img/moonsaloon/friends-base-bg.jpg') center/cover no-repeat fixed !important;
       min-height: 100vh;
-      padding-top: 90px;
     }
-    .hero-friends {
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      gap: 40px;
-      padding: 30px 0 50px;
-      flex-wrap: wrap;
-    }
-    .hero-friends .doors {
-      width: 130px;
-      flex-shrink: 0;
-      cursor: pointer;
-      transition: transform 0.3s ease;
-    }
-    .hero-friends .doors:hover { transform: scale(1.08); }
+
     .friend-card {
       background: rgba(10, 25, 50, 0.75);
       border: 3px solid #00ffcc;
@@ -75,22 +101,24 @@
       backdrop-filter: blur(12px);
       text-align: center;
     }
+
     .friend-card h2 {
       color: #00ffcc;
       text-shadow: 0 0 25px #00ffcc;
       font-size: 2.4rem;
     }
+
     .friend-card p {
       color: #f0f0f0;
       font-size: 1.25rem;
       line-height: 1.8;
     }
-    /* Improved readability */
+
     .text-muted, .small {
       color: #e0e0e0 !important;
       opacity: 0.95;
     }
-    /* Honeypot - hidden but present */
+
     .honeypot {
       position: absolute;
       left: -9999px;
@@ -102,7 +130,16 @@
   </style>
 </head>
 <body>
-  <div id="nav-placeholder"></div>
+  <!-- NEW MINI NAV -->
+  <div class="mini-nav">
+    <img src="/img/moonsaloon/saloon-doors-nav.png" class="doors" alt="Back to Moon Saloon" data-link="index.html" data-type="home">
+    <img src="/img/moonsaloon/raccoon-subscribe-nav.png" alt="Only Fans Zone" data-link="onlyfans.html" data-type="dest">
+    <img src="/img/moonsaloon/holo-calendar-events-nav.png" alt="Events" data-link="events.html" data-type="dest">
+    <img src="/img/moonsaloon/music-video-neon-nav.png" alt="Music & Video" data-link="music.html" data-type="dest">
+    <img src="/img/moonsaloon/cowboy-hat-merch-nav.png" alt="Merch" data-link="merch.html" data-type="dest">
+    <img src="/img/moonsaloon/hourglass-origins-nav.png" alt="Origins" data-link="origins.html" data-type="dest">
+    <img src="/img/moonsaloon/contact-earth-trophy-nav.png" alt="Contact" data-link="contact.html" data-type="dest">
+  </div>
 
   <!-- VIDEO TRANSITION OVERLAY -->
   <div id="transition-overlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:9999;display:none;background:#000;">
@@ -112,22 +149,14 @@
 
   <div class="content-overlay">
     <div class="content" id="main-content">
-      <!-- HERO – Doors only -->
-      <div class="hero-friends">
-        <img id="saloon-doors-back"
-             src="/img/moonsaloon/saloon-doors-nav.png"
-             class="doors"
-             alt="Back to Moon Saloon">
-      </div>
-
       <!-- Only Fans Zone Subscribe Card -->
       <div class="container py-5">
         <div class="friend-card">
           <h2>Welcome to the Only Fans Zone</h2>
           <p class="lead mt-4">Join the inner circle. Get first dibs on new drops, secret shows, unreleased tracks, and bayou insider vibes.</p>
-     
+    
           <form id="newsletter-form" class="row g-3 justify-content-center mt-4">
-            <!-- Honeypot Field (invisible to humans) -->
+            <!-- Honeypot Field -->
             <input type="text" id="website_url" name="website_url" class="honeypot" autocomplete="off" tabindex="-1">
             <div class="col-md-6">
               <input type="text" class="form-control" id="first-name" placeholder="First Name" required>
@@ -177,7 +206,7 @@
     window.serverTimestamp = serverTimestamp;
   </script>
 
-  <!-- Newsletter Form with Security -->
+  <!-- Newsletter Form -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const newsletterForm = document.getElementById('newsletter-form');
@@ -193,12 +222,10 @@
           console.log('Bot detected via honeypot');
           return;
         }
-
         if (!firstName || !lastName || !email) {
           alert('Please fill in all fields.');
           return;
         }
-
         const lowerEmail = email.toLowerCase();
         if (
           lowerEmail.includes('..') ||
@@ -231,7 +258,7 @@
     });
   </script>
 
-  <!-- FIXED & ROBUST TRANSITION SYSTEM -->
+  <!-- NEW MINI NAV + SMART TRANSITION LOGIC -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const overlay = document.getElementById('transition-overlay');
@@ -239,10 +266,11 @@
       const reverseVideo = document.getElementById('reverse-video');
       const content = document.getElementById('main-content');
 
+      // Set default transition videos for this page
       forwardVideo.src = '/video/subscribe-video-transition.mp4';
       reverseVideo.src = '/video/subscribe-video-reverse.mp4';
 
-      // Forward transition on load
+      // Forward transition on initial page load (from index)
       overlay.style.display = 'block';
       forwardVideo.style.display = 'block';
       let transitionStarted = false;
@@ -266,21 +294,37 @@
         if (!transitionStarted) finishForwardTransition();
       }, 1800);
 
-      // Reverse transition
-      const doorsBack = document.getElementById('saloon-doors-back');
-      if (doorsBack) {
-        doorsBack.addEventListener('click', (e) => {
+      // Mini Nav Click Handler
+      const miniNav = document.querySelector('.mini-nav');
+      if (miniNav) {
+        miniNav.addEventListener('click', (e) => {
+          const img = e.target.closest('img');
+          if (!img) return;
+
+          const targetLink = img.getAttribute('data-link');
+          const type = img.getAttribute('data-type');
+
+          if (!targetLink) return;
+
           e.preventDefault();
-          overlay.style.display = 'block';
-          forwardVideo.style.display = 'none';
-          reverseVideo.style.display = 'block';
-          reverseVideo.currentTime = 0;
-          reverseVideo.volume = 0.5;
-          reverseVideo.play()
-            .then(() => {
-              reverseVideo.onended = () => window.location.href = 'index.html';
-            })
-            .catch(() => window.location.href = 'index.html');
+
+          if (type === 'home') {
+            // Going back to index → use reverse transition
+            overlay.style.display = 'block';
+            forwardVideo.style.display = 'none';
+            reverseVideo.style.display = 'block';
+            reverseVideo.currentTime = 0;
+            reverseVideo.volume = 0.5;
+            reverseVideo.play()
+              .then(() => {
+                reverseVideo.onended = () => window.location.href = targetLink;
+              })
+              .catch(() => window.location.href = targetLink);
+          } 
+          else {
+            // Clicking between destination pages → NO transition, instant load
+            window.location.href = targetLink;
+          }
         });
       }
     });
