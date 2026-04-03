@@ -37,7 +37,7 @@
       touch-action: manipulation;
     }
 
-    /* MINI NAV - Drop-in with subtle bounce (2.5s delay) */
+    /* MINI NAV - Drop-in with subtle bounce */
     .mini-nav {
       position: fixed;
       top: 12px;
@@ -124,7 +124,7 @@
       min-height: 100vh;
     }
 
-    /* SEXY SUBSCRIBER CARD - Fully Restored */
+    /* SEXY SUBSCRIBER CARD */
     .friend-card {
       background: rgba(10, 25, 50, 0.75);
       border: 3px solid #00ffcc;
@@ -315,10 +315,10 @@
         overlay.style.display = 'none';
         content.classList.add('show');
 
-        // Show mini nav after 2.5 seconds (much snappier)
+        // Show mini nav after 2.25 seconds (cut by 10%)
         setTimeout(() => {
           miniNav.classList.add('show');
-        }, 2500);
+        }, 2250);
       }
 
       // Safety fallback
