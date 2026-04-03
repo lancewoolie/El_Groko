@@ -33,25 +33,24 @@
       color: #E0E0E0;
       font-family: 'Georgia', serif;
       margin: 0;
-      padding-top: 85px; /* Space for new mini nav */
+      padding-top: 95px;
       padding-bottom: 100px;
       touch-action: manipulation;
     }
 
-    /* NEW GLOBAL MINI NAV - Compact Elongated Pill */
+    /* MINI NAV - Left justified, slightly offset, 10% larger */
     .mini-nav {
       position: fixed;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
+      top: 12px;
+      left: 20px;
       z-index: 10000;
       background: rgba(10, 15, 35, 0.92);
       border: 2px solid #00ffcc;
       border-radius: 50px;
-      padding: 8px 12px;
+      padding: 10px 14px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       box-shadow: 0 0 30px rgba(0, 255, 204, 0.6),
                   inset 0 0 20px rgba(255, 0, 170, 0.3);
       backdrop-filter: blur(12px);
@@ -59,8 +58,8 @@
     }
 
     .mini-nav img {
-      width: 42px;
-      height: 42px;
+      width: 46px;
+      height: 46px;
       cursor: pointer;
       transition: all 0.3s ease;
       filter: drop-shadow(0 0 8px #00ffcc);
@@ -72,8 +71,38 @@
     }
 
     .mini-nav .doors {
-      width: 48px;
-      height: 42px;
+      width: 52px;
+      height: 46px;
+    }
+
+    /* Tooltip Labels */
+    .mini-nav img {
+      position: relative;
+    }
+
+    .mini-nav img::after {
+      content: attr(data-label);
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.85);
+      color: #00ffcc;
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: 6px;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      z-index: 10001;
+      border: 1px solid #00ffcc;
+      text-shadow: 0 0 8px #00ffcc;
+      margin-top: 6px;
+    }
+
+    .mini-nav img:hover::after {
+      opacity: 1;
     }
 
     .content {
@@ -130,15 +159,50 @@
   </style>
 </head>
 <body>
-  <!-- NEW MINI NAV -->
+  <!-- MINI NAV with Tooltips -->
   <div class="mini-nav">
-    <img src="/img/moonsaloon/saloon-doors-nav.png" class="doors" alt="Back to Moon Saloon" data-link="index.html" data-type="home">
-    <img src="/img/moonsaloon/raccoon-subscribe-nav.png" alt="Only Fans Zone" data-link="onlyfans.html" data-type="dest">
-    <img src="/img/moonsaloon/holo-calendar-events-nav.png" alt="Events" data-link="events.html" data-type="dest">
-    <img src="/img/moonsaloon/music-video-neon-nav.png" alt="Music & Video" data-link="music.html" data-type="dest">
-    <img src="/img/moonsaloon/cowboy-hat-merch-nav.png" alt="Merch" data-link="merch.html" data-type="dest">
-    <img src="/img/moonsaloon/hourglass-origins-nav.png" alt="Origins" data-link="origins.html" data-type="dest">
-    <img src="/img/moonsaloon/contact-earth-trophy-nav.png" alt="Contact" data-link="contact.html" data-type="dest">
+    <img src="/img/moonsaloon/saloon-doors-nav.png" 
+         class="doors" 
+         alt="Back to Moon Saloon" 
+         data-link="index.html" 
+         data-type="home"
+         data-label="Moon Saloon">
+    
+    <img src="/img/moonsaloon/raccoon-subscribe-nav.png" 
+         alt="Only Fans Zone" 
+         data-link="onlyfans.html" 
+         data-type="dest"
+         data-label="Only Fans Zone">
+    
+    <img src="/img/moonsaloon/holo-calendar-events-nav.png" 
+         alt="Events" 
+         data-link="events.html" 
+         data-type="dest"
+         data-label="Events">
+    
+    <img src="/img/moonsaloon/music-video-neon-nav.png" 
+         alt="Music & Video" 
+         data-link="music.html" 
+         data-type="dest"
+         data-label="Music & Video">
+    
+    <img src="/img/moonsaloon/cowboy-hat-merch-nav.png" 
+         alt="Merch" 
+         data-link="merch.html" 
+         data-type="dest"
+         data-label="Merch">
+    
+    <img src="/img/moonsaloon/hourglass-origins-nav.png" 
+         alt="Origins" 
+         data-link="origins.html" 
+         data-type="dest"
+         data-label="Origins">
+    
+    <img src="/img/moonsaloon/contact-earth-trophy-nav.png" 
+         alt="Contact" 
+         data-link="contact.html" 
+         data-type="dest"
+         data-label="Contact">
   </div>
 
   <!-- VIDEO TRANSITION OVERLAY -->
@@ -156,7 +220,6 @@
           <p class="lead mt-4">Join the inner circle. Get first dibs on new drops, secret shows, unreleased tracks, and bayou insider vibes.</p>
     
           <form id="newsletter-form" class="row g-3 justify-content-center mt-4">
-            <!-- Honeypot Field -->
             <input type="text" id="website_url" name="website_url" class="honeypot" autocomplete="off" tabindex="-1">
             <div class="col-md-6">
               <input type="text" class="form-control" id="first-name" placeholder="First Name" required>
@@ -258,7 +321,7 @@
     });
   </script>
 
-  <!-- NEW MINI NAV + SMART TRANSITION LOGIC -->
+  <!-- MINI NAV + SMART TRANSITION LOGIC -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const overlay = document.getElementById('transition-overlay');
@@ -266,11 +329,10 @@
       const reverseVideo = document.getElementById('reverse-video');
       const content = document.getElementById('main-content');
 
-      // Set default transition videos for this page
       forwardVideo.src = '/video/subscribe-video-transition.mp4';
       reverseVideo.src = '/video/subscribe-video-reverse.mp4';
 
-      // Forward transition on initial page load (from index)
+      // Forward transition on page load
       overlay.style.display = 'block';
       forwardVideo.style.display = 'block';
       let transitionStarted = false;
@@ -309,7 +371,7 @@
           e.preventDefault();
 
           if (type === 'home') {
-            // Going back to index → use reverse transition
+            // Back to index → reverse transition
             overlay.style.display = 'block';
             forwardVideo.style.display = 'none';
             reverseVideo.style.display = 'block';
@@ -320,9 +382,8 @@
                 reverseVideo.onended = () => window.location.href = targetLink;
               })
               .catch(() => window.location.href = targetLink);
-          } 
-          else {
-            // Clicking between destination pages → NO transition, instant load
+          } else {
+            // Destination → Destination → instant load (no transition)
             window.location.href = targetLink;
           }
         });
