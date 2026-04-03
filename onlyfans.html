@@ -38,7 +38,7 @@
       touch-action: manipulation;
     }
 
-    /* MINI NAV - Left justified, slightly offset, 10% larger */
+    /* MINI NAV - Delayed fade-in */
     .mini-nav {
       position: fixed;
       top: 12px;
@@ -54,7 +54,16 @@
       box-shadow: 0 0 30px rgba(0, 255, 204, 0.6),
                   inset 0 0 20px rgba(255, 0, 170, 0.3);
       backdrop-filter: blur(12px);
-      max-width: 98%;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      transform: translateY(-20px);
+    }
+
+    .mini-nav.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
     }
 
     .mini-nav img {
@@ -88,17 +97,17 @@
       transform: translateX(-50%);
       background: rgba(0, 0, 0, 0.85);
       color: #00ffcc;
-      font-size: 0.75rem;
-      padding: 4px 10px;
+      font-size: 0.78rem;
+      padding: 5px 12px;
       border-radius: 6px;
       white-space: nowrap;
       pointer-events: none;
       opacity: 0;
-      transition: opacity 0.2s ease;
+      transition: opacity 0.25s ease;
       z-index: 10001;
       border: 1px solid #00ffcc;
       text-shadow: 0 0 8px #00ffcc;
-      margin-top: 6px;
+      margin-top: 8px;
     }
 
     .mini-nav img:hover::after {
@@ -159,8 +168,8 @@
   </style>
 </head>
 <body>
-  <!-- MINI NAV with Tooltips -->
-  <div class="mini-nav">
+  <!-- MINI NAV (hidden initially) -->
+  <div class="mini-nav" id="mini-nav">
     <img src="/img/moonsaloon/saloon-doors-nav.png" 
          class="doors" 
          alt="Back to Moon Saloon" 
@@ -281,10 +290,7 @@
         const email = document.getElementById('signup-email').value.trim();
         const honeypot = document.getElementById('website_url').value.trim();
 
-        if (honeypot !== '') {
-          console.log('Bot detected via honeypot');
-          return;
-        }
+        if (honeypot !== '') { console.log('Bot detected via honeypot'); return; }
         if (!firstName || !lastName || !email) {
           alert('Please fill in all fields.');
           return;
@@ -305,9 +311,7 @@
 
         try {
           await window.addDoc(window.collection(window.db, 'subscribers'), {
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
+            firstName, lastName, email,
             type: 'onlyfanszone',
             timestamp: window.serverTimestamp()
           });
@@ -321,18 +325,19 @@
     });
   </script>
 
-  <!-- MINI NAV + SMART TRANSITION LOGIC -->
+  <!-- MINI NAV + TRANSITION LOGIC -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const overlay = document.getElementById('transition-overlay');
       const forwardVideo = document.getElementById('forward-video');
       const reverseVideo = document.getElementById('reverse-video');
       const content = document.getElementById('main-content');
+      const miniNav = document.getElementById('mini-nav');
 
       forwardVideo.src = '/video/subscribe-video-transition.mp4';
       reverseVideo.src = '/video/subscribe-video-reverse.mp4';
 
-      // Forward transition on page load
+      // Forward transition on load
       overlay.style.display = 'block';
       forwardVideo.style.display = 'block';
       let transitionStarted = false;
@@ -350,6 +355,11 @@
       function finishForwardTransition() {
         overlay.style.display = 'none';
         content.classList.add('show');
+
+        // Delay mini nav appearance by 5 seconds after transition ends
+        setTimeout(() => {
+          miniNav.classList.add('show');
+        }, 5000);
       }
 
       setTimeout(() => {
@@ -357,7 +367,6 @@
       }, 1800);
 
       // Mini Nav Click Handler
-      const miniNav = document.querySelector('.mini-nav');
       if (miniNav) {
         miniNav.addEventListener('click', (e) => {
           const img = e.target.closest('img');
@@ -367,7 +376,6 @@
           const type = img.getAttribute('data-type');
 
           if (!targetLink) return;
-
           e.preventDefault();
 
           if (type === 'home') {
@@ -383,7 +391,7 @@
               })
               .catch(() => window.location.href = targetLink);
           } else {
-            // Destination → Destination → instant load (no transition)
+            // Destination to destination → instant load
             window.location.href = targetLink;
           }
         });
