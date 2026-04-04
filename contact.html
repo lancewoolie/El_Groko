@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Tesla Chimes - Lance Woolie’s Moon Saloon</title>
+
+  <title>Contact — Lance Woolie’s Moon Saloon</title>
+  <meta name="description" content="Get in touch with Lance Woolie’s Moon Saloon. Booking, inquiries, and general bayou vibes.">
+
   <link href="https://fonts.googleapis.com/css2?family=Georgia&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
@@ -11,7 +14,7 @@
 
   <style>
     body {
-      background: url('/img/moonsaloon/chimes-base-bg.jpg') center/cover no-repeat fixed !important;
+      background: url('/img/moonsaloon/contact-base-bg.jpg') center/cover no-repeat fixed !important;
       color: #E0E0E0;
       font-family: 'Georgia', serif;
       margin: 0;
@@ -20,127 +23,173 @@
       touch-action: manipulation;
     }
 
-    /* MINI NAV - mobile friendly */
+    /* MINI NAV - Left justified with bounce in + crazy bounce out */
     .mini-nav {
       position: fixed;
       top: 15px;
-      left: 50%;
-      transform: translateX(-50%);
+      left: 35px;
       z-index: 10000;
       background: rgba(10, 15, 35, 0.95);
       border: 2px solid #00ffcc;
       border-radius: 50px;
-      padding: 8px 16px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      box-shadow: 0 0 40px rgba(0, 255, 204, 0.7);
-      backdrop-filter: blur(14px);
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-    .mini-nav.show { opacity: 1; visibility: visible; transform: translateX(-50%); }
-
-    .mini-nav img { width: 42px; height: 42px; cursor: pointer; transition: all 0.3s ease; }
-    .mini-nav img:hover { transform: scale(1.15); }
-
-    /* Responsive layout */
-    .main-content {
-      display: flex;
-      flex-direction: column;
-      gap: 30px;
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
-
-    @media (min-width: 992px) {
-      .main-content {
-        flex-direction: row;
-        gap: 40px;
-      }
-    }
-
-    /* Chimes - left on desktop, full on mobile */
-    .chimes-column {
-      width: 100%;
-    }
-    @media (min-width: 992px) {
-      .chimes-column { width: 340px; flex-shrink: 0; }
-    }
-
-    .chimes-block {
-      background: rgba(8, 18, 40, 0.92);
-      border: 3px solid #00ffcc;
-      border-radius: 22px;
-      padding: 1.6rem 1.8rem;
-      box-shadow: 0 0 60px rgba(0, 255, 204, 0.5);
-      backdrop-filter: blur(16px);
-    }
-
-    .chimes-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    .chimes-list li {
+      padding: 10px 18px;
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 11px 0;
-      border-bottom: 1px solid rgba(0, 255, 204, 0.25);
-      font-size: 1.05rem;
+      box-shadow: 0 0 40px rgba(0, 255, 204, 0.7),
+                  inset 0 0 25px rgba(255, 0, 170, 0.4);
+      backdrop-filter: blur(14px);
+      
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-90px);
+      transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                  opacity 0.6s ease;
     }
-    .chimes-list li:last-child { border-bottom: none; }
 
-    .play-btn, .download-btn {
-      background: transparent;
-      border: 2px solid #00ffcc;
+    .mini-nav.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    /* Crazy bounce out when returning to saloon */
+    .mini-nav.bounce-out {
+      transition: transform 0.68s cubic-bezier(0.68, -1.4, 0.32, 2.3) !important;
+      transform: translateY(-240px) scale(0.35) rotate(32deg) !important;
+    }
+
+    .mini-nav img {
+      width: 46px;
+      height: 46px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      filter: drop-shadow(0 0 10px #00ffcc);
+    }
+
+    .mini-nav img:hover {
+      transform: scale(1.18) translateY(-4px);
+      filter: drop-shadow(0 0 25px #ff00aa);
+    }
+
+    .mini-nav .doors {
+      width: 52px;
+      height: 46px;
+    }
+
+    /* Tooltip */
+    .mini-nav img::after {
+      content: attr(data-label);
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.85);
       color: #00ffcc;
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1rem;
-      cursor: pointer;
+      font-size: 0.78rem;
+      padding: 5px 12px;
+      border-radius: 6px;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      z-index: 10001;
+      border: 1px solid #00ffcc;
+      text-shadow: 0 0 8px #00ffcc;
+      margin-top: 8px;
     }
 
-    /* Robo - center / full width on mobile */
-    .robo-watch {
-      background: rgba(0, 0, 0, 0.94);
-      border: 3px solid #ffd700;
-      border-radius: 26px;
-      padding: 2.2rem 2rem;
-      box-shadow: 0 0 80px rgba(255, 215, 0, 0.7);
-      text-align: center;
+    .mini-nav img:hover::after {
+      opacity: 1;
     }
 
-    /* Referral */
-    .referral-block {
-      background: linear-gradient(135deg, #ff00aa, #ff3399);
+    .content { 
+      position: relative; 
+      z-index: 1; 
+      opacity: 0; 
+      transition: opacity 1.2s ease; 
+    }
+    .content.show { opacity: 1; }
+
+    .content-overlay {
+      background: url('/img/moonsaloon/contact-base-bg.jpg') center/cover no-repeat fixed !important;
+      min-height: 100vh;
+    }
+
+    /* Sexy forms with bright text */
+    .sexy-card {
+      background: rgba(8, 18, 40, 0.92);
+      border: 3px solid #00ffcc;
+      border-radius: 24px;
+      padding: 2rem 1.8rem;
+      box-shadow: 0 0 60px rgba(0, 255, 204, 0.5),
+                  inset 0 0 40px rgba(255, 0, 170, 0.3);
+      backdrop-filter: blur(16px);
+    }
+
+    .form-label {
+      color: #ffffff !important;
+      font-weight: bold;
+      font-size: 1.15rem;
+      margin-bottom: 8px;
+    }
+
+    .form-control {
+      background: rgba(0,0,0,0.75) !important;
+      border: 2.5px solid #00ffcc;
       color: #ffffff;
-      padding: 2rem 2rem;
-      border-radius: 22px;
-      text-align: center;
-      box-shadow: 0 0 70px rgba(255, 0, 170, 0.75);
-      cursor: pointer;
+      border-radius: 14px;
+      padding: 15px 20px;
+      font-size: 1.08rem;
     }
-    .referral-block:hover { transform: scale(1.05); }
 
-    /* Transition */
-    #transition-overlay {
-      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-      z-index: 9999; pointer-events: none; display: none; overflow: hidden; background: #000;
+    .form-control::placeholder {
+      color: #f0f0f0 !important;
+      opacity: 0.95 !important;
     }
-    .transition-video { width: 100%; height: 100%; object-fit: cover; }
+
+    .form-control:focus {
+      border-color: #ff00aa;
+      box-shadow: 0 0 0 4px rgba(255,0,170,0.4);
+      background: rgba(0,0,0,0.9) !important;
+    }
+
+    .btn-gold {
+      background: linear-gradient(90deg, #ffd700, #ffaa00);
+      color: #000;
+      font-weight: bold;
+      border: none;
+      border-radius: 50px;
+      padding: 15px 32px;
+      font-size: 1.1rem;
+    }
+
+    .btn-gold:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 50px #ff00aa;
+      background: linear-gradient(90deg, #ff00aa, #ffd700);
+    }
+
+    .success-message {
+      color: #00ffcc;
+      text-align: center;
+      margin-top: 18px;
+      font-weight: bold;
+      text-shadow: 0 0 20px #00ffcc;
+      display: none;
+    }
+
+    .error-message {
+      color: #ff6b6b;
+      text-align: center;
+      margin-top: 12px;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
 
-  <!-- MINI NAV -->
+  <!-- MINI NAV - Left justified -->
   <div class="mini-nav" id="mini-nav">
     <img src="/img/moonsaloon/saloon-doors-nav.png" class="doors" data-link="index.html" data-type="home" data-label="Moon Saloon">
     <img src="/img/moonsaloon/raccoon-subscribe-nav.png" data-link="onlyfans.html" data-type="dest" data-label="Only Fans Zone">
@@ -150,86 +199,146 @@
     <img src="/img/moonsaloon/hourglass-origins-nav.png" data-link="origins.html" data-type="dest" data-label="Origins">
   </div>
 
-  <div class="main-content">
-    <!-- Chimes -->
-    <div class="chimes-column">
-      <div class="chimes-block">
-        <h2 style="color:#00ffcc; text-align:center; margin-bottom:18px;">🔊 TESLA LOCK CHIMES</h2>
-        <p style="text-align:center; margin-bottom:22px; color:#ddd;">Click ▶️ to preview • Click ↓ to download.<br>Rename to <strong>lockchime.wav</strong>.</p>
-        <ul id="chimes-list" class="chimes-list"></ul>
-      </div>
-    </div>
-
-    <!-- Robo Taxi - Main Center -->
-    <div class="robo-watch">
-      <h3>LIVE ROBO TAXI WATCHER — APRIL 2026</h3>
-      <div class="row text-center mb-4">
-        <div class="col-4">
-          <div class="stat-number" style="color:#00ffcc;">~400</div>
-          <div>Total Fleet</div>
-        </div>
-        <div class="col-4">
-          <div class="stat-number" style="color:#ff00aa;">~168</div>
-          <div>Bay Area (Supervised)</div>
-        </div>
-        <div class="col-4">
-          <div class="stat-number" style="color:#00ccff;">~72</div>
-          <div>Austin (Unsupervised Testing)</div>
-        </div>
-      </div>
-      <div style="font-size:1.7rem; color:#ffd700; margin:25px 0 15px;">
-        TOTAL FSD MILES: <span style="color:#ffffff;">~8.5 Billion</span>
-      </div>
-      <div style="line-height:1.75; text-align:left; font-size:1.05rem; color:#ddd;">
-        Small but rapidly scaling pilot fleet.<br>
-        Mostly supervised operations today.<br>
-        Unsupervised limited to select Austin zones.<br><br>
-        Supercharger Network: ~80,000 stalls (98%+ Robotaxi-ready).<br>
-        FSD data collection rate: millions of miles per day.
-      </div>
-      <small style="display:block; margin-top:25px; opacity:0.75;">Community + regulatory filings • April 2026</small>
-    </div>
-
-    <!-- Referral -->
-    <div class="referral-block" onclick="window.open('https://www.tesla.com/referral/lance680518','_blank')">
-      <h3 style="margin:0 0 12px 0;">NEVER DRIVE AGAIN!</h3>
-      <p style="margin:0 0 18px 0; font-size:1.1rem;">Get a Tesla with FSD today with this discount link</p>
-      <button style="background:#000; color:#ff00aa; border:none; padding:14px 44px; border-radius:50px; font-weight:bold;">GET MY TESLA</button>
-    </div>
-  </div>
-
-  <!-- TRANSITION OVERLAY -->
+  <!-- VIDEO TRANSITION OVERLAY -->
   <div id="transition-overlay">
     <video id="forward-video" class="transition-video" playsinline preload="auto"></video>
-    <video id="reverse-video" class="transition-video" playsinline preload="auto" style="display:none;"></video>
+    <video id="reverse-video" class="transition-video" playsinline preload="auto"></video>
   </div>
 
-  <!-- Secret White Dot -->
-  <div onclick="window.location.href='abc.html'" style="position:absolute; bottom:80px; left:80px; width:8px; height:8px; background:#ffffff; border-radius:50%; opacity:0.18; cursor:pointer; z-index:20;"></div>
+  <div class="content-overlay">
+    <div class="content" id="main-content">
+
+      <div class="container py-5">
+
+        <!-- Newsletter -->
+        <div class="sexy-card">
+          <form id="newsletter-form" class="row g-3 justify-content-center">
+            <div class="col-md-7">
+              <input type="email" class="form-control" id="signup-email" placeholder="somebody@example.com" required>
+            </div>
+            <div class="col-md-5">
+              <button type="submit" class="btn btn-gold w-100">Do it. Sign Up</button>
+            </div>
+          </form>
+          <div id="newsletter-success" class="success-message">You're in — exclusive twang incoming!</div>
+        </div>
+
+        <!-- Booking Agents -->
+        <div class="row g-4 mb-5">
+          <div class="col-md-6">
+            <div class="sexy-card text-center h-100">
+              <img src="/img/MARATHON.png" alt="Marathon" style="height:140px; object-fit:contain; padding:15px;">
+              <h5 class="mt-2">Artist Management</h5>
+              <p>Marathon Music Group</p>
+              <a href="https://marathonmusicgroup.com/" class="btn btn-outline-light mt-2" target="_blank">Visit Site</a>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="sexy-card text-center h-100">
+              <img src="/img/Gilligan Music Group - FULL COLOR.jpg" alt="Gilligan" style="height:140px; object-fit:contain; padding:15px;">
+              <h5 class="mt-2">Radio Promotion</h5>
+              <p>David Gilligan</p>
+              <a href="mailto:david@gilliganpromotions.com" class="btn btn-outline-light mt-2">Email David</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- General Inquiries -->
+        <div class="sexy-card">
+          <form id="contact-form">
+            <div class="mb-4">
+              <label for="name" class="form-label">Your Name</label>
+              <input type="text" class="form-control" id="name" placeholder="What's your name?" required>
+            </div>
+            <div class="mb-4">
+              <label for="email" class="form-label">Your Email</label>
+              <input type="email" class="form-control" id="email" placeholder="somebody@example.com" required>
+            </div>
+            <div class="mb-4">
+              <label for="message" class="form-label">Your Message</label>
+              <textarea class="form-control" id="message" rows="6" placeholder="Say something..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-gold w-100">Send Message</button>
+            <div id="contact-success" class="success-message"></div>
+            <div id="contact-error" class="error-message"></div>
+          </form>
+        </div>
+
+        <!-- Social -->
+        <div class="text-center mt-5">
+          <h5>Follow & Connect</h5>
+          <p>
+            YouTube: <a href="https://www.youtube.com/channel/UC9NUm7_BejCwctJ9u6dps7g" target="_blank">Lance Woolie</a><br>
+            Facebook: <a href="https://www.facebook.com/lancewooliemusic/" target="_blank">@lancewooliemusic</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="footer-placeholder" class="tight-footer"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
 
+  <!-- Firebase + EmailJS -->
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+    import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+    const firebaseConfig = {
+      apiKey: "AIzaSyAJQMdogiDwB0oLf2I_Jp-6NSLTDcXvVcQ",
+      authDomain: "lance-woolie-webfarm.firebaseapp.com",
+      projectId: "lance-woolie-webfarm",
+      storageBucket: "lance-woolie-webfarm.firebasestorage.app",
+      messagingSenderId: "278461194969",
+      appId: "1:278461194969:web:a2a03c9d27ccbb670814c8",
+      measurementId: "G-D734JL7BFR"
+    };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    window.db = db;
+    window.addDoc = addDoc;
+    window.collection = collection;
+    window.serverTimestamp = serverTimestamp;
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>
-    const chimes = [ /* your list */ ];
+    emailjs.init("CHqNrS_37-ZHjibQR");
+  </script>
 
-    // ... (same chime population and playSound as before)
-
+  <!-- Mini Nav + Forms -->
+  <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Populate chimes
-      const list = document.getElementById('chimes-list');
-      chimes.forEach(chime => list.appendChild(createChimeItem(chime)));
-
-      const miniNav = document.getElementById('mini-nav');
-      miniNav.classList.add('show');
-
       const overlay = document.getElementById('transition-overlay');
       const forwardVideo = document.getElementById('forward-video');
       const reverseVideo = document.getElementById('reverse-video');
+      const content = document.getElementById('main-content');
+      const miniNav = document.getElementById('mini-nav');
 
-      forwardVideo.src = '/video/chimes-video-transition.mp4';
+      forwardVideo.src = '/video/contact-video-transition.mp4';
+      reverseVideo.src = '/video/contact-video-reverse.mp4';
 
-      // Mini nav click handler with reverse transition
+      overlay.style.display = 'block';
+      forwardVideo.style.display = 'block';
+
+      let started = false;
+      forwardVideo.oncanplaythrough = () => {
+        if (started) return;
+        started = true;
+        forwardVideo.muted = true;
+        forwardVideo.play().catch(finishTransition);
+      };
+      forwardVideo.onended = finishTransition;
+
+      function finishTransition() {
+        overlay.style.display = 'none';
+        content.classList.add('show');
+        // Bounce in effect
+        setTimeout(() => miniNav.classList.add('show'), 800);
+      }
+
+      // Mini Nav Click - Crazy bounce out when returning to saloon
       miniNav.addEventListener('click', e => {
         const img = e.target.closest('img');
         if (!img) return;
@@ -240,18 +349,55 @@
 
         if (type === 'home') {
           miniNav.classList.add('bounce-out');
-          overlay.style.display = 'block';
-          forwardVideo.style.display = 'none';
-          reverseVideo.style.display = 'block';
-          reverseVideo.src = '/video/chimes-video-reverse.mp4';
-          reverseVideo.currentTime = 0;
-          reverseVideo.volume = 0.5;
-          reverseVideo.play().catch(() => window.location.href = link);
-          reverseVideo.onended = () => window.location.href = link;
+          setTimeout(() => {
+            overlay.style.display = 'block';
+            forwardVideo.style.display = 'none';
+            reverseVideo.style.display = 'block';
+            reverseVideo.currentTime = 0;
+            reverseVideo.volume = 0.5;
+            reverseVideo.play()
+              .then(() => { reverseVideo.onended = () => location.href = link; })
+              .catch(() => location.href = link);
+          }, 580);
         } else {
-          window.location.href = link;
+          location.href = link;
         }
       });
+
+      // Newsletter
+      const newsletterForm = document.getElementById('newsletter-form');
+      if (newsletterForm) {
+        newsletterForm.addEventListener('submit', async e => {
+          e.preventDefault();
+          const email = document.getElementById('signup-email').value.trim();
+          if (!email) return;
+          try {
+            await addDoc(collection(db, 'subscribers'), { email, type: 'newsletter', timestamp: serverTimestamp() });
+            document.getElementById('newsletter-success').style.display = 'block';
+            newsletterForm.reset();
+          } catch(err) { alert('Signup snag'); }
+        });
+      }
+
+      // Contact form
+      const contactForm = document.getElementById('contact-form');
+      if (contactForm) {
+        contactForm.addEventListener('submit', async e => {
+          e.preventDefault();
+          const name = document.getElementById('name').value.trim();
+          const email = document.getElementById('email').value.trim();
+          const message = document.getElementById('message').value.trim();
+          if (!name || !email || !message) return;
+
+          try {
+            await emailjs.send('service_n08jdhv', 'template_of9jflr', { from_name: name, from_email: email, message });
+            document.getElementById('contact-success').style.display = 'block';
+            contactForm.reset();
+          } catch(err) {
+            document.getElementById('contact-error').textContent = 'Send hiccup — try again or email lancewoolie@gmail.com';
+          }
+        });
+      }
     });
   </script>
 </body>
