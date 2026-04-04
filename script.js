@@ -41,18 +41,15 @@
       transform: translateY(-90px);
       transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
-
     .mini-nav.show { opacity: 1; visibility: visible; transform: translateY(0); }
-
     .mini-nav.bounce-out {
       transition: transform 0.68s cubic-bezier(0.68, -1.4, 0.32, 2.3) !important;
       transform: translateY(-240px) scale(0.35) rotate(32deg) !important;
     }
-
     .mini-nav img { width: 46px; height: 46px; cursor: pointer; transition: all 0.3s ease; }
     .mini-nav img:hover { transform: scale(1.18) translateY(-4px); }
 
-    /* Main Layout - Force left alignment */
+    /* Layout - Force left lock */
     .main-content {
       display: flex;
       gap: 40px;
@@ -62,7 +59,7 @@
       justify-content: flex-start;
     }
 
-    /* Far Left - Half Width, Lean Clean Chimes */
+    /* Far Left - Skinny Tall Chimes */
     .chimes-column { width: 340px; flex-shrink: 0; }
 
     .chimes-block {
@@ -79,7 +76,6 @@
       padding: 0;
       margin: 0;
     }
-
     .chimes-list li {
       display: flex;
       align-items: center;
@@ -88,7 +84,6 @@
       border-bottom: 1px solid rgba(0, 255, 204, 0.25);
       font-size: 1.05rem;
     }
-
     .chimes-list li:last-child { border-bottom: none; }
 
     .play-btn, .download-btn {
@@ -105,26 +100,26 @@
       cursor: pointer;
     }
 
-    /* Center - Main Robo Taxi (tight, not stretched) */
+    /* CENTER - MAIN MASS-DRIVER ROBO BLOCK */
     .robo-watch {
       flex: 1;
       max-width: 520px;
       background: rgba(0, 0, 0, 0.94);
       border: 3px solid #ffd700;
       border-radius: 26px;
-      padding: 2.2rem 2rem;
-      box-shadow: 0 0 80px rgba(255, 215, 0, 0.7);
+      padding: 2.4rem 2.2rem;
+      box-shadow: 0 0 90px rgba(255, 215, 0, 0.85);
       text-align: center;
-      font-size: 1.05rem;
     }
 
     .robo-watch h3 {
       color: #ffd700;
-      text-shadow: 0 0 25px #ffd700;
+      text-shadow: 0 0 30px #ffd700;
       margin-bottom: 1.8rem;
+      font-size: 1.75rem;
     }
 
-    .stat-number { font-size: 2.9rem; font-weight: bold; margin: 8px 0; }
+    .stat-number { font-size: 3.4rem; font-weight: bold; margin: 8px 0; }
 
     /* Far Right - Referral */
     .referral-block {
@@ -156,17 +151,16 @@
 
   <div class="main-content">
 
-    <!-- FAR LEFT - Half Width Clean Chimes -->
+    <!-- FAR LEFT - Skinny Tall Chimes -->
     <div class="chimes-column">
       <div class="chimes-block">
         <h2 style="color:#00ffcc; text-align:center; margin-bottom:18px;">🔊 TESLA LOCK CHIMES</h2>
         <p style="text-align:center; margin-bottom:22px; color:#ddd;">Click ▶️ to preview • Click ↓ to download.<br>Rename to <strong>lockchime.wav</strong>.</p>
-        
         <ul id="chimes-list" class="chimes-list"></ul>
       </div>
     </div>
 
-    <!-- CENTER - Main Robo Taxi Watcher (tight & dominant) -->
+    <!-- CENTER - MASS DRIVER ROBO TAXI BLOCK -->
     <div class="robo-watch">
       <h3>LIVE ROBO TAXI WATCHER — APRIL 2026</h3>
 
@@ -181,22 +175,24 @@
         </div>
         <div class="col-4">
           <div class="stat-number" style="color:#00ccff;">~72</div>
-          <div>Austin (Testing)</div>
+          <div>Austin (Unsupervised Testing)</div>
         </div>
       </div>
 
-      <div style="font-size:1.6rem; color:#ffd700; margin:25px 0;">
+      <div style="font-size:1.75rem; color:#ffd700; margin:25px 0 10px;">
         TOTAL FSD MILES: <span style="color:#ffffff;">~8.5 Billion</span>
       </div>
 
-      <div style="line-height:1.7; text-align:left;">
-        Small pilot fleet, mostly supervised operations.<br>
-        Unsupervised limited to parts of Austin.<br><br>
-        Supercharger Network: ~80,000 stalls (98%+ compatible).<br>
-        FSD data collection continues at high rate.
+      <div style="line-height:1.75; text-align:left; font-size:1.08rem; color:#ddd;">
+        Small but rapidly scaling pilot fleet.<br>
+        Mostly supervised operations today.<br>
+        Unsupervised limited to select Austin zones.<br><br>
+        Supercharger Network: ~80,000 stalls (98%+ Robotaxi-ready).<br>
+        FSD data collection rate: millions of miles per day.<br>
+        Next expansion targets: Phoenix, Miami, Chicago (pending approval).
       </div>
 
-      <small style="display:block; margin-top:25px; opacity:0.75;">Community + regulatory estimates • April 2026</small>
+      <small style="display:block; margin-top:28px; opacity:0.75;">Community trackers + regulatory filings • April 2026</small>
     </div>
 
     <!-- FAR RIGHT - Referral -->
@@ -237,9 +233,9 @@
       const audio = new Audio(file);
       audio.volume = 0.6;
       audio.play();
-      const originalColor = btn.style.color;
+      const original = btn.style.color;
       btn.style.color = '#ff00aa';
-      setTimeout(() => btn.style.color = originalColor, 1500);
+      setTimeout(() => btn.style.color = original, 1500);
     }
 
     document.addEventListener('DOMContentLoaded', () => {
