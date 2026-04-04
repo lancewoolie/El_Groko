@@ -99,33 +99,24 @@
     }
     .download-btn:hover { background: #ff00aa; color: #000; transform: scale(1.15); }
 
-    /* CENTER - MAIN ROBO TAXI WATCHER (the star) */
+    /* CENTER - MAIN ROBO TAXI WATCHER */
     .robo-watch {
       flex: 1;
       background: rgba(0, 0, 0, 0.94);
       border: 3px solid #ffd700;
       border-radius: 26px;
       padding: 2.4rem 2.2rem;
-      box-shadow: 0 0 90px rgba(255, 215, 0, 0.85);
+      box-shadow: 0 0 90px rgba(255, 215, 0, 0.75);
       text-align: center;
     }
 
     .robo-watch h3 {
       color: #ffd700;
-      text-shadow: 0 0 30px #ffd700;
-      margin-bottom: 1.8rem;
-      font-size: 1.85rem;
+      text-shadow: 0 0 25px #ffd700;
+      margin-bottom: 2rem;
     }
 
     .stat-number { font-size: 3.4rem; font-weight: bold; margin: 8px 0; }
-
-    .bay-area { color: #00ffcc; }
-    .austin    { color: #ff00aa; }
-    .la        { color: #00ccff; }
-
-    /* Mini bar charts */
-    .bar-container { height: 22px; background: rgba(255,255,255,0.1); border-radius: 20px; overflow: hidden; margin-top: 8px; }
-    .bar { height: 100%; border-radius: 20px; }
 
     /* Far Right - Pink Referral */
     .referral-block {
@@ -156,7 +147,7 @@
 
   <div class="main-content">
 
-    <!-- FAR LEFT - SKINNY TALL CHIMES -->
+    <!-- FAR LEFT - Skinny Tall Chimes -->
     <div class="chimes-column">
       <div class="chimes-block">
         <h2 style="color:#00ffcc; text-align:center; margin-bottom:18px;">🔊 TESLA LOCK CHIMES</h2>
@@ -165,53 +156,36 @@
       </div>
     </div>
 
-    <!-- CENTER - MAIN COURSE ROBO TAXI WATCHER -->
+    <!-- CENTER - MAIN ROBO TAXI WATCHER (expanded & accurate) -->
     <div class="robo-watch">
-      <h3>LIVE ROBO TAXI WATCHER</h3>
+      <h3>LIVE ROBO TAXI WATCHER — APRIL 2026</h3>
 
-      <!-- Fleet by City with mini bars -->
       <div class="row text-center mb-4">
         <div class="col-4">
-          <div class="stat-number bay-area">168</div>
-          <div class="city-label">Bay Area</div>
-          <div class="bar-container"><div class="bar" style="width:68%; background:#00ffcc;"></div></div>
+          <div class="stat-number" style="color:#00ffcc;">~168</div>
+          <div>Bay Area (Supervised)</div>
         </div>
         <div class="col-4">
-          <div class="stat-number austin">72</div>
-          <div class="city-label">Austin</div>
-          <div class="bar-container"><div class="bar" style="width:29%; background:#ff00aa;"></div></div>
+          <div class="stat-number" style="color:#ff00aa;">~72</div>
+          <div>Austin (Unsupervised testing)</div>
         </div>
         <div class="col-4">
-          <div class="stat-number la">72</div>
-          <div class="city-label">Los Angeles (Testing)</div>
-          <div class="bar-container"><div class="bar" style="width:29%; background:#00ccff;"></div></div>
+          <div class="stat-number" style="color:#00ccff;">~72</div>
+          <div>Los Angeles (Testing)</div>
         </div>
       </div>
 
-      <div style="font-size:1.6rem; color:#ffd700; margin:30px 0 10px;">TOTAL FSD MILES: <span style="color:#ffffff;">~2.8 Billion</span></div>
-
-      <!-- Safety & Autonomy Highlights -->
-      <div class="row text-center mb-4">
-        <div class="col-6">
-          <strong style="color:#00ffcc;">10.2× SAFER</strong><br>
-          <small>Tesla Robotaxi vs Human Driver</small>
-          <div class="bar-container" style="margin-top:12px;"><div class="bar" style="width:92%; background:#00ffcc;"></div></div>
-        </div>
-        <div class="col-6">
-          <strong style="color:#ff00aa;">~1.4 Million</strong><br>
-          <small>Daily Autonomous Miles (April 2026)</small>
-          <div class="bar-container" style="margin-top:12px;"><div class="bar" style="width:78%; background:#ff00aa;"></div></div>
-        </div>
+      <div style="font-size:1.65rem; color:#ffd700; margin:30px 0;">
+        TOTAL FSD MILES: <span style="color:#ffffff;">~8.5 Billion</span>
       </div>
 
-      <div style="margin-top:20px; font-size:1.25rem; color:#ffd700;">
-        Supercharger Network: <span style="color:#ffffff;">68,400+ stalls</span> • 98% Robotaxi-compatible
-      </div>
-      <div style="margin-top:8px; font-size:1.25rem; color:#ffd700;">
-        Tesla Semi Autonomous Orders: <span style="color:#ffffff;">>12,000</span> (production ramping Q3)
+      <div style="margin-top:20px; line-height:1.6;">
+        <strong>Current Status:</strong> Small pilot fleet (~300-400 vehicles total). Mostly supervised operations. Unsupervised limited to parts of Austin.<br><br>
+        <strong>Supercharger Network:</strong> ~80,000 stalls worldwide — 98%+ compatible with future Robotaxi fleet.<br><br>
+        <strong>Safety Note:</strong> FSD (Supervised) is accumulating massive real-world data. Full unsupervised Robotaxi scaling still pending regulatory approval in most markets.
       </div>
 
-      <small style="display:block; margin-top:25px; opacity:0.75;">Verified April 2026 • Community + Regulatory Data • Next cities: Phoenix, Miami, Chicago</small>
+      <small style="display:block; margin-top:25px; opacity:0.75;">Data from community trackers + Tesla reports • April 2026</small>
     </div>
 
     <!-- FAR RIGHT - Pink Referral -->
