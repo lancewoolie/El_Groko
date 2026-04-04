@@ -67,16 +67,15 @@
     /* Main Layout */
     .main-content {
       display: flex;
-      gap: 50px;
+      gap: 40px;
       max-width: 1280px;
       margin: 0 auto;
       padding: 0 40px;
     }
 
-    /* Far Left - Skinny & Tall Chimes */
+    /* Far Left - Skinny Tall Chimes */
     .chimes-column {
-      flex: 1;
-      max-width: 420px;
+      width: 380px;
     }
 
     .chimes-block {
@@ -84,7 +83,7 @@
       border: 3px solid #00ffcc;
       border-radius: 22px;
       padding: 1.6rem 1.8rem;
-      box-shadow: 0 0 65px rgba(0, 255, 204, 0.5);
+      box-shadow: 0 0 60px rgba(0, 255, 204, 0.5);
       backdrop-filter: blur(16px);
     }
 
@@ -132,56 +131,50 @@
       transform: scale(1.15);
     }
 
-    /* Right Column */
-    .right-column {
-      width: 380px;
-      display: flex;
-      flex-direction: column;
-      gap: 30px;
+    /* CENTER - Robo Taxi Watcher (Main Block) */
+    .robo-watch {
+      flex: 1;
+      background: rgba(0, 0, 0, 0.94);
+      border: 3px solid #ffd700;
+      border-radius: 24px;
+      padding: 2.4rem 2rem;
+      box-shadow: 0 0 80px rgba(255, 215, 0, 0.7);
+      text-align: center;
     }
 
-    /* Pink Referral */
+    .robo-watch h3 {
+      color: #ffd700;
+      text-shadow: 0 0 30px #ffd700;
+      margin-bottom: 2rem;
+    }
+
+    .stat-number {
+      font-size: 3.2rem;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+
+    .bay-area { color: #00ffcc; }
+    .austin    { color: #ff00aa; }
+    .la        { color: #00ccff; }
+
+    /* Far Right - Pink Referral */
     .referral-block {
+      width: 340px;
       background: linear-gradient(135deg, #ff00aa, #ff3399);
       color: #ffffff;
-      padding: 2rem 2.2rem;
+      padding: 2.2rem 2rem;
       border-radius: 22px;
       text-align: center;
-      box-shadow: 0 0 70px rgba(255, 0, 170, 0.7);
+      box-shadow: 0 0 70px rgba(255, 0, 170, 0.75);
       cursor: pointer;
       transition: all 0.4s ease;
     }
 
     .referral-block:hover {
       transform: scale(1.08);
-      box-shadow: 0 0 100px rgba(255, 0, 170, 0.9);
+      box-shadow: 0 0 110px rgba(255, 0, 170, 0.9);
     }
-
-    /* Black & Gold Robo Taxi Watcher - Expanded */
-    .robo-watch {
-      background: rgba(0, 0, 0, 0.94);
-      border: 3px solid #ffd700;
-      border-radius: 22px;
-      padding: 2.2rem 2rem;
-      box-shadow: 0 0 65px rgba(255, 215, 0, 0.6);
-      text-align: center;
-    }
-
-    .robo-watch h3 {
-      color: #ffd700;
-      text-shadow: 0 0 25px #ffd700;
-      margin-bottom: 1.8rem;
-    }
-
-    .stat-number {
-      font-size: 2.9rem;
-      font-weight: bold;
-      margin: 8px 0;
-    }
-
-    .bay-area { color: #00ffcc; }
-    .austin    { color: #ff00aa; }
-    .la        { color: #00ccff; }
   </style>
 </head>
 <body>
@@ -208,42 +201,38 @@
       </div>
     </div>
 
-    <!-- RIGHT COLUMN -->
-    <div class="right-column">
-
-      <!-- Pink Referral -->
-      <div class="referral-block" onclick="window.open('https://www.tesla.com/referral/lance680518','_blank')">
-        <h3 style="margin:0 0 12px 0;">NEVER DRIVE AGAIN!</h3>
-        <p style="margin:0 0 18px 0; font-size:1.12rem;">Get a Tesla with FSD today with this discount link</p>
-        <button style="background:#000; color:#ff00aa; border:none; padding:14px 44px; border-radius:50px; font-weight:bold;">GET MY TESLA</button>
+    <!-- CENTER - Main Robo Taxi Watcher -->
+    <div class="robo-watch">
+      <h3>LIVE ROBO TAXI WATCHER</h3>
+      <div class="row text-center mb-4">
+        <div class="col-6">
+          <div class="stat-number bay-area">168</div>
+          <div class="city-label">Bay Area</div>
+        </div>
+        <div class="col-6">
+          <div class="stat-number austin">72</div>
+          <div class="city-label">Austin</div>
+        </div>
       </div>
-
-      <!-- Expanded Robo Taxi Watcher -->
-      <div class="robo-watch">
-        <h3>LIVE ROBO TAXI WATCHER</h3>
-        <div class="row text-center mb-4">
-          <div class="col-6">
-            <div class="stat-number bay-area">168</div>
-            <div class="city-label">Bay Area</div>
-          </div>
-          <div class="col-6">
-            <div class="stat-number austin">72</div>
-            <div class="city-label">Austin</div>
-          </div>
+      <div class="row text-center mb-4">
+        <div class="col-12">
+          <div class="stat-number la" style="font-size:2.6rem;">72</div>
+          <div class="city-label">Los Angeles (Testing)</div>
         </div>
-        <div class="row text-center mb-3">
-          <div class="col-12">
-            <div class="stat-number la" style="font-size:2.4rem;">72</div>
-            <div class="city-label">Los Angeles (Testing)</div>
-          </div>
-        </div>
-        <div style="margin-top:20px; font-size:1.45rem; color:#ffd700; font-weight:bold;">
-          TOTAL FSD MILES: <span style="color:#ffffff;">~2.8 Billion</span>
-        </div>
-        <small style="display:block; margin-top:20px; opacity:0.75;">Verified April 2026 • Community + Regulatory Data</small>
       </div>
-
+      <div style="margin-top:25px; font-size:1.55rem; color:#ffd700; font-weight:bold;">
+        TOTAL FSD MILES: <span style="color:#ffffff;">~2.8 Billion</span>
+      </div>
+      <small style="display:block; margin-top:22px; opacity:0.75;">Verified April 2026 • Community + Regulatory Data</small>
     </div>
+
+    <!-- FAR RIGHT - Pink Referral -->
+    <div class="referral-block" onclick="window.open('https://www.tesla.com/referral/lance680518','_blank')">
+      <h3 style="margin:0 0 12px 0;">NEVER DRIVE AGAIN!</h3>
+      <p style="margin:0 0 18px 0; font-size:1.12rem;">Get a Tesla with FSD today with this discount link</p>
+      <button style="background:#000; color:#ff00aa; border:none; padding:14px 44px; border-radius:50px; font-weight:bold;">GET MY TESLA</button>
+    </div>
+
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
