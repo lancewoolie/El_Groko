@@ -3,14 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
   <title>Tesla Chimes - Lance Woolie’s Moon Saloon</title>
-
   <link href="https://fonts.googleapis.com/css2?family=Georgia&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/png" href="img/LanceWoolieHeadonly.png">
-
   <style>
     body {
       background: url('/img/moonsaloon/chimes-base-bg.jpg') center/cover no-repeat fixed !important;
@@ -49,7 +46,7 @@
     .mini-nav img { width: 46px; height: 46px; cursor: pointer; transition: all 0.3s ease; }
     .mini-nav img:hover { transform: scale(1.18) translateY(-4px); }
 
-    /* Layout - Force left lock */
+    /* Layout */
     .main-content {
       display: flex;
       gap: 40px;
@@ -61,7 +58,6 @@
 
     /* Far Left - Skinny Tall Chimes */
     .chimes-column { width: 340px; flex-shrink: 0; }
-
     .chimes-block {
       background: rgba(8, 18, 40, 0.92);
       border: 3px solid #00ffcc;
@@ -70,7 +66,6 @@
       box-shadow: 0 0 60px rgba(0, 255, 204, 0.5);
       backdrop-filter: blur(16px);
     }
-
     .chimes-list {
       list-style: none;
       padding: 0;
@@ -100,7 +95,7 @@
       cursor: pointer;
     }
 
-    /* CENTER - MAIN MASS-DRIVER ROBO BLOCK */
+    /* Center - Robo Taxi */
     .robo-watch {
       flex: 1;
       max-width: 520px;
@@ -111,14 +106,12 @@
       box-shadow: 0 0 90px rgba(255, 215, 0, 0.85);
       text-align: center;
     }
-
     .robo-watch h3 {
       color: #ffd700;
       text-shadow: 0 0 30px #ffd700;
       margin-bottom: 1.8rem;
       font-size: 1.75rem;
     }
-
     .stat-number { font-size: 3.4rem; font-weight: bold; margin: 8px 0; }
 
     /* Far Right - Referral */
@@ -135,6 +128,13 @@
       transition: all 0.4s ease;
     }
     .referral-block:hover { transform: scale(1.08); box-shadow: 0 0 110px rgba(255, 0, 170, 0.9); }
+
+    /* Transition Overlay */
+    #transition-overlay {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: 9999; pointer-events: none; display: none; overflow: hidden; background: #000;
+    }
+    .transition-video { width: 100%; height: 100%; object-fit: cover; }
   </style>
 </head>
 <body>
@@ -150,7 +150,6 @@
   </div>
 
   <div class="main-content">
-
     <!-- FAR LEFT - Skinny Tall Chimes -->
     <div class="chimes-column">
       <div class="chimes-block">
@@ -160,10 +159,9 @@
       </div>
     </div>
 
-    <!-- CENTER - MASS DRIVER ROBO TAXI BLOCK -->
+    <!-- CENTER - Robo Taxi -->
     <div class="robo-watch">
       <h3>LIVE ROBO TAXI WATCHER — APRIL 2026</h3>
-
       <div class="row text-center mb-4">
         <div class="col-4">
           <div class="stat-number" style="color:#00ffcc;">~400</div>
@@ -178,11 +176,9 @@
           <div>Austin (Unsupervised Testing)</div>
         </div>
       </div>
-
       <div style="font-size:1.75rem; color:#ffd700; margin:25px 0 10px;">
         TOTAL FSD MILES: <span style="color:#ffffff;">~8.5 Billion</span>
       </div>
-
       <div style="line-height:1.75; text-align:left; font-size:1.08rem; color:#ddd;">
         Small but rapidly scaling pilot fleet.<br>
         Mostly supervised operations today.<br>
@@ -191,7 +187,6 @@
         FSD data collection rate: millions of miles per day.<br>
         Next expansion targets: Phoenix, Miami, Chicago (pending approval).
       </div>
-
       <small style="display:block; margin-top:28px; opacity:0.75;">Community trackers + regulatory filings • April 2026</small>
     </div>
 
@@ -201,7 +196,12 @@
       <p style="margin:0 0 18px 0; font-size:1.12rem;">Get a Tesla with FSD today with this discount link</p>
       <button style="background:#000; color:#ff00aa; border:none; padding:14px 44px; border-radius:50px; font-weight:bold;">GET MY TESLA</button>
     </div>
+  </div>
 
+  <!-- TRANSITION OVERLAY -->
+  <div id="transition-overlay">
+    <video id="forward-video" class="transition-video" playsinline preload="auto"></video>
+    <video id="reverse-video" class="transition-video" playsinline preload="auto" style="display:none;"></video>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -239,12 +239,26 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+      // Populate chimes list
       const list = document.getElementById('chimes-list');
       chimes.forEach(chime => list.appendChild(createChimeItem(chime)));
 
+      // Mini nav
       const miniNav = document.getElementById('mini-nav');
       miniNav.classList.add('show');
 
+      // Transition setup
+      const overlay = document.getElementById('transition-overlay');
+      const forwardVideo = document.getElementById('forward-video');
+      const reverseVideo = document.getElementById('reverse-video');
+
+      // Forward video (from saloon)
+      forwardVideo.src = '/video/chimes-video-transition.mp4';
+
+      // Show content immediately (no forward video on sub-page load)
+      overlay.style.display = 'none';
+
+      // Saloon doors back (reverse transition)
       miniNav.addEventListener('click', e => {
         const img = e.target.closest('img');
         if (!img) return;
@@ -254,10 +268,20 @@
         e.preventDefault();
 
         if (type === 'home') {
+          // Bounce out + reverse video
           miniNav.classList.add('bounce-out');
-          setTimeout(() => location.href = link, 650);
+          overlay.style.display = 'block';
+          forwardVideo.style.display = 'none';
+          reverseVideo.style.display = 'block';
+          reverseVideo.src = '/video/chimes-video-reverse.mp4';   // <-- Make sure you have this file
+          reverseVideo.currentTime = 0;
+          reverseVideo.volume = 0.5;
+          reverseVideo.play().catch(() => {
+            window.location.href = link;
+          });
+          reverseVideo.onended = () => window.location.href = link;
         } else {
-          location.href = link;
+          window.location.href = link;
         }
       });
     });
