@@ -61,8 +61,8 @@
       padding: 0 40px;
     }
 
-    /* Far Left - Skinny Tall Chimes */
-    .chimes-column { width: 380px; }
+    /* Far Left - Half Width, Lean Chimes */
+    .chimes-column { width: 340px; }
 
     .chimes-block {
       background: rgba(8, 18, 40, 0.92);
@@ -73,40 +73,59 @@
       backdrop-filter: blur(16px);
     }
 
-    .sound-btn {
-      flex: 1;
-      background: rgba(0,0,0,0.75);
-      border: 2.5px solid #00ffcc;
-      color: #ffffff;
-      padding: 1rem 1.4rem;
-      border-radius: 50px;
-      font-size: 1.05rem;
-      transition: all 0.3s ease;
+    .chimes-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
     }
-    .sound-btn:hover { background: #00ffcc; color: #000; transform: scale(1.04); }
 
-    .download-btn {
-      width: 52px; height: 52px;
-      background: rgba(0,0,0,0.75);
-      border: 2.5px solid #00ffcc;
+    .chimes-list li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(0, 255, 204, 0.2);
+    }
+
+    .chimes-list li:last-child { border-bottom: none; }
+
+    .play-btn {
+      background: transparent;
+      border: 2px solid #00ffcc;
       color: #00ffcc;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.55rem;
-      transition: all 0.3s ease;
+      font-size: 1.1rem;
+      cursor: pointer;
     }
-    .download-btn:hover { background: #ff00aa; color: #000; transform: scale(1.15); }
 
-    /* CENTER - MAIN ROBO TAXI WATCHER */
+    .download-btn {
+      background: transparent;
+      border: 2px solid #00ffcc;
+      color: #00ffcc;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      cursor: pointer;
+    }
+
+    /* Center - Main Robo Taxi (proper width, not stretched) */
     .robo-watch {
       flex: 1;
+      max-width: 520px;
       background: rgba(0, 0, 0, 0.94);
       border: 3px solid #ffd700;
       border-radius: 26px;
       padding: 2.4rem 2.2rem;
-      box-shadow: 0 0 90px rgba(255, 215, 0, 0.75);
+      box-shadow: 0 0 80px rgba(255, 215, 0, 0.7);
       text-align: center;
     }
 
@@ -116,9 +135,9 @@
       margin-bottom: 2rem;
     }
 
-    .stat-number { font-size: 3.4rem; font-weight: bold; margin: 8px 0; }
+    .stat-number { font-size: 3.2rem; font-weight: bold; margin: 8px 0; }
 
-    /* Far Right - Pink Referral */
+    /* Far Right - Referral */
     .referral-block {
       width: 340px;
       background: linear-gradient(135deg, #ff00aa, #ff3399);
@@ -147,48 +166,50 @@
 
   <div class="main-content">
 
-    <!-- FAR LEFT - Skinny Tall Chimes -->
+    <!-- FAR LEFT - Half Width, Clean Lean Chimes -->
     <div class="chimes-column">
       <div class="chimes-block">
         <h2 style="color:#00ffcc; text-align:center; margin-bottom:18px;">🔊 TESLA LOCK CHIMES</h2>
         <p style="text-align:center; margin-bottom:22px; color:#ddd;">Click ▶️ to preview • Click ↓ to download.<br>Rename to <strong>lockchime.wav</strong>.</p>
-        <div id="chimes-grid" class="row g-3"></div>
+        
+        <ul id="chimes-list" class="chimes-list"></ul>
       </div>
     </div>
 
-    <!-- CENTER - MAIN ROBO TAXI WATCHER (expanded & accurate) -->
+    <!-- CENTER - Main Robo Taxi Watcher (proper size) -->
     <div class="robo-watch">
       <h3>LIVE ROBO TAXI WATCHER — APRIL 2026</h3>
 
       <div class="row text-center mb-4">
         <div class="col-4">
-          <div class="stat-number" style="color:#00ffcc;">~168</div>
+          <div class="stat-number" style="color:#00ffcc;">~300-400</div>
+          <div>Total Fleet</div>
+        </div>
+        <div class="col-4">
+          <div class="stat-number" style="color:#ff00aa;">~168</div>
           <div>Bay Area (Supervised)</div>
         </div>
         <div class="col-4">
-          <div class="stat-number" style="color:#ff00aa;">~72</div>
-          <div>Austin (Unsupervised testing)</div>
-        </div>
-        <div class="col-4">
           <div class="stat-number" style="color:#00ccff;">~72</div>
-          <div>Los Angeles (Testing)</div>
+          <div>Austin (Testing)</div>
         </div>
       </div>
 
-      <div style="font-size:1.65rem; color:#ffd700; margin:30px 0;">
+      <div style="font-size:1.65rem; color:#ffd700; margin:30px 0 15px;">
         TOTAL FSD MILES: <span style="color:#ffffff;">~8.5 Billion</span>
       </div>
 
-      <div style="margin-top:20px; line-height:1.6;">
-        <strong>Current Status:</strong> Small pilot fleet (~300-400 vehicles total). Mostly supervised operations. Unsupervised limited to parts of Austin.<br><br>
-        <strong>Supercharger Network:</strong> ~80,000 stalls worldwide — 98%+ compatible with future Robotaxi fleet.<br><br>
-        <strong>Safety Note:</strong> FSD (Supervised) is accumulating massive real-world data. Full unsupervised Robotaxi scaling still pending regulatory approval in most markets.
+      <div style="line-height:1.7; text-align:left; font-size:1.05rem;">
+        Small pilot fleet, mostly supervised operations.<br>
+        Unsupervised limited to parts of Austin.<br><br>
+        Supercharger Network: ~80,000 stalls (98%+ compatible).<br>
+        FSD data collection continues at high rate.
       </div>
 
-      <small style="display:block; margin-top:25px; opacity:0.75;">Data from community trackers + Tesla reports • April 2026</small>
+      <small style="display:block; margin-top:25px; opacity:0.75;">Community + regulatory estimates • April 2026</small>
     </div>
 
-    <!-- FAR RIGHT - Pink Referral -->
+    <!-- FAR RIGHT - Referral -->
     <div class="referral-block" onclick="window.open('https://www.tesla.com/referral/lance680518','_blank')">
       <h3 style="margin:0 0 12px 0;">NEVER DRIVE AGAIN!</h3>
       <p style="margin:0 0 18px 0; font-size:1.12rem;">Get a Tesla with FSD today with this discount link</p>
@@ -212,35 +233,28 @@
       { name: "Wayputa – Call of the Gringo", file: "sounds/wayputa.wav" }
     ];
 
-    function createChimeButton(chime) {
-      const div = document.createElement('div');
-      div.className = 'col-12 mb-3';
-      div.innerHTML = `
-        <div style="display:flex; gap:12px; align-items:center;">
-          <button onclick="playSound(this, '${chime.file}')" 
-                  style="flex:1; padding:16px 20px; background:rgba(0,0,0,0.75); border:2.5px solid #00ffcc; color:white; border-radius:50px; font-size:1.08rem; text-align:left;">
-            ▶️ ${chime.name}
-          </button>
-          <a href="${chime.file}" download 
-             style="min-width:56px; height:56px; background:rgba(0,0,0,0.75); border:2.5px solid #00ffcc; color:#00ffcc; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.7rem;">
-            ↓
-          </a>
-        </div>
+    function createChimeItem(chime) {
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <button onclick="playSound(this, '${chime.file}')" class="play-btn">▶</button>
+        <span style="flex:1; color:#ddd;">${chime.name}</span>
+        <a href="${chime.file}" download class="download-btn">↓</a>
       `;
-      return div;
+      return li;
     }
 
     function playSound(btn, file) {
       const audio = new Audio(file);
       audio.volume = 0.6;
       audio.play();
-      btn.style.background = '#ff00aa';
-      setTimeout(() => btn.style.background = 'rgba(0,0,0,0.75)', 1500);
+      const originalColor = btn.style.color;
+      btn.style.color = '#ff00aa';
+      setTimeout(() => btn.style.color = originalColor, 1500);
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      const grid = document.getElementById('chimes-grid');
-      chimes.forEach(chime => grid.appendChild(createChimeButton(chime)));
+      const list = document.getElementById('chimes-list');
+      chimes.forEach(chime => list.appendChild(createChimeItem(chime)));
 
       const miniNav = document.getElementById('mini-nav');
       miniNav.classList.add('show');
