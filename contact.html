@@ -116,6 +116,13 @@
       border-radius: 50px;
       padding: 15px 32px;
     }
+    .success-message {
+      display: none;
+      color: #00ffcc;
+      font-weight: bold;
+      margin-top: 15px;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
@@ -240,11 +247,10 @@
       const content = document.getElementById('main-content');
       const miniNav = document.getElementById('mini-nav');
 
-      // Set video sources
+      // Video transitions
       forwardVideo.src = '/video/contact-video-transition.mp4';
       reverseVideo.src = '/video/contact-video-reverse.mp4';
 
-      // Forward transition on load (from saloon)
       overlay.style.display = 'block';
       forwardVideo.style.display = 'block';
       let started = false;
@@ -264,7 +270,7 @@
         setTimeout(() => miniNav.classList.add('show'), 600);
       }
 
-      // Mini Nav Click - reverse transition when going home
+      // Mini Nav reverse transition
       miniNav.addEventListener('click', e => {
         const img = e.target.closest('img');
         if (!img) return;
@@ -283,9 +289,7 @@
             reverseVideo.currentTime = 0;
             reverseVideo.volume = 0.5;
             reverseVideo.play()
-              .then(() => { 
-                reverseVideo.onended = () => location.href = link; 
-              })
+              .then(() => { reverseVideo.onended = () => location.href = link; })
               .catch(() => location.href = link);
           }, 500);
         } else {
@@ -293,28 +297,10 @@
         }
       });
 
-      // Newsletter form (basic example - expand with your full Firebase/EmailJS logic)
+      // ====================== FIXED NEWSLETTER FORM ======================
       const newsletterForm = document.getElementById('newsletter-form');
-      if (newsletterForm) {
-        newsletterForm.addEventListener('submit', (e) => {
-          e.preventDefault();
-          // Add your full newsletter submission logic here
-          const successMsg = document.getElementById('newsletter-success');
-          if (successMsg) successMsg.style.display = 'block';
-        });
-      }
+      const newsletterSuccess = document.getElementById('newsletter-success');
 
-      // Contact form (basic example - expand with your full EmailJS logic)
-      const contactForm = document.getElementById('contact-form');
-      if (contactForm) {
-        contactForm.addEventListener('submit', (e) => {
-          e.preventDefault();
-          // Add your full EmailJS + Firebase logic here
-          const successMsg = document.getElementById('contact-success');
-          if (successMsg) successMsg.textContent = 'Message sent — we'll get back to you soon!';
-        });
-      }
-    });
-  </script>
-</body>
-</html>
+      if (newsletterForm) {
+        newsletterForm.addEventListener('submit', function(e) {
+          e.preventDefault();   // This stops the
