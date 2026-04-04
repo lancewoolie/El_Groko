@@ -1,266 +1,223 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+// ====================== MOON SALOON script.js – DEPARTURE MODEL ======================
 
-  <title>Tesla Chimes - Lance Woolie’s Moon Saloon</title>
+const clickSounds = [
+  new Audio('sounds/ricochet-1.mp3'),
+  new Audio('sounds/ricochet-2.mp3')
+];
+clickSounds.forEach(sound => { sound.preload = 'auto'; sound.volume = 0.85; });
 
-  <link href="https://fonts.googleapis.com/css2?family=Georgia&display=swap" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-  <link rel="icon" type="image/png" href="img/LanceWoolieHeadonly.png">
+const gameOverSound = new Audio('sounds/ScottySteel.mp3');
+gameOverSound.volume = 0.85;
 
-  <style>
-    body {
-      background: url('/img/moonsaloon/chimes-base-bg.jpg') center/cover no-repeat fixed !important;
-      color: #E0E0E0;
-      font-family: 'Georgia', serif;
-      margin: 0;
-      padding-top: 105px;
-      padding-bottom: 80px;
+let mousePos = { x: 0, y: 0 };
+let score = parseInt(sessionStorage.getItem('score')) || 0;
+let scoreEl = null;
+let health = parseFloat(sessionStorage.getItem('health')) || 100;
+let healthBar = null;
+let healthProgress = null;
+let gameOverShown = false;
+
+function isMobile() {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+}
+
+function explode(mx, my, hexColor) {
+  return new Promise(resolve => {
+    const numParticles = 30;
+    const canvas = document.createElement('canvas');
+    const size = 600;
+    canvas.width = size;
+    canvas.height = size;
+    canvas.style.cssText = `position:fixed; left:${mx - size/2}px; top:${my - size/2}px; pointer-events:none; z-index:10000;`;
+    document.body.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+    const particles = [];
+    for (let i = 0; i < numParticles; i++) {
+      const angle = (Math.PI * 2 * i) / numParticles;
+      const speed = Math.random() * 5 + 2;
+      particles.push({
+        x: size / 2, y: size / 2,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        life: 1, decay: 0.02,
+        size: Math.random() * 4 + 2,
+        color: hexColor
+      });
     }
-
-    /* MINI NAV */
-    .mini-nav {
-      position: fixed;
-      top: 15px;
-      left: 35px;
-      z-index: 10000;
-      background: rgba(10, 15, 35, 0.95);
-      border: 2px solid #00ffcc;
-      border-radius: 50px;
-      padding: 10px 18px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      box-shadow: 0 0 40px rgba(0, 255, 204, 0.7);
-      backdrop-filter: blur(14px);
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(-90px);
-      transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      let alive = false;
+      particles.forEach(p => {
+        p.x += p.vx; p.y += p.vy;
+        p.vx *= 0.98; p.vy *= 0.98;
+        p.life -= p.decay;
+        if (p.life > 0) {
+          alive = true;
+          const r = parseInt(p.color.slice(1,3),16);
+          const g = parseInt(p.color.slice(3,5),16);
+          const b = parseInt(p.color.slice(5,7),16);
+          ctx.fillStyle = `rgba(${r},${g},${b},${p.life})`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      });
+      if (alive) requestAnimationFrame(animate);
+      else { canvas.remove(); resolve(); }
     }
-    .mini-nav.show { opacity: 1; visibility: visible; transform: translateY(0); }
-    .mini-nav.bounce-out {
-      transition: transform 0.68s cubic-bezier(0.68, -1.4, 0.32, 2.3) !important;
-      transform: translateY(-240px) scale(0.35) rotate(32deg) !important;
-    }
-    .mini-nav img { width: 46px; height: 46px; cursor: pointer; transition: all 0.3s ease; }
-    .mini-nav img:hover { transform: scale(1.18) translateY(-4px); }
+    animate();
+  });
+}
 
-    /* Layout - Force left lock */
-    .main-content {
-      display: flex;
-      gap: 40px;
-      max-width: 1380px;
-      margin: 0 auto;
-      padding: 0 40px;
-      justify-content: flex-start;
-    }
+function updateScore(points, x, y) {
+  score += points;
+  sessionStorage.setItem('score', score.toString());
+  if (scoreEl) {
+    scoreEl.textContent = score.toString().padStart(6, '0');
+    scoreEl.className = '';
+    if (score === 0) scoreEl.classList.add('score-zero');
+    else if (score < 100) scoreEl.classList.add('score-low');
+    else if (score < 1000) scoreEl.classList.add('score-mid');
+    else if (score < 2001) scoreEl.classList.add('score-high');
+    else scoreEl.classList.add('score-max');
+  }
+  if (x !== undefined && y !== undefined) {
+    // Floating points can be added here later if desired
+  }
+}
 
-    /* Far Left - Skinny Tall Chimes */
-    .chimes-column { width: 340px; flex-shrink: 0; }
+function updateHealthBar() {
+  if (!healthProgress || !healthBar) return;
+  const percent = Math.max(0, Math.min(100, health)) / 100;
+  healthProgress.style.width = `${percent * 100}%`;
+  let color = percent >= 0.8 ? '#4CAF50' :
+              percent >= 0.51 ? '#FFD700' :
+              percent > 0 ? '#FF9800' : '#F44336';
+  healthProgress.style.backgroundColor = color;
+}
 
-    .chimes-block {
-      background: rgba(8, 18, 40, 0.92);
-      border: 3px solid #00ffcc;
-      border-radius: 22px;
-      padding: 1.6rem 1.8rem;
-      box-shadow: 0 0 60px rgba(0, 255, 204, 0.5);
-      backdrop-filter: blur(16px);
-    }
+function initHealthBar() {
+  healthBar = document.getElementById("health-bar");
+  healthProgress = document.getElementById("health-progress");
+  if (healthBar && healthProgress) updateHealthBar();
+}
 
-    .chimes-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    .chimes-list li {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 11px 0;
-      border-bottom: 1px solid rgba(0, 255, 204, 0.25);
-      font-size: 1.05rem;
-    }
-    .chimes-list li:last-child { border-bottom: none; }
-
-    .play-btn, .download-btn {
-      background: transparent;
-      border: 2px solid #00ffcc;
-      color: #00ffcc;
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1rem;
-      cursor: pointer;
-    }
-
-    /* CENTER - MAIN MASS-DRIVER ROBO BLOCK */
-    .robo-watch {
-      flex: 1;
-      max-width: 520px;
-      background: rgba(0, 0, 0, 0.94);
-      border: 3px solid #ffd700;
-      border-radius: 26px;
-      padding: 2.4rem 2.2rem;
-      box-shadow: 0 0 90px rgba(255, 215, 0, 0.85);
-      text-align: center;
-    }
-
-    .robo-watch h3 {
-      color: #ffd700;
-      text-shadow: 0 0 30px #ffd700;
-      margin-bottom: 1.8rem;
-      font-size: 1.75rem;
-    }
-
-    .stat-number { font-size: 3.4rem; font-weight: bold; margin: 8px 0; }
-
-    /* Far Right - Referral */
-    .referral-block {
-      width: 340px;
-      flex-shrink: 0;
-      background: linear-gradient(135deg, #ff00aa, #ff3399);
-      color: #ffffff;
-      padding: 2.2rem 2rem;
-      border-radius: 22px;
-      text-align: center;
-      box-shadow: 0 0 70px rgba(255, 0, 170, 0.75);
-      cursor: pointer;
-      transition: all 0.4s ease;
-    }
-    .referral-block:hover { transform: scale(1.08); box-shadow: 0 0 110px rgba(255, 0, 170, 0.9); }
-  </style>
-</head>
-<body>
-
-  <!-- MINI NAV -->
-  <div class="mini-nav" id="mini-nav">
-    <img src="/img/moonsaloon/saloon-doors-nav.png" class="doors" data-link="index.html" data-type="home" data-label="Moon Saloon">
-    <img src="/img/moonsaloon/raccoon-subscribe-nav.png" data-link="onlyfans.html" data-type="dest" data-label="Only Fans Zone">
-    <img src="/img/moonsaloon/holo-calendar-events-nav.png" data-link="events.html" data-type="dest" data-label="Events">
-    <img src="/img/moonsaloon/music-video-neon-nav.png" data-link="music.html" data-type="dest" data-label="Music & Video">
-    <img src="/img/moonsaloon/cowboy-hat-merch-nav.png" data-link="merch.html" data-type="dest" data-label="Merch">
-    <img src="/img/moonsaloon/hourglass-origins-nav.png" data-link="origins.html" data-type="dest" data-label="Origins">
-  </div>
-
-  <div class="main-content">
-
-    <!-- FAR LEFT - Skinny Tall Chimes -->
-    <div class="chimes-column">
-      <div class="chimes-block">
-        <h2 style="color:#00ffcc; text-align:center; margin-bottom:18px;">🔊 TESLA LOCK CHIMES</h2>
-        <p style="text-align:center; margin-bottom:22px; color:#ddd;">Click ▶️ to preview • Click ↓ to download.<br>Rename to <strong>lockchime.wav</strong>.</p>
-        <ul id="chimes-list" class="chimes-list"></ul>
-      </div>
-    </div>
-
-    <!-- CENTER - MASS DRIVER ROBO TAXI BLOCK -->
-    <div class="robo-watch">
-      <h3>LIVE ROBO TAXI WATCHER — APRIL 2026</h3>
-
-      <div class="row text-center mb-4">
-        <div class="col-4">
-          <div class="stat-number" style="color:#00ffcc;">~400</div>
-          <div>Total Fleet</div>
+function generateNav() {
+  const navHTML = `
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">
+          <img src="/img/BEARDsmall.png" alt="Lance Woolie"> Lance Woolie
+        </a>
+        <div class="score-header mx-auto d-flex align-items-center gap-4">
+          <div class="health-display d-flex align-items-center">
+            <div class="health-bar">
+              <div id="health-bar"><div id="health-progress"></div></div>
+            </div>
+          </div>
+          <div class="score-display">
+            <span class="score-label">SCORE</span>
+            <span id="score-value">000000</span>
+          </div>
         </div>
-        <div class="col-4">
-          <div class="stat-number" style="color:#ff00aa;">~168</div>
-          <div>Bay Area (Supervised)</div>
-        </div>
-        <div class="col-4">
-          <div class="stat-number" style="color:#00ccff;">~72</div>
-          <div>Austin (Unsupervised Testing)</div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="music.html">Music</a></li>
+            <li class="nav-item"><a class="nav-link" href="events.html">Events</a></li>
+            <li class="nav-item"><a class="nav-link" href="origins.html">Origins</a></li>
+            <li class="nav-item"><a class="nav-link" href="merch.html">Merch</a></li>
+            <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+          </ul>
         </div>
       </div>
+    </nav>
+  `;
 
-      <div style="font-size:1.75rem; color:#ffd700; margin:25px 0 10px;">
-        TOTAL FSD MILES: <span style="color:#ffffff;">~8.5 Billion</span>
-      </div>
+  const placeholder = document.getElementById('nav-placeholder');
+  if (placeholder) placeholder.innerHTML = navHTML;
 
-      <div style="line-height:1.75; text-align:left; font-size:1.08rem; color:#ddd;">
-        Small but rapidly scaling pilot fleet.<br>
-        Mostly supervised operations today.<br>
-        Unsupervised limited to select Austin zones.<br><br>
-        Supercharger Network: ~80,000 stalls (98%+ Robotaxi-ready).<br>
-        FSD data collection rate: millions of miles per day.<br>
-        Next expansion targets: Phoenix, Miami, Chicago (pending approval).
-      </div>
+  // Highlight active page
+  const currentPage = window.location.pathname.split('/').pop().replace('.html','') || 'index';
+  document.querySelectorAll('.nav-link').forEach(link => {
+    const href = link.getAttribute('href').replace('.html','');
+    if (href === currentPage) link.classList.add('active');
+  });
+}
 
-      <small style="display:block; margin-top:28px; opacity:0.75;">Community trackers + regulatory filings • April 2026</small>
-    </div>
+document.addEventListener('DOMContentLoaded', () => {
+  generateNav();
 
-    <!-- FAR RIGHT - Referral -->
-    <div class="referral-block" onclick="window.open('https://www.tesla.com/referral/lance680518','_blank')">
-      <h3 style="margin:0 0 12px 0;">NEVER DRIVE AGAIN!</h3>
-      <p style="margin:0 0 18px 0; font-size:1.12rem;">Get a Tesla with FSD today with this discount link</p>
-      <button style="background:#000; color:#ff00aa; border:none; padding:14px 44px; border-radius:50px; font-weight:bold;">GET MY TESLA</button>
-    </div>
+  scoreEl = document.getElementById('score-value');
+  if (scoreEl) {
+    scoreEl.textContent = score.toString().padStart(6, '0');
+  }
 
-  </div>
+  setTimeout(() => {
+    initHealthBar();
+    updateScore(0);
+  }, 200);
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="script.js"></script>
+  const forwardVideo = document.getElementById('forward-video');
+  const reverseVideo = document.getElementById('reverse-video');
+  const overlay = document.getElementById('transition-overlay');
 
-  <script>
-    const chimes = [
-      { name: "Crazy Arms Steel Solo", file: "sounds/LockChime.wav" },
-      { name: "Star Trek Red Alert", file: "sounds/REDALERT.wav" },
-      { name: "Lance Jesus in Sleep", file: "sounds/jesus.wav" },
-      { name: "Multiple Ricochets", file: "sounds/multiple-ricochets.mp3" },
-      { name: "Ricochet 1", file: "sounds/ricochet-1.mp3" },
-      { name: "Ricochet 2", file: "sounds/ricochet-2.mp3" },
-      { name: "Technology Meme", file: "sounds/technology.wav" },
-      { name: "Wayputa – Call of the Gringo", file: "sounds/wayputa.wav" }
-    ];
+  // Preload forward if on index
+  if (forwardVideo && document.getElementById('saloon-svg')) {
+    forwardVideo.load();
+  }
 
-    function createChimeItem(chime) {
-      const li = document.createElement('li');
-      li.innerHTML = `
-        <button onclick="playSound(this, '${chime.file}')" class="play-btn">▶</button>
-        <span style="flex:1; color:#ddd;">${chime.name}</span>
-        <a href="${chime.file}" download class="download-btn">↓</a>
-      `;
-      return li;
-    }
+  // Index page – prop shooting
+  const saloonSVG = document.getElementById('saloon-svg');
+  if (saloonSVG) {
+    document.querySelectorAll('.moonsaloon-prop').forEach(prop => {
+      prop.addEventListener('click', e => {
+        e.stopImmediatePropagation();
+        const rect = prop.getBoundingClientRect();
+        const x = rect.left + rect.width / 2;
+        const y = rect.top + rect.height / 2;
 
-    function playSound(btn, file) {
-      const audio = new Audio(file);
-      audio.volume = 0.6;
-      audio.play();
-      const original = btn.style.color;
-      btn.style.color = '#ff00aa';
-      setTimeout(() => btn.style.color = original, 1500);
-    }
+        let hits = parseInt(prop.dataset.hits || '0') + 1;
+        prop.dataset.hits = hits;
 
-    document.addEventListener('DOMContentLoaded', () => {
-      const list = document.getElementById('chimes-list');
-      chimes.forEach(chime => list.appendChild(createChimeItem(chime)));
+        const sound = clickSounds[Math.floor(Math.random() * clickSounds.length)];
+        sound.currentTime = 0;
+        sound.play().catch(() => {});
 
-      const miniNav = document.getElementById('mini-nav');
-      miniNav.classList.add('show');
+        updateScore(parseInt(prop.dataset.score), x, y);
+        explode(x, y, '#00ffcc');
 
-      miniNav.addEventListener('click', e => {
-        const img = e.target.closest('img');
-        if (!img) return;
-        const link = img.dataset.link;
-        const type = img.dataset.type;
-        if (!link) return;
-        e.preventDefault();
+        prop.classList.add('hit');
+        setTimeout(() => prop.classList.remove('hit'), 160);
 
-        if (type === 'home') {
-          miniNav.classList.add('bounce-out');
-          setTimeout(() => location.href = link, 650);
-        } else {
-          location.href = link;
+        if (hits >= parseInt(prop.dataset.maxHits)) {
+          prop.classList.add('destroyed');
+          forwardVideo.src = prop.dataset.forwardVideo;
+          forwardVideo.currentTime = 0;
+          forwardVideo.playbackRate = 1.3;
+          forwardVideo.muted = isMobile();
+          forwardVideo.volume = isMobile() ? 0 : 0.8;
+
+          overlay.style.display = 'block';
+
+          forwardVideo.play().catch(() => {
+            window.location.href = prop.dataset.link;
+          });
+
+          forwardVideo.onended = () => {
+            window.location.href = prop.dataset.link;
+          };
         }
       });
     });
-  </script>
-</body>
-</html>
+  }
+
+  // Sub-page reverse transition (handled in events.html or other pages)
+});
+
+document.addEventListener('mousemove', e => {
+  mousePos = { x: e.clientX, y: e.clientY };
+});
