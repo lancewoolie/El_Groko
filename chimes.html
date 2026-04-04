@@ -21,7 +21,7 @@
       padding-bottom: 80px;
     }
 
-    /* MINI NAV */
+    /* MINI NAV - Left justified */
     .mini-nav {
       position: fixed;
       top: 15px;
@@ -64,7 +64,7 @@
       transform: scale(1.18) translateY(-4px);
     }
 
-    /* Main Layout */
+    /* Layout */
     .main-content {
       display: flex;
       gap: 50px;
@@ -75,53 +75,54 @@
 
     /* Far Left - Slim Chimes */
     .chimes-column {
-      width: 420px;
+      flex: 1;
+      max-width: 460px;
     }
 
     .chimes-block {
       background: rgba(8, 18, 40, 0.92);
       border: 3px solid #00ffcc;
       border-radius: 22px;
-      padding: 1.6rem 1.8rem;
-      box-shadow: 0 0 60px rgba(0, 255, 204, 0.5);
+      padding: 1.8rem 2rem;
+      box-shadow: 0 0 65px rgba(0, 255, 204, 0.5);
       backdrop-filter: blur(16px);
     }
 
     .sound-row {
       display: flex;
-      gap: 10px;
-      margin-bottom: 12px;
+      gap: 12px;
+      margin-bottom: 14px;
       align-items: center;
     }
 
     .sound-btn {
       flex: 1;
       background: rgba(0,0,0,0.75);
-      border: 2px solid #00ffcc;
+      border: 2.5px solid #00ffcc;
       color: #ffffff;
-      padding: 1rem 1.4rem;
+      padding: 1.1rem 1.6rem;
       border-radius: 50px;
-      font-size: 1.05rem;
+      font-size: 1.08rem;
       transition: all 0.3s ease;
     }
 
     .sound-btn:hover {
       background: #00ffcc;
       color: #000;
-      transform: scale(1.04);
+      transform: scale(1.05);
     }
 
     .download-btn {
-      width: 50px;
-      height: 50px;
+      width: 54px;
+      height: 54px;
       background: rgba(0,0,0,0.75);
-      border: 2px solid #00ffcc;
+      border: 2.5px solid #00ffcc;
       color: #00ffcc;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.5rem;
+      font-size: 1.6rem;
       transition: all 0.3s ease;
     }
 
@@ -131,9 +132,9 @@
       transform: scale(1.15);
     }
 
-    /* Right Column - Referral + Robo Taxi */
+    /* Right Column */
     .right-column {
-      flex: 1;
+      width: 360px;
       display: flex;
       flex-direction: column;
       gap: 30px;
@@ -173,29 +174,14 @@
     }
 
     .stat-number {
-      font-size: 2.9rem;
+      font-size: 2.8rem;
       font-weight: bold;
-      margin: 6px 0;
-      line-height: 1;
+      margin: 8px 0;
     }
 
     .bay-area { color: #00ffcc; }
     .austin    { color: #ff00aa; }
     .la        { color: #00ccff; }
-
-    /* Secret Dot */
-    .secret-dot {
-      position: absolute;
-      bottom: 80px;
-      left: 80px;
-      width: 8px;
-      height: 8px;
-      background: #ffffff;
-      border-radius: 50%;
-      opacity: 0.12;
-      cursor: pointer;
-      z-index: 20;
-    }
   </style>
 </head>
 <body>
@@ -233,4 +219,100 @@
       </div>
 
       <!-- Black & Gold Robo Taxi Watcher -->
-     
+      <div class="robo-watch">
+        <h3>LIVE ROBO TAXI WATCHER</h3>
+        <div class="row text-center mb-4">
+          <div class="col-6">
+            <div class="stat-number bay-area">168</div>
+            <div class="city-label">Bay Area</div>
+          </div>
+          <div class="col-6">
+            <div class="stat-number austin">72</div>
+            <div class="city-label">Austin</div>
+          </div>
+        </div>
+        <div class="row text-center">
+          <div class="col-12">
+            <div class="stat-number la" style="font-size:2.4rem;">72</div>
+            <div class="city-label">Los Angeles (Testing)</div>
+          </div>
+        </div>
+        <div style="margin-top:25px; font-size:1.4rem; color:#ffd700;">
+          TOTAL FSD MILES: <span style="color:#ffffff;">~2.8 Billion</span>
+        </div>
+        <small style="display:block; margin-top:18px; opacity:0.7;">Verified April 2026</small>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Secret Dot -->
+  <div class="secret-dot" onclick="window.location.href='abc.html'" style="position:absolute; bottom:80px; left:80px; width:8px; height:8px; background:#ffffff; border-radius:50%; opacity:0.15; cursor:pointer;"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="script.js"></script>
+
+  <script>
+    const chimes = [
+      { name: "Crazy Arms Steel Solo", file: "sounds/LockChime.wav" },
+      { name: "Star Trek Red Alert", file: "sounds/REDALERT.wav" },
+      { name: "Lance Jesus in Sleep", file: "sounds/jesus.wav" },
+      { name: "Multiple Ricochets", file: "sounds/multiple-ricochets.mp3" },
+      { name: "Ricochet 1", file: "sounds/ricochet-1.mp3" },
+      { name: "Ricochet 2", file: "sounds/ricochet-2.mp3" },
+      { name: "Technology Meme", file: "sounds/technology.wav" },
+      { name: "Wayputa – Call of the Gringo", file: "sounds/wayputa.wav" }
+    ];
+
+    function createChimeButton(chime) {
+      const div = document.createElement('div');
+      div.className = 'col-12 mb-3';
+      div.innerHTML = `
+        <div style="display:flex; gap:12px; align-items:center;">
+          <button onclick="playSound(this, '${chime.file}')" 
+                  style="flex:1; padding:16px 20px; background:rgba(0,0,0,0.75); border:2.5px solid #00ffcc; color:white; border-radius:50px; font-size:1.08rem; text-align:left;">
+            ▶️ ${chime.name}
+          </button>
+          <a href="${chime.file}" download 
+             style="min-width:56px; height:56px; background:rgba(0,0,0,0.75); border:2.5px solid #00ffcc; color:#00ffcc; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.7rem;">
+            ↓
+          </a>
+        </div>
+      `;
+      return div;
+    }
+
+    function playSound(btn, file) {
+      const audio = new Audio(file);
+      audio.volume = 0.6;
+      audio.play();
+      btn.style.background = '#ff00aa';
+      setTimeout(() => btn.style.background = 'rgba(0,0,0,0.75)', 1500);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const grid = document.getElementById('chimes-grid');
+      chimes.forEach(chime => grid.appendChild(createChimeButton(chime)));
+
+      const miniNav = document.getElementById('mini-nav');
+      miniNav.classList.add('show');
+
+      miniNav.addEventListener('click', e => {
+        const img = e.target.closest('img');
+        if (!img) return;
+        const link = img.dataset.link;
+        const type = img.dataset.type;
+        if (!link) return;
+        e.preventDefault();
+
+        if (type === 'home') {
+          miniNav.classList.add('bounce-out');
+          setTimeout(() => location.href = link, 650);
+        } else {
+          location.href = link;
+        }
+      });
+    });
+  </script>
+</body>
+</html>
