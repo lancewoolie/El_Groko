@@ -100,7 +100,7 @@
     .form-control {
       background: rgba(0,0,0,0.75) !important;
       border: 2.5px solid #00ffcc;
-      color: #ffffff !important;           /* Bright white typed text */
+      color: #ffffff !important;
       border-radius: 14px;
     }
     .form-control::placeholder { color: #f0f0f0 !important; }
@@ -115,6 +115,13 @@
     .success-message {
       display: none;
       color: #00ffcc;
+      font-weight: bold;
+      margin-top: 15px;
+      text-align: center;
+    }
+    .error-message {
+      display: none;
+      color: #ff6666;
       font-weight: bold;
       margin-top: 15px;
       text-align: center;
@@ -150,7 +157,7 @@
             <button type="submit" class="btn btn-gold w-100">Do it. Sign Up</button>
           </div>
         </form>
-        <div id="newsletter-success" class="success-message">Subscribe successful! Thank you!</div>
+        <div id="newsletter-success" class="success-message"></div>
       </div>
 
       <!-- Booking Agents -->
@@ -243,11 +250,11 @@
       const content = document.getElementById('main-content');
       const miniNav = document.getElementById('mini-nav');
 
-      // Video transitions - FIXED duplicate play
+      // Video transitions - fixed duplicate play
       forwardVideo.src = '/video/contact-video-transition.mp4';
       reverseVideo.src = '/video/contact-video-reverse.mp4';
 
-      let transitionInProgress = false;   // Guard against duplicate plays
+      let transitionInProgress = false;
 
       overlay.style.display = 'block';
       forwardVideo.style.display = 'block';
@@ -294,7 +301,7 @@
         }
       });
 
-      // Newsletter Form - Firebase + Success Message
+      // Newsletter Form - Firebase
       const newsletterForm = document.getElementById('newsletter-form');
       const newsletterSuccess = document.getElementById('newsletter-success');
 
@@ -308,7 +315,7 @@
           try {
             await addDoc(collection(db, "subscribers"), {
               email: email,
-              type: "onlyfanszone",   // matching your earlier rebrand
+              type: "onlyfanszone",
               timestamp: serverTimestamp()
             });
 
@@ -327,7 +334,7 @@
         });
       }
 
-      // Contact Form - EmailJS + Success Message
+      // Contact Form - EmailJS (kept simple, using your original IDs)
       const contactForm = document.getElementById('contact-form');
       const contactSuccess = document.getElementById('contact-success');
       const contactError = document.getElementById('contact-error');
@@ -343,14 +350,17 @@
           const email = document.getElementById('email').value.trim();
           const message = document.getElementById('message').value.trim();
 
-          if (!name || !email || !message) return;
+          if (!name || !email || !message) {
+            contactError.textContent = "Please fill all fields.";
+            contactError.style.display = 'block';
+            return;
+          }
 
           try {
             await emailjs.send("service_n08jdhv", "template_of9jflr", {
               from_name: name,
               from_email: email,
-              message: message,
-              to_email: "lancewoolie@gmail.com"
+              message: message
             });
 
             contactSuccess.textContent = "Your message has been sent!";
@@ -360,6 +370,7 @@
             setTimeout(() => {
               contactSuccess.style.display = 'none';
             }, 6000);
+
           } catch (error) {
             console.error("EmailJS error:", error);
             contactError.textContent = "Failed to send message. Please try again.";
