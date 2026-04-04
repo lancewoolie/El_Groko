@@ -240,11 +240,11 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      // Populate chimes
+      // Populate chimes list
       const list = document.getElementById('chimes-list');
       chimes.forEach(chime => list.appendChild(createChimeItem(chime)));
 
-      // Mini nav show
+      // Show mini nav
       const miniNav = document.getElementById('mini-nav');
       miniNav.classList.add('show');
 
@@ -253,13 +253,13 @@
       const forwardVideo = document.getElementById('forward-video');
       const reverseVideo = document.getElementById('reverse-video');
 
-      // Forward video (saloon → chimes) - only plays from index
+      // Forward video (from saloon)
       forwardVideo.src = '/video/chimes-video-transition.mp4';
 
-      // On page load, no forward video (we're already here)
+      // On sub-page load, do NOT play forward video
       overlay.style.display = 'none';
 
-      // Click on mini-nav
+      // Mini nav clicks
       miniNav.addEventListener('click', e => {
         const img = e.target.closest('img');
         if (!img) return;
@@ -269,7 +269,7 @@
         e.preventDefault();
 
         if (type === 'home') {
-          // Bounce out + play reverse video
+          // Bounce + reverse transition
           miniNav.classList.add('bounce-out');
           overlay.style.display = 'block';
           forwardVideo.style.display = 'none';
