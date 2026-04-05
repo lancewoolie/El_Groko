@@ -168,27 +168,63 @@
       const content = document.getElementById('main-content');
       const miniNav = document.getElementById('mini-nav');
 
-      // Video transition (plays once only)
+       // === VIDEO TRANSITIONS - RESTORED CLEAN VERSION ===
+      const overlay = document.getElementById('transition-overlay');
+      const forwardVideo = document.getElementById('forward-video');
+      const reverseVideo = document.getElementById('reverse-video');
+      const content = document.getElementById('main-content');
+
       forwardVideo.src = '/video/contact-video-transition.mp4';
       reverseVideo.src = '/video/contact-video-reverse.mp4';
 
       let transitionInProgress = false;
 
+      // Forward transition on page load
       overlay.style.display = 'block';
       forwardVideo.style.display = 'block';
+      forwardVideo.muted = /Mobi|Android/i.test(navigator.userAgent);
+      forwardVideo.volume = forwardVideo.muted ? 0 : 0.5;
 
       forwardVideo.oncanplaythrough = () => {
         if (transitionInProgress) return;
         transitionInProgress = true;
-        forwardVideo.muted = true;
-        forwardVideo.play().catch(() => finishTransition());
+        forwardVideo.play().catch(err => {
+          console.error('Forward play error:', err);
+          finishTransition();
+        });
       };
+
       forwardVideo.onended = finishTransition;
 
       function finishTransition() {
         overlay.style.display = 'none';
         content.classList.add('show');
-        setTimeout(() => miniNav.classList.add('show'), 600);
+      }
+
+      // Reverse transition when clicking saloon doors
+      const saloonDoorsBack = document.getElementById('saloon-doors-back');
+      if (saloonDoorsBack) {
+        saloonDoorsBack.addEventListener('click', (e) => {
+          e.preventDefault();
+          if (transitionInProgress) return;
+
+          transitionInProgress = true;
+          overlay.style.display = 'block';
+          forwardVideo.style.display = 'none';
+          reverseVideo.style.display = 'block';
+          reverseVideo.currentTime = 0;
+          reverseVideo.volume = 0.5;
+
+          reverseVideo.play()
+            .then(() => {
+              reverseVideo.onended = () => {
+                window.location.href = 'index.html';
+              };
+            })
+            .catch(() => {
+              window.location.href = 'index.html';
+            });
+        });
       }
 
       // Mini Nav
