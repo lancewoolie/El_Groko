@@ -191,7 +191,7 @@
         setTimeout(() => miniNav.classList.add('show'), 600);
       }
 
-      // Mini Nav reverse transition
+      // Mini Nav
       miniNav.addEventListener('click', e => {
         const img = e.target.closest('img');
         if (!img) return;
@@ -242,7 +242,7 @@
         });
       }
 
-      // Contact Form - EmailJS with correct Template ID
+      // Contact Form - EmailJS with your NEW template ID
       const contactForm = document.getElementById('contact-form');
       const contactSuccess = document.getElementById('contact-success');
       const contactError = document.getElementById('contact-error');
@@ -265,7 +265,7 @@
           }
 
           try {
-            await emailjs.send("service_n08jdhv", "template_6e3d2v3", {
+            await emailjs.send("service_n08jdhv", "template_ls2s5mp", {
               name: name,
               email: email,
               message: message
