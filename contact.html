@@ -168,30 +168,21 @@
       const content = document.getElementById('main-content');
       const miniNav = document.getElementById('mini-nav');
 
-       // === VIDEO TRANSITIONS - RESTORED CLEAN VERSION ===
-      const overlay = document.getElementById('transition-overlay');
-      const forwardVideo = document.getElementById('forward-video');
-      const reverseVideo = document.getElementById('reverse-video');
-      const content = document.getElementById('main-content');
-
+      // ====================== VIDEO TRANSITIONS (Fixed) ======================
       forwardVideo.src = '/video/contact-video-transition.mp4';
       reverseVideo.src = '/video/contact-video-reverse.mp4';
 
       let transitionInProgress = false;
 
-      // Forward transition on page load
+      // Forward on load
       overlay.style.display = 'block';
       forwardVideo.style.display = 'block';
-      forwardVideo.muted = /Mobi|Android/i.test(navigator.userAgent);
-      forwardVideo.volume = forwardVideo.muted ? 0 : 0.5;
 
       forwardVideo.oncanplaythrough = () => {
         if (transitionInProgress) return;
         transitionInProgress = true;
-        forwardVideo.play().catch(err => {
-          console.error('Forward play error:', err);
-          finishTransition();
-        });
+        forwardVideo.muted = true;
+        forwardVideo.play().catch(() => finishTransition());
       };
 
       forwardVideo.onended = finishTransition;
@@ -199,42 +190,19 @@
       function finishTransition() {
         overlay.style.display = 'none';
         content.classList.add('show');
+        setTimeout(() => miniNav.classList.add('show'), 600);
       }
 
-      // Reverse transition when clicking saloon doors
-      const saloonDoorsBack = document.getElementById('saloon-doors-back');
-      if (saloonDoorsBack) {
-        saloonDoorsBack.addEventListener('click', (e) => {
-          e.preventDefault();
-          if (transitionInProgress) return;
-
-          transitionInProgress = true;
-          overlay.style.display = 'block';
-          forwardVideo.style.display = 'none';
-          reverseVideo.style.display = 'block';
-          reverseVideo.currentTime = 0;
-          reverseVideo.volume = 0.5;
-
-          reverseVideo.play()
-            .then(() => {
-              reverseVideo.onended = () => {
-                window.location.href = 'index.html';
-              };
-            })
-            .catch(() => {
-              window.location.href = 'index.html';
-            });
-        });
-      }
-
-      // Mini Nav
+      // Mini Nav - Reverse when clicking saloon doors
       miniNav.addEventListener('click', e => {
         const img = e.target.closest('img');
         if (!img) return;
         const link = img.dataset.link;
         const type = img.dataset.type;
         if (!link) return;
+
         e.preventDefault();
+
         if (type === 'home') {
           miniNav.classList.add('bounce-out');
           setTimeout(() => {
@@ -252,7 +220,7 @@
         }
       });
 
-      // Newsletter - Firebase
+      // ====================== NEWSLETTER FORM ======================
       const newsletterForm = document.getElementById('newsletter-form');
       const newsletterSuccess = document.getElementById('newsletter-success');
       if (newsletterForm) {
@@ -261,15 +229,15 @@
           const email = document.getElementById('signup-email').value.trim();
           if (!email) return;
           try {
-            await addDoc(collection(db, "subscribers"), { 
-              email: email, 
-              type: "onlyfanszone", 
-              timestamp: serverTimestamp() 
+            await addDoc(collection(db, "subscribers"), {
+              email: email,
+              type: "onlyfanszone",
+              timestamp: serverTimestamp()
             });
             newsletterSuccess.textContent = "Subscribe successful! Thank you!";
             newsletterSuccess.style.display = 'block';
             newsletterForm.reset();
-            setTimeout(() => newsletterSuccess.style.display = 'none', 5000);
+            setTimeout(() => newsletterSuccess.style.display = 'none', 7000);
           } catch (err) {
             console.error(err);
             newsletterSuccess.textContent = "Something went wrong. Please try again.";
@@ -278,15 +246,13 @@
         });
       }
 
-      // Contact Form - EmailJS with your NEW template ID
+      // ====================== CONTACT FORM ======================
       const contactForm = document.getElementById('contact-form');
       const contactSuccess = document.getElementById('contact-success');
       const contactError = document.getElementById('contact-error');
-
       if (contactForm) {
         contactForm.addEventListener('submit', async (e) => {
           e.preventDefault();
-
           contactSuccess.style.display = 'none';
           contactError.style.display = 'none';
 
