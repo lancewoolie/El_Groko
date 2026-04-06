@@ -22,11 +22,8 @@
       min-height: 100vh;
     }
 
-    /* Mobile background fix */
     @media (max-width: 991px) {
-      body {
-        background-attachment: scroll;
-      }
+      body { background-attachment: scroll; }
     }
 
     .mini-nav {
@@ -60,10 +57,7 @@
         gap: 8px; 
         max-width: 92vw; 
       }
-      .mini-nav img { 
-        width: 36px; 
-        height: 36px; 
-      }
+      .mini-nav img { width: 36px; height: 36px; }
     }
 
     .mini-nav.show { opacity: 1; visibility: visible; }
@@ -73,16 +67,9 @@
       transform: translate(-50%, -240px) scale(0.35) rotate(32deg) !important;
     }
 
-    .mini-nav img { 
-      width: 42px; 
-      height: 42px; 
-      cursor: pointer; 
-      transition: all 0.3s ease; 
-    }
-
     .content { 
       position: relative; 
-      z-index: 1; 
+      z-index: 2; 
       opacity: 0; 
       transition: opacity 1.2s ease; 
     }
@@ -104,21 +91,14 @@
       }
     }
 
-    .form-label { 
-      color: #ffffff !important; 
-      font-weight: bold; 
-    }
-
+    .form-label { color: #ffffff !important; font-weight: bold; }
     .form-control {
       background: rgba(0,0,0,0.75) !important;
       border: 2.5px solid #00ffcc;
       color: #ffffff !important;
       border-radius: 14px;
     }
-
-    .form-control::placeholder { 
-      color: #f0f0f0 !important; 
-    }
+    .form-control::placeholder { color: #f0f0f0 !important; }
 
     .btn-gold {
       background: linear-gradient(90deg, #ffd700, #ffaa00);
@@ -281,7 +261,7 @@
       function finishTransition() {
         overlay.style.display = 'none';
         content.classList.add('show');
-        setTimeout(() => miniNav.classList.add('show'), 600);
+        setTimeout(() => miniNav.classList.add('show'), 400);
       }
 
       // Mini Nav reverse
