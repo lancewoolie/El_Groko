@@ -12,6 +12,7 @@
 
   <!-- 🔒 CHAINED - LOCKED - DO NOT MODIFY WITHOUT CAPTAIN APPROVAL -->
   <!-- Mini-nav, sexy-card styling, forms, success messages, background structure -->
+  <!-- Video transition section is now fully locked after successful test -->
   <style>
     body {
       margin: 0;
@@ -31,6 +32,7 @@
       }
     }
 
+    /* 🔒 CHAINED MINI-NAV */
     .mini-nav {
       position: fixed; 
       top: 15px; 
@@ -142,8 +144,8 @@
     <img src="/img/moonsaloon/hourglass-origins-nav.png" data-link="origins.html" data-type="dest" data-label="Origins">
   </div>
 
-  <!-- ⛓ UNCHAINED - DEBUGGING VIDEO TRANSITIONS -->
-  <!-- Black screen after video ends on mobile is the active issue -->
+  <!-- 🔒 CHAINED - LOCKED VIDEO TRANSITIONS -->
+  <!-- This section is now locked after successful mobile test (safety timeout only) -->
   <div id="transition-overlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:9999;display:none;overflow:hidden;background:#000;">
     <video id="forward-video" playsinline preload="auto" style="width:100%;height:100%;object-fit:cover;"></video>
     <video id="reverse-video" playsinline preload="auto" style="width:100%;height:100%;object-fit:cover;display:none;"></video>
@@ -255,33 +257,25 @@
       const content = document.getElementById('main-content');
       const miniNav = document.getElementById('mini-nav');
 
-      /* ⛓ UNCHAINED - DEBUGGING VIDEO TRANSITIONS */
-      /* Event triggers removed as requested - using safety timeout only */
+      /* 🔒 CHAINED - LOCKED VIDEO TRANSITIONS */
+      /* Safety timeout only - event triggers removed - this version works on mobile */
       forwardVideo.src = '/video/contact-video-transition.mp4';
       reverseVideo.src = '/video/contact-video-reverse.mp4';
 
-      // Show overlay and play forward video
       overlay.style.display = 'block';
       forwardVideo.style.display = 'block';
 
       forwardVideo.muted = true;
-      forwardVideo.play().catch(() => {
-        // If play fails, show content anyway
-        finishTransition();
-      });
+      forwardVideo.play().catch(() => {});
 
-      // Safety timeout - force show content after max 5 seconds
+      // Safety timeout - force show content (this is what finally worked)
       setTimeout(() => {
-        finishTransition();
-      }, 5000);
-
-      function finishTransition() {
         overlay.style.display = 'none';
         content.classList.add('show');
         setTimeout(() => miniNav.classList.add('show'), 400);
-      }
+      }, 5000);
 
-      // Mini Nav reverse (kept from locked behavior)
+      // Mini Nav reverse
       miniNav.addEventListener('click', e => {
         const img = e.target.closest('img');
         if (!img) return;
