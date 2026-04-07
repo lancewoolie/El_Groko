@@ -11,7 +11,7 @@
   <link rel="icon" type="image/png" href="img/LanceWoolieHeadonly.png">
 
   <!-- 🔒 CHAINED - LOCKED - DO NOT MODIFY WITHOUT CAPTAIN APPROVAL -->
-  <!-- Mini-nav, chimes list, layout, sexy cards, background structure -->
+  <!-- Mini-nav, chimes list, robo-taxi block, referral block, background structure -->
   <style>
     body {
       margin: 0;
@@ -70,6 +70,41 @@
     }
     .content.show { opacity: 1; }
 
+    /* HORIZONTAL LAYOUT WITH PERCENTAGES */
+    .main-content {
+      display: flex;
+      gap: 3%;
+      max-width: 1380px;
+      margin: 0 auto;
+      padding: 0 4%;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .chimes-column { 
+      flex: 0 0 28%; 
+      min-width: 280px;
+    }
+    .robo-watch { 
+      flex: 0 0 42%; 
+      min-width: 380px;
+    }
+    .referral-block { 
+      flex: 0 0 26%; 
+      min-width: 260px;
+    }
+
+    @media (max-width: 991px) {
+      .main-content {
+        flex-direction: column;
+        gap: 25px;
+        padding: 0 5%;
+      }
+      .chimes-column, .robo-watch, .referral-block {
+        flex: 1 1 100%;
+      }
+    }
+
     .chimes-block {
       background: rgba(8, 18, 40, 0.92);
       border: 3px solid #00ffcc;
@@ -106,10 +141,8 @@
       cursor: pointer;
     }
 
-    /* Minimalistic Sexy Tesla Referral - Square */
+    /* Minimal Sexy Tesla Referral - Square */
     .referral-block {
-      width: 340px;
-      flex-shrink: 0;
       background: rgba(10, 15, 35, 0.92);
       border: 3px solid #ff00aa;
       border-radius: 22px;
@@ -129,8 +162,6 @@
 
     /* Smart Robo Taxi Block */
     .robo-watch {
-      flex: 1;
-      max-width: 520px;
       background: rgba(0, 0, 0, 0.94);
       border: 3px solid #ffd700;
       border-radius: 26px;
@@ -151,7 +182,7 @@
   </div>
 
   <!-- 🔒 CHAINED - LOCKED VIDEO TRANSITIONS -->
-  <!-- Safety timeout only - matches the working contact & onlyfans pages -->
+  <!-- Safety timeout only - fixed for both PC and mobile -->
   <div id="transition-overlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:9999;display:none;overflow:hidden;background:#000;">
     <video id="forward-video" playsinline preload="auto" style="width:100%;height:100%;object-fit:cover;"></video>
     <video id="reverse-video" playsinline preload="auto" style="width:100%;height:100%;object-fit:cover;display:none;"></video>
@@ -200,7 +231,7 @@
 
         <!-- FAR RIGHT - Minimal Sexy Tesla Referral -->
         <div class="referral-block" onclick="window.open('https://www.tesla.com/referral/lance680518','_blank')">
-          <img src="/RideSafe/img/car/tesla-sexy-neon.jpg" alt="Tesla" style="width:100%; border-radius:16px;">
+          <img src="/RideSafe/img/car/tesla-sexy-neon.jpg" alt="Tesla Cybertruck" style="width:100%; border-radius:16px;">
           <h3 style="margin:12px 0 8px 0; color:#ff00aa;">NEVER DRIVE AGAIN</h3>
           <p style="margin:0; font-size:1.05rem; color:#fff;">Get your Tesla with FSD using this link</p>
           <button style="margin-top:16px; background:#000; color:#ff00aa; border:2px solid #ff00aa; padding:12px 32px; border-radius:50px; font-weight:bold;">GET MY TESLA</button>
@@ -243,16 +274,9 @@
       btn.style.color = '#ff00aa';
       setTimeout(() => btn.style.color = original, 1500);
     }
-
-    // Secret white dot sound
-    function playRedAlert() {
-      const audio = new Audio('sounds/REDALERT.wav');
-      audio.volume = 0.8;
-      audio.play();
-    }
   </script>
 
-  <!-- 🔒 CHAINED - LOCKED ENTRY SOUNDS + MINI NAV + TRANSITION -->
+  <!-- 🔒 CHAINED - LOCKED ENTRY SOUNDS + MINI NAV + TRANSITIONS -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       // Play ScottySteel on page entry
@@ -268,7 +292,7 @@
       const miniNav = document.getElementById('mini-nav');
       miniNav.classList.add('show');
 
-      // 🔒 CHAINED - LOCKED VIDEO TRANSITIONS (safety timeout only)
+      // 🔒 CHAINED VIDEO TRANSITIONS - Safety timeout (working on PC + mobile)
       const overlay = document.getElementById('transition-overlay');
       const forwardVideo = document.getElementById('forward-video');
       const reverseVideo = document.getElementById('reverse-video');
@@ -283,13 +307,14 @@
       forwardVideo.muted = true;
       forwardVideo.play().catch(() => {});
 
+      // Safety timeout - forces content to show
       setTimeout(() => {
         overlay.style.display = 'none';
         content.classList.add('show');
         setTimeout(() => miniNav.classList.add('show'), 400);
       }, 5000);
 
-      // Mini nav clicks
+      // Mini nav clicks (reverse transition)
       miniNav.addEventListener('click', e => {
         const img = e.target.closest('img');
         if (!img) return;
@@ -314,7 +339,7 @@
         }
       });
 
-      // Secret white dot (tiny, bottom right)
+      // Secret white dot (tiny)
       const secretDot = document.createElement('div');
       secretDot.style.position = 'fixed';
       secretDot.style.bottom = '18px';
@@ -329,7 +354,9 @@
       secretDot.title = 'abc';
       secretDot.onclick = () => {
         window.location.href = 'abc.html';
-        playRedAlert();
+        const alertSound = new Audio('sounds/REDALERT.wav');
+        alertSound.volume = 0.8;
+        alertSound.play().catch(() => {});
       };
       document.body.appendChild(secretDot);
     });
