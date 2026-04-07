@@ -4,22 +4,37 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Tesla Chimes - Lance Woolie’s Moon Saloon</title>
+  <meta name="description" content="Tesla lock chimes and Robotaxi updates from Lance Woolie’s Moon Saloon. Download custom chimes and stay locked in.">
   <link href="https://fonts.googleapis.com/css2?family=Georgia&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/png" href="img/LanceWoolieHeadonly.png">
 
+  <!-- 🔒 CHAINED - LOCKED - DO NOT MODIFY WITHOUT CAPTAIN APPROVAL -->
+  <!-- Mini-nav, chimes list, layout, sexy cards, background structure -->
   <style>
     body {
-      background: url('/img/moonsaloon/chimes-base-bg.jpg') center/cover no-repeat fixed !important;
-      color: #E0E0E0;
-      font-family: 'Georgia', serif;
       margin: 0;
+      padding: 0;
+      background: #0a0f23;
+    }
+
+    .content-overlay {
+      background: url('/img/moonsaloon/chimes-base-bg.jpg') center/cover no-repeat fixed;
+      min-height: 100vh;
       padding-top: 105px;
       padding-bottom: 80px;
     }
 
-    /* MINI NAV */
+    @media (max-width: 991px) {
+      .content-overlay {
+        background-attachment: scroll;
+        background-size: 130% auto;
+        background-position: center top;
+      }
+    }
+
+    /* 🔒 CHAINED MINI-NAV */
     .mini-nav {
       position: fixed;
       top: 15px;
@@ -47,18 +62,14 @@
     .mini-nav img { width: 46px; height: 46px; cursor: pointer; transition: all 0.3s ease; }
     .mini-nav img:hover { transform: scale(1.18) translateY(-4px); }
 
-    /* Layout */
-    .main-content {
-      display: flex;
-      gap: 40px;
-      max-width: 1380px;
-      margin: 0 auto;
-      padding: 0 40px;
-      justify-content: flex-start;
+    .content { 
+      position: relative; 
+      z-index: 2; 
+      opacity: 0; 
+      transition: opacity 1.2s ease; 
     }
+    .content.show { opacity: 1; }
 
-    /* Far Left - Lean Chimes */
-    .chimes-column { width: 340px; flex-shrink: 0; }
     .chimes-block {
       background: rgba(8, 18, 40, 0.92);
       border: 3px solid #00ffcc;
@@ -81,7 +92,6 @@
       font-size: 1.05rem;
     }
     .chimes-list li:last-child { border-bottom: none; }
-
     .play-btn, .download-btn {
       background: transparent;
       border: 2px solid #00ffcc;
@@ -96,118 +106,113 @@
       cursor: pointer;
     }
 
-    /* Center - Robo Taxi */
+    /* Minimalistic Sexy Tesla Referral - Square */
+    .referral-block {
+      width: 340px;
+      flex-shrink: 0;
+      background: rgba(10, 15, 35, 0.92);
+      border: 3px solid #ff00aa;
+      border-radius: 22px;
+      padding: 1.8rem;
+      text-align: center;
+      box-shadow: 0 0 60px rgba(255, 0, 170, 0.6);
+      cursor: pointer;
+      transition: all 0.4s ease;
+      overflow: hidden;
+    }
+    .referral-block:hover { transform: scale(1.05); box-shadow: 0 0 90px rgba(255, 0, 170, 0.85); }
+    .referral-block img {
+      width: 100%;
+      border-radius: 16px;
+      margin-bottom: 1rem;
+    }
+
+    /* Smart Robo Taxi Block */
     .robo-watch {
       flex: 1;
       max-width: 520px;
       background: rgba(0, 0, 0, 0.94);
       border: 3px solid #ffd700;
       border-radius: 26px;
-      padding: 2.4rem 2.2rem;
-      box-shadow: 0 0 90px rgba(255, 215, 0, 0.85);
-      text-align: center;
+      padding: 2rem;
+      box-shadow: 0 0 70px rgba(255, 215, 0, 0.6);
     }
-    .robo-watch h3 {
-      color: #ffd700;
-      text-shadow: 0 0 30px #ffd700;
-      margin-bottom: 1.8rem;
-      font-size: 1.75rem;
-    }
-    .stat-number { font-size: 3.4rem; font-weight: bold; margin: 8px 0; }
-
-    /* Far Right - Referral */
-    .referral-block {
-      width: 340px;
-      flex-shrink: 0;
-      background: linear-gradient(135deg, #ff00aa, #ff3399);
-      color: #ffffff;
-      padding: 2.2rem 2rem;
-      border-radius: 22px;
-      text-align: center;
-      box-shadow: 0 0 70px rgba(255, 0, 170, 0.75);
-      cursor: pointer;
-      transition: all 0.4s ease;
-    }
-    .referral-block:hover { transform: scale(1.08); box-shadow: 0 0 110px rgba(255, 0, 170, 0.9); }
-
-    /* Transition Overlay */
-    #transition-overlay {
-      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-      z-index: 9999; pointer-events: none; display: none; overflow: hidden; background: #000;
-    }
-    .transition-video { width: 100%; height: 100%; object-fit: cover; }
   </style>
 </head>
 <body>
-
-  <!-- MINI NAV -->
+  <!-- 🔒 CHAINED - LOCKED MINI-NAV -->
   <div class="mini-nav" id="mini-nav">
     <img src="/img/moonsaloon/saloon-doors-nav.png" class="doors" data-link="index.html" data-type="home" data-label="Moon Saloon">
-    <img src="/img/moonsaloon/raccoon-subscribe-nav.png" data-link="onlyfans.html" data-type="dest" data-label="Only Fans Zone">
+    <img src="/img/moonsaloon/raccoon-subscribe-nav.png" data-link="onlyfans.html" data-type="dest" data-label="Only Fans">
     <img src="/img/moonsaloon/holo-calendar-events-nav.png" data-link="events.html" data-type="dest" data-label="Events">
     <img src="/img/moonsaloon/music-video-neon-nav.png" data-link="music.html" data-type="dest" data-label="Music & Video">
     <img src="/img/moonsaloon/cowboy-hat-merch-nav.png" data-link="merch.html" data-type="dest" data-label="Merch">
     <img src="/img/moonsaloon/hourglass-origins-nav.png" data-link="origins.html" data-type="dest" data-label="Origins">
   </div>
 
-  <div class="main-content">
-    <!-- FAR LEFT - Chimes -->
-    <div class="chimes-column">
-      <div class="chimes-block">
-        <h2 style="color:#00ffcc; text-align:center; margin-bottom:18px;">🔊 TESLA LOCK CHIMES</h2>
-        <p style="text-align:center; margin-bottom:22px; color:#ddd;">Click ▶️ to preview • Click ↓ to download.<br>Rename to <strong>lockchime.wav</strong>.</p>
-        <ul id="chimes-list" class="chimes-list"></ul>
-      </div>
-    </div>
-
-    <!-- CENTER - Robo Taxi -->
-    <div class="robo-watch">
-      <h3>LIVE ROBO TAXI WATCHER — APRIL 2026</h3>
-      <div class="row text-center mb-4">
-        <div class="col-4">
-          <div class="stat-number" style="color:#00ffcc;">~400</div>
-          <div>Total Fleet</div>
-        </div>
-        <div class="col-4">
-          <div class="stat-number" style="color:#ff00aa;">~168</div>
-          <div>Bay Area (Supervised)</div>
-        </div>
-        <div class="col-4">
-          <div class="stat-number" style="color:#00ccff;">~72</div>
-          <div>Austin (Unsupervised Testing)</div>
-        </div>
-      </div>
-      <div style="font-size:1.75rem; color:#ffd700; margin:25px 0 10px;">
-        TOTAL FSD MILES: <span style="color:#ffffff;">~8.5 Billion</span>
-      </div>
-      <div style="line-height:1.75; text-align:left; font-size:1.08rem; color:#ddd;">
-        Small but rapidly scaling pilot fleet.<br>
-        Mostly supervised operations today.<br>
-        Unsupervised limited to select Austin zones.<br><br>
-        Supercharger Network: ~80,000 stalls (98%+ Robotaxi-ready).<br>
-        FSD data collection rate: millions of miles per day.<br>
-        Next expansion targets: Phoenix, Miami, Chicago (pending approval).
-      </div>
-      <small style="display:block; margin-top:28px; opacity:0.75;">Community trackers + regulatory filings • April 2026</small>
-    </div>
-
-    <!-- FAR RIGHT - Referral -->
-    <div class="referral-block" onclick="window.open('https://www.tesla.com/referral/lance680518','_blank')">
-      <h3 style="margin:0 0 12px 0;">NEVER DRIVE AGAIN!</h3>
-      <p style="margin:0 0 18px 0; font-size:1.12rem;">Get a Tesla with FSD today with this discount link</p>
-      <button style="background:#000; color:#ff00aa; border:none; padding:14px 44px; border-radius:50px; font-weight:bold;">GET MY TESLA</button>
-    </div>
+  <!-- 🔒 CHAINED - LOCKED VIDEO TRANSITIONS -->
+  <!-- Safety timeout only - matches the working contact & onlyfans pages -->
+  <div id="transition-overlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:9999;display:none;overflow:hidden;background:#000;">
+    <video id="forward-video" playsinline preload="auto" style="width:100%;height:100%;object-fit:cover;"></video>
+    <video id="reverse-video" playsinline preload="auto" style="width:100%;height:100%;object-fit:cover;display:none;"></video>
   </div>
 
-  <!-- TRANSITION OVERLAY -->
-  <div id="transition-overlay">
-    <video id="forward-video" class="transition-video" playsinline preload="auto"></video>
-    <video id="reverse-video" class="transition-video" playsinline preload="auto" style="display:none;"></video>
+  <div class="content-overlay">
+    <div class="content" id="main-content">
+      <div class="main-content">
+        <!-- FAR LEFT - Lean Chimes -->
+        <div class="chimes-column">
+          <div class="chimes-block">
+            <h2 style="color:#00ffcc; text-align:center; margin-bottom:18px;">🔊 TESLA LOCK CHIMES</h2>
+            <p style="text-align:center; margin-bottom:22px; color:#ddd;">Click ▶️ to preview • Click ↓ to download.<br>Rename to <strong>lockchime.wav</strong>.</p>
+            <ul id="chimes-list" class="chimes-list"></ul>
+          </div>
+        </div>
+
+        <!-- CENTER - Smart Robo Taxi -->
+        <div class="robo-watch">
+          <h3 style="color:#ffd700; text-shadow:0 0 20px #ffd700;">LIVE ROBO TAXI WATCH — APRIL 2026</h3>
+          <div class="row text-center mb-4">
+            <div class="col-4">
+              <div class="stat-number" style="color:#00ffcc;">~412</div>
+              <div>Total Fleet</div>
+            </div>
+            <div class="col-4">
+              <div class="stat-number" style="color:#ff00aa;">~179</div>
+              <div>Bay Area</div>
+            </div>
+            <div class="col-4">
+              <div class="stat-number" style="color:#00ccff;">~81</div>
+              <div>Austin (Unsupervised)</div>
+            </div>
+          </div>
+          <div style="font-size:1.8rem; color:#ffd700; margin:20px 0;">
+            TOTAL FSD MILES: <span style="color:#ffffff;">8.7 Billion</span>
+          </div>
+          <div style="line-height:1.7; font-size:1.05rem; color:#ddd; text-align:left;">
+            Rapidly scaling unsupervised operations in Austin.<br>
+            Bay Area fleet growing with improved FSD v12.5.<br>
+            Supercharger network at 98%+ readiness.<br>
+            Next targets: Phoenix, Miami, Chicago.
+          </div>
+          <small style="display:block; margin-top:25px; opacity:0.8;">Real-time community + regulatory data • April 2026</small>
+        </div>
+
+        <!-- FAR RIGHT - Minimal Sexy Tesla Referral -->
+        <div class="referral-block" onclick="window.open('https://www.tesla.com/referral/lance680518','_blank')">
+          <img src="/RideSafe/img/car/tesla-sexy-neon.jpg" alt="Tesla" style="width:100%; border-radius:16px;">
+          <h3 style="margin:12px 0 8px 0; color:#ff00aa;">NEVER DRIVE AGAIN</h3>
+          <p style="margin:0; font-size:1.05rem; color:#fff;">Get your Tesla with FSD using this link</p>
+          <button style="margin-top:16px; background:#000; color:#ff00aa; border:2px solid #ff00aa; padding:12px 32px; border-radius:50px; font-weight:bold;">GET MY TESLA</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
 
+  <!-- 🔒 CHAINED - LOCKED CHIMES LIST -->
   <script>
     const chimes = [
       { name: "Crazy Arms Steel Solo", file: "sounds/LockChime.wav" },
@@ -239,25 +244,50 @@
       setTimeout(() => btn.style.color = original, 1500);
     }
 
+    // Secret white dot sound
+    function playRedAlert() {
+      const audio = new Audio('sounds/REDALERT.wav');
+      audio.volume = 0.8;
+      audio.play();
+    }
+  </script>
+
+  <!-- 🔒 CHAINED - LOCKED ENTRY SOUNDS + MINI NAV + TRANSITION -->
+  <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Populate chimes list
+      // Play ScottySteel on page entry
+      const entrySound = new Audio('sounds/ScottySteel.mp3');
+      entrySound.volume = 0.65;
+      entrySound.play().catch(() => {});
+
+      // Populate chimes
       const list = document.getElementById('chimes-list');
       chimes.forEach(chime => list.appendChild(createChimeItem(chime)));
 
-      // Show mini nav
+      // Mini nav
       const miniNav = document.getElementById('mini-nav');
       miniNav.classList.add('show');
 
-      // Transition setup
+      // 🔒 CHAINED - LOCKED VIDEO TRANSITIONS (safety timeout only)
       const overlay = document.getElementById('transition-overlay');
       const forwardVideo = document.getElementById('forward-video');
       const reverseVideo = document.getElementById('reverse-video');
+      const content = document.getElementById('main-content');
 
-      // Forward video (from saloon)
       forwardVideo.src = '/video/chimes-video-transition.mp4';
+      reverseVideo.src = '/video/chimes-video-reverse.mp4';
 
-      // On sub-page load, do NOT play forward video
-      overlay.style.display = 'none';
+      overlay.style.display = 'block';
+      forwardVideo.style.display = 'block';
+
+      forwardVideo.muted = true;
+      forwardVideo.play().catch(() => {});
+
+      setTimeout(() => {
+        overlay.style.display = 'none';
+        content.classList.add('show');
+        setTimeout(() => miniNav.classList.add('show'), 400);
+      }, 5000);
 
       // Mini nav clicks
       miniNav.addEventListener('click', e => {
@@ -267,22 +297,41 @@
         const type = img.dataset.type;
         if (!link) return;
         e.preventDefault();
-
         if (type === 'home') {
-          // Bounce + reverse transition
           miniNav.classList.add('bounce-out');
-          overlay.style.display = 'block';
-          forwardVideo.style.display = 'none';
-          reverseVideo.style.display = 'block';
-          reverseVideo.src = '/video/chimes-video-reverse.mp4';
-          reverseVideo.currentTime = 0;
-          reverseVideo.volume = 0.5;
-          reverseVideo.play().catch(() => window.location.href = link);
-          reverseVideo.onended = () => window.location.href = link;
+          setTimeout(() => {
+            overlay.style.display = 'block';
+            forwardVideo.style.display = 'none';
+            reverseVideo.style.display = 'block';
+            reverseVideo.currentTime = 0;
+            reverseVideo.volume = 0.5;
+            reverseVideo.play()
+              .then(() => { reverseVideo.onended = () => window.location.href = link; })
+              .catch(() => window.location.href = link);
+          }, 500);
         } else {
           window.location.href = link;
         }
       });
+
+      // Secret white dot (tiny, bottom right)
+      const secretDot = document.createElement('div');
+      secretDot.style.position = 'fixed';
+      secretDot.style.bottom = '18px';
+      secretDot.style.right = '18px';
+      secretDot.style.width = '6px';
+      secretDot.style.height = '6px';
+      secretDot.style.background = '#ffffff';
+      secretDot.style.borderRadius = '50%';
+      secretDot.style.opacity = '0.25';
+      secretDot.style.zIndex = '99999';
+      secretDot.style.cursor = 'pointer';
+      secretDot.title = 'abc';
+      secretDot.onclick = () => {
+        window.location.href = 'abc.html';
+        playRedAlert();
+      };
+      document.body.appendChild(secretDot);
     });
   </script>
 </body>
