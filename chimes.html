@@ -141,7 +141,7 @@
       cursor: pointer;
     }
 
-    /* Minimal Sexy Tesla Referral - Square */
+    /* Minimal Sexy Referral Block - Square with RideSafe Logo */
     .referral-block {
       background: rgba(10, 15, 35, 0.92);
       border: 3px solid #ff00aa;
@@ -229,9 +229,9 @@
           <small style="display:block; margin-top:25px; opacity:0.8;">Real-time community + regulatory data • April 2026</small>
         </div>
 
-        <!-- FAR RIGHT - Minimal Sexy Tesla Referral -->
+        <!-- FAR RIGHT - Minimal Sexy Tesla Referral (RideSafe Logo) -->
         <div class="referral-block" onclick="window.open('https://www.tesla.com/referral/lance680518','_blank')">
-          <img src="/RideSafe/img/car/tesla-sexy-neon.jpg" alt="Tesla Cybertruck" style="width:100%; border-radius:16px;">
+          <img src="img/ridesafelogoSm.jpg" alt="Ride Safe Tesla Referral" style="width:100%; border-radius:16px;">
           <h3 style="margin:12px 0 8px 0; color:#ff00aa;">NEVER DRIVE AGAIN</h3>
           <p style="margin:0; font-size:1.05rem; color:#fff;">Get your Tesla with FSD using this link</p>
           <button style="margin-top:16px; background:#000; color:#ff00aa; border:2px solid #ff00aa; padding:12px 32px; border-radius:50px; font-weight:bold;">GET MY TESLA</button>
@@ -307,14 +307,13 @@
       forwardVideo.muted = true;
       forwardVideo.play().catch(() => {});
 
-      // Safety timeout - forces content to show
       setTimeout(() => {
         overlay.style.display = 'none';
         content.classList.add('show');
         setTimeout(() => miniNav.classList.add('show'), 400);
       }, 5000);
 
-      // Mini nav clicks (reverse transition)
+      // Mini nav clicks
       miniNav.addEventListener('click', e => {
         const img = e.target.closest('img');
         if (!img) return;
@@ -339,7 +338,7 @@
         }
       });
 
-      // Secret white dot (tiny)
+      // Secret white dot
       const secretDot = document.createElement('div');
       secretDot.style.position = 'fixed';
       secretDot.style.bottom = '18px';
