@@ -3,41 +3,50 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-  <title>Only Fans Zone - Lance Woolie’s Moon Saloon</title>
-  <meta name="description" content="Join Lance Woolie’s Only Fans Zone. Get first dibs on new drops, secret shows, unreleased tracks, and bayou insider vibes.">
-
+  <title>Only Fans - Lance Woolie’s Moon Saloon</title>
+  <meta name="description" content="Join Lance Woolie’s Only Fans. Get first dibs on new drops, secret shows, unreleased tracks, and bayou insider vibes.">
   <!-- Open Graph / Facebook -->
-  <meta property="og:title" content="Only Fans Zone - Lance Woolie’s Moon Saloon">
+  <meta property="og:title" content="Only Fans - Lance Woolie’s Moon Saloon">
   <meta property="og:description" content="Join the inner circle. Get first dibs on new drops, secret shows, unreleased tracks, and bayou insider vibes.">
   <meta property="og:image" content="https://lancewoolie.com/img/onlyfans.jpg">
   <meta property="og:url" content="https://lancewoolie.com/onlyfans.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Lance Woolie’s Moon Saloon">
-
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Only Fans Zone - Lance Woolie’s Moon Saloon">
+  <meta name="twitter:title" content="Only Fans - Lance Woolie’s Moon Saloon">
   <meta name="twitter:description" content="Join the inner circle. Get first dibs on new drops, secret shows, unreleased tracks, and bayou insider vibes.">
   <meta name="twitter:image" content="https://lancewoolie.com/img/onlyfans.jpg">
-
   <link href="https://fonts.googleapis.com/css2?family=Georgia&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/png" href="img/LanceWoolieHeadonly.png">
 
+  <!-- 🔒 CHAINED - LOCKED - DO NOT MODIFY WITHOUT CAPTAIN APPROVAL -->
+  <!-- Mini-nav, sexy-card styling, forms, success messages, background structure -->
+  <!-- Video transition section is now locked after successful contact page test -->
   <style>
     body {
-      background: url('/img/moonsaloon/friends-base-bg.jpg') center/cover no-repeat fixed !important;
-      color: #E0E0E0;
-      font-family: 'Georgia', serif;
       margin: 0;
-      padding-top: 95px;
-      padding-bottom: 100px;
-      touch-action: manipulation;
+      padding: 0;
+      background: #0a0f23;
     }
 
-    /* MINI NAV - Crazy bounce out */
+    .content-overlay {
+      background: url('/img/moonsaloon/friends-base-bg.jpg') center/cover no-repeat fixed;
+      min-height: 100vh;
+      padding-top: 95px;
+    }
+
+    @media (max-width: 991px) {
+      .content-overlay {
+        background-attachment: scroll;
+        background-size: 130% auto;
+        background-position: center top;
+      }
+    }
+
+    /* 🔒 CHAINED MINI-NAV */
     .mini-nav {
       position: fixed;
       top: 12px;
@@ -53,26 +62,21 @@
       box-shadow: 0 0 30px rgba(0, 255, 204, 0.6),
                   inset 0 0 20px rgba(255, 0, 170, 0.3);
       backdrop-filter: blur(12px);
-      
       opacity: 0;
       visibility: hidden;
       transform: translateY(-80px);
-      transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1), 
+      transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1),
                   opacity 0.6s ease;
     }
-
     .mini-nav.show {
       opacity: 1;
       visibility: visible;
       transform: translateY(0);
     }
-
-    /* CRAZY BOUNCE OUT - Much more dramatic */
     .mini-nav.bounce-out {
       transition: transform 0.55s cubic-bezier(0.68, -0.85, 0.32, 1.85) !important;
       transform: translateY(-180px) scale(0.6) rotate(-8deg) !important;
     }
-
     .mini-nav img {
       width: 46px;
       height: 46px;
@@ -80,57 +84,23 @@
       transition: all 0.3s ease;
       filter: drop-shadow(0 0 8px #00ffcc);
     }
-
     .mini-nav img:hover {
       transform: scale(1.15) translateY(-3px);
       filter: drop-shadow(0 0 20px #ff00aa);
     }
-
     .mini-nav .doors {
       width: 52px;
       height: 46px;
     }
 
-    /* Tooltip Labels */
-    .mini-nav img::after {
-      content: attr(data-label);
-      position: absolute;
-      top: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0, 0, 0, 0.85);
-      color: #00ffcc;
-      font-size: 0.78rem;
-      padding: 5px 12px;
-      border-radius: 6px;
-      white-space: nowrap;
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.25s ease;
-      z-index: 10001;
-      border: 1px solid #00ffcc;
-      text-shadow: 0 0 8px #00ffcc;
-      margin-top: 8px;
-    }
-
-    .mini-nav img:hover::after {
-      opacity: 1;
-    }
-
-    .content {
-      position: relative;
-      z-index: 1;
-      opacity: 0;
-      transition: opacity 1.2s ease;
+    .content { 
+      position: relative; 
+      z-index: 2; 
+      opacity: 0; 
+      transition: opacity 1.2s ease; 
     }
     .content.show { opacity: 1; }
 
-    .content-overlay {
-      background: url('/img/moonsaloon/friends-base-bg.jpg') center/cover no-repeat fixed !important;
-      min-height: 100vh;
-    }
-
-    /* SEXY SUBSCRIBER CARD */
     .friend-card {
       background: rgba(10, 25, 50, 0.75);
       border: 3px solid #00ffcc;
@@ -143,25 +113,20 @@
       backdrop-filter: blur(12px);
       text-align: center;
     }
-
     .friend-card h2 {
       color: #00ffcc;
       text-shadow: 0 0 25px #00ffcc;
       font-size: 2.4rem;
     }
-
     .friend-card p {
       color: #f0f0f0;
       font-size: 1.25rem;
       line-height: 1.8;
     }
-
     .text-muted, .small {
       color: #e0e0e0 !important;
       opacity: 0.95;
     }
-
-    /* Spanish Honeypot */
     .campo-extra {
       position: absolute;
       left: -9999px;
@@ -173,11 +138,9 @@
   </style>
 </head>
 <body>
-
-  <!-- MINI NAV - Raccoon removed because we are on the subscriber page -->
+  <!-- 🔒 CHAINED - LOCKED MINI-NAV -->
   <div class="mini-nav" id="mini-nav">
     <img src="/img/moonsaloon/saloon-doors-nav.png" class="doors" data-link="index.html" data-type="home" data-label="Moon Saloon">
-    <!-- Raccoon removed -->
     <img src="/img/moonsaloon/holo-calendar-events-nav.png" data-link="events.html" data-type="dest" data-label="Events">
     <img src="/img/moonsaloon/music-video-neon-nav.png" data-link="music.html" data-type="dest" data-label="Music & Video">
     <img src="/img/moonsaloon/cowboy-hat-merch-nav.png" data-link="merch.html" data-type="dest" data-label="Merch">
@@ -185,30 +148,31 @@
     <img src="/img/moonsaloon/contact-earth-trophy-nav.png" data-link="contact.html" data-type="dest" data-label="Contact">
   </div>
 
-  <!-- VIDEO TRANSITION OVERLAY -->
-  <div id="transition-overlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:9999;display:none;background:#000;">
-    <video id="forward-video" playsinline preload="auto" style="width:100%;height:100%;object-fit:cover;display:none;"></video>
-    <video id="reverse-video" playsinline preload="auto" muted style="width:100%;height:100%;object-fit:cover;display:none;"></video>
+  <!-- 🔒 CHAINED - LOCKED VIDEO TRANSITIONS -->
+  <!-- Safety timeout only - event triggers removed - matches the working contact page -->
+  <div id="transition-overlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:9999;display:none;overflow:hidden;background:#000;">
+    <video id="forward-video" playsinline preload="auto" style="width:100%;height:100%;object-fit:cover;"></video>
+    <video id="reverse-video" playsinline preload="auto" style="width:100%;height:100%;object-fit:cover;display:none;"></video>
   </div>
 
   <div class="content-overlay">
     <div class="content" id="main-content">
       <div class="container py-5">
         <div class="friend-card">
-          <h2>Welcome to the Only Fans Zone</h2>
+          <h2>Welcome to Only Fans</h2>
           <p class="lead mt-4">Join the inner circle. Get first dibs on new drops, secret shows, unreleased tracks, and bayou insider vibes.</p>
-    
+   
           <form id="newsletter-form" class="row g-3 justify-content-center mt-4">
             <input type="text" id="campo_extra" name="campo_extra" class="campo-extra" autocomplete="off" tabindex="-1">
             <div class="col-md-6"><input type="text" class="form-control" id="first-name" placeholder="First Name" required></div>
             <div class="col-md-6"><input type="text" class="form-control" id="last-name" placeholder="Last Name" required></div>
             <div class="col-md-8"><input type="email" class="form-control" id="signup-email" placeholder="your@bayou.com" required></div>
             <div class="col-md-4 d-flex align-items-end">
-              <button type="submit" class="btn btn-success w-100">Do it. Join the Zone</button>
+              <button type="submit" class="btn btn-success w-100">Do it. Join</button>
             </div>
           </form>
           <div id="newsletter-success" class="success-message mt-3" style="display:none; color:#00ffcc;">
-            You're in the Only Fans Zone — exclusive twang incoming!
+            You're in — exclusive twang incoming!
           </div>
           <p class="text-center small mt-4">For real — secure, no spam, ever.</p>
         </div>
@@ -216,12 +180,10 @@
     </div>
   </div>
 
-  <div id="footer-placeholder" class="tight-footer"></div>
-
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
 
-  <!-- Firebase -->
+  <!-- 🔒 CHAINED - LOCKED FIREBASE -->
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
     import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
@@ -242,7 +204,7 @@
     window.serverTimestamp = serverTimestamp;
   </script>
 
-  <!-- Newsletter Form -->
+  <!-- 🔒 CHAINED - LOCKED NEWSLETTER FORM -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const newsletterForm = document.getElementById('newsletter-form');
@@ -253,14 +215,11 @@
         const lastName = document.getElementById('last-name').value.trim();
         const email = document.getElementById('signup-email').value.trim();
         const honeypot = document.getElementById('campo_extra').value.trim();
-
         if (honeypot !== '') { console.log('Bot detected'); return; }
-
         if (!firstName || !lastName || !email) {
           alert('Please fill in all fields.');
           return;
         }
-
         const lowerEmail = email.toLowerCase();
         if (lowerEmail.includes('..') || (lowerEmail.match(/\./g)||[]).length > 4 ||
             lowerEmail.includes('grok') || lowerEmail.includes('temp') ||
@@ -268,10 +227,9 @@
           alert('Please use a valid personal email address.');
           return;
         }
-
         try {
           await window.addDoc(window.collection(window.db, 'subscribers'), {
-            firstName, lastName, email, type: 'onlyfanszone', timestamp: window.serverTimestamp()
+            firstName, lastName, email, timestamp: window.serverTimestamp()
           });
           document.getElementById('newsletter-success').style.display = 'block';
           newsletterForm.reset();
@@ -283,7 +241,7 @@
     });
   </script>
 
-  <!-- MINI NAV + TRANSITION LOGIC -->
+  <!-- 🔒 CHAINED - LOCKED MINI NAV + VIDEO TRANSITION -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const overlay = document.getElementById('transition-overlay');
@@ -297,48 +255,27 @@
 
       overlay.style.display = 'block';
       forwardVideo.style.display = 'block';
-      let transitionStarted = false;
 
-      forwardVideo.oncanplaythrough = () => {
-        if (transitionStarted) return;
-        transitionStarted = true;
-        forwardVideo.muted = true;
-        forwardVideo.volume = 0.5;
-        forwardVideo.play().catch(finishForwardTransition);
-      };
+      forwardVideo.muted = true;
+      forwardVideo.play().catch(() => {});
 
-      forwardVideo.onended = finishForwardTransition;
-
-      function finishForwardTransition() {
+      // Safety timeout only - this is what fixed the black screen on contact
+      setTimeout(() => {
         overlay.style.display = 'none';
         content.classList.add('show');
-
-        // Mini nav appears after 1.5 seconds
-        setTimeout(() => {
-          miniNav.classList.add('show');
-        }, 1500);
-      }
-
-      // Safety fallback
-      setTimeout(() => {
-        if (!miniNav.classList.contains('show')) miniNav.classList.add('show');
+        setTimeout(() => miniNav.classList.add('show'), 400);
       }, 5000);
 
-      // Mini Nav Click Handler
+      // Mini Nav reverse
       miniNav.addEventListener('click', (e) => {
         const img = e.target.closest('img');
         if (!img) return;
-
         const targetLink = img.getAttribute('data-link');
         const type = img.getAttribute('data-type');
-
         if (!targetLink) return;
         e.preventDefault();
-
         if (type === 'home') {
-          // CRAZY BOUNCE OUT
           miniNav.classList.add('bounce-out');
-
           setTimeout(() => {
             overlay.style.display = 'block';
             forwardVideo.style.display = 'none';
@@ -348,8 +285,8 @@
             reverseVideo.play()
               .then(() => { reverseVideo.onended = () => window.location.href = targetLink; })
               .catch(() => window.location.href = targetLink);
-          }, 520); // Slightly longer to let the crazy bounce finish
-        } 
+          }, 520);
+        }
         else {
           window.location.href = targetLink;
         }
