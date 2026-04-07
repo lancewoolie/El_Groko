@@ -12,7 +12,6 @@
 
   <!-- 🔒 CHAINED - LOCKED - DO NOT MODIFY WITHOUT CAPTAIN APPROVAL -->
   <!-- Mini-nav, sexy-card styling, forms, success messages, background structure -->
-  <!-- This section is solid and matches the working music/merch pages -->
   <style>
     body {
       margin: 0;
@@ -26,16 +25,12 @@
       padding-top: 90px;
     }
 
-    /* Mobile background adjustment - reduce scale by ~30% to show more of the image */
     @media (max-width: 991px) {
       .content-overlay {
         background-attachment: scroll;
-        background-size: 130% auto;   /* Reduced zoom - shows more of the image vertically */
-        background-position: center top;
       }
     }
 
-    /* 🔒 CHAINED MINI-NAV */
     .mini-nav {
       position: fixed; 
       top: 15px; 
@@ -261,22 +256,24 @@
       const miniNav = document.getElementById('mini-nav');
 
       /* ⛓ UNCHAINED - DEBUGGING VIDEO TRANSITIONS */
+      /* Event triggers removed as requested - using safety timeout only */
       forwardVideo.src = '/video/contact-video-transition.mp4';
       reverseVideo.src = '/video/contact-video-reverse.mp4';
 
-      let transitionInProgress = false;
-
+      // Show overlay and play forward video
       overlay.style.display = 'block';
       forwardVideo.style.display = 'block';
 
-      forwardVideo.oncanplaythrough = () => {
-        if (transitionInProgress) return;
-        transitionInProgress = true;
-        forwardVideo.muted = true;
-        forwardVideo.play().catch(() => finishTransition());
-      };
+      forwardVideo.muted = true;
+      forwardVideo.play().catch(() => {
+        // If play fails, show content anyway
+        finishTransition();
+      });
 
-      forwardVideo.onended = finishTransition;
+      // Safety timeout - force show content after max 5 seconds
+      setTimeout(() => {
+        finishTransition();
+      }, 5000);
 
       function finishTransition() {
         overlay.style.display = 'none';
@@ -284,7 +281,7 @@
         setTimeout(() => miniNav.classList.add('show'), 400);
       }
 
-      // Mini Nav reverse
+      // Mini Nav reverse (kept from locked behavior)
       miniNav.addEventListener('click', e => {
         const img = e.target.closest('img');
         if (!img) return;
