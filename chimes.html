@@ -182,7 +182,7 @@
   </div>
 
   <!-- 🔒 CHAINED - LOCKED VIDEO TRANSITIONS -->
-  <!-- Safety timeout only - fixed for both PC and mobile -->
+  <!-- Correct reverse video for chimes page + safety timeout -->
   <div id="transition-overlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:9999;display:none;overflow:hidden;background:#000;">
     <video id="forward-video" playsinline preload="auto" style="width:100%;height:100%;object-fit:cover;"></video>
     <video id="reverse-video" playsinline preload="auto" style="width:100%;height:100%;object-fit:cover;display:none;"></video>
@@ -229,7 +229,7 @@
           <small style="display:block; margin-top:25px; opacity:0.8;">Real-time community + regulatory data • April 2026</small>
         </div>
 
-        <!-- FAR RIGHT - Minimal Sexy Tesla Referral (RideSafe Logo) -->
+        <!-- FAR RIGHT - Minimal Sexy Referral Block -->
         <div class="referral-block" onclick="window.open('https://www.tesla.com/referral/lance680518','_blank')">
           <img src="img/ridesafelogoSm.jpg" alt="Ride Safe Tesla Referral" style="width:100%; border-radius:16px;">
           <h3 style="margin:12px 0 8px 0; color:#ff00aa;">NEVER DRIVE AGAIN</h3>
@@ -292,12 +292,13 @@
       const miniNav = document.getElementById('mini-nav');
       miniNav.classList.add('show');
 
-      // 🔒 CHAINED VIDEO TRANSITIONS - Safety timeout (working on PC + mobile)
+      // 🔒 CHAINED VIDEO TRANSITIONS - Correct reverse video for chimes page
       const overlay = document.getElementById('transition-overlay');
       const forwardVideo = document.getElementById('forward-video');
       const reverseVideo = document.getElementById('reverse-video');
       const content = document.getElementById('main-content');
 
+      // Set correct videos
       forwardVideo.src = '/video/chimes-video-transition.mp4';
       reverseVideo.src = '/video/chimes-video-reverse.mp4';
 
@@ -307,13 +308,14 @@
       forwardVideo.muted = true;
       forwardVideo.play().catch(() => {});
 
+      // Safety timeout
       setTimeout(() => {
         overlay.style.display = 'none';
         content.classList.add('show');
         setTimeout(() => miniNav.classList.add('show'), 400);
       }, 5000);
 
-      // Mini nav clicks
+      // Mini nav clicks - reverse transition uses correct chimes reverse video
       miniNav.addEventListener('click', e => {
         const img = e.target.closest('img');
         if (!img) return;
