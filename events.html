@@ -29,7 +29,7 @@
       }
     }
 
-    /* 🔒 CHAINED 📱 Mini-Nav - Exact style & behavior from OnlyFans */
+    /* 🔒 CHAINED 📱 Mini-Nav - Exact style & delayed fade-in from OnlyFans */
     .mini-nav {
       position: fixed;
       top: 12px;
@@ -119,7 +119,7 @@
     <img src="/img/moonsaloon/music-video-neon-nav.png" data-link="music.html" data-type="dest" data-label="Music">
     <img src="/img/moonsaloon/cowboy-hat-merch-nav.png" data-link="merch.html" data-type="dest" data-label="Merch">
     <img src="/img/moonsaloon/hourglass-origins-nav.png" data-link="origins.html" data-type="dest" data-label="Origins">
-    <img src="/img/moonsaloon/raccoon-onlyfans-nav.png" data-link="onlyfans.html" data-type="dest" data-label="OnlyFans Zone">
+    <img src="/img/moonsaloon/raccoon-subscribe-nav.png" data-link="onlyfans.html" data-type="dest" data-label="OnlyFans Zone">
     <img src="/img/moonsaloon/contact-earth-trophy-nav.png" data-link="contact.html" data-type="dest" data-label="Contact">
   </div>
 
@@ -255,7 +255,7 @@
       forwardVideo.muted = true;
       forwardVideo.play().catch(() => {});
 
-      // Delayed fade-in behavior - exact match to OnlyFans
+      // Delayed fade-in behavior - exact OnlyFans style
       setTimeout(() => {
         overlay.style.display = 'none';
         content.classList.add('show');
