@@ -24,7 +24,7 @@
       padding-top: 100px;
     }
 
-    /* 🔒 CHAINED 📱 New elongated mini-nav - April 8 standard (no Events button) */
+    /* 🔒 CHAINED 📱 New elongated mini-nav */
     .mini-nav {
       position: fixed;
       top: 0;
@@ -104,7 +104,8 @@
   </style>
 </head>
 <body>
-  <!-- 🔒 CHAINED 📊 New elongated mini-nav -->
+
+  <!-- 🔒 CHAINED 📊 New elongated mini-nav - No "Events" button -->
   <nav class="mini-nav">
     <div class="mini-nav-container">
       <a href="index.html">Saloon</a>
@@ -157,7 +158,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
   <script>
-    /* 🔒 CHAINED 📋 Full Events Data - Preserved exactly, nothing deleted */
+    /* 🔒 CHAINED 📋 Full Events Data - Nothing deleted */
     const eventsData = [
       { date: '2026-03-20', eventName: "Lance Woolie Live", venue: "Big J's Side Porch", city: 'Clinton, LA', time: '6pm', description: "Lance & JJ live at Big Js", tickets: 'https://www.facebook.com/events/1615279446373852', imageSrc: 'img/March20th2026WEB.jpg', imageLink: 'https://www.facebook.com/events/1615279446373852' },
       { date: '2025-09-13', eventName: 'Court To Table Baton Rouge Presents Lance Woolie w/ Shane Reid', venue: '7477 Burbank Dr', city: 'Baton Rouge, LA 70820', time: '11:00 PM', description: 'A night of music and mingling with special guest Shane Reid.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/Setp13.jpg' },
@@ -225,55 +226,4 @@
             <div class="card-body p-4">
               <h5 class="card-title">${event.eventName}</h5>
               <p class="mb-1"><strong>${formatDate(event.date)}</strong></p>
-              <p class="mb-1">${event.time || 'Time TBA'}</p>
-              <p class="mb-2">@ ${event.venue || event.city || 'Various Locations'}</p>
-              <p class="small mb-2">${event.description}</p>
-              ${event.tickets ? `<a href="${event.tickets}" class="btn btn-outline-light btn-sm" target="_blank">More Info</a>` : ''}
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      const sortedEvents = [...eventsData].sort((a, b) => new Date(b.date) - new Date(a.date));
-      const upcoming = sortedEvents.filter(e => new Date(e.date) >= currentDate);
-      const past = sortedEvents.filter(e => new Date(e.date) < currentDate);
-
-      document.getElementById('upcoming-list').innerHTML = upcoming.length 
-        ? upcoming.map(generateUpcomingCard).join('') 
-        : '<p class="text-center lead mt-5">No upcoming events scheduled right now. Check back soon!</p>';
-
-      document.getElementById('past-list').innerHTML = past.length 
-        ? past.map(generatePastCard).join('') 
-        : '<p class="text-center lead mt-5">No past events to display yet.</p>';
-
-      /* 🔒 CHAINED 🎥 Reverse video transition with safety timeout */
-      document.querySelectorAll('.mini-nav a[href="index.html"]').forEach(link => {
-        link.addEventListener('click', function(e) {
-          e.preventDefault();
-          const overlay = document.getElementById('transition-overlay');
-          const reverseVideo = document.getElementById('reverse-video');
-          
-          overlay.style.display = 'block';
-          reverseVideo.style.display = 'block';
-          reverseVideo.src = '/video/events-video-reverse.mp4';
-          reverseVideo.currentTime = 0;
-          reverseVideo.volume = 0.5;
-          
-          reverseVideo.play().catch(() => window.location.href = 'index.html');
-
-          const safetyTimeout = setTimeout(() => {
-            window.location.href = 'index.html';
-          }, 4800);
-
-          reverseVideo.onended = () => {
-            clearTimeout(safetyTimeout);
-            window.location.href = 'index.html';
-          };
-        });
-      });
-    });
-  </script>
-</body>
-</html>
+              <p class="mb-1">${event.time || 'Time
