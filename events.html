@@ -24,7 +24,7 @@
       padding-top: 100px;
     }
 
-    /* 🔒 CHAINED 📱 New elongated mini-nav - April 8 standard */
+    /* 🔒 CHAINED 📱 New elongated mini-nav - April 8 standard (no Events button) */
     .mini-nav {
       position: fixed;
       top: 0;
@@ -77,7 +77,7 @@
       margin-top: 10px;
     }
 
-    /* 🔒 CHAINED 🎴 Sexy neon cards - matching chimes style */
+    /* 🔒 CHAINED 🎴 Sexy neon cards */
     .upcoming-card, .past-card {
       background: rgba(8, 15, 45, 0.96);
       border: 4px solid #00ffcc;
@@ -104,7 +104,7 @@
   </style>
 </head>
 <body>
-  <!-- 🔒 CHAINED 📊 New elongated mini-nav (no Events button) -->
+  <!-- 🔒 CHAINED 📊 New elongated mini-nav -->
   <nav class="mini-nav">
     <div class="mini-nav-container">
       <a href="index.html">Saloon</a>
@@ -157,9 +157,35 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
   <script>
-    /* 🔒 CHAINED 📋 Events Data & Core Logic - Do not touch without approval */
+    /* 🔒 CHAINED 📋 Full Events Data - Preserved exactly, nothing deleted */
     const eventsData = [
-      // ← Paste your complete eventsData array here (exactly as in your original file)
+      { date: '2026-03-20', eventName: "Lance Woolie Live", venue: "Big J's Side Porch", city: 'Clinton, LA', time: '6pm', description: "Lance & JJ live at Big Js", tickets: 'https://www.facebook.com/events/1615279446373852', imageSrc: 'img/March20th2026WEB.jpg', imageLink: 'https://www.facebook.com/events/1615279446373852' },
+      { date: '2025-09-13', eventName: 'Court To Table Baton Rouge Presents Lance Woolie w/ Shane Reid', venue: '7477 Burbank Dr', city: 'Baton Rouge, LA 70820', time: '11:00 PM', description: 'A night of music and mingling with special guest Shane Reid.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/Setp13.jpg' },
+      { date: '2025-09-05', eventName: 'Court To Table Baton Rouge Presents Lance Woolie w/ Earl Wheeler III', venue: '7477 Burbank Dr', city: 'Baton Rouge, LA 70820', time: '11:00 PM', description: 'Court to Table series featuring Earl Wheeler III.', tickets: 'https://www.facebook.com/events/2788495294681182', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/Sept5th.jpg' },
+      { date: '2025-06-21', eventName: 'Art Night HOEDOWN', venue: '456 N Donmoor Ave', city: 'Baton Rouge, LA 70806', time: '11:00 PM', description: 'Hoedown at Art Night with live performances.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/hoe down.jpg' },
+      { date: '2025-06-15', eventName: "Jim's Bar in Ventress, LA", venue: '7913 Park St', city: 'Ventress, LA 70783', time: '08:00 PM', description: 'Solo acoustic set at Jim\'s Bar.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/JUNE 15th.jpg' },
+      { date: '2025-05-31', eventName: 'Lance Woolie w/ Shane Reid @ The Smiling Dog', venue: '4215 S Sherwood Forest Blvd', city: 'Baton Rouge, LA 70816', time: '02:00 AM', description: 'Dynamic duo performance with Shane Reid.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/May 30.jpg' },
+      { date: '2025-03-28', eventName: 'Private Event - Woodforest (Houston)', venue: '251 Central Pine St', city: 'Montgomery, TX 77316', time: '11:00 PM', description: 'Exclusive private performance in Houston area.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/CROPPED.png' },
+      { date: '2025-03-16', eventName: 'Lance Woolie Live at The Smiling Dog 2nd Floor Stage (solo)', venue: '4215 S Sherwood Forest Blvd', city: 'Baton Rouge, LA 70816', time: '01:50 AM', description: 'Intimate solo set on the 2nd floor stage.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/March 15th.jpg' },
+      { date: '2025-02-22', eventName: 'The Smiling Dog Presents Lance Woolie', venue: '4215 S Sherwood Forest Blvd', city: 'Baton Rouge, LA 70816', time: '03:00 AM', description: 'High-energy show at Smiling Dog.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/feb 21.jpg' },
+      { date: '2025-02-09', eventName: 'Lance Woolie (Full Band) @ Papi\'s In Watson', venue: '35055 LA-16', city: 'Denham Springs, LA 70706', time: '12:00 AM', description: 'Full band performance at Papi\'s.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/Feb 8th.jpg' },
+      { date: '2025-02-02', eventName: 'Lance Woolie @ Ed\'s Place', venue: '111 Duson Ave', city: 'Iota, LA 70543', time: '02:00 AM', description: 'Live set at Ed\'s Place in Iota.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/fEB1ST eDs.jpg' },
+      { date: '2025-01-25', eventName: 'The Smiling Dog Presents Lance Woolie', venue: '4215 S Sherwood Forest Blvd', city: 'Baton Rouge, LA 70816', time: '02:00 AM', description: 'Another night of twang at Smiling Dog.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/Jan 24.jpg' },
+      { date: '2025-01-13', eventName: 'Uber World Premiere', venue: '', city: '', time: '11:00 PM', description: 'World premiere event for Uber single.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/Ubermenu.jpg' },
+      { date: '2025-01-11', eventName: 'Spankys Dutchtown Presents Lance Woolie', venue: '36520 Oak Plaza Ave suite a', city: 'Prairieville, LA 70769', time: '02:00 AM', description: 'Celebrating new location with toe-tapping tunes.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/Jan10.jpg' },
+      { date: '2024-12-11', eventName: 'Windy City Presents Lance Woolie w/ Washboard Guidry', venue: '505 S Main St', city: 'Breckenridge, CO 80424', time: '11:00 PM', description: 'Featuring Washboard Guidry in Colorado.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/CROPPED.png' },
+      { date: '2024-11-11', eventName: 'TCMA award ceremony', venue: '2520 Rodeo Plaza', city: 'Fort Worth, TX 76164', time: '12:00 AM', description: 'Attending TCMA awards.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/CROPPED.png' },
+      { date: '2024-11-09', eventName: 'Wimberley Valley Winery presents Lance Woolie', venue: '2825 Lone Man Mountain Rd', city: 'Driftwood, TX 78619', time: '08:00 PM', description: 'Performance at scenic winery.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/Nov 9th.jpg' },
+      { date: '2024-10-19', eventName: "10/18 Rene's Bar Presents Lance Woolie & Washboard Guidry", venue: '204 St Philip St', city: 'Thibodaux, LA 70301', time: '12:00 AM', description: 'With Elliot Guidry at Rene\'s Bar.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/OCt 18th.jpg' },
+      { date: '2024-10-12', eventName: 'Lance Filming in Fort Worth, Texas', venue: 'Fort Worth', city: 'TX', time: '12:00 AM', description: 'On-location filming in Texas.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/ROAD TO TEXASweb.jpg' },
+      { date: '2024-10-10', eventName: '99.1 The Buck w/ Lance', venue: '2125 Sidney Baker St', city: 'Kerrville, TX 78028', time: '09:00 PM', description: 'Radio appearance and performance.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/CROPPED.png' },
+      { date: '2024-10-09', eventName: '102.1 KEOK w/ Lance', venue: '5686 S Muskogee Ave', city: 'Tahlequah, OK 74464', time: '02:00 PM', description: 'Live on 102.1 KEOK.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/CROPPED.png' },
+      { date: '2024-10-04', eventName: "T'quilas Bar & Grill Presents Lance Woolie w/ Special guest Corban Barnes", venue: '5647 Main St suite f', city: 'Zachary, LA 70791', time: '11:00 PM', description: 'With special guest Corban Barnes.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/OCT 4th.jpg' },
+      { date: '2024-09-21', eventName: '9/21 Wimberley Valley Winery presents Lance Woolie', venue: '2825 Lone Man Mountain Rd', city: 'Driftwood, TX 78619', time: '09:00 PM', description: 'Evening at the winery.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/September 21.jpg' },
+      { date: '2024-08-04', eventName: 'Jim\'s Bar Presents Lance Woolie', venue: '7913 Park St', city: 'Ventress, LA 70783', time: '08:00 PM', description: 'Live at Jim\'s Bar.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/JimsBarPresents.jpg' },
+      { date: '2024-07-13', eventName: 'Casting Call (Music Video) July13th', venue: '108 Main St', city: 'New Roads, LA 70760', time: '01:00 PM', description: 'Music video shoot casting call.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/casting call.jpg' },
+      { date: '2024-07-07', eventName: 'Jim\'s Bar Presents Lance Woolie', venue: '7913 Park St', city: 'Ventress, LA 70783', time: '08:00 PM', description: 'Another night at Jim\'s.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/JimsBarPresents.jpg' },
+      { date: '2024-07-04', eventName: 'Too Drunk release', venue: '', city: '', time: '12:00 AM', description: 'Release party for Too Drunk single.', tickets: 'https://www.facebook.com/lancewooliemusic/events', imageSrc: 'https://lancewoolie.github.io/El_Groko/img/TooDrunkmenu.jpg' }
     ];
 
     const currentDate = new Date();
@@ -171,32 +197,80 @@
     }
 
     function generateUpcomingCard(event) {
-      return `<div class="col-lg-4 col-md-6 mb-4"><div class="upcoming-card">...your card code...</div></div>`;
+      return `
+        <div class="col-lg-4 col-md-6 mb-4">
+          <div class="upcoming-card">
+            <a href="${event.imageLink || event.tickets || '#'}" target="_blank">
+              <img src="${event.imageSrc}" class="card-img-top" alt="${event.eventName}">
+            </a>
+            <div class="card-body p-4">
+              <h4 class="card-title text-center mb-3" style="color:#00ffcc;">${event.eventName}</h4>
+              <p class="card-text text-center mb-3">${event.description}</p>
+              <p class="text-center mb-2"><strong>${formatDate(event.date)} • ${event.time}</strong></p>
+              <p class="text-center mb-3">@ ${event.venue || event.city || 'Various Locations'}</p>
+              ${event.tickets ? `<a href="${event.tickets}" class="btn btn-success w-100" target="_blank">Tickets / Info</a>` : ''}
+            </div>
+          </div>
+        </div>
+      `;
     }
 
     function generatePastCard(event) {
-      return `<div class="col-lg-4 col-md-6 mb-4"><div class="past-card">...your card code...</div></div>`;
+      return `
+        <div class="col-lg-4 col-md-6 mb-4">
+          <div class="past-card">
+            <a href="${event.imageLink || event.tickets || '#'}" target="_blank">
+              <img src="${event.imageSrc}" class="card-img-top" alt="${event.eventName}">
+            </a>
+            <div class="card-body p-4">
+              <h5 class="card-title">${event.eventName}</h5>
+              <p class="mb-1"><strong>${formatDate(event.date)}</strong></p>
+              <p class="mb-1">${event.time || 'Time TBA'}</p>
+              <p class="mb-2">@ ${event.venue || event.city || 'Various Locations'}</p>
+              <p class="small mb-2">${event.description}</p>
+              ${event.tickets ? `<a href="${event.tickets}" class="btn btn-outline-light btn-sm" target="_blank">More Info</a>` : ''}
+            </div>
+          </div>
+        </div>
+      `;
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      // Sorting + rendering logic (your original code)
-      // ...
+      const sortedEvents = [...eventsData].sort((a, b) => new Date(b.date) - new Date(a.date));
+      const upcoming = sortedEvents.filter(e => new Date(e.date) >= currentDate);
+      const past = sortedEvents.filter(e => new Date(e.date) < currentDate);
 
-      /* 🔒 CHAINED 🎥 Reverse transition with safety timeout */
+      document.getElementById('upcoming-list').innerHTML = upcoming.length 
+        ? upcoming.map(generateUpcomingCard).join('') 
+        : '<p class="text-center lead mt-5">No upcoming events scheduled right now. Check back soon!</p>';
+
+      document.getElementById('past-list').innerHTML = past.length 
+        ? past.map(generatePastCard).join('') 
+        : '<p class="text-center lead mt-5">No past events to display yet.</p>';
+
+      /* 🔒 CHAINED 🎥 Reverse video transition with safety timeout */
       document.querySelectorAll('.mini-nav a[href="index.html"]').forEach(link => {
         link.addEventListener('click', function(e) {
           e.preventDefault();
           const overlay = document.getElementById('transition-overlay');
           const reverseVideo = document.getElementById('reverse-video');
+          
           overlay.style.display = 'block';
           reverseVideo.style.display = 'block';
           reverseVideo.src = '/video/events-video-reverse.mp4';
           reverseVideo.currentTime = 0;
           reverseVideo.volume = 0.5;
+          
           reverseVideo.play().catch(() => window.location.href = 'index.html');
 
-          const safetyTimeout = setTimeout(() => window.location.href = 'index.html', 4800);
-          reverseVideo.onended = () => { clearTimeout(safetyTimeout); window.location.href = 'index.html'; };
+          const safetyTimeout = setTimeout(() => {
+            window.location.href = 'index.html';
+          }, 4800);
+
+          reverseVideo.onended = () => {
+            clearTimeout(safetyTimeout);
+            window.location.href = 'index.html';
+          };
         });
       });
     });
