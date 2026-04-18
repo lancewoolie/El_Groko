@@ -29,7 +29,7 @@
       }
     }
 
-    /* 🔒 CHAINED 📱 Mini-Nav - Exact style from OnlyFans */
+    /* 🔒 CHAINED 📱 Mini-Nav - Exact style & behavior from OnlyFans */
     .mini-nav {
       position: fixed;
       top: 12px;
@@ -113,13 +113,13 @@
 </head>
 <body>
 
-  <!-- 🔒 CHAINED 📊 Mini-Nav - Icon style from OnlyFans (no current Events icon) -->
+  <!-- 🔒 CHAINED 📊 Mini-Nav - Icon style from OnlyFans (NO Events icon) -->
   <div class="mini-nav" id="mini-nav">
     <img src="/img/moonsaloon/saloon-doors-nav.png" class="doors" data-link="index.html" data-type="home" data-label="Moon Saloon">
-    <img src="/img/moonsaloon/music-video-neon-nav.png" data-link="music.html" data-type="dest" data-label="Music & Video">
+    <img src="/img/moonsaloon/music-video-neon-nav.png" data-link="music.html" data-type="dest" data-label="Music">
     <img src="/img/moonsaloon/cowboy-hat-merch-nav.png" data-link="merch.html" data-type="dest" data-label="Merch">
     <img src="/img/moonsaloon/hourglass-origins-nav.png" data-link="origins.html" data-type="dest" data-label="Origins">
-    <img src="/img/moonsaloon/raccoon-onlyfans-nav.png" data-link="onlyfans.html" data-type="dest" data-label="OnlyFans Zone">   <!-- assuming you have this icon, otherwise change src -->
+    <img src="/img/moonsaloon/raccoon-onlyfans-nav.png" data-link="onlyfans.html" data-type="dest" data-label="OnlyFans Zone">
     <img src="/img/moonsaloon/contact-earth-trophy-nav.png" data-link="contact.html" data-type="dest" data-label="Contact">
   </div>
 
@@ -133,7 +133,7 @@
     <div class="content" id="main-content">
       <div class="container py-5">
         <!-- 🔒 CHAINED ✨ Hero -->
-        <div class="hero-events text-center mb-5">
+        <div class="text-center mb-5">
           <h1 style="color:#ff00aa; text-shadow:0 0 40px #ff00aa; font-size:3.4rem;">LIVE EVENTS</h1>
           <p class="lead" style="color:#00ffcc;">Catch Lance Woolie on the road</p>
         </div>
@@ -247,15 +247,15 @@
       const content = document.getElementById('main-content');
       const miniNav = document.getElementById('mini-nav');
 
-      // Forward transition on load
       forwardVideo.src = '/video/events-video-transition.mp4';
       reverseVideo.src = '/video/events-video-reverse.mp4';
+
       overlay.style.display = 'block';
       forwardVideo.style.display = 'block';
       forwardVideo.muted = true;
       forwardVideo.play().catch(() => {});
 
-      // Safety timeout + delayed mini-nav show (exact OnlyFans behavior)
+      // Delayed fade-in behavior - exact match to OnlyFans
       setTimeout(() => {
         overlay.style.display = 'none';
         content.classList.add('show');
