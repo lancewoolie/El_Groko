@@ -12,70 +12,78 @@
   <style>
     /* 🔒 CHAINED 🌕 Body & Background */
     body {
-      background: url('/img/moonsaloon/events-base-bg.jpg') center/cover no-repeat fixed !important;
-      color: #E0E0E0;
-      font-family: 'Georgia', serif;
       margin: 0;
-      padding-bottom: 80px;
+      padding: 0;
+      background: #0a0f23;
     }
     .content-overlay {
-      background: rgba(0, 0, 0, 0.78);
+      background: url('/img/moonsaloon/events-base-bg.jpg') center/cover no-repeat fixed;
       min-height: 100vh;
-      padding-top: 100px;
+      padding-top: 95px;
+    }
+    @media (max-width: 991px) {
+      .content-overlay {
+        background-attachment: scroll;
+        background-size: 130% auto;
+        background-position: center top;
+      }
     }
 
-    /* 🔒 CHAINED 📱 New elongated mini-nav */
+    /* 🔒 CHAINED 📱 Mini-Nav - Exact style from OnlyFans */
     .mini-nav {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      background: rgba(10, 15, 40, 0.95);
-      border-bottom: 3px solid #00ffcc;
+      top: 12px;
+      left: 20px;
       z-index: 10000;
-      padding: 12px 0;
-    }
-    .mini-nav-container {
-      display: flex;
-      justify-content: center;
-      gap: 25px;
-      flex-wrap: wrap;
-    }
-    .mini-nav a {
-      color: #00ffcc;
-      text-decoration: none;
-      font-size: 1.1rem;
-      padding: 8px 18px;
-      border: 2px solid transparent;
-      border-radius: 8px;
-      transition: all 0.3s ease;
-    }
-    .mini-nav a:hover {
-      border-color: #ff00aa;
-      color: #ff00aa;
-      background: rgba(255, 0, 170, 0.1);
-    }
-
-    /* 🔒 CHAINED ✨ Hero */
-    .hero-events {
+      background: rgba(10, 15, 35, 0.92);
+      border: 2px solid #00ffcc;
+      border-radius: 50px;
+      padding: 10px 14px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      padding: 40px 0 50px;
+      gap: 10px;
+      box-shadow: 0 0 30px rgba(0, 255, 204, 0.6),
+                  inset 0 0 20px rgba(255, 0, 170, 0.3);
+      backdrop-filter: blur(12px);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-80px);
+      transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  opacity 0.6s ease;
     }
-    .hero-events h1 {
-      font-size: 3.4rem;
-      color: #ff00aa;
-      text-shadow: 0 0 40px #ff00aa;
-      margin: 0;
-      text-align: center;
+    .mini-nav.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
     }
-    .hero-events .lead {
-      color: #00ffcc;
-      font-size: 1.45rem;
-      text-align: center;
-      margin-top: 10px;
+    .mini-nav.bounce-out {
+      transition: transform 0.55s cubic-bezier(0.68, -0.85, 0.32, 1.85) !important;
+      transform: translateY(-180px) scale(0.6) rotate(-8deg) !important;
     }
+    .mini-nav img {
+      width: 46px;
+      height: 46px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      filter: drop-shadow(0 0 8px #00ffcc);
+    }
+    .mini-nav img:hover {
+      transform: scale(1.15) translateY(-3px);
+      filter: drop-shadow(0 0 20px #ff00aa);
+    }
+    .mini-nav .doors {
+      width: 52px;
+      height: 46px;
+    }
+
+    /* 🔒 CHAINED ✨ Content fade-in */
+    .content {
+      position: relative;
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 1.2s ease;
+    }
+    .content.show { opacity: 1; }
 
     /* 🔒 CHAINED 🎴 Sexy neon cards */
     .upcoming-card, .past-card {
@@ -105,17 +113,15 @@
 </head>
 <body>
 
-  <!-- 🔒 CHAINED 📊 New elongated mini-nav - No "Events" button -->
-  <nav class="mini-nav">
-    <div class="mini-nav-container">
-      <a href="index.html">Saloon</a>
-      <a href="music.html">Music</a>
-      <a href="merch.html">Merch</a>
-      <a href="origins.html">Origins</a>
-      <a href="onlyfans.html">OnlyFans Zone</a>
-      <a href="contact.html">Contact</a>
-    </div>
-  </nav>
+  <!-- 🔒 CHAINED 📊 Mini-Nav - Icon style from OnlyFans (no current Events icon) -->
+  <div class="mini-nav" id="mini-nav">
+    <img src="/img/moonsaloon/saloon-doors-nav.png" class="doors" data-link="index.html" data-type="home" data-label="Moon Saloon">
+    <img src="/img/moonsaloon/music-video-neon-nav.png" data-link="music.html" data-type="dest" data-label="Music & Video">
+    <img src="/img/moonsaloon/cowboy-hat-merch-nav.png" data-link="merch.html" data-type="dest" data-label="Merch">
+    <img src="/img/moonsaloon/hourglass-origins-nav.png" data-link="origins.html" data-type="dest" data-label="Origins">
+    <img src="/img/moonsaloon/raccoon-onlyfans-nav.png" data-link="onlyfans.html" data-type="dest" data-label="OnlyFans Zone">   <!-- assuming you have this icon, otherwise change src -->
+    <img src="/img/moonsaloon/contact-earth-trophy-nav.png" data-link="contact.html" data-type="dest" data-label="Contact">
+  </div>
 
   <!-- 🔒 CHAINED 🎥 Video Transition Overlay -->
   <div id="transition-overlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:9999;display:none;overflow:hidden;background:#000;">
@@ -125,15 +131,13 @@
 
   <div class="content-overlay">
     <div class="content" id="main-content">
-      <!-- 🔒 CHAINED ✨ Hero -->
-      <div class="hero-events container">
-        <div>
-          <h1>LIVE EVENTS</h1>
-          <p class="lead">Catch Lance Woolie on the road</p>
-        </div>
-      </div>
-
       <div class="container py-5">
+        <!-- 🔒 CHAINED ✨ Hero -->
+        <div class="hero-events text-center mb-5">
+          <h1 style="color:#ff00aa; text-shadow:0 0 40px #ff00aa; font-size:3.4rem;">LIVE EVENTS</h1>
+          <p class="lead" style="color:#00ffcc;">Catch Lance Woolie on the road</p>
+        </div>
+
         <!-- 🔒 CHAINED 📅 Upcoming Events -->
         <section id="upcoming-events">
           <h2 class="text-center mb-5" style="color:#00ffcc; text-shadow:0 0 30px #00ffcc;">UPCOMING EVENTS</h2>
@@ -226,4 +230,79 @@
             <div class="card-body p-4">
               <h5 class="card-title">${event.eventName}</h5>
               <p class="mb-1"><strong>${formatDate(event.date)}</strong></p>
-              <p class="mb-1">${event.time || 'Time
+              <p class="mb-1">${event.time || 'Time TBA'}</p>
+              <p class="mb-2">@ ${event.venue || event.city || 'Various Locations'}</p>
+              <p class="small mb-2">${event.description}</p>
+              ${event.tickets ? `<a href="${event.tickets}" class="btn btn-outline-light btn-sm" target="_blank">More Info</a>` : ''}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const overlay = document.getElementById('transition-overlay');
+      const forwardVideo = document.getElementById('forward-video');
+      const reverseVideo = document.getElementById('reverse-video');
+      const content = document.getElementById('main-content');
+      const miniNav = document.getElementById('mini-nav');
+
+      // Forward transition on load
+      forwardVideo.src = '/video/events-video-transition.mp4';
+      reverseVideo.src = '/video/events-video-reverse.mp4';
+      overlay.style.display = 'block';
+      forwardVideo.style.display = 'block';
+      forwardVideo.muted = true;
+      forwardVideo.play().catch(() => {});
+
+      // Safety timeout + delayed mini-nav show (exact OnlyFans behavior)
+      setTimeout(() => {
+        overlay.style.display = 'none';
+        content.classList.add('show');
+        setTimeout(() => miniNav.classList.add('show'), 400);
+      }, 5000);
+
+      // Mini-nav click handler with bounce-out for Saloon
+      miniNav.addEventListener('click', (e) => {
+        const img = e.target.closest('img');
+        if (!img) return;
+
+        const targetLink = img.getAttribute('data-link');
+        const type = img.getAttribute('data-type');
+        if (!targetLink) return;
+
+        e.preventDefault();
+
+        if (type === 'home') {
+          miniNav.classList.add('bounce-out');
+          setTimeout(() => {
+            overlay.style.display = 'block';
+            forwardVideo.style.display = 'none';
+            reverseVideo.style.display = 'block';
+            reverseVideo.currentTime = 0;
+            reverseVideo.volume = 0.5;
+            reverseVideo.play()
+              .then(() => { reverseVideo.onended = () => window.location.href = targetLink; })
+              .catch(() => window.location.href = targetLink);
+          }, 520);
+        } else {
+          window.location.href = targetLink;
+        }
+      });
+
+      // Populate events
+      const sortedEvents = [...eventsData].sort((a, b) => new Date(b.date) - new Date(a.date));
+      const upcoming = sortedEvents.filter(e => new Date(e.date) >= currentDate);
+      const past = sortedEvents.filter(e => new Date(e.date) < currentDate);
+
+      document.getElementById('upcoming-list').innerHTML = upcoming.length 
+        ? upcoming.map(generateUpcomingCard).join('') 
+        : '<p class="text-center lead mt-5">No upcoming events scheduled right now. Check back soon!</p>';
+
+      document.getElementById('past-list').innerHTML = past.length 
+        ? past.map(generatePastCard).join('') 
+        : '<p class="text-center lead mt-5">No past events to display yet.</p>';
+    });
+  </script>
+</body>
+</html>
