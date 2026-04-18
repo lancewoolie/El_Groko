@@ -29,7 +29,7 @@
       }
     }
 
-    /* 🔒 CHAINED 📱 Mini-Nav - Exact style & delayed fade-in from OnlyFans */
+    /* 🔒 CHAINED 📱 Mini-Nav - Exact style from OnlyFans */
     .mini-nav {
       position: fixed;
       top: 12px;
@@ -85,18 +85,21 @@
     }
     .content.show { opacity: 1; }
 
-    /* 🔒 CHAINED 🎴 Sexy neon cards */
+    /* 🔒 CHAINED 🎴 Holographic transparent merch cards */
     .card {
-      background: rgba(8, 15, 45, 0.96);
+      background: rgba(8, 15, 45, 0.10) !important;   /* 10% opacity */
       border: 4px solid #00ffcc;
       border-radius: 18px;
       overflow: hidden;
-      box-shadow: 0 0 50px rgba(0, 255, 204, 0.5);
+      box-shadow: 0 0 40px rgba(0, 255, 204, 0.7),
+                  inset 0 0 30px rgba(255, 255, 255, 0.15);
       transition: all 0.4s ease;
+      backdrop-filter: blur(8px);
     }
     .card:hover {
       transform: translateY(-12px) scale(1.03);
-      box-shadow: 0 0 80px rgba(0, 255, 204, 0.9);
+      box-shadow: 0 0 70px rgba(0, 255, 204, 0.9),
+                  inset 0 0 40px rgba(255, 255, 255, 0.25);
       border-color: #ff00aa;
     }
     .card img {
@@ -106,11 +109,12 @@
     }
     .new-release {
       border-color: #ff00aa;
-      box-shadow: 0 0 60px rgba(255, 0, 170, 0.6);
+      box-shadow: 0 0 60px rgba(255, 0, 170, 0.7),
+                  inset 0 0 30px rgba(255, 255, 255, 0.2);
     }
     .price-tag {
       display: inline-block;
-      background: #00ffcc;
+      background: rgba(0, 255, 204, 0.9);
       color: #0a0f23;
       font-weight: bold;
       padding: 4px 12px;
@@ -123,6 +127,10 @@
       justify-content: center; 
       flex-wrap: wrap; 
       margin-top: 1rem; 
+    }
+    .card h3, .card p {
+      color: #E0E0E0;
+      text-shadow: 0 0 8px rgba(0, 255, 204, 0.5);
     }
   </style>
 </head>
@@ -147,13 +155,10 @@
   <div class="content-overlay">
     <div class="content" id="main-content">
       <div class="container py-5">
-        <!-- 🔒 CHAINED ✨ Old Title Style (no pink) -->
-        <div class="text-center mb-5">
-          <h1 style="color:#E0E0E0; font-size:3.2rem; margin-bottom:10px;">MOON GENERAL STORE</h1>
-          <p class="lead" style="color:#00ffcc;">Merch • Music • Bayou Vibes</p>
-        </div>
 
-        <!-- 🔒 CHAINED 🎴 Merch Grid -->
+        <!-- 🔒 CHAINED - No title / subtitle as requested -->
+
+        <!-- 🔒 CHAINED 🎴 Merch Grid - Holographic transparent cards -->
         <div class="row g-4" id="merch-grid">
           <!-- Crazy Arms NEW -->
           <div class="col-md-6 col-lg-4">
@@ -225,7 +230,7 @@
         </div>
 
         <div class="text-center mt-5">
-          <p class="lead">Can't find what you're looking for? <a href="contact.html">Hit us up</a> for custom requests—bayou style.</p>
+          <p class="lead" style="color:#E0E0E0;">Can't find what you're looking for? <a href="contact.html" style="color:#00ffcc;">Hit us up</a> for custom requests—bayou style.</p>
         </div>
       </div>
     </div>
@@ -250,7 +255,7 @@
       forwardVideo.muted = true;
       forwardVideo.play().catch(() => {});
 
-      // Delayed fade-in behavior - exact OnlyFans timing
+      // Delayed fade-in behavior
       setTimeout(() => {
         overlay.style.display = 'none';
         content.classList.add('show');
