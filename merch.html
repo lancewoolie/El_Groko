@@ -29,7 +29,7 @@
       }
     }
 
-    /* 🔒 CHAINED 📱 Mini-Nav - Exact style from OnlyFans */
+    /* 🔒 CHAINED 📱 Mini-Nav - Exact style & delayed fade-in from OnlyFans */
     .mini-nav {
       position: fixed;
       top: 12px;
@@ -85,9 +85,9 @@
     }
     .content.show { opacity: 1; }
 
-    /* 🔒 CHAINED 🎴 Holographic transparent merch cards */
+    /* 🔒 CHAINED 🎴 Holographic transparent cards + improved text legibility */
     .card {
-      background: rgba(8, 15, 45, 0.10) !important;   /* 10% opacity */
+      background: rgba(8, 15, 45, 0.10) !important;
       border: 4px solid #00ffcc;
       border-radius: 18px;
       overflow: hidden;
@@ -112,14 +112,38 @@
       box-shadow: 0 0 60px rgba(255, 0, 170, 0.7),
                   inset 0 0 30px rgba(255, 255, 255, 0.2);
     }
+
+    /* Text legibility fix - strong shadow + outline */
+    .card h3, .card p {
+      color: #ffffff;
+      text-shadow: 
+        -2px -2px 4px rgba(0,0,0,0.95),
+         2px -2px 4px rgba(0,0,0,0.95),
+        -2px  2px 4px rgba(0,0,0,0.95),
+         2px  2px 4px rgba(0,0,0,0.95),
+        0 0 12px rgba(0, 255, 204, 0.9);
+      -webkit-text-stroke: 0.8px rgba(10, 15, 40, 0.9);
+      font-weight: 500;
+    }
+    .card h3 {
+      font-size: 1.4rem;
+      margin-bottom: 12px;
+    }
+    .card p {
+      font-size: 0.97rem;
+      line-height: 1.5;
+      margin-bottom: 1rem;
+    }
     .price-tag {
       display: inline-block;
-      background: rgba(0, 255, 204, 0.9);
+      background: rgba(0, 255, 204, 0.95);
       color: #0a0f23;
       font-weight: bold;
       padding: 4px 12px;
       border-radius: 20px;
       margin: 10px 0;
+      text-shadow: 0 0 8px rgba(0,0,0,0.9);
+      -webkit-text-stroke: 0.5px #000;
     }
     .btn-group { 
       display: flex; 
@@ -127,10 +151,6 @@
       justify-content: center; 
       flex-wrap: wrap; 
       margin-top: 1rem; 
-    }
-    .card h3, .card p {
-      color: #E0E0E0;
-      text-shadow: 0 0 8px rgba(0, 255, 204, 0.5);
     }
   </style>
 </head>
@@ -156,9 +176,9 @@
     <div class="content" id="main-content">
       <div class="container py-5">
 
-        <!-- 🔒 CHAINED - No title / subtitle as requested -->
+        <!-- No title or subtitle as requested -->
 
-        <!-- 🔒 CHAINED 🎴 Merch Grid - Holographic transparent cards -->
+        <!-- 🔒 CHAINED 🎴 Merch Grid -->
         <div class="row g-4" id="merch-grid">
           <!-- Crazy Arms NEW -->
           <div class="col-md-6 col-lg-4">
