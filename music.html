@@ -3,62 +3,175 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Music & Videos - Lance Woolie</title>
+  <title>Music & Videos - Lance Woolie’s Moon Saloon</title>
   <link href="https://fonts.googleapis.com/css2?family=Georgia&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/png" href="img/LanceWoolieHeadonly.png">
+
   <style>
+    /* 🔒 CHAINED 🌕 Body & Background */
     body {
-      background: url('/img/moonsaloon/music-video-base-bg.jpg') center/cover no-repeat fixed !important;
+      margin: 0;
+      padding: 0;
+      background: #0a0f23;
     }
     .content-overlay {
-      background: url('/img/moonsaloon/music-video-base-bg.jpg') center/cover no-repeat fixed !important;
+      background: url('/img/moonsaloon/music-video-base-bg.jpg') center/cover no-repeat fixed;
       min-height: 100vh;
-      padding-top: 90px;
+      padding-top: 95px;
     }
-    .hero-music {
+    @media (max-width: 991px) {
+      .content-overlay {
+        background-attachment: scroll;
+        background-size: 130% auto;
+        background-position: center top;
+      }
+    }
+
+    /* 🔒 CHAINED 📱 Mini-Nav - Exact style & delayed fade-in from OnlyFans */
+    .mini-nav {
+      position: fixed;
+      top: 12px;
+      left: 20px;
+      z-index: 10000;
+      background: rgba(10, 15, 35, 0.92);
+      border: 2px solid #00ffcc;
+      border-radius: 50px;
+      padding: 10px 14px;
       display: flex;
-      justify-content: center;
-      padding: 30px 0 40px;
-    }
-    .hero-music .doors {
-      width: 130px;
-      cursor: pointer;
-      transition: transform 0.3s ease;
-    }
-    .hero-music .doors:hover { transform: scale(1.08); }
-    .btn-group {
-      display: flex;
+      align-items: center;
       gap: 10px;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-top: 1rem;
+      box-shadow: 0 0 30px rgba(0, 255, 204, 0.6),
+                  inset 0 0 20px rgba(255, 0, 170, 0.3);
+      backdrop-filter: blur(12px);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-80px);
+      transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  opacity 0.6s ease;
     }
-    .btn-group .btn { min-width: 120px; }
-    iframe { border-radius: 12px; box-shadow: 0 0 20px rgba(0, 255, 204, 0.3); }
+    .mini-nav.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .mini-nav.bounce-out {
+      transition: transform 0.55s cubic-bezier(0.68, -0.85, 0.32, 1.85) !important;
+      transform: translateY(-180px) scale(0.6) rotate(-8deg) !important;
+    }
+    .mini-nav img {
+      width: 46px;
+      height: 46px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      filter: drop-shadow(0 0 8px #00ffcc);
+    }
+    .mini-nav img:hover {
+      transform: scale(1.15) translateY(-3px);
+      filter: drop-shadow(0 0 20px #ff00aa);
+    }
+    .mini-nav .doors {
+      width: 52px;
+      height: 46px;
+    }
+
+    /* 🔒 CHAINED ✨ Content fade-in */
+    .content {
+      position: relative;
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 1.2s ease;
+    }
+    .content.show { opacity: 1; }
+
+    /* 🔒 CHAINED 🎴 Holographic transparent cards */
+    .card {
+      background: rgba(8, 15, 45, 0.10) !important;
+      border: 4px solid #00ffcc;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 0 40px rgba(0, 255, 204, 0.7),
+                  inset 0 0 30px rgba(255, 255, 255, 0.15);
+      transition: all 0.4s ease;
+      backdrop-filter: blur(8px);
+    }
+    .card:hover {
+      transform: translateY(-12px) scale(1.03);
+      box-shadow: 0 0 70px rgba(0, 255, 204, 0.9),
+                  inset 0 0 40px rgba(255, 255, 255, 0.25);
+      border-color: #ff00aa;
+    }
+    .card img {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+    }
+    .new-release {
+      border-color: #ff00aa;
+      box-shadow: 0 0 60px rgba(255, 0, 170, 0.7);
+    }
+
+    /* 🔒 CHAINED - Sharper, blacker text (reduced blur) */
+    .card h3, .card p {
+      color: #ffffff;
+      text-shadow: 
+        -2px -2px 3px #000000,
+         2px -2px 3px #000000,
+        -2px  2px 3px #000000,
+         2px  2px 3px #000000,
+        0 0 8px rgba(0, 255, 204, 0.6);
+      -webkit-text-stroke: 0.6px rgba(0, 0, 0, 0.85);
+      font-weight: 500;
+    }
+    .card h3 {
+      font-size: 1.38rem;
+      margin-bottom: 12px;
+    }
+    .card p {
+      font-size: 0.96rem;
+      line-height: 1.5;
+    }
+    .btn-group { 
+      display: flex; 
+      gap: 10px; 
+      justify-content: center; 
+      flex-wrap: wrap; 
+      margin-top: 1rem; 
+    }
+    iframe { 
+      border-radius: 12px; 
+      box-shadow: 0 0 20px rgba(0, 255, 204, 0.3); 
+    }
   </style>
 </head>
 <body>
-  <div id="nav-placeholder"></div>
 
-  <div id="transition-overlay">
-    <video id="forward-video" class="transition-video" playsinline preload="auto"></video>
-    <video id="reverse-video" class="transition-video" playsinline preload="auto"></video>
+  <!-- 🔒 CHAINED 📊 Mini-Nav - Icon style from OnlyFans (NO Music icon) -->
+  <div class="mini-nav" id="mini-nav">
+    <img src="/img/moonsaloon/saloon-doors-nav.png" class="doors" data-link="index.html" data-type="home" data-label="Moon Saloon">
+    <img src="/img/moonsaloon/cowboy-hat-merch-nav.png" data-link="merch.html" data-type="dest" data-label="Merch">
+    <img src="/img/moonsaloon/hourglass-origins-nav.png" data-link="origins.html" data-type="dest" data-label="Origins">
+    <img src="/img/moonsaloon/raccoon-subscribe-nav.png" data-link="onlyfans.html" data-type="dest" data-label="OnlyFans Zone">
+    <img src="/img/moonsaloon/holo-calendar-events-nav.png" data-link="events.html" data-type="dest" data-label="Events">
+    <img src="/img/moonsaloon/contact-earth-trophy-nav.png" data-link="contact.html" data-type="dest" data-label="Contact">
+  </div>
+
+  <!-- 🔒 CHAINED 🎥 Video Transition Overlay -->
+  <div id="transition-overlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:9999;display:none;overflow:hidden;background:#000;">
+    <video id="forward-video" playsinline preload="auto" style="width:100%;height:100%;object-fit:cover;"></video>
+    <video id="reverse-video" playsinline preload="auto" style="width:100%;height:100%;object-fit:cover;display:none;"></video>
   </div>
 
   <div class="content-overlay">
     <div class="content" id="main-content">
-      <div class="hero-music">
-        <img id="saloon-doors-back"
-             src="/img/moonsaloon/saloon-doors-nav.png"
-             class="doors"
-             alt="Back to Saloon">
-      </div>
+      <div class="container py-5">
 
-      <div class="container py-5" id="music-grid">
-        <div class="row g-4">
-          <!-- Crazy Arms (2025) -->
+        <!-- No title or subtitle as requested -->
+
+        <!-- 🔒 CHAINED 🎴 Music & Video Grid -->
+        <div class="row g-4" id="music-grid">
+          <!-- Crazy Arms -->
           <div class="col-md-6 col-lg-6">
             <div class="card new-release">
               <img src="https://img.youtube.com/vi/wFVxcOHna7Q/0.jpg" alt="Crazy Arms Cover Art" class="card-img-top">
@@ -74,7 +187,7 @@
             </div>
           </div>
 
-          <!-- Uber 2025 -->
+          <!-- Uber -->
           <div class="col-md-6 col-lg-6">
             <div class="card">
               <img src="https://img.youtube.com/vi/0nTop80SCvs/0.jpg" alt="Uber Cover Art" class="card-img-top">
@@ -90,7 +203,7 @@
             </div>
           </div>
 
-          <!-- Too Drunk 2024 -->
+          <!-- Too Drunk -->
           <div class="col-md-6 col-lg-6">
             <div class="card">
               <img src="https://img.youtube.com/vi/K6c5kCqZHOc/0.jpg" alt="Too Drunk Cover Art" class="card-img-top">
@@ -106,7 +219,7 @@
             </div>
           </div>
 
-          <!-- Worst Enemy 2023 -->
+          <!-- Worst Enemy -->
           <div class="col-md-6 col-lg-6">
             <div class="card">
               <img src="https://img.youtube.com/vi/neRw6xjusAg/0.jpg" alt="Worst Enemy Cover Art" class="card-img-top">
@@ -119,7 +232,7 @@
             </div>
           </div>
 
-          <!-- Road To Texas 2021 -->
+          <!-- Road To Texas -->
           <div class="col-md-6 col-lg-6">
             <div class="card">
               <img src="https://img.youtube.com/vi/WliGvdfdWxw/0.jpg" alt="Road To Texas Cover Art" class="card-img-top">
@@ -132,7 +245,7 @@
             </div>
           </div>
 
-          <!-- Country Paradise 2021 Album -->
+          <!-- Country Paradise Album -->
           <div class="col-12">
             <div class="card">
               <img src="img/COUNTRY-PARADISE-scaled.jpg" alt="Country Paradise Album Cover" class="card-img-top">
@@ -160,80 +273,66 @@
         </div>
 
         <div class="text-center mt-5">
-          <p class="lead">More tracks coming soon—stay tuned for bayou-fresh drops.</p>
+          <p class="lead" style="color:#E0E0E0;">More tracks coming soon—stay tuned for bayou-fresh drops.</p>
         </div>
       </div>
     </div>
   </div>
 
-  <div id="footer-placeholder" class="tight-footer"></div>
-
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const overlay = document.getElementById('transition-overlay');
-    const forwardVideo = document.getElementById('forward-video');
-    const reverseVideo = document.getElementById('reverse-video');
-    const content = document.getElementById('main-content');
+  <script>
+    /* 🔒 CHAINED 🎥 Video Transition + Mini-Nav Logic - Exact OnlyFans behavior */
+    document.addEventListener('DOMContentLoaded', () => {
+      const overlay = document.getElementById('transition-overlay');
+      const forwardVideo = document.getElementById('forward-video');
+      const reverseVideo = document.getElementById('reverse-video');
+      const content = document.getElementById('main-content');
+      const miniNav = document.getElementById('mini-nav');
 
-    console.log('Music page loaded - starting forward transition');
+      forwardVideo.src = '/video/music-and-video-transition.mp4';
+      reverseVideo.src = '/video/music-and-video-reverse.mp4';
 
-    // Set sources
-    forwardVideo.src = '/video/music-and-video-transition.mp4';
-    reverseVideo.src = '/video/music-and-video-reverse.mp4';
-
-    // Force visibility
-    overlay.style.display = 'block';
-    forwardVideo.style.display = 'block';
-    forwardVideo.style.opacity = '1';
-
-    // Play forward (muted on mobile)
-    forwardVideo.muted = isMobile(); // Use your isMobile() from script.js or inline: /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
-    forwardVideo.volume = isMobile() ? 0 : 0.5;
-    forwardVideo.currentTime = 0;
-
-    console.log('Attempting to play forward video:', forwardVideo.src);
-
-    forwardVideo.play()
-      .then(() => {
-        console.log('Forward video started playing');
-      })
-      .catch(err => {
-        console.error('Play failed:', err);
-        // Fallback: show content anyway
-        content.classList.add('show');
-        overlay.style.display = 'none';
-      });
-
-    // When video ends → hide overlay, show content
-    forwardVideo.onended = () => {
-      console.log('Forward video ended');
-      overlay.style.display = 'none';
-      content.classList.add('show');
-    };
-
-    // Safety timeout: force show content after 5 seconds max
-    setTimeout(() => {
-      console.log('Safety timeout - forcing content visible');
-      content.classList.add('show');
-      overlay.style.display = 'none';
-    }, 5000);
-
-    // Reverse transition (back to index)
-    document.getElementById('saloon-doors-back').addEventListener('click', e => {
-      e.preventDefault();
       overlay.style.display = 'block';
-      forwardVideo.style.display = 'none';
-      reverseVideo.style.display = 'block';
-      reverseVideo.currentTime = 0;
-      reverseVideo.volume = 0.5;
-      reverseVideo.play().catch(err => console.error('Reverse play failed:', err));
-      reverseVideo.onended = () => {
-        window.location.href = 'index.html';
-      };
+      forwardVideo.style.display = 'block';
+      forwardVideo.muted = true;
+      forwardVideo.play().catch(() => {});
+
+      // Delayed fade-in behavior
+      setTimeout(() => {
+        overlay.style.display = 'none';
+        content.classList.add('show');
+        setTimeout(() => miniNav.classList.add('show'), 400);
+      }, 5000);
+
+      // Mini-nav click handler with bounce-out for Saloon
+      miniNav.addEventListener('click', (e) => {
+        const img = e.target.closest('img');
+        if (!img) return;
+
+        const targetLink = img.getAttribute('data-link');
+        const type = img.getAttribute('data-type');
+        if (!targetLink) return;
+
+        e.preventDefault();
+
+        if (type === 'home') {
+          miniNav.classList.add('bounce-out');
+          setTimeout(() => {
+            overlay.style.display = 'block';
+            forwardVideo.style.display = 'none';
+            reverseVideo.style.display = 'block';
+            reverseVideo.currentTime = 0;
+            reverseVideo.volume = 0.5;
+            reverseVideo.play()
+              .then(() => { reverseVideo.onended = () => window.location.href = targetLink; })
+              .catch(() => window.location.href = targetLink);
+          }, 520);
+        } else {
+          window.location.href = targetLink;
+        }
+      });
     });
-  });
-</script>
+  </script>
 </body>
 </html>
