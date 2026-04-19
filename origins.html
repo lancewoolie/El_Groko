@@ -24,7 +24,7 @@
       padding-top: 95px;
     }
 
-    /* 🔒 CHAINED 📱 Mini-Nav - Exact style & delayed fade-in from OnlyFans */
+    /* 🔒 CHAINED 📱 Mini-Nav - Exact style from OnlyFans */
     .mini-nav {
       position: fixed;
       top: 12px;
@@ -80,7 +80,7 @@
     }
     .content.show { opacity: 1; }
 
-    /* 🔒 CHAINED - Rest of your original styles (kept untouched) */
+    /* Your original styles for crew, transmissions, grokipedia-tab, etc. stay exactly the same */
     .grokipedia-tab {
       position: fixed;
       top: 20px;
@@ -105,7 +105,7 @@
       box-shadow: 0 0 35px rgba(255, 0, 170, 0.8);
       transform: scale(1.05);
     }
-    /* ... your original crew-roster, transmission-card, etc. styles remain exactly the same ... */
+    /* ... rest of your original crew-roster, transmission-card, etc. styles ... */
   </style>
 </head>
 <body>
@@ -120,7 +120,7 @@
     <img src="/img/moonsaloon/contact-earth-trophy-nav.png" data-link="contact.html" data-type="dest" data-label="Contact">
   </div>
 
-  <!-- GROKIpediaLite MINI APP TAB (kept exactly as you had it) -->
+  <!-- GROKIpediaLite MINI APP TAB -->
   <div class="grokipedia-tab">GROKIpediaLite</div>
 
   <!-- 🔒 CHAINED 🎥 Video Transition Overlay -->
@@ -148,10 +148,10 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
   <script>
-    /* 🔒 CHAINED 📋 Crew & Transmission Data (unchanged) */
-    const crew = [ /* your full crew array is preserved exactly as you provided */ ];
+    /* 🔒 CHAINED 📋 Crew Data (your original array - unchanged) */
+    const crew = [ /* paste your full crew array here exactly as it was */ ];
 
-    /* 🔒 CHAINED - Rest of your original renderCrew / renderTransmissions / toggle / scroll / modal functions remain untouched */
+    /* Your original renderCrew, renderTransmissions, toggleTransmission, scrollToMember, openModal functions remain unchanged */
 
     document.addEventListener('DOMContentLoaded', () => {
       renderCrew();
@@ -171,7 +171,7 @@
       forwardVideo.muted = true;
       forwardVideo.play().catch(() => {});
 
-      // Delayed fade-in behavior - exact OnlyFans style
+      // Delayed fade-in + mini-nav show (exact OnlyFans behavior)
       setTimeout(() => {
         overlay.style.display = 'none';
         content.classList.add('show');
