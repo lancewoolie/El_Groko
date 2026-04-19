@@ -17,7 +17,7 @@
       padding: 0;
     }
 
-    /* New Mini-Nav - Exact match to Music page */
+    /* Mini-Nav - Same as Music page */
     .mini-nav {
       position: fixed;
       top: 12px;
@@ -67,7 +67,7 @@
     .content-overlay {
       background: rgba(0, 0, 0, 0.75);
       min-height: 100vh;
-      padding-top: 95px;   /* Important: space for mini-nav */
+      padding-top: 95px;
     }
 
     .grokipedia-tab {
@@ -88,28 +88,15 @@
       transition: all 0.3s ease;
       pointer-events: none;
     }
-    .grokipedia-tab:hover {
-      border-color: #ff00aa;
-      color: #00ffcc;
-      box-shadow: 0 0 35px rgba(255, 0, 170, 0.8);
-      transform: scale(1.05);
-    }
 
-    /* Your original Origins card styles - kept intact */
+    /* Original card styles */
     .hero-origins {
       display: flex;
       align-items: center;
       justify-content: flex-start;
-      padding: 30px 0 40px;
+      padding: 40px 0 30px;
       gap: 40px;
     }
-    .hero-origins .doors {
-      width: 130px;
-      flex-shrink: 0;
-      cursor: pointer;
-      transition: transform 0.3s ease;
-    }
-    .hero-origins .doors:hover { transform: scale(1.08); }
     .crew-roster {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
@@ -259,7 +246,7 @@
   </style>
 </head>
 <body>
-  <!-- New Mini-Nav - Same as Music page -->
+  <!-- Mini-Nav -->
   <div class="mini-nav" id="mini-nav">
     <img src="/img/moonsaloon/saloon-doors-nav.png" class="doors" data-link="index.html" data-type="home" data-label="Moon Saloon">
     <img src="/img/moonsaloon/cowboy-hat-merch-nav.png" data-link="merch.html" data-type="dest" data-label="Merch">
@@ -281,7 +268,6 @@
   <div class="content-overlay">
     <div class="content" id="main-content">
       <div class="hero-origins container">
-        <img id="saloon-doors-back" src="/img/moonsaloon/saloon-doors-nav.png" class="doors" alt="Back to Saloon">
         <div class="flex-grow-1 text-center">
           <h1 style="color:#ff00aa; text-shadow: 0 0 50px #ff00aa; font-size: 3.2rem; margin:0;">GROKIPEDIA LITE</h1>
           <p style="color:#00ffcc; font-size:1.4rem; margin:0;">Origins Transmissions • Shackleton Crater Archive</p>
@@ -300,28 +286,162 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
   <script>
-    // === FULL CREW ARRAY (your original - unchanged) ===
     const crew = [
-      { id: "lance", name: "Lance Woolie", tagline: "Captain • Founder • Swamp-Country Troubadour", img: "img/bandmembers/lance_too_drunk_bts_recordstore.png", grammys: 0, bio: `...your full lance bio...`, images: [] },
-      { id: "brent", name: "Brent Mason", tagline: "12× ACM Guitarist of the Year • Most Recorded Guitarist in History", img: "img/bandmembers/Brent Mason LIVE.png", grammys: 1, bio: `...`, images: [] },
-      { id: "brian", name: "Brian Brignac", tagline: "Drummer • Producer • Brignac Lane Studios", img: "img/bandmembers/BrianBrignac_TabBenoit.png", grammys: 1, bio: `...`, images: [] },
-      { id: "shane", name: "Shane Reid", tagline: "Go-To Live Guitarist • Co-Writer of \"Gypsy Love\"", img: "img/bandmembers/ShaneReid.jpg", grammys: 0, bio: `...`, images: ["img/bandmembers/OriginalHOGLEGBANDchris&shane.png"] },
-      { id: "tank", name: "Tank Viavatine", tagline: "M35 Abrams is the Big Guns", img: "img/bandmembers/TANk.jpg", grammys: 0, bio: `...`, images: [] },
-      { id: "corban", name: "Corban Barnes", tagline: "Multi-Instrumentalist • Country Paradise Co-Producer", img: "img/bandmembers/CORBANGEETAR&Keys.png", grammys: 0, bio: `...`, images: [] },
-      { id: "boogie", name: "Jonathon \"Boogie\" Long", tagline: "Special Guest • Played \"Little Wing\" on the album", img: "img/bandmembers/Boogie.jpg", grammys: 0, isGuest: true, bio: `...`, images: [] }
+      {
+        id: "lance",
+        name: "Lance Woolie",
+        tagline: "Captain • Founder • Swamp-Country Troubadour",
+        img: "img/bandmembers/lance_too_drunk_bts_recordstore.png",
+        grammys: 0,
+        bio: `
+          <div class="bio-section">
+            <h4>Baton Rouge Roots & Early Transmissions</h4>
+            <p>Born July 3, 1979 at 3:33 a.m. in Baton Rouge, Louisiana. Attended 17 schools amid family struggles and undiagnosed ADHD. At 17, a nonviolent juvenile arrest led to 2+ years at Jetson Correctional Center for Youth, where he rediscovered music performing with the Angola Travelin’ Band and leading worship.</p>
+          </div>
+          <div class="bio-section">
+            <h4>Education, Colombia, and Rebirth</h4>
+            <p>Studied at Southern University then transferred to LSU (Pre-Vet to Information Systems). Moved to Bogotá, Colombia in 2004 after his Christian album <em>Let It Ride</em>. Acted as "El Gringo" in the 2005 psychedelic film <em>El Colombian Dream</em>. Daughter Emma born in Ibagué in 2006. Returned to Louisiana after Hurricane Katrina.</p>
+          </div>
+          <div class="bio-section">
+            <h4>Radio & Country Comeback</h4>
+            <p>Created over 500 comedy songs as "El Gringo" for the Walton & Johnson show starting ~2016. In 2020, during COVID, shifted to serious country with Hogleg Band. Co-produced <em>Country Paradise</em> with Brian Brignac, Corban Barnes, and Chris Roberts. Rebranded solo and is finishing <em>The Whole Two Dollars</em> with elite Nashville players.</p>
+          </div>
+          <div class="fact-pill">Born in old Woman's Hospital • Angola Band performer • El Gringo radio legend • Forthcoming album 2026</div>
+        `,
+        images: []
+      },
+      {
+        id: "brent",
+        name: "Brent Mason",
+        tagline: "12× ACM Guitarist of the Year • Most Recorded Guitarist in History",
+        img: "img/bandmembers/Brent Mason LIVE.png",
+        grammys: 1,
+        bio: `
+          <div class="bio-section">
+            <h4>Nashville Session Legend</h4>
+            <p>Self-taught from age 5 in Ohio. Moved to Nashville late 1970s. Discovered by Chet Atkins. Played on over 1,000 albums for George Strait, Alan Jackson, Shania Twain, Brad Paisley, and many more.</p>
+          </div>
+          <div class="bio-section">
+            <h4>Awards & Signature Sound</h4>
+            <p>Grammy winner ("Cluster Pluck"), 12× ACM Guitarist of the Year, 2× CMA Musician of the Year, Musicians Hall of Fame inductee. Famous for hybrid picking, chicken-pickin', and Telecaster twang.</p>
+          </div>
+          <div class="bio-section">
+            <h4>Moon Saloon Connection</h4>
+            <p>Laid down iconic guitar on Lance Woolie’s "Too Drunk", "Uber", "Worst Enemy", and more. A Godsend collaborator bringing world-class tone to the Shackleton Crater sound.</p>
+          </div>
+          <div class="fact-pill">Grammy Winner • 12× ACM • Chet Atkins mentee • Telecaster master</div>
+        `,
+        images: []
+      },
+      {
+        id: "brian",
+        name: "Brian Brignac",
+        tagline: "Drummer • Producer • Brignac Lane Studios",
+        img: "img/bandmembers/BrianBrignac_TabBenoit.png",
+        grammys: 1,
+        bio: `
+          <div class="bio-section">
+            <h4>Louisiana Rhythm Powerhouse</h4>
+            <p>From the Gonzales/St. Amant area. Started drums at 15. Studied music education at LSU. Longtime drummer for Sonny Landreth (20+ years), appearing on Grammy-nominated albums and Eric Clapton’s Crossroads Festival.</p>
+          </div>
+          <div class="bio-section">
+            <h4>Studio & Production Legend</h4>
+            <p>Owns Brignac Lane Studios. Engineered/produced for Jo-el Sonnier (Grammy-winning album), Wayne Toups, Warren Storm, Tab Benoit, and many more. Grammy-nominated engineering work.</p>
+          </div>
+          <div class="bio-section">
+            <h4>Moon Saloon Connection</h4>
+            <p>Co-produced Lance Woolie’s <em>Country Paradise</em> album with Hogleg Band — raw, reflective Southern storytelling full of scars and triumphs.</p>
+          </div>
+          <div class="fact-pill">Sonny Landreth drummer 20+ years • Brignac Lane Studios owner • Grammy Winner</div>
+        `,
+        images: []
+      },
+      {
+        id: "shane",
+        name: "Shane Reid",
+        tagline: "Go-To Live Guitarist • Co-Writer of \"Gypsy Love\"",
+        img: "img/bandmembers/ShaneReid.jpg",
+        grammys: 0,
+        bio: `
+          <div class="bio-section">
+            <h4>Original Hogleg Band Member</h4>
+            <p>Founding guitarist who has been with Lance since the early days. Brings raw energy and fire to the live show.</p>
+          </div>
+          <div class="bio-section">
+            <h4>Current Role</h4>
+            <p>Lance Woolie’s go-to live guitarist. Also co-wrote the unreleased track <strong>“Gypsy Love”</strong> from the forthcoming album <em>The Whole Two Dollars</em>.</p>
+          </div>
+          <div class="bio-section">
+            <h4>Style & Spirit</h4>
+            <p>Young, hungry, and paints with his own brush — a true artist who adds his unique voice to every performance.</p>
+          </div>
+          <div class="fact-pill">Go-to live guitarist • Co-writer of “Gypsy Love” • Original Hogleg Band member</div>
+        `,
+        images: ["img/bandmembers/OriginalHOGLEGBANDchris&shane.png"]
+      },
+      {
+        id: "tank",
+        name: "Tank Viavatine",
+        tagline: "M35 Abrams is the Big Guns",
+        img: "img/bandmembers/TANk.jpg",
+        grammys: 0,
+        bio: `
+          <div class="bio-section">
+            <h4>Heavy Low-End Destroyer</h4>
+            <p>Bass monster bringing thunderous grooves and funk/slap mastery to the Louisiana scene. Delivers unstoppable bottom end that shakes the Moon Saloon floor.</p>
+          </div>
+          <div class="fact-pill">Uptown Funk loops • Slap & pop specialist • Big Guns on bass</div>
+        `,
+        images: []
+      },
+      {
+        id: "corban",
+        name: "Corban Barnes",
+        tagline: "Multi-Instrumentalist • Country Paradise Co-Producer",
+        img: "img/bandmembers/CORBANGEETAR&Keys.png",
+        grammys: 0,
+        bio: `
+          <div class="bio-section">
+            <h4>Versatile Louisiana Player</h4>
+            <p>Key contributor on keys, guitar, and production for Lance Woolie’s <em>Country Paradise</em> album alongside Brian Brignac and Chris Roberts.</p>
+          </div>
+          <div class="fact-pill">Co-producer • Multi-instrumentalist</div>
+        `,
+        images: []
+      },
+      {
+        id: "boogie",
+        name: "Jonathon \"Boogie\" Long",
+        tagline: "Special Guest • Played \"Little Wing\" on the album",
+        img: "img/bandmembers/Boogie.jpg",
+        grammys: 0,
+        isGuest: true,
+        bio: `
+          <div class="bio-section">
+            <h4>Special Guest on Album</h4>
+            <p>World-class blues-rock guitarist who recorded the guitar solo for "Little Wing" on Lance Woolie’s album.</p>
+          </div>
+          <div class="bio-section">
+            <h4>About Boogie Long</h4>
+            <p>2011 Guitar Center King of the Blues winner, frequent New Orleans Jazz & Heritage Festival performer, and Louisiana Music Hall of Fame inductee.</p>
+          </div>
+          <div class="fact-pill">Special Guest • Studio "Little Wing" guitarist</div>
+        `,
+        images: []
+      }
     ];
 
-    // Render functions (your original)
     function renderCrew() {
       const container = document.getElementById('crew-roster');
       let html = '';
       crew.forEach(member => {
         const guestClass = member.isGuest ? ' guest' : '';
-        html += `<div class="member-card${guestClass}" onclick="scrollToMember('${member.id}')">
-          <img src="${member.img}" alt="${member.name}">
-          <h5>${member.name}</h5>
-          <div class="tagline">${member.tagline}</div>
-        </div>`;
+        html += `
+          <div class="member-card${guestClass}" onclick="scrollToMember('${member.id}')">
+            <img src="${member.img}" alt="${member.name}">
+            <h5>${member.name}</h5>
+            <div class="tagline">${member.tagline}</div>
+          </div>`;
       });
       container.innerHTML = html;
     }
@@ -333,25 +453,32 @@
         const trophyHTML = member.grammys > 0 ? `<div class="trophy-count">🏆${member.grammys}x</div>` : '';
         let extraImages = '';
         if (member.images && member.images.length) {
-          extraImages = `<div class="thumb-carousel mt-3">${member.images.map(src => `<img class="thumb-img" src="${src}" onclick="openModal('${src}')" alt="${member.name}">`).join('')}</div>`;
+          extraImages = `<div class="thumb-carousel mt-3">
+            ${member.images.map(src => `<img class="thumb-img" src="${src}" onclick="openModal('${src}')" alt="${member.name}">`).join('')}
+          </div>`;
         }
-        html += `<div class="transmission-card" id="block-${member.id}">
-          <div class="transmission-header" onclick="toggleTransmission('${member.id}')">
-            <img src="${member.img}" alt="${member.name}">
-            <h3>${member.name} <span style="font-size:1.05rem; color:#ff99cc;">— ${member.tagline}</span></h3>
-            <button class="expand-btn">OPEN TRANSMISSION</button>
-            ${trophyHTML}
-          </div>
-          <div class="transmission-body">
-            ${member.bio}
-            ${extraImages}
-          </div>
-        </div>`;
+        html += `
+          <div class="transmission-card" id="block-${member.id}">
+            <div class="transmission-header" onclick="toggleTransmission('${member.id}')">
+              <img src="${member.img}" alt="${member.name}">
+              <h3>${member.name} <span style="font-size:1.05rem; color:#ff99cc;">— ${member.tagline}</span></h3>
+              <button class="expand-btn">OPEN TRANSMISSION</button>
+              ${trophyHTML}
+            </div>
+            <div class="transmission-body">
+              ${member.bio}
+              ${extraImages}
+            </div>
+          </div>`;
       });
       container.innerHTML = html;
     }
 
-    function toggleTransmission(id) { document.getElementById(`block-${id}`).classList.toggle('expanded'); }
+    function toggleTransmission(id) {
+      const card = document.getElementById(`block-${id}`);
+      card.classList.toggle('expanded');
+    }
+
     function scrollToMember(id) {
       const block = document.getElementById(`block-${id}`);
       if (block) {
@@ -359,6 +486,7 @@
         setTimeout(() => block.classList.add('expanded'), 500);
       }
     }
+
     function openModal(src) {
       const modal = document.createElement('div');
       modal.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); display:flex; align-items:center; justify-content:center; z-index:10002;';
@@ -366,7 +494,6 @@
       document.body.appendChild(modal);
     }
 
-    // Main logic - combined from Music page + your original transition
     document.addEventListener('DOMContentLoaded', () => {
       renderCrew();
       renderTransmissions();
@@ -404,7 +531,7 @@
 
       forwardVideo.onended = showContent;
 
-      // Mini-nav clicks (exact from Music page)
+      // Mini-nav handler
       miniNav.addEventListener('click', (e) => {
         const img = e.target.closest('img');
         if (!img) return;
@@ -427,18 +554,6 @@
         } else {
           window.location.href = targetLink;
         }
-      });
-
-      // Saloon doors back
-      document.getElementById('saloon-doors-back').addEventListener('click', (e) => {
-        e.preventDefault();
-        overlay.style.display = 'block';
-        forwardVideo.style.display = 'none';
-        reverseVideo.style.display = 'block';
-        reverseVideo.currentTime = 0;
-        reverseVideo.volume = 0.5;
-        reverseVideo.play().catch(() => {});
-        reverseVideo.onended = () => window.location.href = 'index.html';
       });
     });
   </script>
