@@ -353,8 +353,8 @@
             return;
           }
 
-           try {
-             // 1. Send sexy orange notification TO YOU
+                    try {
+             // === SEND TO YOU (Captain - Orange Notification) ===
              await emailjs.send("service_n08jdhv", "template_zysamxl", {
                name: name,
                email: email,
@@ -362,7 +362,7 @@
                message: message
              });
 
-             // 2. Send welcome message TO THE USER
+             // === SEND WELCOME TO THE USER ===
              await emailjs.send("service_n08jdhv", "template_ls2s5mp", {
                name: name,
                email: email,
