@@ -1,3 +1,5 @@
+// Prevent duplicate transition triggers
+let transitionAlreadyPlayed = false;
 // ====================== MOON SALOON script.js – DEPARTURE MODEL ======================
 
 const clickSounds = [
