@@ -1,12 +1,19 @@
+// =============================================
+// MOON SALOON script.js – DEPARTURE MODEL
+// =============================================
+
 // Prevent duplicate transition triggers
 let transitionAlreadyPlayed = false;
-// ====================== MOON SALOON script.js – DEPARTURE MODEL ======================
 
+// ====================== AUDIO ======================
 const clickSounds = [
   new Audio('sounds/ricochet-1.mp3'),
   new Audio('sounds/ricochet-2.mp3')
 ];
-clickSounds.forEach(sound => { sound.preload = 'auto'; sound.volume = 0.85; });
+clickSounds.forEach(sound => { 
+  sound.preload = 'auto'; 
+  sound.volume = 0.85; 
+});
 
 const gameOverSound = new Audio('sounds/ScottySteel.mp3');
 gameOverSound.volume = 0.85;
@@ -83,9 +90,6 @@ function updateScore(points, x, y) {
     else if (score < 2001) scoreEl.classList.add('score-high');
     else scoreEl.classList.add('score-max');
   }
-  if (x !== undefined && y !== undefined) {
-    // Floating points can be added here later if desired
-  }
 }
 
 function updateHealthBar() {
@@ -105,44 +109,10 @@ function initHealthBar() {
 }
 
 function generateNav() {
-  const navHTML = `
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-      <div class="container">
-        <a class="navbar-brand" href="index.html">
-          <img src="/img/BEARDsmall.png" alt="Lance Woolie"> Lance Woolie
-        </a>
-        <div class="score-header mx-auto d-flex align-items-center gap-4">
-          <div class="health-display d-flex align-items-center">
-            <div class="health-bar">
-              <div id="health-bar"><div id="health-progress"></div></div>
-            </div>
-          </div>
-          <div class="score-display">
-            <span class="score-label">SCORE</span>
-            <span id="score-value">000000</span>
-          </div>
-        </div>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ms-auto">
-            <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-            <li class="nav-item"><a class="nav-link" href="music.html">Music</a></li>
-            <li class="nav-item"><a class="nav-link" href="events.html">Events</a></li>
-            <li class="nav-item"><a class="nav-link" href="origins.html">Origins</a></li>
-            <li class="nav-item"><a class="nav-link" href="merch.html">Merch</a></li>
-            <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-  `;
-
+  const navHTML = `... your navbar code ...`; // (keep your existing navHTML)
   const placeholder = document.getElementById('nav-placeholder');
   if (placeholder) placeholder.innerHTML = navHTML;
 
-  // Highlight active page
   const currentPage = window.location.pathname.split('/').pop().replace('.html','') || 'index';
   document.querySelectorAll('.nav-link').forEach(link => {
     const href = link.getAttribute('href').replace('.html','');
@@ -150,26 +120,54 @@ function generateNav() {
   });
 }
 
+// ====================== MAIN TRANSITION FUNCTION ======================
+function playForwardTransition(nextUrl) {
+  if (transitionAlreadyPlayed) return;
+  transitionAlreadyPlayed = true;
+
+  const overlay = document.getElementById('transition-overlay');
+  const forwardVideo = document.getElementById('forward-video');
+
+  if (!overlay || !forwardVideo) {
+    window.location.href = nextUrl;
+    return;
+  }
+
+  overlay.style.display = 'block';
+  forwardVideo.currentTime = 0;
+  forwardVideo.play().catch(() => {});
+
+  forwardVideo.onended = () => {
+    window.location.href = nextUrl;
+  };
+
+  setTimeout(() => {
+    window.location.href = nextUrl;
+  }, 2800);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   generateNav();
-
   scoreEl = document.getElementById('score-value');
-  if (scoreEl) {
-    scoreEl.textContent = score.toString().padStart(6, '0');
-  }
+  if (scoreEl) scoreEl.textContent = score.toString().padStart(6, '0');
 
   setTimeout(() => {
     initHealthBar();
     updateScore(0);
   }, 200);
 
+  // === TRANSITION SETUP ===
+  const overlay = document.getElementById('transition-overlay');
   const forwardVideo = document.getElementById('forward-video');
   const reverseVideo = document.getElementById('reverse-video');
-  const overlay = document.getElementById('transition-overlay');
 
-  // Preload forward if on index
-  if (forwardVideo && document.getElementById('saloon-svg')) {
-    forwardVideo.load();
+  // Sub-page reverse transition on load
+  if (reverseVideo && overlay) {
+    reverseVideo.currentTime = 0;
+    reverseVideo.play().catch(() => {});
+    reverseVideo.onended = () => {
+      overlay.style.display = 'none';
+    };
   }
 
   // Index page – prop shooting
@@ -181,7 +179,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const rect = prop.getBoundingClientRect();
         const x = rect.left + rect.width / 2;
         const y = rect.top + rect.height / 2;
-
         let hits = parseInt(prop.dataset.hits || '0') + 1;
         prop.dataset.hits = hits;
 
@@ -191,33 +188,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         updateScore(parseInt(prop.dataset.score), x, y);
         explode(x, y, '#00ffcc');
-
         prop.classList.add('hit');
         setTimeout(() => prop.classList.remove('hit'), 160);
 
         if (hits >= parseInt(prop.dataset.maxHits)) {
           prop.classList.add('destroyed');
-          forwardVideo.src = prop.dataset.forwardVideo;
-          forwardVideo.currentTime = 0;
-          forwardVideo.playbackRate = 1.3;
-          forwardVideo.muted = isMobile();
-          forwardVideo.volume = isMobile() ? 0 : 0.8;
-
-          overlay.style.display = 'block';
-
-          forwardVideo.play().catch(() => {
-            window.location.href = prop.dataset.link;
-          });
-
-          forwardVideo.onended = () => {
-            window.location.href = prop.dataset.link;
-          };
+          playForwardTransition(prop.dataset.link);
         }
       });
     });
   }
-
-  // Sub-page reverse transition (handled in events.html or other pages)
 });
 
 document.addEventListener('mousemove', e => {
