@@ -353,31 +353,34 @@
             return;
           }
 
-        try {
-  // 1. Send notification to YOU (the sexy orange one)
+  try {
+  // 1. Send the real message to YOU (Captain - Orange template)
   await emailjs.send("service_n08jdhv", "template_zysamxl", {
     name: name,
     email: email,
-    subject: document.getElementById('subject') ? document.getElementById('subject').value.trim() : "General Inquiry",
+    subject: document.getElementById("subject") ? document.getElementById("subject").value.trim() : "General Inquiry",
     message: message
   });
 
-  // 2. Send auto-reply to the USER (the welcome saloon message)
+  // 2. Send the sexy welcome message to the USER
   await emailjs.send("service_n08jdhv", "template_ls2s5mp", {
     name: name,
     email: email,
     message: message
   });
 
-  contactSuccess.textContent = "Your message has been sent to the Captain!";
+  // Success message
+  contactSuccess.textContent = "Message sent to the Captain. Thank you!";
   contactSuccess.style.display = 'block';
   contactForm.reset();
 
-  setTimeout(() => contactSuccess.style.display = 'none', 6000);
+  setTimeout(() => {
+    contactSuccess.style.display = 'none';
+  }, 6000);
 
 } catch (error) {
-  console.error("EmailJS error:", error);
-  contactError.textContent = "Failed to send message. Please try again.";
+  console.error("EmailJS Error:", error);
+  contactError.textContent = "Failed to send. Try again later.";
   contactError.style.display = 'block';
 }
         });
