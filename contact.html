@@ -225,11 +225,10 @@
   <script src="script.js"></script>
 
   <!-- 🔒 CHAINED - LOCKED FIREBASE -->
-<!-- 🔒 FIREBASE SDK with App Check -->
+<!-- FIREBASE - Clean & Secure Version -->
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
   import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
-  import { initializeAppCheck, ReCaptchaV3Provider } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app-check.js';
 
   const firebaseConfig = {
     apiKey: "AIzaSyAJQMdogiDwB0oLf2I_Jp-6NSLTDcXvVcQ",
@@ -241,20 +240,14 @@
   };
 
   const app = initializeApp(firebaseConfig);
-
-  // === APP CHECK (strong protection) ===
-  const appCheck = initializeAppCheck(app, {
-    provider: new ReCaptchaV3Provider('6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'), // ← PUT YOUR reCAPTCHA SITE KEY HERE
-    isTokenAutoRefreshEnabled: true
-  });
-
   const db = getFirestore(app);
 
-  // Make functions available globally for your forms
   window.db = db;
   window.addDoc = addDoc;
   window.collection = collection;
   window.serverTimestamp = serverTimestamp;
+
+  console.log("✅ Firebase initialized");
 </script>
 
   <!-- 🔒 CHAINED - LOCKED EMAILJS -->
