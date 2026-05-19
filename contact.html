@@ -353,22 +353,33 @@
             return;
           }
 
-          try {
-            await emailjs.send("service_n08jdhv", "template_ls2s5mp", {
-              name: name,
-              email: email,
-              message: message
-            });
+        try {
+  // 1. Send notification to YOU (the sexy orange one)
+  await emailjs.send("service_n08jdhv", "YOUR_NOTIFICATION_TEMPLATE_ID", {
+    name: name,
+    email: email,
+    subject: document.getElementById('subject') ? document.getElementById('subject').value.trim() : "General Inquiry",
+    message: message
+  });
 
-            contactSuccess.textContent = "Your message has been sent!";
-            contactSuccess.style.display = 'block';
-            contactForm.reset();
-            setTimeout(() => contactSuccess.style.display = 'none', 6000);
-          } catch (error) {
-            console.error("EmailJS error:", error);
-            contactError.textContent = "Failed to send message. Please try again.";
-            contactError.style.display = 'block';
-          }
+  // 2. Send auto-reply to the USER (the welcome saloon message)
+  await emailjs.send("service_n08jdhv", "template_ls2s5mp", {
+    name: name,
+    email: email,
+    message: message
+  });
+
+  contactSuccess.textContent = "Your message has been sent to the Captain!";
+  contactSuccess.style.display = 'block';
+  contactForm.reset();
+
+  setTimeout(() => contactSuccess.style.display = 'none', 6000);
+
+} catch (error) {
+  console.error("EmailJS error:", error);
+  contactError.textContent = "Failed to send message. Please try again.";
+  contactError.style.display = 'block';
+}
         });
       }
     });
