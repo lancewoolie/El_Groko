@@ -8,7 +8,6 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/png" href="img/LanceWoolieHeadonly.png">
-
   <style>
     /* 🔒 CHAINED 🌕 Body & Background */
     body {
@@ -29,7 +28,7 @@
       }
     }
 
-    /* 🔒 CHAINED 📱 Mini-Nav - Exact style from OnlyFans */
+    /* 🔒 CHAINED 📱 Mini-Nav */
     .mini-nav {
       position: fixed;
       top: 12px;
@@ -85,7 +84,7 @@
     }
     .content.show { opacity: 1; }
 
-    /* 🔒 CHAINED 🎴 Holographic transparent cards */
+    /* 🔒 CHAINED 🎴 Smaller & Tighter Holographic Cards */
     .card {
       background: rgba(8, 15, 45, 0.10) !important;
       border: 4px solid #00ffcc;
@@ -104,33 +103,23 @@
     }
     .card img {
       width: 100%;
-      height: 240px;
+      height: 210px;           /* Smaller images */
       object-fit: cover;
+    }
+    .card-body {
+      padding: 1.25rem;        /* Less bulky padding */
+    }
+    .card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 10px;
+    }
+    .card p {
+      font-size: 0.95rem;
+      line-height: 1.45;
     }
     .new-release {
       border-color: #ff00aa;
       box-shadow: 0 0 60px rgba(255, 0, 170, 0.7);
-    }
-
-    /* 🔒 CHAINED - Sharper, blacker text (less blurry) */
-    .card h3, .card p {
-      color: #ffffff;
-      text-shadow: 
-        -2px -2px 3px #000000,
-         2px -2px 3px #000000,
-        -2px  2px 3px #000000,
-         2px  2px 3px #000000,
-        0 0 8px rgba(0, 255, 204, 0.6);
-      -webkit-text-stroke: 0.6px rgba(0, 0, 0, 0.85);
-      font-weight: 500;
-    }
-    .card h3 {
-      font-size: 1.38rem;
-      margin-bottom: 12px;
-    }
-    .card p {
-      font-size: 0.96rem;
-      line-height: 1.5;
     }
     .price-tag {
       background: rgba(0, 255, 204, 0.95);
@@ -142,17 +131,16 @@
       text-shadow: 0 0 6px #000000;
       -webkit-text-stroke: 0.4px #000;
     }
-    .btn-group { 
-      display: flex; 
-      gap: 10px; 
-      justify-content: center; 
-      flex-wrap: wrap; 
-      margin-top: 1rem; 
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 1rem;
     }
   </style>
 </head>
 <body>
-
   <!-- 🔒 CHAINED 📊 Mini-Nav -->
   <div class="mini-nav" id="mini-nav">
     <img src="/img/moonsaloon/saloon-doors-nav.png" class="doors" data-link="index.html" data-type="home" data-label="Moon Saloon">
@@ -172,12 +160,14 @@
   <div class="content-overlay">
     <div class="content" id="main-content">
       <div class="container py-5">
-
-        <!-- Merch Grid -->
-                  <!-- MOON SALOON VINYL PRE-ORDER - NEW -->
-          <div class="col-md-6 col-lg-4">
+        <h2 class="text-center mb-5" style="color:#00ffcc; text-shadow: 0 0 20px #00ffcc;">MOON GENERAL STORE</h2>
+        
+        <div class="row g-4" id="merch-grid">
+          
+          <!-- MOON SALOON VINYL PRE-ORDER -->
+          <div class="col-12 col-md-6 col-lg-4">
             <div class="card new-release">
-              <img src="https://f4.bcbits.com/img/0041177986_10.jpg" 
+              <img src="img/moonsaloon/MOONSALOONCOVER EXAMPLESMALL.png" 
                    alt="Moon Saloon Vinyl Pre-Order" class="card-img-top">
               <div class="card-body">
                 <h3>Moon Saloon — Full Vinyl Pre-Order</h3>
@@ -193,9 +183,9 @@
               </div>
             </div>
           </div>
-        <div class="row g-4" id="merch-grid">
+
           <!-- Crazy Arms -->
-          <div class="col-md-6 col-lg-4">
+          <div class="col-12 col-md-6 col-lg-4">
             <div class="card new-release">
               <img src="img/CrazyArmsweb.jpg" alt="Crazy Arms Single" class="card-img-top">
               <div class="card-body">
@@ -211,12 +201,12 @@
           </div>
 
           <!-- Chicken Socks -->
-          <div class="col-md-6 col-lg-4">
+          <div class="col-12 col-md-6 col-lg-4">
             <div class="card">
               <img src="https://f4.bcbits.com/img/0041177986_10.jpg" alt="Cluck Yeah Chicken Socks" class="card-img-top">
               <div class="card-body">
                 <h3>Cluck Yeah Chicken Socks</h3>
-                <p>Strut your stuff with our exclusive Chicken Socks – the ultimate feather in your foot fashion! These sleek, jet-black socks are crafted from premium Chinese cotton...</p>
+                <p>Strut your stuff with our exclusive Chicken Socks – the ultimate feather in your foot fashion!</p>
                 <span class="price-tag">$10</span>
                 <a href="https://lancewoolie.bandcamp.com/merch/chicken-socks-cluck-yeah-step-into-the-flock" class="btn btn-success w-100" target="_blank">Buy Now</a>
               </div>
@@ -224,7 +214,7 @@
           </div>
 
           <!-- Uber -->
-          <div class="col-md-6 col-lg-4">
+          <div class="col-12 col-md-6 col-lg-4">
             <div class="card">
               <img src="https://f4.bcbits.com/img/a2855470268_10.jpg" alt="Uber Single Cover" class="card-img-top">
               <div class="card-body">
@@ -237,7 +227,7 @@
           </div>
 
           <!-- Too Drunk -->
-          <div class="col-md-6 col-lg-4">
+          <div class="col-12 col-md-6 col-lg-4">
             <div class="card">
               <img src="https://f4.bcbits.com/img/a1387979790_10.jpg" alt="Too Drunk Single Cover" class="card-img-top">
               <div class="card-body">
@@ -250,7 +240,7 @@
           </div>
 
           <!-- Country Paradise -->
-          <div class="col-md-6 col-lg-4">
+          <div class="col-12 col-md-6 col-lg-4">
             <div class="card">
               <img src="img/COUNTRY-PARADISE-scaled.jpg" alt="Country Paradise Album Cover" class="card-img-top">
               <div class="card-body">
@@ -261,6 +251,7 @@
               </div>
             </div>
           </div>
+
         </div>
 
         <div class="text-center mt-5">
@@ -298,12 +289,9 @@
       miniNav.addEventListener('click', (e) => {
         const img = e.target.closest('img');
         if (!img) return;
-
         const targetLink = img.getAttribute('data-link');
         const type = img.getAttribute('data-type');
         if (!targetLink) return;
-
-        e.preventDefault();
 
         if (type === 'home') {
           miniNav.classList.add('bounce-out');
