@@ -37,23 +37,30 @@
     .content { position:relative; z-index:2; opacity:0; transition:opacity 1.2s ease; }
     .content.show { opacity:1; }
 
-    /* MAIN BLOCKS */
+    /* SEXY MAIN BLOCKS */
     .main-blocks { max-width:1200px; margin:0 auto 50px; padding:0 5%; }
-    .block-row { display:flex; gap:24px; margin-bottom:30px; flex-wrap:wrap; justify-content:center; }
+    .block-row { display:flex; gap:28px; margin-bottom:32px; flex-wrap:wrap; justify-content:center; }
     .main-block {
-      flex:1 1 460px; min-width:300px; height:380px; background-size:cover; background-position:center;
-      border:3px solid; border-radius:22px; position:relative; overflow:hidden; cursor:pointer;
-      box-shadow:0 0 50px rgba(0,255,204,0.4); transition:all 0.4s ease;
+      flex:1 1 460px; min-width:300px; height:420px; background-size:cover; background-position:center;
+      border:4px solid; border-radius:26px; position:relative; overflow:hidden; cursor:pointer;
+      box-shadow:0 0 60px rgba(0,255,204,0.5); transition:all 0.4s ease;
     }
-    .main-block:hover { transform:scale(1.03); box-shadow:0 0 70px rgba(0,255,204,0.6); }
+    .main-block:hover { transform:scale(1.04); box-shadow:0 0 90px rgba(0,255,204,0.8); }
+
     .main-block .overlay {
-      position:absolute; bottom:0; left:0; right:0; background:linear-gradient(transparent,rgba(0,0,0,0.92));
-      padding:30px 20px 25px; text-align:center; color:#fff;
+      position:absolute; bottom:0; left:0; right:0; 
+      background:linear-gradient(transparent, rgba(10,15,35,0.96));
+      padding:40px 30px 32px; text-align:center; color:#fff;
     }
+    .main-block h3 { 
+      font-size:1.65rem; margin:0 0 8px 0; text-shadow:0 0 20px #000, 0 0 30px currentColor; 
+    }
+    .main-block p { margin:0 0 14px 0; font-size:1.05rem; text-shadow:0 0 12px #000; }
+    .main-block small { color:#ff0; font-size:0.92rem; text-shadow:0 0 10px #000; }
 
     /* Carousels */
     .mini-carousel { max-width:420px; margin:0 auto 30px; }
-    .carousel-item img { height:190px; object-fit:cover; border-radius:12px; }
+    .carousel-item img { height:200px; object-fit:cover; border-radius:14px; box-shadow:0 0 20px rgba(0,255,204,0.4); }
   </style>
 </head>
 <body>
@@ -77,92 +84,76 @@
     <div class="content" id="main-content">
 
       <div class="text-center mb-5" style="max-width:1100px;margin:0 auto;padding:0 5%;">
-        <h1 style="color:#00ffcc;">🚀 MOON SALOON REFERRAL HUB</h1>
+        <h1 style="color:#00ffcc; text-shadow:0 0 30px #00ffcc;">🚀 MOON SALOON REFERRAL HUB</h1>
       </div>
 
-      <!-- TOP ROW: Tesla + Starlink (Background Images) -->
+      <!-- TOP ROW: Tesla + Starlink -->
       <div class="main-blocks">
         <div class="block-row">
           <div class="main-block tesla" onclick="logAndOpenReferral('tesla','https://www.tesla.com/referral/lance680518')" style="background-image:url('img/moonsaloon/TESLA.jpg');border-color:#ff00aa;">
             <div class="overlay">
-              <h3 style="color:#ff00aa;margin:0 0 8px 0;">NEVER DRIVE AGAIN</h3>
-              <p style="margin:0 0 12px 0;color:#fff;">Free Supercharging • FSD</p>
-              <small style="color:#ff0;font-size:0.9rem;">MUST USE THIS LINK TO RECEIVE DISCOUNT</small>
-              <button style="margin-top:12px;background:transparent;color:#ff00aa;border:2px solid #ff00aa;padding:10px 40px;border-radius:50px;font-weight:bold;">GET TESLA</button>
+              <h3>NEVER DRIVE AGAIN</h3>
+              <p>Free Supercharging • FSD</p>
+              <small>MUST USE THIS LINK TO RECEIVE DISCOUNT</small>
+              <button style="margin-top:16px;background:transparent;color:#ff00aa;border:2px solid #ff00aa;padding:12px 44px;border-radius:50px;font-weight:bold;">GET TESLA</button>
             </div>
           </div>
 
           <div class="main-block starlink" onclick="logAndOpenReferral('starlink','https://starlink.com/residential?referral=RC-DF-11799209-86250-5')" style="background-image:url('img/moonsaloon/Starlink.jpg');border-color:#00ffcc;">
             <div class="overlay">
-              <h3 style="color:#00ffcc;margin:0 0 8px 0;">FREE STARLINK MINI</h3>
-              <p style="margin:0 0 12px 0;color:#fff;">400+ Mbps • Stay Connected Anywhere</p>
-              <button style="margin-top:12px;background:transparent;color:#00ffcc;border:2px solid #00ffcc;padding:10px 40px;border-radius:50px;font-weight:bold;">GET STARLINK</button>
+              <h3>FREE STARLINK MINI</h3>
+              <p>400+ Mbps • Stay Connected Anywhere</p>
+              <button style="margin-top:16px;background:transparent;color:#00ffcc;border:2px solid #00ffcc;padding:12px 44px;border-radius:50px;font-weight:bold;">GET STARLINK</button>
             </div>
           </div>
         </div>
 
-        <!-- SECOND ROW: Music + Merch Carousels -->
+        <!-- SECOND ROW: Music + Merch -->
         <div class="block-row">
-          <div class="main-block" style="background:rgba(10,15,35,0.92);border-color:#ff00aa;flex-direction:column;display:flex;justify-content:center;">
-            <h3 style="color:#ff00aa;text-align:center;">🎵 MUSIC</h3>
-            <div class="mini-carousel">
+          <div class="main-block" style="background:rgba(10,15,35,0.95);border-color:#ff00aa;flex-direction:column;display:flex;justify-content:center;align-items:center;">
+            <h3 style="color:#ff00aa;margin-bottom:20px;">🎵 MUSIC</h3>
+            <div class="mini-carousel" style="width:100%;max-width:380px;">
               <div id="musicCarousel" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
-                  <div class="carousel-item active">
-                    <img src="https://img.youtube.com/vi/1Q82uscHIME/maxresdefault.jpg" class="d-block w-100" alt="Crazy Arms">
-                    <div class="carousel-caption"><strong>Crazy Arms</strong></div>
-                  </div>
-                  <div class="carousel-item">
-                    <img src="https://f4.bcbits.com/img/a2855470268_10.jpg" class="d-block w-100" alt="Uber">
-                    <div class="carousel-caption"><strong>Uber</strong></div>
-                  </div>
+                  <div class="carousel-item active"><img src="https://img.youtube.com/vi/1Q82uscHIME/maxresdefault.jpg" class="d-block w-100" alt="Crazy Arms"><div class="carousel-caption"><strong>Crazy Arms</strong></div></div>
+                  <div class="carousel-item"><img src="https://f4.bcbits.com/img/a2855470268_10.jpg" class="d-block w-100" alt="Uber"><div class="carousel-caption"><strong>Uber</strong></div></div>
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#musicCarousel" data-bs-slide="prev">‹</button>
                 <button class="carousel-control-next" type="button" data-bs-target="#musicCarousel" data-bs-slide="next">›</button>
               </div>
             </div>
-            <div class="text-center mt-3">
-              <button onclick="logAndNavigate('music','music.html')" class="btn btn-outline-light">FULL MUSIC PAGE →</button>
-            </div>
+            <button onclick="logAndNavigate('music','music.html')" class="btn btn-outline-light mt-3">FULL MUSIC PAGE →</button>
           </div>
 
-          <div class="main-block" style="background:rgba(10,15,35,0.92);border-color:#ffd700;flex-direction:column;display:flex;justify-content:center;">
-            <h3 style="color:#ffd700;text-align:center;">🛍️ MERCH</h3>
-            <div class="mini-carousel">
+          <div class="main-block" style="background:rgba(10,15,35,0.95);border-color:#ffd700;flex-direction:column;display:flex;justify-content:center;align-items:center;">
+            <h3 style="color:#ffd700;margin-bottom:20px;">🛍️ MERCH</h3>
+            <div class="mini-carousel" style="width:100%;max-width:380px;">
               <div id="merchCarousel" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
-                  <div class="carousel-item active">
-                    <img src="https://f4.bcbits.com/img/0041177986_10.jpg" class="d-block w-100" alt="Vinyl">
-                    <div class="carousel-caption"><strong>Moon Saloon Vinyl</strong></div>
-                  </div>
-                  <div class="carousel-item">
-                    <img src="img/CrazyArmsweb.jpg" class="d-block w-100" alt="Crazy Arms">
-                    <div class="carousel-caption"><strong>Crazy Arms</strong></div>
-                  </div>
+                  <div class="carousel-item active"><img src="https://f4.bcbits.com/img/0041177986_10.jpg" class="d-block w-100" alt="Vinyl"><div class="carousel-caption"><strong>Moon Saloon Vinyl</strong></div></div>
+                  <div class="carousel-item"><img src="img/CrazyArmsweb.jpg" class="d-block w-100" alt="Crazy Arms"><div class="carousel-caption"><strong>Crazy Arms</strong></div></div>
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#merchCarousel" data-bs-slide="prev">‹</button>
                 <button class="carousel-control-next" type="button" data-bs-target="#merchCarousel" data-bs-slide="next">›</button>
               </div>
             </div>
-            <div class="text-center mt-3">
-              <button onclick="logAndNavigate('merch','merch.html')" class="btn btn-outline-light">FULL MERCH STORE →</button>
-            </div>
+            <button onclick="logAndNavigate('merch','merch.html')" class="btn btn-outline-light mt-3">FULL MERCH STORE →</button>
           </div>
         </div>
       </div>
 
       <!-- BOTTOM: Chimes + SpaceX -->
-      <div style="max-width:1200px;margin:0 auto;padding:0 5%;display:flex;gap:24px;flex-wrap:wrap;">
+      <div style="max-width:1200px;margin:0 auto;padding:0 5%;display:flex;gap:28px;flex-wrap:wrap;">
         <div style="flex:1 1 400px;min-width:300px;">
-          <div style="background:rgba(8,18,40,0.92);border:3px solid #00ffcc;border-radius:22px;padding:1.6rem;">
-            <h2 style="color:#00ffcc;text-align:center;margin-bottom:12px;">🎵 TESLA LOCK CHIMES</h2>
+          <div style="background:rgba(8,18,40,0.92);border:3px solid #00ffcc;border-radius:22px;padding:1.8rem;">
+            <h2 style="color:#00ffcc;text-align:center;margin-bottom:16px;">🎵 TESLA LOCK CHIMES</h2>
             <ul id="chimes-list" style="list-style:none;padding:0;margin:0;"></ul>
           </div>
         </div>
 
         <div style="flex:1 1 400px;min-width:300px;">
           <div onclick="logAndOpenReferral('spacex','https://shop.spacex.com/')" style="height:100%;background:rgba(10,15,35,0.92);border:3px solid #ffd700;border-radius:22px;padding:2.5rem;text-align:center;cursor:pointer;">
-            <div style="font-size:3.2rem;margin-bottom:16px;">🌌</div>
+            <div style="font-size:3.5rem;margin-bottom:20px;">🌌</div>
             <h3 style="color:#ffd700;">OFFICIAL SPACEX STORE</h3>
             <p style="color:#ddd;">Starship gear &amp; mission merch</p>
             <button style="background:transparent;color:#ffd700;border:2px solid #ffd700;padding:14px 48px;border-radius:50px;font-weight:bold;">SHOP SPACEX</button>
@@ -177,6 +168,7 @@
   <script src="script.js"></script>
 
   <script>
+    // (Chimes + logging + transitions - same reliable code as last version)
     const chimes = [
       { name: "Crazy Arms Steel Solo", file: "sounds/LockChime.wav" },
       { name: "Star Trek Red Alert", file: "sounds/REDALERT.wav" },
@@ -216,7 +208,6 @@
       const list = document.getElementById('chimes-list');
       if (list) chimes.forEach(chime => list.appendChild(createChimeItem(chime)));
 
-      // Transitions
       const overlay = document.getElementById('transition-overlay');
       const forwardVideo = document.getElementById('forward-video');
       const reverseVideo = document.getElementById('reverse-video');
