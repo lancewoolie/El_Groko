@@ -23,35 +23,40 @@
       background: rgba(10, 20, 50, 0.92);
       border: 3px solid #00ffcc;
       border-radius: 20px;
-      padding: 2rem;
-      margin-bottom: 2rem;
+      padding: 1.8rem;
+      margin-bottom: 1.5rem;
       box-shadow: 0 0 50px rgba(0, 255, 204, 0.7);
-      position: relative;
     }
-    .admin-card h2 { color: #00ffcc; text-shadow: 0 0 25px #00ffcc; }
+    .admin-card h2 { color: #00ffcc; text-shadow: 0 0 25px #00ffcc; margin-bottom: 1rem; }
     .add-log-btn, .copy-logs-btn, .copy-cadets-btn, .refresh-referrals-btn {
-      background: #ff00aa; color: white; border: none; padding: 10px 18px;
-      border-radius: 8px; cursor: pointer; font-weight: bold;
+      background: #ff00aa; color: white; border: none; padding: 8px 16px;
+      border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 0.9rem;
     }
     .copy-logs-btn { background: #00ccff; }
     .copy-cadets-btn { background: #00ffaa; }
     .refresh-referrals-btn { background: #ffd700; }
-    .log-entry, .referral-row {
+    .log-entry {
       background: rgba(0,0,0,0.5); border-left: 5px solid #ff00aa;
-      padding: 1.2rem; margin-bottom: 1rem; border-radius: 0 8px 8px 0;
-      cursor: pointer;
+      padding: 1rem; margin-bottom: 0.8rem; border-radius: 0 8px 8px 0; cursor: pointer;
     }
-    .log-entry:hover, .referral-row:hover { background: rgba(0,0,0,0.7); }
-    table { width: 100%; border-collapse: collapse; margin-top: 1rem; background: rgba(0,0,0,0.4); }
-    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #00ffcc; }
+    .log-entry:hover { background: rgba(0,0,0,0.7); }
+    .log-title { font-weight: bold; margin-bottom: 0.4rem; }
+    .log-preview {
+      font-style: italic; color: #bbbbbb; margin-bottom: 0.6rem;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .log-content { display: none; margin-top: 0.8rem; line-height: 1.6; }
+    .log-entry.expanded .log-content { display: block; }
+    table { width: 100%; border-collapse: collapse; margin-top: 0.8rem; background: rgba(0,0,0,0.4); font-size: 0.95rem; }
+    th, td { padding: 10px; text-align: left; border-bottom: 1px solid #00ffcc; }
     th { color: #00ffcc; }
   </style>
 </head>
 <body>
   <div id="nav-placeholder"></div>
   <div class="content-overlay">
-    <div class="container py-5">
-      <h1 class="text-center mb-5" style="color:#ff00aa; text-shadow: 0 0 40px #ff00aa;">ALPHA BASE CAMP</h1>
+    <div class="container py-4">
+      <h1 class="text-center mb-4" style="color:#ff00aa; text-shadow: 0 0 40px #ff00aa;">ALPHA BASE CAMP</h1>
 
       <!-- Login Modal -->
       <div class="modal fade" id="loginModal" tabindex="-1" data-bs-backdrop="static">
@@ -74,6 +79,8 @@
 
       <!-- Dashboard -->
       <div id="dashboard-content" style="display: none;">
+
+        <!-- CAPTAIN'S LOG - FULL WIDTH -->
         <div class="admin-card">
           <h2>Captain's Log Archive</h2>
           <button class="add-log-btn" onclick="showAddLogModal()">+ Add New Log</button>
@@ -81,26 +88,31 @@
           <div id="log-summary">Loading entries...</div>
         </div>
 
-        <div class="admin-card">
-          <h2>Chimes Referral Analytics</h2>
-          <button class="refresh-referrals-btn" onclick="loadReferralAnalytics()">🔄 Refresh Data</button>
-          <div id="referral-summary" style="margin:15px 0;font-size:1.1rem;color:#ffd700;">Loading referral data...</div>
-          <div id="referral-table">Loading...</div>
-        </div>
-
-        <div class="admin-card">
-          <h2>Subscriber Activity</h2>
-          <div class="d-flex justify-content-between align-items-center mb-3">
-            <span id="total-subscribers" style="font-size:1.3rem; color:#00ffcc;">Total Subscribers: <strong>Loading...</strong></span>
-            <button class="copy-cadets-btn" onclick="copyAllCadets()">Copy all subscribers</button>
+        <!-- TIGHT ROW: Referral + Subscribers side by side -->
+        <div class="row g-3">
+          <!-- REFERRAL ANALYTICS -->
+          <div class="col-lg-6">
+            <div class="admin-card h-100">
+              <h2>Chimes Referral Analytics</h2>
+              <button class="refresh-referrals-btn" onclick="loadReferralAnalytics()">🔄 Refresh</button>
+              <div id="referral-summary" style="margin:12px 0;font-size:1rem;color:#ffd700;">Loading...</div>
+              <div id="referral-table" style="max-height:420px; overflow-y:auto;">Loading...</div>
+            </div>
           </div>
-          <div id="subscribers-table">Loading subscribers...</div>
+
+          <!-- SUBSCRIBER ACTIVITY -->
+          <div class="col-lg-6">
+            <div class="admin-card h-100">
+              <h2>Subscriber Activity</h2>
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span id="total-subscribers" style="font-size:1.15rem; color:#00ffcc;">Total: <strong>Loading...</strong></span>
+                <button class="copy-cadets-btn" onclick="copyAllCadets()">Copy Emails</button>
+              </div>
+              <div id="subscribers-table" style="max-height:420px; overflow-y:auto;">Loading...</div>
+            </div>
+          </div>
         </div>
 
-        <div class="admin-card">
-          <h2>Visitor Demographics</h2>
-          <div id="stats-placeholder">Demographics tracking coming soon.</div>
-        </div>
       </div>
     </div>
   </div>
@@ -153,7 +165,7 @@
       }
     }
 
-    // ==================== CAPTAIN'S LOGS ====================
+    // ==================== CAPTAIN'S LOGS (COLLAPSED BY DEFAULT) ====================
     async function loadCaptainsLog() {
       const container = document.getElementById('log-summary');
       container.innerHTML = 'Loading entries...';
@@ -250,14 +262,14 @@
           const timeB = b.fields?.timestamp?.timestampValue ? new Date(b.fields.timestamp.timestampValue) : new Date(0);
           return timeB - timeA;
         });
-        let html = `<table><thead><tr><th>Date</th><th>Name</th><th>Email</th><th>Action</th></tr></thead><tbody>`;
+        let html = `<table><thead><tr><th>Date</th><th>Name</th><th>Email</th><th></th></tr></thead><tbody>`;
         docs.forEach(doc => {
           const id = doc.name.split('/').pop();
           const f = doc.fields || {};
           const fullName = [f.firstName?.stringValue, f.lastName?.stringValue].filter(Boolean).join(' ') || '—';
           const email = f.email ? f.email.stringValue : '—';
           const ts = f.timestamp ? new Date(f.timestamp.timestampValue).toLocaleDateString('en-US') : '—';
-          html += `<tr class="cadet-row"><td>${ts}</td><td>${fullName}</td><td>${email}</td><td><button class="delete-btn" onclick="deleteSubscriber('${id}', '${email.replace(/'/g, "\\'")}')">🗑️</button></td></tr>`;
+          html += `<tr><td>${ts}</td><td>${fullName}</td><td>${email}</td><td><button class="delete-btn" onclick="deleteSubscriber('${id}', '${email.replace(/'/g, "\\'")}')">🗑️</button></td></tr>`;
         });
         html += '</tbody></table>';
         tableDiv.innerHTML = html || '<p>No subscribers yet.</p>';
@@ -312,7 +324,7 @@
           if (target === 'music') music++;
           if (target === 'merch') merch++;
         });
-        summary.innerHTML = `Total Page Views: <strong>${pageViews}</strong> | Unique: <strong>${unique}</strong><br>
+        summary.innerHTML = `Views: <strong>${pageViews}</strong> | Unique: <strong>${unique}</strong><br>
           Tesla: <strong>${tesla}</strong> | Starlink: <strong>${starlink}</strong> | SpaceX: <strong>${spacex}</strong><br>
           Music: <strong>${music}</strong> | Merch: <strong>${merch}</strong>`;
 
@@ -322,7 +334,7 @@
           const tb = b.fields?.timestamp?.timestampValue ? new Date(b.fields.timestamp.timestampValue) : new Date(0);
           return tb - ta;
         });
-        docs.slice(0, 30).forEach(doc => {
+        docs.slice(0, 25).forEach(doc => {
           const f = doc.fields || {};
           const time = f.timestamp?.timestampValue ? new Date(f.timestamp.timestampValue).toLocaleString() : '—';
           html += `<tr class="referral-row"><td>${time}</td><td>${f.event?.stringValue || '—'}</td><td>${f.target?.stringValue || '—'}</td></tr>`;
