@@ -1,3 +1,12 @@
+// Initialize Firebase once (add if not already there)
+const firebaseConfig = {
+  apiKey: "AIzaSyAJQMdogiDwB0oLf2I_Jp-6NSLTDcXvVcQ",
+  projectId: "lance-woolie-webfarm",
+  // add other config if needed
+};
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 // =============================================
 // MOON SALOON script.js – DEPARTURE MODEL
 // =============================================
