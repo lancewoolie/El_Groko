@@ -250,6 +250,15 @@
 
       logEvent('page_view');
     });
+    // FORCE FIREBASE CHECK
+document.addEventListener('DOMContentLoaded', () => {
+  console.log("Firebase ready?", typeof firebase);
+  if (typeof firebase === 'undefined') {
+    console.error("Firebase not loaded on this page!");
+  } else {
+    console.log("Firestore available:", typeof firebase.firestore);
+  }
+});
   </script>
 </body>
 </html>
