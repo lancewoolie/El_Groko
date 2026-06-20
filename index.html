@@ -10,7 +10,13 @@
   <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/png" href="img/LanceWoolieHeadonly.png">
   <style>
-    html, body { margin:0 !important; padding:0 !important; width:100% !important; height:100% !important; overflow:hidden; }
+    html, body { 
+      margin:0 !important; 
+      padding:0 !important; 
+      width:100% !important; 
+      height:100% !important; 
+      overflow:hidden; 
+    }
     .hero {
       height: 100vh !important;
       width: 100vw !important;
@@ -25,36 +31,48 @@
       z-index: 9999; pointer-events: none; display: none; overflow: hidden; background: #000;
     }
     .transition-video { width: 100%; height: 100%; object-fit: cover; }
+
     /* Hide old nav */
     #nav-placeholder { display: none !important; }
+
+    /* Sexy icon effects */
+    .moonsaloon-prop {
+      filter: drop-shadow(0 0 12px rgba(0, 255, 255, 0.6)) drop-shadow(0 0 25px rgba(255, 20, 147, 0.4));
+      transition: transform 0.3s ease, filter 0.3s ease;
+      cursor: pointer;
+    }
+    .moonsaloon-prop:hover {
+      transform: scale(1.08);
+      filter: drop-shadow(0 0 20px rgba(0, 255, 255, 0.9)) drop-shadow(0 0 35px rgba(255, 20, 147, 0.7));
+    }
+    .moonsaloon-prop:active {
+      transform: scale(0.95);
+    }
   </style>
 </head>
 <body>
-
   <section class="hero">
-    <svg id="saloon-svg" width="100%" height="100%" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
-
+    <svg id="saloon-svg" width="100%" height="100%" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid meet">
       <!-- Tesla Chimes -->
-      <image id="tesla-chime-prop" href="/img/moonsaloon/Tesla-Chime-nav.png" x="880" y="70" width="175" height="119" class="moonsaloon-prop" data-link="chimes.html" data-score="350" data-max-hits="1" data-forward-video="/video/chimes-video-transition.mp4" />
-
+      <image id="tesla-chime-prop" href="/img/moonsaloon/Tesla-Chime-nav.png" x="820" y="85" width="165" height="112" class="moonsaloon-prop" data-link="chimes.html" data-score="350" data-max-hits="1" data-forward-video="/video/chimes-video-transition.mp4" />
+      
       <!-- Origins -->
-      <image id="hourglass-origins" href="/img/moonsaloon/hourglass-origins-nav.png" x="610" y="715" width="161" height="220" class="moonsaloon-prop" data-link="origins.html" data-score="125" data-max-hits="1" data-forward-video="/video/origins-video-transition.mp4" />
-
+      <image id="hourglass-origins" href="/img/moonsaloon/hourglass-origins-nav.png" x="680" y="680" width="152" height="208" class="moonsaloon-prop" data-link="origins.html" data-score="125" data-max-hits="1" data-forward-video="/video/origins-video-transition.mp4" />
+      
       <!-- Events -->
-      <image id="holo-calendar-events" href="/img/moonsaloon/holo-calendar-events-nav.png" x="765" y="780" width="158" height="174" class="moonsaloon-prop" data-link="events.html" data-score="150" data-max-hits="1" data-forward-video="/video/events-video-transition.mp4" />
-
+      <image id="holo-calendar-events" href="/img/moonsaloon/holo-calendar-events-nav.png" x="830" y="745" width="150" height="165" class="moonsaloon-prop" data-link="events.html" data-score="150" data-max-hits="1" data-forward-video="/video/events-video-transition.mp4" />
+      
       <!-- Merch -->
-      <image id="cowboy-hat-merch" href="/img/moonsaloon/cowboy-hat-merch-nav.png" x="580" y="340" width="283" height="252" class="moonsaloon-prop" data-link="merch.html" data-score="150" data-max-hits="1" data-forward-video="/video/merch-video-transition.mp4" />
-
+      <image id="cowboy-hat-merch" href="/img/moonsaloon/cowboy-hat-merch-nav.png" x="610" y="310" width="260" height="232" class="moonsaloon-prop" data-link="merch.html" data-score="150" data-max-hits="1" data-forward-video="/video/merch-video-transition.mp4" />
+      
       <!-- Music & Video -->
-      <image id="music-video-neon" href="/img/moonsaloon/music-video-neon-nav.png" x="1050" y="485" width="185" height="142" class="moonsaloon-prop" data-link="music.html" data-score="175" data-max-hits="1" data-forward-video="/video/music-video-transition.mp4" />
-
+      <image id="music-video-neon" href="/img/moonsaloon/music-video-neon-nav.png" x="1020" y="460" width="175" height="135" class="moonsaloon-prop" data-link="music.html" data-score="175" data-max-hits="1" data-forward-video="/video/music-video-transition.mp4" />
+      
       <!-- OnlyFans (Raccoon) -->
-      <image id="raccoon-subscribe" href="/img/moonsaloon/raccoon-subscribe-nav.png" x="690" y="625" width="119" height="148" class="moonsaloon-prop" data-link="onlyfans.html" data-score="500" data-max-hits="1" data-forward-video="/video/friends-video-transition.mp4" />
-
+      <image id="raccoon-subscribe" href="/img/moonsaloon/raccoon-subscribe-nav.png" x="760" y="590" width="112" height="140" class="moonsaloon-prop" data-link="onlyfans.html" data-score="500" data-max-hits="1" data-forward-video="/video/friends-video-transition.mp4" />
+      
       <!-- Contact -->
-      <image id="contact-earth-trophy" href="/img/moonsaloon/contact-earth-trophy-nav.png" x="900" y="755" width="179" height="160" class="moonsaloon-prop" data-link="contact.html" data-score="200" data-max-hits="1" data-forward-video="/video/contact-video-transition.mp4" />
-
+      <image id="contact-earth-trophy" href="/img/moonsaloon/contact-earth-trophy-nav.png" x="950" y="720" width="170" height="152" class="moonsaloon-prop" data-link="contact.html" data-score="200" data-max-hits="1" data-forward-video="/video/contact-video-transition.mp4" />
     </svg>
   </section>
 
@@ -67,19 +85,15 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
-
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const overlay = document.getElementById('transition-overlay');
       const forwardVideo = document.getElementById('forward-video');
       const reverseVideo = document.getElementById('reverse-video');
-
+      
       // Clean up old nav if still present
       const oldNav = document.getElementById('nav-placeholder');
       if (oldNav) oldNav.remove();
-
-      // Forward transition only triggers from index when clicking a prop
-      // Reverse is handled on destination pages
     });
   </script>
 </body>
