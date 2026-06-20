@@ -11,10 +11,8 @@
   <link rel="icon" type="image/png" href="img/LanceWoolieHeadonly.png">
   <style>
     html, body { 
-      margin:0 !important; 
-      padding:0 !important; 
-      width:100% !important; 
-      height:100% !important; 
+      margin:0 !important; padding:0 !important; 
+      width:100% !important; height:100% !important; 
       overflow:hidden; 
     }
     .hero {
@@ -23,8 +21,6 @@
       background: url('/img/moonsaloon/moon-saloon-base-wide.jpg?v=3') center/cover no-repeat fixed !important;
       position: relative;
       overflow: hidden;
-      padding-top: 0;
-      margin: 0 !important;
     }
     #transition-overlay {
       position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
@@ -32,26 +28,25 @@
     }
     .transition-video { width: 100%; height: 100%; object-fit: cover; }
 
-    /* Hide old nav */
     #nav-placeholder { display: none !important; }
 
-    /* Sexy icon effects - GPU friendly */
+    /* Sexy FX */
     .moonsaloon-prop {
       filter: drop-shadow(0 0 12px rgba(0, 255, 255, 0.7)) drop-shadow(0 0 25px rgba(255, 20, 147, 0.4));
-      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), 
-                  filter 0.25s cubic-bezier(0.4, 0.0, 0.2, 1);
+      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), filter 0.25s ease;
       cursor: pointer;
       pointer-events: all;
     }
     .moonsaloon-prop:hover {
       transform: scale(1.08);
-      filter: drop-shadow(0 0 20px rgba(0, 255, 255, 0.95)) drop-shadow(0 0 40px rgba(255, 20, 147, 0.75));
+      filter: drop-shadow(0 0 22px rgba(0, 255, 255, 0.95)) drop-shadow(0 0 42px rgba(255, 20, 147, 0.8));
     }
   </style>
 </head>
 <body>
   <section class="hero">
-    <svg id="saloon-svg" width="100%" height="100%" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+    <svg id="saloon-svg" width="100%" height="100%" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" style="pointer-events: auto;">
+      
       <!-- Tesla Chimes -->
       <image id="tesla-chime-prop" href="/img/moonsaloon/Tesla-Chime-nav.png" x="830" y="75" width="170" height="115" class="moonsaloon-prop" data-link="chimes.html" data-score="350" data-max-hits="1" data-forward-video="/video/chimes-video-transition.mp4" />
       
@@ -67,7 +62,7 @@
       <!-- Music & Video -->
       <image id="music-video-neon" href="/img/moonsaloon/music-video-neon-nav.png" x="1035" y="465" width="180" height="138" class="moonsaloon-prop" data-link="music.html" data-score="175" data-max-hits="1" data-forward-video="/video/music-video-transition.mp4" />
       
-      <!-- OnlyFans (Raccoon) -->
+      <!-- Raccoon -->
       <image id="raccoon-subscribe" href="/img/moonsaloon/raccoon-subscribe-nav.png" x="735" y="600" width="115" height="142" class="moonsaloon-prop" data-link="onlyfans.html" data-score="500" data-max-hits="1" data-forward-video="/video/friends-video-transition.mp4" />
       
       <!-- Contact -->
@@ -86,13 +81,21 @@
   <script src="script.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Ensure SVG clicks work
       const svg = document.getElementById('saloon-svg');
+      
+      // Force pointer events on SVG and all props
       if (svg) {
         svg.style.pointerEvents = 'auto';
       }
 
-      // Clean up old nav
+      // Extra click handler backup for stubborn browsers
+      document.querySelectorAll('.moonsaloon-prop').forEach(prop => {
+        prop.style.pointerEvents = 'all';
+        
+        // Optional debug: log clicks
+        // prop.addEventListener('click', () => console.log('Clicked:', prop.id));
+      });
+
       const oldNav = document.getElementById('nav-placeholder');
       if (oldNav) oldNav.remove();
     });
