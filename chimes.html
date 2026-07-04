@@ -167,6 +167,26 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
 
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+    import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+    const firebaseConfig = {
+      apiKey: "AIzaSyAJQMdogiDwB0oLf2I_Jp-6NSLTDcXvVcQ",
+      authDomain: "lance-woolie-webfarm.firebaseapp.com",
+      projectId: "lance-woolie-webfarm",
+      storageBucket: "lance-woolie-webfarm.firebasestorage.app",
+      messagingSenderId: "278461194969",
+      appId: "1:278461194969:web:a2a03c9d27ccbb670814c8",
+      measurementId: "G-D734JL7BFR"
+    };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    window.db = db;
+    window.addDoc = addDoc;
+    window.collection = collection;
+    window.serverTimestamp = serverTimestamp;
+  </script>
+
   <script>
     // (Chimes + logging + transitions - same reliable code as last version)
     const chimes = [
@@ -188,14 +208,18 @@
       setTimeout(() => btn.style.color = orig, 1400);
     }
 
-    function logEvent(eventType, target = null) {
+    async function logEvent(eventType, target = null) {
       try {
-        if (typeof firebase !== 'undefined' && firebase.firestore) {
-          firebase.firestore().collection('chimesReferralLogs').add({
-            event: eventType, target: target, timestamp: firebase.firestore.FieldValue.serverTimestamp(), page: 'chimes.html'
-          });
-        }
-      } catch(e) {}
+        if (!window.db) return;
+        await window.addDoc(window.collection(window.db, 'chimesReferralLogs'), {
+          event: eventType,
+          target: target,
+          timestamp: window.serverTimestamp(),
+          page: 'chimes.html'
+        });
+      } catch (e) {
+        console.error('Chimes log failed:', e);
+      }
     }
     function logAndOpenReferral(type, url) { logEvent('referral_click', type); window.open(url, '_blank'); }
     function logAndNavigate(target, url) { logEvent('navigation_click', target); window.location.href = url; }
@@ -250,15 +274,6 @@
 
       logEvent('page_view');
     });
-    // FORCE FIREBASE CHECK
-document.addEventListener('DOMContentLoaded', () => {
-  console.log("Firebase ready?", typeof firebase);
-  if (typeof firebase === 'undefined') {
-    console.error("Firebase not loaded on this page!");
-  } else {
-    console.log("Firestore available:", typeof firebase.firestore);
-  }
-});
   </script>
 </body>
 </html>
