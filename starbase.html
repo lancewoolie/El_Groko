@@ -69,6 +69,12 @@
     .duo { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:22px; }
     .mode.left { text-align:left; }
     section { padding:56px 5%; }
+    .free { display:inline-block; background:#ffd700; color:#05070f; font-family:Anton,sans-serif; letter-spacing:1px; padding:8px 18px; border-radius:6px; margin-bottom:22px; font-size:1.05rem; }
+    .roles5 { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:12px; margin-top:26px; }
+    .roles5 div { background:rgba(8,18,40,.92); border:2px solid #00ffcc55; border-radius:14px; padding:14px 16px; }
+    .roles5 b { display:block; color:#fff; font-family:Anton,sans-serif; font-weight:400; font-size:1.3rem; letter-spacing:1px; }
+    .roles5 span { color:#aaa; font-size:.95rem; }
+    .tech { margin-top:24px; color:#00ffcc; font-family:Oswald,sans-serif; font-weight:700; letter-spacing:2px; font-size:.95rem; }
   </style>
 </head>
 <body>
@@ -83,40 +89,26 @@
   </div>
 
   <section class="pitch">
-    <h2>Open Starbase. <span style="color:#ffd700;">Real scale.</span> No rails.</h2>
-    <p class="big">Every bay, every road, and every pad is built full size. Clock in, grab the keys, and go to work.</p>
-  </section>
-
-  <section style="padding-top:0;">
-    <h2>Missions</h2>
-    <div class="modes">
-      <div class="mode"><div class="ico">📡</div><h3>Pez Loader</h3><p>Stack a full load of Starlinks into the Pez dispenser before the window closes.</p></div>
-      <div class="mode"><div class="ico">⛽</div><h3>Prop Run</h3><p>Drive a convoy of propellant trucks through the marsh. Don't jackknife the LOX.</p></div>
-      <div class="mode"><div class="ico">🚀</div><h3>Rollout</h3><p>Move a 71 m booster from the bay to the pad without scratching a tile.</p></div>
-      <div class="mode"><div class="ico">🏗️</div><h3>Pour Day</h3><p>Dozers, cranes, and concrete. The base doesn't build itself.</p></div>
-      <div class="mode"><div class="ico">🛡️</div><h3>Lockdown</h3><p>Clear the hazard zone. Some guy with a drone is always in the airspace.</p></div>
-      <div class="mode"><div class="ico">🛰️</div><h3>T-Minus</h3><p>Run ops and call the count, all the way to liftoff.</p></div>
+    <div class="free">COMPLETELY FREE ALPHA · ALPHA TESTERS GET GRANDFATHERED REWARDS AT BETA</div>
+    <h2>Open Starbase. <span style="color:#ffd700;">Real scale.</span> Real crew.</h2>
+    <p class="big">Multiplayer. Pick a role, take missions, and run the base with your friends.</p>
+    <div class="roles5">
+      <div><b>🏗️ Construction</b><span>Pour Day: dozers, cranes, slabs</span></div>
+      <div><b>🛰️ Operations</b><span>T-Minus: call the count</span></div>
+      <div><b>🛡️ Security</b><span>Lockdown: clear the hazard zone</span></div>
+      <div><b>🚛 Transport</b><span>Rollout, Prop Run, Pez Loader</span></div>
+      <div><b>🎥 Creator</b><span>Drone and camera suite</span></div>
     </div>
-    <p class="roles">Roles: <b>Construction</b> · <b>Operations</b> · <b>Security</b> · <b>Transport</b> · <b>Creator</b></p>
+    <p class="tech">UNREAL ENGINE 5.8.3 · REAL-WORLD MAP · MULTIPLAYER · VOICE + TEXT CHAT · REWIND TIME</p>
   </section>
-
-  <section class="duo" style="padding-top:0;">
-    <div class="mode left"><div class="ico">🎥</div><h3>Creator camera suite</h3><p>Fly drones, set tripods, and cut your own launch videos. The site is your film set.</p></div>
-    <div class="mode left"><div class="ico">⏪</div><h3>Rewind the build</h3><p>Drag time back and watch the base peel away layer by layer until it's just Louisiana marsh.</p>
-      <input type="range" id="clock" min="0" max="5" value="5" style="width:100%;accent-color:#ffd700;margin-top:10px;">
-      <div style="color:#ffd700;font-family:Anton,sans-serif;letter-spacing:1px;" id="era">Today's build</div>
-      <div class="layers" id="layers"></div>
-    </div>
-  </section>
-
-  <img src="img/starbase/starbase-drone.jpg" alt="Starships and dozers on the Starbase Louisiana build site" style="display:block;width:100%;max-height:520px;object-fit:cover;">
 
   <section id="signup">
     <div class="row g-5">
       <div class="col-lg-5">
         <h2>Join the alpha</h2>
         <p style="color:#ccc;font-size:1.1rem;">Alpha testers get in first. You'll break things, tell us what broke, and help decide what gets built next. Beta comes later.</p>
-        <div class="promise"><strong>Free to test.</strong> No paywall to get in, ever.</div>
+        <div class="promise"><strong>100% free alpha.</strong> No paywall, ever.</div>
+        <div class="promise"><strong>Grandfathered.</strong> Alpha testers get locked-in rewards at beta.</div>
         <div class="promise"><strong>Nothing for sale in-game.</strong> No ships, no land, no "pledge packs."</div>
         <div class="promise"><strong>Support is optional.</strong> Tips pay for building time, and we'll show where the money goes.</div>
       </div>
@@ -230,27 +222,6 @@
       }
       go.disabled = false;
     });
-  </script>
-  <script>
-    const eras = [
-      { label: 'Empty marsh', on: 0 },
-      { label: 'Site plan staked out', on: 1 },
-      { label: 'Roads and slabs poured', on: 2 },
-      { label: 'Factory going up', on: 3 },
-      { label: 'Bays and launch mount', on: 4 },
-      { label: "Today's build", on: 5 }
-    ];
-    const layerNames = ['Ground marks', 'Haul roads', 'Foundation slabs', 'Starfactory', 'Terra Bay & launch mount'];
-    const box = document.getElementById('layers');
-    layerNames.forEach(n => { const s = document.createElement('span'); s.className = 'layer'; s.textContent = n; box.appendChild(s); });
-    const clock = document.getElementById('clock');
-    const era = document.getElementById('era');
-    function update() {
-      const v = +clock.value;
-      era.textContent = eras[v].label;
-      [...box.children].forEach((el, i) => el.classList.toggle('off', i >= eras[v].on));
-    }
-    clock.addEventListener('input', update); update();
   </script>
 </body>
 </html>
