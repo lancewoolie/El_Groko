@@ -193,6 +193,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>emailjs.init("CHqNrS_37-ZHjibQR");</script>
+  <script src="js/email-templates.js"></script>
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
     import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
@@ -239,6 +240,8 @@
         try {
           await emailjs.send("service_n08jdhv", "template_ls2s5mp", {
             name, email,
+            subject: "ACCESS GRANTED: Starbase, Louisiana v .1 🚀",
+            html: window.EmailDesigns.starbaseWelcome(name),
             message: "Thanks for signing up for the Starbase, Louisiana v .1 alpha. Your spot is locked in, and it's completely free. Alpha testers get grandfathered rewards at beta. Your mission briefing will be sent to you ASAP."
           });
         } catch (mailErr) { console.error('Welcome email failed:', mailErr); }

@@ -253,6 +253,7 @@
   <!-- 🔒 CHAINED - LOCKED EMAILJS -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script> emailjs.init("CHqNrS_37-ZHjibQR"); </script>
+  <script src="js/email-templates.js"></script>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -366,7 +367,9 @@
              await emailjs.send("service_n08jdhv", "template_ls2s5mp", {
                name: name,
                email: email,
-               message: message
+               message: message,
+               subject: "Welcome to the Saloon, " + name,
+               html: window.EmailDesigns.moonSaloonWelcome(name, message)
              });
 
              contactSuccess.textContent = "Your message has been sent to the Captain!";
