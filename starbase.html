@@ -70,9 +70,10 @@
     .mode.left { text-align:left; }
     section { padding:56px 5%; }
     .free { display:inline-block; background:#ffd700; color:#05070f; font-family:Anton,sans-serif; letter-spacing:1px; padding:8px 18px; border-radius:6px; margin-bottom:22px; font-size:1.05rem; }
-    .roles5 { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:12px; margin-top:26px; }
-    .roles5 div { background:rgba(8,18,40,.92); border:2px solid #00ffcc55; border-radius:14px; padding:14px 16px; }
-    .roles5 b { display:block; color:#fff; font-family:Anton,sans-serif; font-weight:400; font-size:1.3rem; letter-spacing:1px; }
+    .roles5 { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-top:20px; }
+    @media (max-width:800px){ .roles5 { grid-template-columns:repeat(2,1fr); } }
+    .roles5 div { background:rgba(8,18,40,.92); border:2px solid #00ffcc55; border-radius:12px; padding:10px 12px; text-align:center; white-space:nowrap; }
+    .roles5 b { display:block; color:#fff; font-family:Anton,sans-serif; font-weight:400; font-size:1.15rem; letter-spacing:1px; }
     .roles5 span { color:#aaa; font-size:.95rem; }
     .tech { margin-top:24px; color:#00ffcc; font-family:Oswald,sans-serif; font-weight:700; letter-spacing:2px; font-size:.95rem; }
     .mp { margin-top:22px; display:flex; flex-wrap:wrap; align-items:center; gap:14px; background:rgba(255,0,170,.12); border:2px solid #ff00aa; border-radius:14px; padding:14px 18px; }
@@ -102,7 +103,13 @@
     <div class="free">FREE ALPHA · GRANDFATHERED BETA REWARDS</div>
     <h2>Real launches. <span style="color:#ffd700;">Real catches.</span> Full stack.</h2>
     <p class="big">Stack it. Launch it. Catch it.</p>
-    <p class="roles1">ROLES: 🏗️ Construction · 🛰️ Operations · 🛡️ Security · 🚛 Transport · 🎥 Creator</p>
+    <div class="roles5">
+      <div><b>🏗️ Construction</b></div>
+      <div><b>🛰️ Operations</b></div>
+      <div><b>🛡️ Security</b></div>
+      <div><b>🚛 Transport</b></div>
+      <div><b>🎥 Creator</b></div>
+    </div>
     <div class="mp"><b>👥 MULTIPLAYER</b><span>Squad up. Voice and text chat.</span></div>
     <p class="dev">🛠️ <b>Developers:</b> help build it at <a href="mailto:honkytonk@mail.grokbot.com">honkytonk@mail.grokbot.com</a></p>
     <p class="tech">UNREAL ENGINE 5.8.3 · REAL-WORLD MAP · TEMPORAL REWIND</p>
