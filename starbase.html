@@ -8,6 +8,7 @@
   <meta property="og:title" content="Starbase Louisiana: Alpha Testers Wanted">
   <meta property="og:description" content="Walk it. Drive it. Fly it. Watch it get built, then roll it back to empty marsh.">
   <meta property="og:image" content="https://lancewoolie.com/img/starbase/starbase-alpha-hero.jpg">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/png" href="img/LanceWoolieHeadonly.png">
@@ -51,21 +52,31 @@
     #msg { min-height:28px; font-weight:bold; }
     footer { text-align:center; color:#777; padding:40px 5% 60px; }
     footer a { color:#00ffcc; }
+
+    h1, h2, .tag, .punch, .btn-neon, .mode h3 { font-family:'Anton','Oswald',Impact,sans-serif; letter-spacing:1px; }
+    .hero h1 { margin:14px 0 6px; line-height:.86; font-weight:400; }
+    .hero h1 .l1 { display:block; font-size:clamp(3.6rem,11vw,9.5rem); color:#fff; text-shadow:0 6px 0 #000, 0 0 50px rgba(0,0,0,.8); }
+    .hero h1 .l2 { display:block; font-size:clamp(3.6rem,11vw,9.5rem); background:linear-gradient(180deg,#fff 0%,#9ffcea 35%,#00ffcc 60%,#00a080 100%); -webkit-background-clip:text; background-clip:text; color:transparent; filter:drop-shadow(0 6px 0 #000) drop-shadow(0 0 28px rgba(0,255,204,.55)); }
+    .punch { font-size:clamp(1.5rem,3.2vw,2.4rem); color:#fff; line-height:1.1; margin:18px 0 6px; text-shadow:0 4px 0 #000, 0 0 20px #000; }
+    .punch em { font-style:normal; color:#ffd700; }
+    .tag { background:rgba(0,0,0,.6); font-weight:400; font-size:1rem; letter-spacing:3px; }
+    .btn-neon { font-weight:400; font-size:1.35rem; letter-spacing:2px; }
+    h2 { font-size:clamp(2.4rem,5vw,3.8rem); font-weight:400; text-transform:uppercase; }
   </style>
 </head>
 <body>
 
   <div class="hero">
     <div>
-      <span class="tag">ALPHA TESTERS WANTED</span>
-      <h1>STARBASE <span>LOUISIANA</span></h1>
-      <p class="lead">A full-scale digital build of the SpaceX Louisiana site on Pecan Island. Walk it, drive it, fly a drone over it, and watch it rise. Then roll back the clock until it's empty marsh again.</p>
-      <a href="#signup" class="btn btn-neon mt-3">GET ALPHA ACCESS</a>
+      <span class="tag">ALPHA ACCESS · NOW RECRUITING</span>
+      <h1><span class="l1">STARBASE</span><span class="l2">LOUISIANA</span></h1>
+      <p class="punch">WALK IT. DRIVE IT. FLY IT.<br><em>REWIND IT.</em></p>
+      <a href="#signup" class="btn btn-neon mt-3">CLAIM YOUR ALPHA SPOT</a>
     </div>
   </div>
 
   <section>
-    <h2>See the real scale</h2>
+    <h2>Feel the real scale</h2>
     <p class="mb-4" style="color:#ccc;font-size:1.15rem;">Photos and flyovers don't show how big this place is. Here you set your own pace and go anywhere.</p>
     <div class="modes">
       <div class="mode"><div class="ico">🚶</div><h3>Walk</h3><p>Stand at the base of the bay doors.</p></div>
@@ -77,7 +88,7 @@
   </section>
 
   <section>
-    <h2>Roll back the clock</h2>
+    <h2>Rewind the build</h2>
     <div class="timeline">
       <p style="color:#ccc;">Drag left to go back in time. Each layer switches off until nothing's left but the ground.</p>
       <input type="range" id="clock" min="0" max="5" value="5">
