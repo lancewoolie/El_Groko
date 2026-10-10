@@ -191,6 +191,8 @@
     Fan project by Lance Woolie / Dastronauts. Not affiliated with or endorsed by SpaceX.
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>emailjs.init("CHqNrS_37-ZHjibQR");</script>
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
     import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
@@ -234,6 +236,12 @@
           timestamp: serverTimestamp(),
           page: 'starbase.html'
         });
+        try {
+          await emailjs.send("service_n08jdhv", "template_ls2s5mp", {
+            name, email,
+            message: "Thanks for signing up for the Starbase, Louisiana v .1 alpha. Your spot is locked in, and it's completely free. Alpha testers get grandfathered rewards at beta. Your mission briefing will be sent to you ASAP."
+          });
+        } catch (mailErr) { console.error('Welcome email failed:', mailErr); }
         form.reset();
         msg.textContent = "You're on the alpha list. Watch your inbox.";
       } catch (err) {
