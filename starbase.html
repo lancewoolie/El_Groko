@@ -86,9 +86,17 @@
     .pitch h2, .pitch p, .free, .mp, .roles1, .punch { white-space:nowrap; }
     .pitch { overflow-x:hidden; }
     @media (max-width:700px){ .pitch h2, .pitch p, .free, .mp, .roles1, .punch { white-space:normal; } }
+    .sbnav { position:fixed; top:14px; left:14px; z-index:1000; display:flex; gap:8px; background:rgba(5,7,15,.85); border:2px solid #00ffcc; border-radius:40px; padding:6px 10px; backdrop-filter:blur(10px); }
+    .sbnav a { display:flex; align-items:center; gap:6px; color:#00ffcc; text-decoration:none; font-family:Oswald,sans-serif; font-weight:700; letter-spacing:1px; font-size:.95rem; padding:4px 10px; border-radius:30px; }
+    .sbnav a:hover { background:#00ffcc; color:#05070f; }
+    .sbnav img { width:26px; height:26px; }
   </style>
 </head>
 <body>
+  <nav class="sbnav">
+    <a href="index.html"><img src="/img/moonsaloon/saloon-doors-nav.png" alt="">Moon Saloon</a>
+    <a href="chimes.html"><img src="/img/moonsaloon/Tesla-Chime-nav.png" alt="">Chimes</a>
+  </nav>
 
   <div class="hero">
     <div>
