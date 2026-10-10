@@ -63,6 +63,12 @@
     .btn-neon { font-weight:400; font-size:1.35rem; letter-spacing:2px; }
     h2 { font-size:clamp(2.4rem,5vw,3.8rem); font-weight:400; text-transform:uppercase; }
     .ver { font-size:.28em; -webkit-text-fill-color:#ffd700; color:#ffd700; vertical-align:top; letter-spacing:2px; }
+    .big { font-size:clamp(1.2rem,2.2vw,1.6rem); color:#ddd; max-width:820px; }
+    .roles { margin-top:22px; color:#aaa; font-family:Oswald,sans-serif; font-size:1.15rem; letter-spacing:1px; }
+    .roles b { color:#00ffcc; font-weight:700; }
+    .duo { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:22px; }
+    .mode.left { text-align:left; }
+    section { padding:56px 5%; }
   </style>
 </head>
 <body>
@@ -76,43 +82,34 @@
     </div>
   </div>
 
-  <section>
-    <h2>Feel the real scale</h2>
-    <p class="mb-4" style="color:#ccc;font-size:1.15rem;">Photos and flyovers don't show how big this place is. Here you set your own pace and go anywhere.</p>
+  <section class="pitch">
+    <h2>Open Starbase. <span style="color:#ffd700;">Real scale.</span> No rails.</h2>
+    <p class="big">Every bay, every road, and every pad is built full size. Clock in, grab the keys, and go to work.</p>
+  </section>
+
+  <section style="padding-top:0;">
+    <h2>Missions</h2>
     <div class="modes">
-      <div class="mode"><div class="ico">🚶</div><h3>Walk</h3><p>Stand at the base of the bay doors.</p></div>
-      <div class="mode"><div class="ico">🏃</div><h3>Run</h3><p>Time the haul road end to end.</p></div>
-      <div class="mode"><div class="ico">🛻</div><h3>Drive</h3><p>Roll a Cybertruck through the parking lot.</p></div>
-      <div class="mode"><div class="ico">🛸</div><h3>Fly a drone</h3><p>Get the overhead shot from anywhere on site.</p></div>
+      <div class="mode"><div class="ico">📡</div><h3>Pez Loader</h3><p>Stack a full load of Starlinks into the Pez dispenser before the window closes.</p></div>
+      <div class="mode"><div class="ico">⛽</div><h3>Prop Run</h3><p>Drive a convoy of propellant trucks through the marsh. Don't jackknife the LOX.</p></div>
+      <div class="mode"><div class="ico">🚀</div><h3>Rollout</h3><p>Move a 71 m booster from the bay to the pad without scratching a tile.</p></div>
+      <div class="mode"><div class="ico">🏗️</div><h3>Pour Day</h3><p>Dozers, cranes, and concrete. The base doesn't build itself.</p></div>
+      <div class="mode"><div class="ico">🛡️</div><h3>Lockdown</h3><p>Clear the hazard zone. Some guy with a drone is always in the airspace.</p></div>
+      <div class="mode"><div class="ico">🛰️</div><h3>T-Minus</h3><p>Run ops and call the count, all the way to liftoff.</p></div>
     </div>
-    <img src="img/starbase/starbase-drone.jpg" alt="Starships and dozers on the Starbase Louisiana build site" style="width:100%;border-radius:22px;margin-top:28px;border:3px solid #00ffcc55;">
+    <p class="roles">Roles: <b>Construction</b> · <b>Operations</b> · <b>Security</b> · <b>Transport</b> · <b>Creator</b></p>
   </section>
 
-  <section>
-    <h2>Pick your role</h2>
-    <p class="mb-4" style="color:#ccc;font-size:1.15rem;">Don't just tour the site. Work it.</p>
-    <div class="modes">
-      <div class="mode"><div class="ico">🏗️</div><h3>Construction</h3><p>Run dozers and cranes, and pour the slabs the whole base sits on.</p></div>
-      <div class="mode"><div class="ico">🛰️</div><h3>Operations</h3><p>Run the site and keep the countdown on schedule.</p></div>
-      <div class="mode"><div class="ico">🛡️</div><h3>Security</h3><p>Patrol the perimeter, work the gates, and clear the area for launch.</p></div>
-      <div class="mode"><div class="ico">🚛</div><h3>Transport</h3><p>Move Starships and boosters, and drive the propellant trucks.</p></div>
-    </div>
-  </section>
-
-  <section>
-    <h2>Creator camera suite</h2>
-    <p style="color:#ccc;font-size:1.15rem;max-width:760px;">Shoot your own Starbase Louisiana videos. Fly drone shots, set cameras on tripods, and frame the rollout however you want.</p>
-  </section>
-
-  <section>
-    <h2>Rewind the build</h2>
-    <div class="timeline">
-      <p style="color:#ccc;">Drag left to go back in time. Each layer switches off until nothing's left but the ground.</p>
-      <input type="range" id="clock" min="0" max="5" value="5">
-      <div class="mt-2">Showing: <span id="era">Today's build</span></div>
+  <section class="duo" style="padding-top:0;">
+    <div class="mode left"><div class="ico">🎥</div><h3>Creator camera suite</h3><p>Fly drones, set tripods, and cut your own launch videos. The site is your film set.</p></div>
+    <div class="mode left"><div class="ico">⏪</div><h3>Rewind the build</h3><p>Drag time back and watch the base peel away layer by layer until it's just Louisiana marsh.</p>
+      <input type="range" id="clock" min="0" max="5" value="5" style="width:100%;accent-color:#ffd700;margin-top:10px;">
+      <div style="color:#ffd700;font-family:Anton,sans-serif;letter-spacing:1px;" id="era">Today's build</div>
       <div class="layers" id="layers"></div>
     </div>
   </section>
+
+  <img src="img/starbase/starbase-drone.jpg" alt="Starships and dozers on the Starbase Louisiana build site" style="display:block;width:100%;max-height:520px;object-fit:cover;">
 
   <section id="signup">
     <div class="row g-5">
