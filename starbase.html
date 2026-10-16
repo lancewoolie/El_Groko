@@ -241,7 +241,7 @@
         });
         try {
           await emailjs.send("service_n08jdhv", "template_ls2s5mp", {
-            name, email,
+            name, email, source: 'starbase-alpha',
             subject: "ACCESS GRANTED: Starbase, Louisiana v .1 🚀",
             html: window.EmailDesigns.starbaseWelcome(name),
             message: "Thanks for signing up for the Starbase, Louisiana v .1 alpha. Your spot is locked in, and it's completely free. Alpha testers get grandfathered rewards at beta. Your mission briefing will be sent to you ASAP."
